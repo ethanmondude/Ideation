@@ -1,0 +1,696 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Askwatch</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="site"><a href="../index.html">Startup theses</a></header>
+<main>
+<p class="back"><a href="../index.html">&larr; All theses</a></p>
+<article>
+<h1>Askwatch</h1>
+<p class="tagline">See every public answer @grok gives about your product on X, in real time</p>
+<p class="meta"><span>22 Oct 2026, 8:30pm AWST</span> <span class="badge mid">5/10</span></p>
+<section class="exec"><h2>Executive summary</h2>
+<ul>
+<li><strong>Problem:</strong> On X, people tag @grok under posts to ask "is this legit?", "what's the best tool for X?" or "is this a scam?", and Grok answers in public, in the thread, where every reader sees it. Grok posts about 230,000 public replies a day (X counts API, 16 to 22 Oct). Founders and coin teams can't see these answers, so a wrong price, a "not affiliated" or a "looks like a rug" stands unanswered.</li>
+<li><strong>Product:</strong> A web app (sign in with X) that indexes the real public @grok replies naming your product, handle, ticker or contract address, plus your competitors. It shows the question asked, Grok's verdict (recommends, neutral or warns), the factual claims it made, reach, and a "reply now" link. Alerts go to Telegram or email within minutes. It complements, and doesn't replace, synthetic-prompt AI visibility trackers.</li>
+<li><strong>Who pays and how much:</strong> X-native startups, devtools and crypto product teams. Pricing is US$49 a month Starter (1 brand, 3 competitors), US$129 Pro (3 brands, Telegram alerts, API) and US$299 Agency, by card or USDC. Money next door: Rank Prompt has US$43.6k MRR (Stripe-verified on TrustMRR), Elmo US$5.3k and Mentionable US$3.9k, and Peec AI passed US$10M ARR. All of them run synthetic prompts.</li>
+<li><strong>Token job ($ASKW on pump.fun, after the first paying users):</strong> holders spend it on deep backfills (up to 30 days of history for a term) and stake it for extra tracked terms and faster alert polling. Spent tokens are burned. There are no holder payouts, no revenue buybacks and no profit promises. Creator fees are treated as a bonus.</li>
+<li><strong>Cost against A$1,000:</strong> about A$470 to the end of a 4-month test, including a small labelled token launch. The US$299 DexScreener profile is paid only from revenue.</li>
+<li><strong>Path to US$10k MRR:</strong> about 110 paying accounts at a blended US$90 (estimate), sold through free "what Grok told people about you" reports posted on X, TrustMRR and crypto communities.</li>
+<li><strong>Why now:</strong> Ask-Grok replies are an exposure surface no other model has (Meev says so itself), and since X moved to pay-per-use API pricing (US$0.005 a post read, Feb 2026) one person can afford to index them. Traders in today's digests ask Grok and free bots for legit checks before buying.</li>
+<li><strong>Edge and main risk:</strong> The edge is real answers seen by real people, not simulated prompts. Meev, Ossvy, Orchly and Gauge run synthetic Grok prompts, Licter does this by hand as a consultancy, and Brand24 (US$199+) catches keywords but doesn't separate out Grok's answers or score them. <strong>The main risk is that it's a thin wedge:</strong> any social-listening tool can add a <code>from:grok</code> filter, and nobody has yet shown they'll pay for this one job. <strong>First move this week:</strong> run the free 7-day report for 20 X-active brands by hand and DM nothing; post 3 as public examples only with Ethan's OK.</li>
+<li><strong>Verdict: test (about 35%).</strong> The money exists next door and the data is cheap, but the paying demand for this narrow job is unproven. Run the 30-day kill test below before building beyond the report page.</li>
+</ul>
+</section>
+<section class="thesis"><h2>Full thesis</h2>
+<div class="byline"><p><em>idea bot · 22 Oct 2026, 8:30pm AWST (Perth) · thesis 9 · verdict: <strong>test</strong>, about 35% confidence</em></p></div>
+<h3>Problem and user</h3><p><strong>User:</strong> a tech-bro founder or growth lead at an X-native product. That means an AI tool or devtool with a build-in-public founder, a Solana app or product coin, or a trading tool. Their buyers live on X and increasingly ask @grok instead of Googling.</p>
+<p><strong>What happens today:</strong> Grok answers publicly in threads. Examples from the last week (X search, 22 Oct):</p>
+<ul>
+<li>Grok told one asker a FusedPad post "is legit. It's from the official FusedPad account and matches the live features" (<a href="https://x.com/grok/status/2111420073906729384">post</a>). That's a free endorsement the team may never have seen.</li>
+<li>Grok described $GROKLET as "fan-made … Unaffiliated with xAI. Multiple similar ones exist" (<a href="https://x.com/grok/status/2112231195022909533">post</a>).</li>
+<li>Grok judged a trader's account as mixing "solid TA" with "aggressive lowcap meme promotions" (<a href="https://x.com/grok/status/2112954900908765475">post</a>).</li>
+<li>Grok said it "cannot confirm the free Claude key as legit" and flagged an unofficial proxy (171 impressions, <a href="https://x.com/grok/status/2111295566919369006">post</a>).</li>
+</ul>
+<p><strong>How they solve it today:</strong> manual X searches, social-listening tools that aren't built for this (Brand24 starts at US$199 a month for 3 keywords, <a href="https://brand24.com/prices/">pricing</a>), or synthetic-prompt trackers that ask Grok's API a fixed question once a day (<a href="https://meev.ai/platform/grok-visibility">Meev</a>, <a href="https://ossvy.com/pricing">Ossvy</a>, <a href="https://orchly.ai/pricing">Orchly</a>). Synthetic prompts don't show what Grok actually told the person who asked, under which post, or how many people saw it.</p>
+<p><strong>Cost of the problem:</strong> not measured anywhere I could find. That's the main gap in this thesis, and the kill test is designed to measure it.</p>
+<h3>Evidence of money</h3><p><strong>Verified revenue next door (AI visibility tracking, Stripe-verified on TrustMRR, read 22 Oct 2026):</strong></p>
+<ul>
+<li><a href="https://trustmrr.com/startup/rank-prompt">Rank Prompt</a>: MRR US$43,561, 213 active subscriptions, US$302k all-time, founded May 2025, founder has 41 X followers. That's a small team winning on a self-serve tracker.</li>
+<li><a href="https://trustmrr.com/startup/elmo">Elmo</a>: MRR US$5,279 from 17 subscriptions (about US$310 each), bootstrapped and open source.</li>
+<li><a href="https://trustmrr.com/startup/mentionable-1">Mentionable</a>: MRR US$3,864 from 20 subscriptions, €79 to €299 a month.</li>
+<li><a href="https://www.globenewswire.com/news-release/2026/05/28/3303009/0/en/peec-ai-hits-10m-arr-16-months-after-launch-as-brands-race-to-optimize-for-ai-search.html">Peec AI</a>: over US$10M ARR 16 months after launch (press release). <a href="https://sacra.com/research/peec-vs-profound/">Sacra</a> estimates US$11.5M in June 2026.</li>
+</ul>
+<p><strong>Crypto teams already buy AI visibility:</strong> crypto-specific offerings exist from <a href="https://www.withgauge.com/resources/best-ai-visibility-tools-crypto-web3/">Gauge</a> (US$599 a month and up, with Grok only on Enterprise per its <a href="https://www.withgauge.com/pricing">pricing</a>), <a href="https://www.brandarmor.ai/solutions/ai-visibility-for-crypto">Brand Armor</a>, <a href="https://geonimo.com/crypto">Geonimo</a> (done for you) and <a href="https://lanesra.ai/ai-visibility">Lanesra</a>. Their customers' payments aren't public.</p>
+<p><strong>Teammates' signals this corroborates:</strong></p>
+<ul>
+<li>X bot, 8pm: traders want "rug checks they can trust", free graders and reply bots keep multiplying (beforeitrugs, WhodlBot, Larpcheckbot), and DefiLlama's @llama answers revenue questions when tagged. Asking a bot in-thread is now normal behaviour.</li>
+<li>X bot, 8pm: a Paris bakery pays €99 a month to monitor what ChatGPT says about it (anecdote, <a href="https://x.com/AgenticOperator/status/2113216073113997521">post</a>).</li>
+<li>Revtrace lesson (18:45): coin teams pay for <strong>visibility</strong> (DexScreener US$299, TrustMRR ad slots), not scrutiny. Askwatch sells visibility.</li>
+<li>Trench Bot: brand name-bait coins now link real brands' X accounts. A brand or project that sees Grok calling a fake coin "official" can correct it in the thread.</li>
+</ul>
+<p><strong>Volume (X recent counts API, 15 to 22 Oct 2026, my queries):</strong></p>
+<ul>
+<li><code>from:grok</code>: 212k to 244k public replies a day.</li>
+<li><code>from:grok</code> naming any of 8 big dev tools (Cursor, Claude Code, Supabase, Vercel, Lovable, Replit, Stripe, PostHog): 456 to 565 a day.</li>
+<li><code>from:grok</code> naming any of 10 big crypto tools (Axiom, Photon, GMGN, BullX, Phantom, Jupiter, DexScreener, Rugcheck, Bubblemaps, Helius): 123 to 189 a day.</li>
+<li>Explicit "@grok best tool / alternative to / which tool" questions: 18 to 58 a day (a narrow phrase query, so a floor).</li>
+</ul>
+<p>So a mid-size brand might see tens of Grok answers a day and a small one a handful a week. <strong>That's the biggest uncertainty:</strong> for small brands the feed may be too thin to justify US$49.</p>
+<p><strong>Real user quotes:</strong> I found none of founders asking for exactly this. The closest are Meev's own page ("an exposure surface no other LLM has") and Licter selling it as a consultancy ("Grok also answers in public, not only in a private chat window", <a href="https://www.licter.com/tech-grok.html">Licter</a>). Treat demand as unproven.</p>
+<h3>Market sizing (bottom-up; assumptions labelled)</h3><ul>
+<li><strong>Assumption:</strong> about 3,000 reachable X-native products. That's TrustMRR's listed startups (TrustMRR ranks Mentionable #1,418, so well over 1,400 listings), plus Solana product teams, plus devtools.</li>
+<li><strong>Assumption:</strong> 3% to 4% convert to paid at a blended US$90 a month. That's 90 to 120 accounts, or <strong>US$8.1k to US$10.8k MRR</strong>.</li>
+<li><strong>Upside not counted:</strong> agencies (half of Peec's base per Sacra) running it for many clients at US$299.</li>
+<li><strong>Ceiling check:</strong> Rank Prompt reached 213 subscriptions in about 17 months with a broader product. Askwatch is narrower, so 110 accounts in 12 months is ambitious, not conservative.</li>
+</ul>
+<h3>Competitive teardown</h3><table>
+<thead>
+<tr>
+<th>Product</th>
+<th>What it does</th>
+<th>Price</th>
+<th>Revenue or funding</th>
+<th>Gap it leaves</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://meev.ai/pricing">Meev</a></td>
+<td>Synthetic prompts across 6 to 8 engines, Grok on Pro</td>
+<td>US$39 to US$215/mo</td>
+<td>not public</td>
+<td>Simulated answers, not the real public replies under real posts</td>
+</tr>
+<tr>
+<td><a href="https://ossvy.com/pricing">Ossvy</a></td>
+<td>AI visibility; "your brand in Grok and on X"</td>
+<td>US$79 to US$199/mo</td>
+<td>not public</td>
+<td>Prompt tracking; no in-thread reply feed seen on its pages</td>
+</tr>
+<tr>
+<td><a href="https://orchly.ai/pricing">Orchly</a></td>
+<td>GEO suite; Grok as an add-on</td>
+<td>US$49 to US$125/mo</td>
+<td>not public</td>
+<td>Advises posting replies Grok can find; doesn't index Grok's own replies</td>
+</tr>
+<tr>
+<td><a href="https://www.withgauge.com/pricing">Gauge</a></td>
+<td>Full-loop GEO incl. crypto, coding agents</td>
+<td>US$599/mo; Grok on Enterprise</td>
+<td>not public</td>
+<td>Expensive, sales-led for Grok</td>
+</tr>
+<tr>
+<td><a href="https://www.licter.com/tech-grok.html">Licter</a></td>
+<td>Consultancy that measures Grok's public answers by question</td>
+<td>custom</td>
+<td>not public</td>
+<td>Not self-serve</td>
+</tr>
+<tr>
+<td><a href="https://brand24.com/prices/">Brand24</a></td>
+<td>Social listening incl. X</td>
+<td>US$199 to US$699/mo</td>
+<td>private</td>
+<td>Catches keyword posts but doesn't isolate Grok's answers, its verdict or its claims</td>
+</tr>
+<tr>
+<td><a href="https://trustmrr.com/startup/rank-prompt">Rank Prompt</a>, <a href="https://trustmrr.com/startup/elmo">Elmo</a>, <a href="https://trustmrr.com/startup/mentionable-1">Mentionable</a>, <a href="https://sacra.com/research/peec-vs-profound/">Peec</a>, Otterly, Profound</td>
+<td>AI visibility via synthetic prompts</td>
+<td>US$29 to US$495+/mo</td>
+<td>US$3.9k to US$43.6k MRR; Peec US$10M+ ARR</td>
+<td>Same: no real-reply feed</td>
+</tr>
+<tr>
+<td><a href="https://trakkr.ai/article/grok-citation-notifications">Trakkr</a></td>
+<td>Guide to Grok citation alerts</td>
+<td>n/a</td>
+<td>n/a</td>
+<td>Says there's no native xAI alert for brand mentions; recommends DIY with the X API</td>
+</tr>
+<tr>
+<td>Larpcheckbot, @llama, beforeitrugs, WhodlBot</td>
+<td>Free reply bots answering legit and revenue questions</td>
+<td>free</td>
+<td>Larpcheckbot has $LARPCHECK</td>
+<td>Serve the asker, not the brand being asked about</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Why incumbents may not bother:</strong> synthetic-prompt trackers have to pay per X post read to do this, which breaks their flat "prompts per month" pricing, and their buyers are marketing teams who don't live on X. Social-listening suites are priced per keyword and mention volume, so separating out Grok's answers is a feature they could add, and that's the risk. <strong>Honest read:</strong> this is a feature-sized gap that one founder can own for 6 to 12 months if he moves fast and goes deep on X and crypto.</p>
+<h3>Product and user experience</h3><p><strong>First minute:</strong> sign in with X, type a handle, product name, ticker or contract address, and get "Grok answered 37 questions about you in the last 7 days, seen about 4,100 times: 21 neutral, 9 recommend, 7 warn." Under that sits a card per answer showing the question, Grok's reply, the claims extracted (price, "official" or "not affiliated", "scam", competitor named instead) and a reply button that opens the thread. A shareable report image is the growth loop.</p>
+<p><strong>MVP (2 to 3 weeks, solo):</strong></p>
+<ul>
+<li><strong>Week 1:</strong> Next.js on Vercel and Supabase (free tiers), X OAuth, an X API pay-per-use worker polling recent search for <code>from:grok (term1 OR term2…)</code> and fetching the parent question, and the 7-day free report (sampled and capped).</li>
+<li><strong>Week 2:</strong> a cheap LLM classifier for verdict, claims and competitor named, with a "wrong fact" check against facts the brand enters (price, official CA, official site). Telegram and email alerts. Stripe Checkout plus a USDC option.</li>
+<li><strong>Week 3:</strong> competitor share of voice (how often Grok recommends you versus rivals when the question is "best X"), weekly digest, public API.</li>
+</ul>
+<p><strong>Under the hood:</strong> answer clustering by question intent, claim extraction with a fact-diff against the brand's facts, CA-aware matching (so a fake coin's contract can't masquerade as the brand), reach estimates from public impression counts, and dedup to keep X read costs down (X charges once per post per UTC day).</p>
+<p><strong>What's genuinely hard:</strong> keeping X read costs per customer below about 20% of price, avoiding false matches on common words, and getting through X's developer terms review for a commercial monitoring product.</p>
+<p><strong>What a copycat could clone in a weekend:</strong> the basic <code>from:grok</code> search with alerts. The moat has to come from the fact-diff, share-of-voice history and distribution on X.</p>
+<h3>Token design (pump.fun)</h3><ul>
+<li><strong>Job in the product:</strong></li>
+<li>Spend $ASKW on deep backfills (30 days of Grok answers for any term) and one-off competitor audits; spent tokens are burned by the app.</li>
+<li>Stake (lock) $ASKW to raise a plan's tracked-term cap and alert polling speed while staked.</li>
+<li>Subscriptions stay payable by card or USDC, so the token is optional.</li>
+<li><strong>Launch plan:</strong></li>
+<li>Launch only after 10 or more paying accounts, on pump.fun, at a public product moment (the first public "Grok report" post).</li>
+<li>Mint authority off and a small labelled dev buy (about 0.5 SOL). No team bundles. Holder Rewards and Tokenized Agent buybacks off.</li>
+<li>Post the CA from the official X account within a minute of launch and pin it on the site.</li>
+<li>DexScreener profile (US$299) paid only from revenue.</li>
+<li><strong>Fees on-chain:</strong> token burns are visible on-chain, USDC subscriptions go to a published wallet, and the repo is public from day one.</li>
+<li><strong>Creator fees versus product revenue:</strong> pump.fun creator fees are 0.30% on the curve and 0.30% to 0.95% on PumpSwap at small caps (<a href="https://pump.fun/docs/fees">pump.fun fees</a>). Trench Bot's data says product use alone doesn't drive token price, so creator fees are a bonus and not in the plan.</li>
+<li><strong>Comparables:</strong></li>
+<li>Larpcheckbot is a reply bot with its own token ($LARPCHECK), but its token's job isn't verified (X bot).</li>
+<li>Pumpfun Agency's $AGENCY has about US$3.4k mcap and US$43 of 24h volume (Git bot), which shows tool tokens without usage go nowhere.</li>
+<li>Trench Bot: of 60 coins at US$500k+ only about 9 were real markets, so a product token needs to look unlike a casino coin.</li>
+<li><strong>Legal line:</strong> no payouts to holders, no revenue-funded buybacks or burns (burns come only from tokens users spend on usage), and no profit language. ASIC and US securities risk get a legal check before launch (budgeted below).</li>
+</ul>
+<h3>Budget and founder load (A$, estimates; A$1 ≈ US$0.65)</h3><table>
+<thead>
+<tr>
+<th>Item</th>
+<th>One-off</th>
+<th>Monthly</th>
+<th>4-month total</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Domain</td>
+<td>20</td>
+<td>0</td>
+<td>20</td>
+</tr>
+<tr>
+<td>Vercel and Supabase free tiers</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>X API pay-per-use reads (free reports capped at about 75 posts each; paid users covered by revenue)</td>
+<td>0</td>
+<td>45</td>
+<td>180</td>
+</tr>
+<tr>
+<td>LLM classification (cheap model, about 30k replies a month)</td>
+<td>0</td>
+<td>15</td>
+<td>60</td>
+</tr>
+<tr>
+<td>Email and Telegram (free tiers)</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>Stripe</td>
+<td>% of revenue</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>Token launch (labelled dev buy ~0.5 SOL plus fees; month 3, only if 10+ paying)</td>
+<td>85</td>
+<td>0</td>
+<td>85</td>
+</tr>
+<tr>
+<td>Fixed-fee legal sanity check on token wording (optional)</td>
+<td>0 to 125</td>
+<td>0</td>
+<td>125</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td></td>
+<td></td>
+<td><strong>about A$470</strong> (A$530 spare)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Founder load:</strong> about 25 to 30 hours a week for 3 weeks to build, then about 8 to 10 hours a week for content and fixes. Support is low (self-serve, read-only), mostly false-match tuning.</p>
+<h3>Business model and unit economics (estimates)</h3><ul>
+<li><strong>Pricing:</strong> Starter US$49 (1 brand plus 3 competitors, Telegram/email alerts), Pro US$129 (3 brands, fact-diff, API), Agency US$299 (15 brands, white-label reports). This sits under Brand24 (US$199+) and around Meev/Ossvy, against an X-native job they don't do.</li>
+<li><strong>Cost to serve:</strong></li>
+<li>Starter: about 2,500 X reads a month (US$12.50) plus LLM (about US$1), so 72% gross margin.</li>
+<li>Pro: about 6,000 reads (US$30) plus US$3, so 74%.</li>
+<li>Agency: about 15,000 reads (US$75) plus US$6, so 73%.</li>
+<li>Caps are enforced per plan.</li>
+<li><strong>Acquisition:</strong></li>
+<li>Free reports shared on X ("What Grok told 4,100 people about you"), TrustMRR founders, Solana Discords and Telegrams, MCP and integration directories for the API, and Product Hunt.</li>
+<li>Paid acquisition cost is about US$0. Cost per free report is about US$0.40 in reads.</li>
+<li>Cash payback is under one month per account.</li>
+</ul>
+<h3>Go-to-market for a solo founder</h3><ul>
+<li><strong>First 10 users:</strong> indie founders on TrustMRR and build-in-public X accounts with active Grok mentions, Solana product teams from Trench Bot's and X bot's lists, and devtools that Grok names often.</li>
+<li><strong>Days 1 to 21:</strong> build the report page and alerts.</li>
+<li><strong>Days 22 to 30:</strong> publish 20 free reports, but only after Ethan's OK. Any outreach or DMs need his explicit approval.</li>
+<li><strong>Days 31 to 60:</strong> founding price of US$29 for the first 30, convert from report viewers, and launch on Product Hunt.</li>
+<li><strong>Path to US$10k MRR:</strong></li>
+<li>Weekly public "Grok said what?" posts about well-known tools (factual, linked to Grok's own posts).</li>
+<li>An agency tier for crypto marketing agencies.</li>
+<li>An API that other dashboards pull from.</li>
+</ul>
+<h3>Financial snapshot (12 months; all estimates)</h3><table>
+<thead>
+<tr>
+<th>Month</th>
+<th>Paying accounts</th>
+<th>MRR (US$)</th>
+<th>Token creator fees (US$, bonus)</th>
+<th>Costs (US$/mo)</th>
+<th>Profit (US$/mo)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>40</td>
+<td>-40</td>
+</tr>
+<tr>
+<td>2</td>
+<td>8</td>
+<td>400</td>
+<td>0</td>
+<td>90</td>
+<td>310</td>
+</tr>
+<tr>
+<td>3</td>
+<td>20</td>
+<td>1,300</td>
+<td>0 to 300</td>
+<td>250</td>
+<td>1,050</td>
+</tr>
+<tr>
+<td>6</td>
+<td>45</td>
+<td>3,800</td>
+<td>0 to 200</td>
+<td>900</td>
+<td>2,900</td>
+</tr>
+<tr>
+<td>9</td>
+<td>75</td>
+<td>6,500</td>
+<td>0 to 200</td>
+<td>1,700</td>
+<td>4,800</td>
+</tr>
+<tr>
+<td>12</td>
+<td>110</td>
+<td>9,900</td>
+<td>0 to 200</td>
+<td>2,600</td>
+<td>7,300</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Assumptions:</strong> blended price rising from US$50 to US$90 as Pro and Agency share grows, 5% monthly churn, cost to serve at about 26% of revenue plus US$40 fixed, and creator fees not relied on. <strong>Bear case:</strong> 30 accounts and about US$2k MRR by month 12.</p>
+<h3>Defensibility</h3><ul>
+<li><strong>Data history:</strong> a running archive of Grok's answers per brand and category. You can't backfill much beyond 7 days cheaply, so the archive gets more valuable each month.</li>
+<li><strong>Fact-diff tuned to crypto:</strong> CA, chain, official links and "not affiliated" claims.</li>
+<li><strong>X-native distribution:</strong> the reports are the content.</li>
+<li>These are weak moats. Speed and the niche are the real defence.</li>
+</ul>
+<h3>Risks (each with a mitigation and a cheap test)</h3><table>
+<thead>
+<tr>
+<th>Risk</th>
+<th>Type</th>
+<th>Mitigation</th>
+<th>Cheap test</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Too few Grok answers per small brand to justify paying</td>
+<td>Market</td>
+<td>Add competitors and category terms ("best Solana wallet") so the feed is about the market, not just you</td>
+<td>Count <code>from:grok</code> answers for 50 candidate brands with the counts endpoint (cheap); need a median of 10 or more a week</td>
+</tr>
+<tr>
+<td>Nobody pays for this one job</td>
+<td>Market</td>
+<td>Bundle with category share of voice; agency tier</td>
+<td>The 30-day kill test below</td>
+</tr>
+<tr>
+<td>Social-listening or GEO tools add a <code>from:grok</code> filter</td>
+<td>Competitive</td>
+<td>Go deep on fact-diff and crypto, ship fast</td>
+<td>Watch Brand24 and Meev changelogs monthly</td>
+</tr>
+<tr>
+<td>X API price or terms change; xAI renames or limits public replies</td>
+<td>Platform</td>
+<td>Cache, dedup, cap reads; keep an optional synthetic-prompt mode via the xAI API</td>
+<td>Read the X developer agreement on commercial monitoring before building</td>
+</tr>
+<tr>
+<td>"Grok" trademark in the product name or marketing</td>
+<td>Legal</td>
+<td>Use a neutral name (Askwatch); describe it as "AI answers on X"</td>
+<td>Name and trademark search before buying the domain</td>
+</tr>
+<tr>
+<td>Defamation or brigading (publishing Grok's claims about others)</td>
+<td>Legal</td>
+<td>Public reports only for brands that opt in; private feeds otherwise</td>
+<td>Ethan's OK before any public report</td>
+</tr>
+<tr>
+<td>Token read as a security</td>
+<td>Token</td>
+<td>Usage-only burns and staking for limits; no payouts, buybacks or profit talk; legal check</td>
+<td>Fixed-fee review of the token page wording</td>
+</tr>
+</tbody>
+</table>
+<h3>Kill or confirm (30 days, under A$150)</h3><ul>
+<li><strong>Setup:</strong> build only the free 7-day report page plus Stripe checkout for a US$29 founding plan (alerts delivered by hand where needed). Spend under US$60 on X reads (about 150 free reports).</li>
+<li><strong>Pass:</strong> 150 or more reports run by distinct users, and <strong>10 or more paid</strong> founding accounts within 30 days of the first public post.</li>
+<li><strong>Kill:</strong> fewer than 4 paid accounts, or a median under 5 Grok answers a week for the brands that ran reports.</li>
+<li><strong>In between (4 to 9 paid):</strong> narrow to crypto teams and agencies only and re-test for 2 weeks.</li>
+<li><strong>Needs Ethan's OK:</strong> any public post or outreach.</li>
+</ul>
+<h3>Comparables</h3><ul>
+<li><a href="https://trustmrr.com/startup/rank-prompt">Rank Prompt</a>: bootstrapped-looking AEO tracker, US$43.6k MRR in about 17 months.</li>
+<li><a href="https://trustmrr.com/startup/elmo">Elmo</a>: bootstrapped, open source, US$5.3k MRR with 17 customers.</li>
+<li><a href="https://trustmrr.com/startup/mentionable-1">Mentionable</a>: US$3.9k MRR in about 10 months.</li>
+<li><a href="https://sacra.com/research/peec-vs-profound/">Peec AI</a>: US$11.5M ARR estimate, raising at about US$210M.</li>
+<li><a href="https://brand24.com/prices/">Brand24</a>: social listening from US$199 a month.</li>
+<li>Token comparables: Larpcheckbot's $LARPCHECK (X bot) and Pumpfun Agency's $AGENCY (Git bot); neither shows product-driven token value.</li>
+</ul>
+<h3>Dropped this run (and why)</h3><ul>
+<li><strong>Creator-reward autopilot</strong> (Git bot's gap): crowded.</li>
+<li><a href="https://github.com/dfnwtf/latrinebot">Latrine Bot</a> is free (claim, buyback, burn, airdrop).</li>
+<li><a href="https://refi.gg/">ReFi</a> takes a 5% fee, <a href="https://github.com/lloydfonterra/frozzzzen">FROZEN</a> 6% and <a href="https://github.com/basicapesociety/solana-auto-burner-bot">AutoBurner</a> 5%. <a href="https://github.com/zerocoinsol/zero-bot">zero-bot</a> does the same.</li>
+<li><a href="https://fees.u.cash/">fees.u.cash</a> already indexes 3,513 fee-routed tokens and 83k claims, and offers self-custody routing.</li>
+<li>pump.fun's own <a href="https://github.com/pump-fun/pump-public-docs/blob/main/docs/instructions/CREATOR_FEE_SHARING.md">creator fee sharing</a> splits to up to 10 wallets.</li>
+<li>Most automated "utility" is buyback, burn or airdrop, which crosses the ASIC line.</li>
+<li><strong>Coding-agent visibility for devtools:</strong> covered by <a href="https://lightsage.com/docs/guides/track-coding-agents">Lightsage</a>, <a href="https://promptwatch.com/blog/coding-agent-visibility">Promptwatch</a>, <a href="https://www.withgauge.com/agents/">Gauge Agents</a> and Armature.</li>
+<li><strong>Key rotation and AI usage visibility:</strong> still crowded (earlier runs).</li>
+</ul>
+<h3>Sourced facts versus estimates</h3><p>Sourced: TrustMRR figures, Peec ARR, vendor prices, X API price (<a href="https://www.medianama.com/2026/02/223-x-developer-api-pricing-pay-per-use-model/">Medianama</a>), pump.fun fees, X counts (my queries on 22 Oct 2026) and teammates' digests. Estimates: market size, conversion, read volumes per plan, costs, the projection and the token launch cost.</p>
+</section>
+<section class="review"><h2>Project Bot review</h2>
+<p class="meta"><span class="badge mid">5/10</span> <span>Reviewed 22 Oct 2026, 8:45pm AWST</span></p>
+<h3>Verdict</h3><ul>
+<li><strong>Score: 5/10. Lead, not thesis (capped: nobody yet pays for a feed of Grok's real public replies; the money next door is for synthetic prompts). Token fit 4/10.</strong> Ranked 5th of 8, level with Second Look and Revtrace, behind Ledgerport (6.5), Tapeline (6), Mint Seal and Breach Kit (5.5).</li>
+<li><strong>Biggest correction: the feed is much thinner per brand than the thesis implies.</strong> The 212k–244k a day total is right (I re-ran it). But the "123 to 189 a day for 10 crypto tools" is inflated by common words (Jupiter, Phantom, Photon, Axiom). The 6 unambiguous names (GMGN, BullX, DexScreener, Rugcheck, Bubblemaps, Helius) together got <strong>29 Grok replies in 7 days</strong>. pump.fun itself got <strong>25 in 7 days</strong>. TrustMRR got <strong>5</strong>. KIMCHI's contract address appeared in <strong>1</strong>. So a small brand or coin gets roughly zero to a few a week. Only big brands or people get a usable daily feed. The "tens a day for a mid-size brand" line doesn't hold up.</li>
+<li><strong>Biggest money gap and new risk:</strong> "what Grok says about you" is already sold, by at least 8 synthetic-prompt trackers that include Grok (Trakkr from US$100, Ossvy Growth US$199, Brand24's Chatbeat add-on, Meev, Rankability, Livesov, AthenaHQ, and Licter as a consultancy). None of them indexes @grok's real thread replies, so the gap is real but feature-sized. <strong>X's own Developer Policy may block it.</strong> It says developers "should never use the X API to measure the availability, performance, functionality, or usage of X for benchmarking, competitive, or commercial purposes" (<a href="https://docs.x.com/developer-terms/policy">policy</a>). Grok is part of X, so get that cleared in writing before building. Best path: a free "what Grok told people about you" lookup for handles and big brands, a paid tier aimed at crypto marketing agencies and KOLs (who can pool many thin feeds), and a counts-only test that costs cents.</li>
+</ul>
+<h3>Score breakdown</h3><div class="sub">From “4. Scores”</div><table>
+<thead>
+<tr>
+<th>Criterion</th>
+<th>Score</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Problem severity</td>
+<td>5</td>
+<td>Grok's public verdicts are real and sometimes wrong (Kimchi $40M), but low reach (11–171 impressions on the examples) and thin per-brand volume limit the pain</td>
+</tr>
+<tr>
+<td>Timing</td>
+<td>7</td>
+<td>~230k replies a day and growing; pay-per-use API makes it cheap; nobody indexes it yet</td>
+</tr>
+<tr>
+<td>Differentiation</td>
+<td>5</td>
+<td>Real-reply feed is unique today, but it's one <code>from:grok</code> filter away for Brand24 and others</td>
+</tr>
+<tr>
+<td>Usability for tech bros</td>
+<td>8</td>
+<td>Type a handle or ticker and get a feed in seconds; no sign-in needed for the lookup</td>
+</tr>
+<tr>
+<td>Ape appeal</td>
+<td>5</td>
+<td>Fun to see what Grok says about you or a rival KOL; it's a reputation tool, not upside</td>
+</tr>
+<tr>
+<td>Solo buildability</td>
+<td>8</td>
+<td>Next.js, a counts and search worker and a cheap classifier in 2–3 weeks</td>
+</tr>
+<tr>
+<td>Self-serve sales</td>
+<td>8</td>
+<td>Card or USDC, no demo needed</td>
+</tr>
+<tr>
+<td>Distribution</td>
+<td>6</td>
+<td>"Grok said what?" cards spread on crypto X; Ethan has no audience yet; naming others adds brigading and defamation risk</td>
+</tr>
+<tr>
+<td>Retention</td>
+<td>4</td>
+<td>Thin feeds mean empty weeks; agencies retain better</td>
+</tr>
+<tr>
+<td>Money evidence</td>
+<td>5</td>
+<td>Adjacent category clearly pays (Rank Prompt, Peec, Trakkr); this exact job has zero payers</td>
+</tr>
+<tr>
+<td>Token fit</td>
+<td>4</td>
+<td>Buyers pay by card; coin teams' feeds are near-empty; token is mostly speculation</td>
+</tr>
+<tr>
+<td><strong>Overall</strong></td>
+<td><strong>5/10</strong></td>
+<td><strong>Lead.</strong> Capped at 6 for no paid-for evidence, then lower for thin volume and the X policy risk</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Rank:</strong> 5th of 8, level with Second Look (5) and Revtrace (5), behind Ledgerport 6.5, Tapeline 6, Mint Seal 5.5 and Breach Kit 5.5, ahead of Agent Spend Books 4.5. It's the cheapest of the eight to test (cents for the volume check). It also pairs with Mint Seal and Revtrace: a "coin and KOL truth" product could show what Grok says, whether the links are signed and whether the revenue is organic.</p>
+<h3>Competitors</h3><div class="sub">From “2. Competitor check”</div><table>
+<thead>
+<tr>
+<th>Competitor</th>
+<th>What it does</th>
+<th>Price</th>
+<th>Gap it leaves</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://trakkr.ai/track-brand-mentions-in-grok">Trakkr</a></td>
+<td>Daily Grok prompts, X-source attribution, citation alerts</td>
+<td>From US$100/mo</td>
+<td>Synthetic prompts; not the replies under real posts</td>
+</tr>
+<tr>
+<td><a href="https://ossvy.com/pricing">Ossvy</a></td>
+<td>6-engine prompt tracking, Grok on Growth</td>
+<td>US$199/mo (Grok tier)</td>
+<td>Same</td>
+</tr>
+<tr>
+<td><a href="https://brand24.com/prices/">Brand24</a> + Chatbeat</td>
+<td>Listening incl. X; AI Visibility add-on covers Grok</td>
+<td>US$249/mo monthly (US$199 annual) + add-on</td>
+<td>Catches keyword posts but doesn't isolate Grok's replies or score them</td>
+</tr>
+<tr>
+<td><a href="https://meev.ai/platform/grok-visibility">Meev</a>, Rankability, Livesov, AthenaHQ</td>
+<td>Grok rank tracking by prompt</td>
+<td>~US$39 to US$295+/mo</td>
+<td>Same synthetic gap</td>
+</tr>
+<tr>
+<td><a href="https://cuescout.com/tools/grok-visibility-checker">cuescout</a>, trackmyvisibility</td>
+<td>Free one-off Grok checks via API</td>
+<td>Free</td>
+<td>Says outright it's "not the @grok bot replying inside a thread"</td>
+</tr>
+<tr>
+<td><a href="https://www.licter.com/tech-grok.html">Licter</a></td>
+<td>Grok audits, repeated prompts plus Visibrain listening</td>
+<td>Custom (consultancy)</td>
+<td>Not self-serve; not a reply index</td>
+</tr>
+<tr>
+<td>Talkwalker LLM Insights, Meltwater GenAI Lens</td>
+<td>Enterprise AI-answer monitoring</td>
+<td>Quote-only (Talkwalker Vendr median ~US$13.3k/yr per <a href="https://resources.rework.com/tools/aeo-ai-visibility/best-ai-brand-monitoring-tools-2026">Rework</a>)</td>
+<td>Talkwalker has no Grok; both are enterprise</td>
+</tr>
+<tr>
+<td><a href="https://trustmrr.com/startup/rank-prompt">Rank Prompt</a>, <a href="https://trustmrr.com/startup/elmo">Elmo</a>, <a href="https://trustmrr.com/startup/mentionable-1">Mentionable</a>, Peec, Profound, Otterly</td>
+<td>AEO suites</td>
+<td>US$29 to US$495+/mo</td>
+<td>No real-reply feed</td>
+</tr>
+<tr>
+<td>Larpcheckbot, @llama, WhodlBot, beforeitrugs</td>
+<td>Free reply bots that answer the asker</td>
+<td>Free</td>
+<td>Serve the asker, not the person or brand being asked about</td>
+</tr>
+<tr>
+<td>GitHub</td>
+<td>Search for repos monitoring Grok replies</td>
+<td>n/a</td>
+<td>0 results</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Does the gap exist?</strong> Yes, narrowly. I found no product that indexes @grok's real thread replies by brand, handle or ticker. It's a <strong>filter, though, not a moat.</strong> Any listening tool can add <code>from:grok</code>, and Brand24 already ingests X and sells a Grok AI add-on. <strong>Winnable niche:</strong> "Grok reputation for crypto people and their agencies". The buyers are KOLs, founders, coin devs and crypto marketing agencies. They get a live feed of what Grok says about each handle, ticker and project, with a fact-diff ("$40M, unverified" against a Bubblemaps-sourced correction) and a one-tap reply. Agencies pool many thin feeds into one worthwhile account. That fixes the volume problem and matches Peec's agency share (about 50%).</p>
+<h3>Build plan</h3><p><em>Not in this review.</em></p>
+<details><summary>Rest of the review (fact-check and notes)</summary>
+<h3>1. Fact-check</h3><p><strong>Verified (opened or re-run today, 8:35–8:45pm AWST)</strong></p>
+<ul>
+<li><strong>@grok volume:</strong> <code>from:grok</code> on X's recent counts endpoint gives 212,032 to 244,162 posts per full UTC day, 16 to 21 Oct (229,551; 212,032; 227,480; 235,054; 240,079; 244,162). Almost all of them are replies: <code>from:grok -is:reply</code> returned 3 in 7 days. The claim and the method (counts API, <code>from:grok</code>) are both correct. <strong>Caveat:</strong> these are UTC days, not AWST.</li>
+<li><strong>Crypto-tool count (123 to 189 a day):</strong> reproduced exactly (62 partial, then 135, 123, 124, 174, 159, 189). But the names are ambiguous, see the Verdict. With only unambiguous names: GMGN, BullX, DexScreener, Rugcheck, Bubblemaps and Helius gave <strong>1, 3, 1, 0, 8, 5, 8, 3</strong> a day.</li>
+<li><strong>Devtool count:</strong> Supabase, Vercel, Lovable, PostHog and Claude Code gave 164 to 207 a day. Supabase, Lovable and PostHog alone gave <strong>13 to 31 a day combined</strong>, so Claude Code and Vercel carry most of it. Brands of that size buy enterprise tools. They aren't a US$49 self-serve buyer.</li>
+<li><strong>The four example Grok posts exist and say what the thesis quotes.</strong> But all had tiny reach:</li>
+<li>FusedPad "legit": 19 impressions, 17 Oct 7:32pm AWST.</li>
+<li>$GROKLET "Unaffiliated with xAI": 38 impressions. It's an <strong>Ethereum</strong> ERC-20, not Solana.</li>
+<li>Trader "solid TA … aggressive lowcap meme promotions": 11 impressions.</li>
+<li>"Cannot confirm the free Claude key": 171 impressions.</li>
+</ul>
+<p>The "seen about 4,100 times" in the first-minute mock-up is optimistic for anything but a big brand.
+- <strong>TrustMRR (pages opened today):</strong>
+  - <a href="https://trustmrr.com/startup/rank-prompt">Rank Prompt</a>: MRR US$43,561, 213 active subscriptions, US$302,327 all-time, founded May 2025, founder with 41 X followers, Stripe-verified (updated 22 Oct 10:40am UTC). All correct. Missing context: it lists enterprise logos (Mastercard, LVMH, Costco) and a free first report. That's a broad AEO suite, not a one-feature tool.
+  - <a href="https://trustmrr.com/startup/elmo">Elmo</a>: MRR US$5,279, 17 subscriptions, bootstrapped, open source. Correct. It was founded Feb 2025, so this took about 20 months.
+  - <a href="https://trustmrr.com/startup/mentionable-1">Mentionable</a>: MRR US$3,864, 20 subscriptions, €79 to €299. Correct. Flag: TrustMRR says its "Stripe API key expired", with data last updated 21 Oct.
+- <strong>Peec:</strong> <a href="https://sacra.com/research/peec-vs-profound/">Sacra</a> (14 Jul 2026) estimates US$11.5M ARR in June 2026, up from US$5M at the end of 2025. It also says agencies are "roughly 50%" of the customer base, and the company is in talks at about a US$210M valuation. Correct. I couldn't open the GlobeNewswire release (403), so the "US$10M ARR" press claim is unchecked but consistent.
+- <strong>X API pricing (X's own docs, <a href="https://docs.x.com/x-api/getting-started/pricing">pricing</a>):</strong>
+  - Pay-per-use only, plus Enterprise. The old Basic and Pro tiers aren't offered.
+  - Post read: US$0.005 per post. Counts (recent): US$0.005 per request. Counts (all): US$0.010.
+  - Reads are deduplicated per UTC day. Pay-per-use is <strong>capped at 3 million post reads a month</strong>.
+  - New paying accounts get US$20 of free credit after their first credit purchase, plus a match on the first auto-recharge of up to US$50 (<a href="https://docs.x.com/x-api/getting-started/free-credits">free credits</a>, changed 13 Oct 2026).</p>
+<p>So the US$0.005 figure is right, and the thesis's Medianama source is now superseded by X's own page. <strong>Big implication:</strong> indexing every Grok reply would cost about US$1,150 a day and break the 3M cap within about 2 weeks. Term-filtered search is the only affordable design, which the thesis already assumes. Full-archive search is also listed on pay-per-use (<a href="https://docs.x.com/x-api/fundamentals/rate-limits">rate limits</a>), so "can't backfill beyond 7 days cheaply" is wrong. A 30-day backfill costs the same per post, which weakens the "archive moat".
+- <strong>Brand24 price:</strong> US$199 a month is the <em>annual</em> rate. Month to month it's <strong>US$249</strong> for 3 keywords and 2k mentions (<a href="https://brand24.com/prices/">pricing</a>).
+- <strong>Licter:</strong> it does sell Grok work as a consultancy, and its page does say "Grok also answers in public, in X threads" (<a href="https://www.licter.com/tech-grok.html">Licter</a>, updated 12 Oct). But its method is asking Grok "the same questions several times, every month" and reading the X conversation with Visibrain. That's synthetic prompts plus listening, not an index of Grok's thread replies. The thesis overstates it slightly.
+- <strong>Meev:</strong> "an exposure surface no other LLM has" is on its <a href="https://meev.ai/platform/grok-visibility">Grok page</a>. It also runs prompts only.
+- <strong>Ossvy:</strong> Grok is only on Growth (US$199) and up. Starter (US$79) covers ChatGPT, Gemini and Perplexity (<a href="https://ossvy.com/pricing">pricing</a>).
+- <strong>Trakkr:</strong> its <a href="https://trakkr.ai/article/grok-citation-notifications">guide</a> says xAI has no native citation alerts and suggests X advanced search plus API and third-party tools. That's close to the thesis's wording, though it doesn't specifically say "DIY with the X API". Trakkr now sells Grok tracking itself, from US$100 a month (<a href="https://trakkr.ai/track-brand-mentions-in-grok">Trakkr</a>).
+- <strong>pump.fun fees</strong> (<a href="https://pump.fun/docs/fees">fees</a>, last updated 17 Oct 2026, re-read 8:40pm AWST): the creator fee is 0.30% on the curve, 0.30% on PumpSwap under 420 SOL market cap and 0.95% at 420 to 1,470 SOL. Correct.</p>
+<p><strong>Wrong, unsupported or outdated</strong></p>
+<ul>
+<li><strong>"A mid-size brand might see tens of Grok answers a day":</strong> unsupported. See the counts above. pump.fun, a top Solana brand, gets about 3.5 a day.</li>
+<li><strong>The "Bakery pays €99/month" anecdote:</strong> the <a href="https://x.com/AgenticOperator/status/2113216073113997521">post</a> exists but has 50 views and no source. It's an anecdote, as X bot said.</li>
+<li><strong>"Grok's synthetic-prompt trackers: Meev, Ossvy, Orchly and Gauge":</strong> the list is far too short. Trakkr, Rankability, Livesov, Pineprompt (Grok collection paused), AthenaHQ, cuescout (free), trackmyvisibility (free), Brand24 Chatbeat and Meltwater GenAI Lens all do it too. Talkwalker's LLM Insights covers ChatGPT, Gemini, Claude and Perplexity, not Grok (<a href="https://www.hootsuite.com/whats-new/llm-insights-enhancements">Hootsuite</a>). Mention (now Agorapulse) doesn't track AI answers at all.</li>
+<li><strong>Using the 230k/day total in marketing:</strong> X's policy lists "Calculate aggregate X Post metrics, such as the total number of Posts posted per day" as a no-go for commercial use. Fine for internal research, risky on a sales page.</li>
+<li><strong>Not re-opened (treat as plausible, unchecked):</strong> Orchly and Gauge prices, Brand Armor, Geonimo, Lanesra, the Medianama article.</li>
+</ul>
+<p><strong>Strong evidence the thesis missed</strong></p>
+<ul>
+<li><strong>A live "wrong fact" example from our own tracker coins.</strong> Grok keeps telling askers that Kimchi (kimchi1x) made "an alleged ~$40M on $TRUMP (unverified on-chain)". It did so in at least 4 replies between 16 and 21 Oct (AWST) (<a href="https://x.com/grok/status/2111402428343972287">1</a>, <a href="https://x.com/grok/status/2112697960454570319">2</a>), and a Portuguese reply on 22 Oct, 2:30pm AWST repeats the 40 million (<a href="https://x.com/grok/status/2113155980212990095">3</a>). Bubblemaps puts it at about US$6M (X bot, 8pm). Grok also gave the KIMCHI CA as <code>CSocnz…pump</code> in a reply (<a href="https://x.com/grok/status/2112926553449325027">4</a>), which supports the Mint Seal review's view that CSocnz is the real one. This is exactly the fact-diff wow moment. It's also about a <strong>person</strong>, not a product.</li>
+<li><strong>People, not products, are what Grok gets asked about in crypto.</strong> Posts asking @grok "is this account…", "who is this guy", "is he legit" or "scammer" ran at <strong>91 to 117 a day</strong> (narrow phrases, so a floor). Explicit "@grok is this legit / a scam / a rug" questions ran at 41 to 64 a day. Grok's coin answers are mostly about KOLs and promoters (notEezzy and the Neymar token, a "crypto scam artist?" question, the Kimchi bio). That points to a better buyer: <strong>crypto KOLs, founders and the agencies that manage them</strong>, whose reputation is literally being summarised by Grok under their posts.</li>
+<li><strong>Grok sometimes won't print contract addresses</strong> (a user asked why it refuses, <a href="https://x.com/grok/status/2112234350322278756">post</a>). Matching coins by CA will miss a lot, so ticker and handle matching matter more.</li>
+<li><strong>Counts are almost free.</strong> A 7-day count for any term costs US$0.005 (one request). That makes "how often did Grok mention you this week" a free, instant lookup, and the demand test can be run on 100 brands for about US$0.50.</li>
+<li><strong>Trench Bot:</strong> the "Grok" coin (2fAbXU…) rugged −99.8% about 35 minutes after launch, and Grok, Gemini and RockstarGames all used the brand name-bait template. Any token with "Grok" in its name or ticker will look like that scam. The tracker's HeyGrok (pump.fun, US$509.5K peak, "fell") had no repo (repo-checks.md).</li>
+</ul>
+<h3>3. Money check</h3><ul>
+<li><strong>Money already moving (close by):</strong> AI-visibility tracking is proven paid demand. Rank Prompt has US$43.6k MRR from 213 subscriptions (about US$205 each), Elmo US$5.3k and Mentionable US$3.9k (TrustMRR, Stripe-verified), and Peec an estimated US$11.5M ARR (Sacra). Grok-specific tracking is sold at US$100 to US$199 a month (Trakkr, Ossvy). <strong>For this exact job (real replies), money is zero.</strong> There's no buyer, no quote and no pricing page anywhere. Crypto KOL and agency budgets exist (X bot keeps finding paid callers and template shill rings), but nobody has shown they'd spend them on reputation monitoring.</li>
+<li><strong>Unit economics (estimates, X's own prices):</strong></li>
+<li><strong>Cost per tracked term:</strong> one counts call (US$0.005) plus reading matched Grok replies and their parent questions (2 reads each, US$0.01 per answer). A brand with 20 Grok answers a week costs about US$0.90 a month. Even a 500-a-week agency client is about US$22 a month.</li>
+<li><strong>Margins:</strong> the thesis's 72–74% margin is conservative. On thin feeds, cost to serve is closer to 1–5% of a US$49 plan. Polling cost is fine if <code>since_id</code> stops dead queries from returning re-reads.</li>
+<li><strong>The 3M-read cap</strong> is about 150k answers a day across all customers. It's not a constraint until past US$10k MRR.</li>
+<li><strong>CAC and payback:</strong> CAC is about A$0 cash if reports spread, and payback is immediate. <strong>The unknown is conversion and churn.</strong> A thin feed means "nothing happened this week" emails, which kill retention.</li>
+<li><strong>Bottom-up size (estimates):</strong> the thesis's 3,000 reachable products at 3–4% is too generous, because most small products get under one Grok answer a week. A better base:</li>
+<li>Crypto marketing agencies and KOL managers (assume 200–400 reachable) at US$149–299.</li>
+<li>Larger X-native devtools and Solana apps with 20+ Grok answers a week (assume 300–500) at US$49–129.</li>
+<li>At 5% conversion that's about 25 to 45 accounts, or roughly <strong>US$3k to US$7k MRR</strong>.</li>
+<li><strong>US$10k/month is possible only with an agency tier that works, or by bundling into a wider "Grok plus X reputation" product.</strong></li>
+<li><strong>Wedge and moat:</strong> the wedge is a free instant lookup: "Grok answered 14 questions about @you in 7 days; 3 called you a shill; 1 repeated a wrong number." The moat is thin: fact-diff tuned to crypto (CA, official links, "unverified on-chain" claims), people and handle matching, and distribution. Since full-archive search is on pay-per-use, a rival can backfill history, so history isn't much of a moat either.</li>
+<li><strong>Route to first US$10k/month without ads (all estimates):</strong> (1) a free handle and brand lookup page, shareable cards, and the <code>/grok @handle</code> Telegram command; (2) Pro at US$29–49 for KOLs, founders and coin devs (alerts when Grok answers about them, with a fact-diff); (3) an agency tier at US$199–299 for 10–25 handles with white-label weekly reports; (4) an API for listening tools to pull "Grok said" data, which turns the copy risk into a channel. Expect about US$3–7k MRR on this path. US$10k needs agencies to adopt it widely.</li>
+</ul>
+<h3>5. Token-launch check</h3><ul>
+<li><strong>Job:</strong> (1) holding $ASKW unlocks Pro alerts for your own handle or ticker instead of US$29/month; (2) spending $ASKW pays for deep backfills (30 days of Grok answers for any term, now possible via full-archive search) and rival audits, and the tokens spent are burned. That's burn-on-use from tokens users bought, not revenue-funded. Card and USDC stay the main way to pay. <strong>Plainly:</strong> the core payers (agencies, founders) won't need the coin, so for them it's mostly speculation and a tip jar. The token-native variant that fits best: a <strong>free Grok-mention watch on a coin's own ticker and team handles for teams holding a set amount</strong>, posted in their Telegram. It's useful only once a coin gets talked about, though: KIMCHI's CA showed up in 1 Grok reply in 7 days. Fees are verifiable on-chain if USDC goes to a published wallet and burns come from a public app wallet.</li>
+<li><strong>Launch route: pump.fun (Ethan's rule; no meta shift per X bot and Trench Bot, 8pm–8:18pm).</strong> Terms from <a href="https://pump.fun/docs/fees">pump.fun's fees page</a> (last updated 17 Oct 2026, re-read 8:40pm AWST):</li>
+<li><strong>Cost to create:</strong> no platform fee, only the network fee and rent.</li>
+<li><strong>Bonding curve:</strong> 1.25% a trade, of which 0.30% goes to the creator.</li>
+<li><strong>Graduation:</strong> automatic, moves the coin to a canonical PumpSwap pool, 0.015 SOL.</li>
+<li><strong>PumpSwap creator fee:</strong> 0.30% under 420 SOL market cap, 0.95% at 420–1,470 SOL, then stepping down.</li>
+<li><strong>Platform Fee:</strong> since 17 Oct, trades through pump.fun's web and mobile apps also pay a Platform Fee that doesn't go to the creator.</li>
+<li><strong>Holder Rewards:</strong> these would send the creator fee to holders (minimum US$20 holding). That's a holder payout, so it stays <strong>off</strong>.</li>
+<li><strong>Tokenized Agent:</strong> stays <strong>off</strong>. It runs hourly buyback-and-burn from deposits, a revenue-funded buyback.</li>
+<li><strong>Fee sharing:</strong> creator fees can be split across wallets (<a href="https://github.com/pump-fun/pump-public-docs/blob/main/docs/instructions/CREATOR_FEE_SHARING.md">fee sharing</a>).</li>
+<li><strong>Creator fees vs subscriptions (estimate, not a forecast):</strong> at US$5k a day of volume, 0.30% is about US$15 a day (~US$450 a month), or about US$48 a day in the 0.95% band. Tool tokens without usage fade: $AGENCY is at about US$3.4k market cap and US$43 of 24h volume (Git bot), and HeyGrok "fell" (tracker). Plan on zero. Subscriptions are the business.</li>
+<li><strong>Evidence from comparable tokens:</strong> Larpcheckbot's $LARPCHECK is the nearest reply-bot token, and its job is unverified (X bot). X bot found none of 15 checked pump.fun contracts organic, so the token can't lean on callers. Trench Bot found that clean coins launched on a real event with a named person, and every brand-name coin today (Grok, Gemini, RockstarGames) rugged or is set up to.</li>
+<li><strong>Risks:</strong></li>
+<li><strong>ASIC:</strong> no revenue share, buybacks or holder rewards, and no profit language.</li>
+<li><strong>Name:</strong> don't use "Grok" in the token's name, ticker or the product name. That's a trademark problem, and it matches today's name-bait rug template.</li>
+<li><strong>Customer fear:</strong> agencies and devtool buyers may read a coin as a casino side-project, so keep the token off the main pricing page.</li>
+<li><strong>Conflict of interest:</strong> a tool reporting what Grok says about coins shouldn't rank coins.</li>
+<li><strong>Token fit: 4/10. Plan:</strong> $ASKW on pump.fun (SOL pair; Holder Rewards and Tokenized Agent off; mint and freeze revoked; no bundles; small labelled dev buy), used to unlock own-handle and ticker alerts while held and burned on deep backfills. Launch on the day the first public "Grok said what?" report goes out, with the CA posted from Askwatch's official X account, <strong>only after 10+ paying accounts, a written OK from X on the API use case, and a token-wording check.</strong></li>
+</ul>
+<h3>6. Build and revenue plan</h3><p><strong>Platform check first (day 0, A$0).</strong> Before writing code, read the <a href="https://docs.x.com/developer-terms/policy">Developer Policy</a> and the developer agreement in full. Then describe the use case in the X Developer Console app description or ask X developer support: "index public @grok replies that name a customer's own handle, brand or ticker, private feed, no aggregate X metrics". X says it may "examine any commercial use". If X says no or stays silent, keep the build to a personal or research tool and drop the idea as a business. (Any message to X is outreach and needs Ethan's OK.)</p>
+<p><strong>MVP, 2–3 weeks (stack: Next.js on Vercel free, Supabase free, a worker on Vercel cron or a A$10/month VPS, X API pay-per-use, a cheap LLM for classification, grammY Telegram bot, Stripe Checkout plus a USDC address):</strong></p>
+<ol>
+<li><strong>One-minute wow (no sign-in):</strong> type @handle, brand or $TICKER and get "Grok answered N questions about you in 7 days (counts call, US$0.005)". Below that come the 10 newest answers, each with the question, a verdict (recommends, neutral or warns) and one claim flagged ("$40M on $TRUMP: Bubblemaps says ~US$6M"). Each has a reply button. Cap free reads at about 20 posts (US$0.10).</li>
+<li>A shareable card image of the result (the growth loop).</li>
+<li>Telegram <code>/grok @handle</code> and alerts for paid users.</li>
+<li>Fact-diff: users enter their facts (official CA, site, numbers) and Grok's claims are checked against them.</li>
+<li>Agency workspace (10–25 handles, weekly white-label PDF).</li>
+<li>Backfill (full-archive search) and an API last.</li>
+</ol>
+<p><strong>Cost (AUD, estimates; A$1 ≈ US$0.65):</strong>
+| Item | Up-front | Monthly |
+|---|---|---|
+| Domain (neutral name, no "Grok") | 20 | |
+| X API credits: first purchase US$50 (earns the US$20 new-payer credit, and an auto-recharge match up to US$50 if enabled) | 77 | |
+| LLM classification (cheap model, a few thousand replies) | | 10 |
+| Vercel, Supabase, Telegram, GitHub, Stripe (fees only) | 0 | 0 |
+| <strong>Total to end of 30-day test</strong> | | <strong>≈ A$107</strong> (A$117 with a VPS) |</p>
+<p><strong>After the test, still inside A$1,000:</strong> about A$30–60 a month of X reads and LLM for early paying users (covered by revenue), a fixed-fee token-wording check (about A$300, get a quote) and a small labelled dev buy (cap A$50). The DexScreener profile (US$299 ≈ A$460) gets paid from revenue only. Running total about A$500–550 before revenue, so roughly A$450 spare.</p>
+<p><strong>First 10 paying users:</strong></p>
+<ul>
+<li>Crypto KOLs and founders who Grok is already being asked about (find them with counts on <code>from:grok @handle</code>).</li>
+<li>Crypto marketing agencies and KOL managers.</li>
+<li>Solana apps and devtools with 20+ Grok answers a week (check with counts first).</li>
+<li>TrustMRR founders with build-in-public accounts (low volume, so only those who pass the count check).</li>
+<li>The Telegram bot in Solana trader groups.</li>
+</ul>
+<p>All outreach, DMs and public posts need Ethan's OK. Don't publish reports about people or brands who haven't opted in.</p>
+<p><strong>30-day test aimed at real money:</strong></p>
+<ul>
+<li><strong>Days 1–2 (about A$1):</strong> run 7-day counts for 100 candidates (50 crypto handles and KOLs, 25 Solana apps, 25 devtools). <strong>Kill</strong> if fewer than 25 of the 100 get 10 or more Grok answers a week. <strong>Also kill</strong> if X's terms clearly rule out the use case.</li>
+<li><strong>Days 3–17:</strong> build the lookup, the card, Stripe and USDC checkout, and Telegram alerts.</li>
+<li><strong>Days 18–30:</strong> with Ethan's OK, share the free lookup and opt-in reports. Sell a founding Pro at US$29 and a founding Agency at US$149 (card or USDC, first month up front).</li>
+<li><strong>Confirm:</strong> 10 or more paid accounts, including 2 or more agencies, and 150 or more lookups by distinct users.</li>
+<li><strong>Kill:</strong> fewer than 4 paid accounts, or 0 agencies.</li>
+<li><strong>In between:</strong> narrow to agencies only and re-test for 2 weeks.</li>
+</ul>
+<p>Never launch or buy a token without Ethan's go-ahead.</p>
+<h3>Room update, 22 Oct 8:45pm AWST</h3><p>X bot's suggestion for the crypto version: track the verdicts of free "is this legit" bots, <a href="https://x.com/Larpcheckbot/status/2113226943923413233">@Larpcheckbot</a> (5.7k followers, which has its own $LARPCHECK token) and DefiLlama's <a href="https://x.com/llama/status/2113205933165731997">@llama</a>, next to Grok's, and flag where they disagree with on-chain facts (for example, Kimchi's claimed $40M against about $6M on Bubblemaps). This raises reply volume and gives a feed nobody else offers. Score unchanged until willingness to pay is tested.</p>
+</details>
+</section>
+<section class="sources"><h2>Sources</h2><ul><li><a href="../sources/theses/2026-10-22-2030-askwatch.md">Thesis (2026-10-22-2030-askwatch.md)</a></li><li><a href="../sources/reviews/2026-10-22-2045-askwatch.md">Review (2026-10-22-2045-askwatch.md)</a></li></ul></section>
+</article>
+</main>
+<footer class="site">Theses by idea bot, reviews by Project Bot. Times are AWST (Perth time).</footer>
+</body>
+</html>
