@@ -1,0 +1,662 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tapeline Check</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="site"><a href="../index.html">Startup theses</a></header>
+<main>
+<p class="back"><a href="../index.html">&larr; All theses</a></p>
+<article>
+<h1>Tapeline Check</h1>
+<p class="tagline">Is this market headline real, who posted it first and right, and what is it moving?</p>
+<p class="meta"><span>22 Oct 2026, 10:30pm AWST</span> <span class="badge mid">5.5/10</span></p>
+<section class="exec"><h2>Executive summary</h2>
+<ul>
+<li><strong>Problem.</strong> "BREAKING" and "JUST IN" posts move crypto, AI-stock and pre-IPO perps within minutes, and many turn out to be unconfirmed or wrong. On X, 1,300 to 2,850 posts a day pair "BREAKING"/"JUST IN" with market words (X counts, 15–22 Oct). Traders say they got liquidated on fake headlines (<a href="https://x.com/Benne1818_/status/2103475842009440627">Benne1818_</a>: "Got liquidated on my AMD because of … fake news about Hormuz opening"; <a href="https://x.com/student_charts/status/2108538716100972788">student_charts</a>: "fake news … caused havoc in #AI trade"). Their checking tool today is typing "@grok is this true" under the post.</li>
+<li><strong>Product.</strong> A Chrome extension that adds one line under any market-moving post on x.com: <strong>confirmed / single-source / contradicted</strong> (with primary-source links), the <strong>poster's record on headlines</strong> (for example "first and right on 31 of 40, later contradicted on 6", with links), and <strong>live prices of what it moves</strong> (Hyperliquid incl. trade.xyz pre-IPO and stock perps, Phoenix, Solana tokens). There's also a Telegram alert bot and a public headline scorecard. It's read-only: no trade buttons and no builder codes.</li>
+<li><strong>Who pays and how much.</strong> Crypto-native traders who already pay for news speed. Free gets a 60-second delay and 5 deep checks a day. <strong>Pro is US$29/month</strong>: instant verdicts, 300 deep checks, watchlist alerts and full scorecards. <strong>Desk is US$99/month</strong>: verdict webhook or API plus 5 seats. Pay by card, by USDC, or by burning $TPLN.</li>
+<li><strong>Token's job ($TPLN on pump.fun).</strong> It's the in-app currency for checks and access, and you only ever use your own tokens. You burn $TPLN from your own wallet per deep check or for a month of Pro (the Tree News model), or you <strong>hold</strong> a set amount for Pro limits (the KOLscan model). Mint authority off, Holder Rewards off, Tokenized Agent buybacks off. No payouts and no buybacks from revenue or creator fees. Launch only after 25 paying users.</li>
+<li><strong>Total cost vs A$1,000.</strong> About <strong>A$691 committed</strong> (build, 4 months of running costs, a A$300 legal reserve, token launch and contingency), so about A$309 is left over. The US$299 DexScreener profile (~A$428) is paid only from revenue.</li>
+<li><strong>Path to the first US$10k/month.</strong> 345 Pro subscribers, or about 250 Pro plus 15 Desk. <strong>Base case by month 12 (estimate): US$3–6k MRR.</strong> The 2026 money is real: <strong>Tree News users spent US$61,347 in the last 30 days and US$1.05M in the last year on subscriptions, burned on-chain</strong> (<a href="https://defillama.com/protocol/tree-news">DefiLlama</a>). 247 Terminal shows <strong>181 members at US$99/month on Whop</strong> (<a href="https://whopscope.com/w/247terminal">WhopScope</a>).</li>
+<li><strong>Why now, and the edge.</strong> AI and pre-IPO narratives now trade 24/7 as perps (trade.xyz did US$3.39B in 24h on 22 Oct per <a href="https://openchainbench.com/hyperliquid">OpenChainBench</a>). Pump.fun anger is at a day high, so "verified numbers" is the trench story (X bot). Incumbents sell <strong>speed</strong> (Tree, 247, Proliquid, Reflex) or <strong>coin/KOL trust</strong> (fable, UNMSK, OnlyKOLs). None puts a <strong>headline verdict plus the poster's headline record</strong> on the X post itself. The edge is the scorecard history, which can't be cloned in a weekend.</li>
+<li><strong>Main risk and first move.</strong> Traders may just ask Grok for free, and they may pay for speed but not for truth. Also, X's Developer Policy bars services that "measure, analyze, or attempt to identify … content which violate X policies" without X's written permission (<a href="https://developer.x.com/en/developer-terms/policy">policy</a>), so the public scorecard has to stick to off-X facts, and X's OK should be sought before it goes public. <strong>First move this week:</strong> a private 30-day backfill of 40 headline accounts (~US$15 of X API reads), hand-label 100 headlines, and measure how often market headlines are later contradicted and whether markets moved.</li>
+<li><strong>Verdict: test, about 40% confidence.</strong> The money (Tree News, on-chain) and the audience are proven, and the legal blocker is gone because it's read-only. Grok as a free substitute and willingness to pay for accuracy over speed are unproven.</li>
+</ul>
+</section>
+<section class="thesis"><h2>Full thesis</h2>
+<div class="byline"><p><em>Idea bot thesis, Thu 22 Oct 2026, 22:30 AWST (Perth). Path: /workspace/idea-bot/theses/2026-10-22-2230-tapeline-check.md. <strong>An evolution of Tapeline</strong> (theses/2026-10-22-1630-tapeline.md, Project Bot 6/10, token fit 6/10), rebuilt as the read-only product Project Bot recommended. Every new gap this run failed the screen (see "Dropped this run"). This is the best-scored earlier thesis that passes Ethan's audience and token gates.</em></p></div>
+<h3>Problem and user (sourced)</h3><p><strong>User.</strong> A Solana or Hyperliquid trader in Ethan's audience: trades memecoins on Axiom or GMGN, holds USDC, and increasingly trades "the story" through 24/7 perps (pre-IPO ANTHROPIC/OPENAI, NVDA, IREN, oil). They live on X and react to headline accounts within seconds.</p>
+<p><strong>What happens now.</strong></p>
+<ul>
+<li><strong>Headline flow is large and noisy.</strong> 17,134 posts in 7 days matched <code>("BREAKING" OR "JUST IN")</code> plus a market keyword (bitcoin, crypto, solana, etf, hack, exploit, anthropic, openai, nvidia), excluding replies and reposts. That's 1,303 to 2,846 a day (X recent counts, 15–22 Oct 2026 UTC). This is a phrase count, not unique stories.</li>
+<li><strong>Examples from the last month of headlines that were unconfirmed or contested at posting:</strong> "Ledger users reportedly hit by $86M wallet-draining attack … a Ledger-wide exploit has not been" confirmed (<a href="https://x.com/AlphaWireHQ/status/2108564811051102433">AlphaWireHQ</a>, 27k followers). "Russia's government just announced it will license its 1st bitcoin and crypto exchanges … could be confirmed within days" (timing unconfirmed in the post itself; <a href="https://x.com/pete_rizzo_/status/2103817108715106340">pete_rizzo_</a>, 222k followers, 938 likes). Kimchi's "$40M on $TRUMP" was cut to about $6M by Bubblemaps (X bot 8pm and 10pm digests). On 18 Oct an unconfirmed "Anthropic deal" post sent the IREN perp from about $26 to $44 and back (Tapeline thesis sources).</li>
+<li><strong>Traders lose money on them:</strong> "Got liquidated on my AMD because of … fake news about Hormuz opening" (<a href="https://x.com/Benne1818_/status/2103475842009440627">Benne1818_</a>). "Turned out this was fake news or mis-reported … Stocks were dumped like no tomorrow" (<a href="https://x.com/student_charts/status/2108538716100972788">student_charts</a>). "Crazy that fake news moves oil 4%" (<a href="https://x.com/kahahj9w422/status/2112568690965406116">kahahj9w422</a>).</li>
+<li><strong>Their check today is Grok.</strong> 61 posts in 7 days contain the exact phrase "@grok is this true" plus a crypto or market word (X counts, 15–22 Oct). That's a narrow, unambiguous phrase, so it undercounts the habit. It does show the behaviour exists, and that the answer arrives late and isn't attached to a track record.</li>
+</ul>
+<p><strong>Why it's painful for this audience.</strong> They size big and fast. A single fake headline that triggers a 2–10% wick can liquidate a 10x position. A US$29/month check is small next to one avoided liquidation, but that's an argument, not evidence (see Kill or confirm).</p>
+<h3>Evidence of money</h3><p><strong>Verified comps (on-chain or platform-reported):</strong></p>
+<ul>
+<li><strong>Tree News (Tree of Alpha's news service) on DefiLlama:</strong> US$61,347 of subscription spend in the last 30 days, US$14,324 in 7 days, US$1,050,115 in 1 year and US$3,542,639 all-time. Subscribers pay by burning TREE, or with USDC that is used to buy and burn (<a href="https://defillama.com/protocol/tree-news">DefiLlama API, fetched 22 Oct 22:20 AWST</a>; methodology: "All tokens burned by users for subscriptions"). Plans are Sprout at 500 credits/month and Sapling at 2,500 (<a href="https://docs.treeofalpha.com/welcome/how-to-subscribe">Tree docs</a>). This is the closest verified comp: crypto traders paying for headlines, <strong>through a token, on-chain</strong>. Note that only the "users burn their own TREE" half is copyable. The USDC buy-and-burn half is a revenue buyback, which is over Ethan's ASIC line.</li>
+<li><strong>247 Terminal:</strong> 181 members at US$99/month on Whop, 4.93 stars from 14 reviews (<a href="https://whopscope.com/w/247terminal">WhopScope</a>). The site lists US$99 then US$199, and a US$499 public-access tier also appears (Project Bot review; <a href="https://whop.com/247terminal/publicaccess/">Whop</a>). Estimated run-rate is about US$18k/month if all members pay US$99. That's an estimate, since Whop member counts may include trials.</li>
+<li><strong>Hyperliquid frontends</strong> earn verifiable builder fees: US$3.80M over 30 days across 86 builders and 125.4K users (<a href="https://openchainbench.com/hyperliquid">OpenChainBench</a>, 22 Oct). That's context for audience size only; this product takes no trading fees.</li>
+</ul>
+<p><strong>Competitor pricing (public):</strong> Tree Sprout/Sapling at 500/2,500 credits a month (Project Bot cited US$500/US$2,500). Newsflash corroboration API at US$29/month premium (<a href="https://newsflash.sh/docs">docs</a>). UNMSK Pro at US$16/month (<a href="https://www.unmsk.org/">unmsk.org</a>). KOLscan Premium at 0.05 ETH/month, or hold 1M $KOLS (<a href="https://www.kolscan.app/subscription">kolscan.app</a>). Proliquid is free (Project Bot review).</p>
+<p><strong>Teammate signals that corroborate:</strong></p>
+<ul>
+<li><strong>X bot (10pm):</strong> "verified numbers" is the trench story (Kimchi $40M→$6M), with pump.fun anger at a day high. Checker bots (Larpcheckbot, @llama) are now the default reply under product coins, and Larpcheck's own token panel is called out as "lying about the fees… 61% bots", so traders distrust unverified verdicts too.</li>
+<li><strong>Trench Bot (22:12–22:40 run):</strong> survivors had "an outside trigger with a named human" at minute zero (PHP on the PHP RCE news, CHOO with Business Insider). News is the trigger, so knowing whether it's real is the edge. The brand name-bait template reuses real brand links to look official.</li>
+<li><strong>Telegram tracker:</strong> the "verifiable claims (PnL, revenue, creator fees)" thread is gaining support across bots; free incumbents are strong for coins. Headlines are the uncovered side.</li>
+<li><strong>Project Bot (Tapeline review):</strong> "the rumour verdict is the product; trading is a later add-on".</li>
+</ul>
+<h3>Market sizing (bottom-up; assumptions labelled)</h3><ul>
+<li><strong>Proven spend pool (sourced plus estimate):</strong> Tree News at about US$61k a month, plus 247 Terminal at about US$18k a month (estimate), is <strong>about US$80k a month</strong> that crypto traders already pay for headline tools in just two products.</li>
+<li><strong>Reachable traders (sourced):</strong> Hyperliquid frontends reached 125.4K users in 30 days (OpenChainBench). Solana terminal users are far more: Axiom alone took US$202M in fees on 353M swaps from Oct 2025 to Aug 2026 (<a href="https://bitquery.io/investigations/solana-jito-tips-trading-app-fees">Bitquery</a>).</li>
+<li><strong>Assumption A:</strong> 0.25%–0.5% of Hyperliquid's 125.4K monthly users pay US$29, which is <strong>310–630 payers, or US$9.1k–18.2k MRR</strong>.</li>
+<li><strong>Assumption B:</strong> Desk/API at US$99 for 10–20 small funds, callers and bot builders adds <strong>US$1–2k</strong>.</li>
+<li><strong>Ceiling sense-check:</strong> taking 10–20% of Tree News's monthly spend is US$6–12k MRR. US$10k MRR is plausible but needs top-quartile execution, so the base case is US$3–6k (estimate).</li>
+</ul>
+<h3>Competitive teardown</h3><table>
+<thead>
+<tr>
+<th>Competitor</th>
+<th>What it does</th>
+<th>Pricing</th>
+<th>Revenue / traction</th>
+<th>Gap it leaves</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.treeofalpha.com/">Tree of Alpha / Tree News</a></td>
+<td>Fastest news aggregator plus terminal, 1,150+ sources</td>
+<td>500 / 2,500 credits a month (TREE burned)</td>
+<td><strong>US$61.3k/30d, US$3.54M all-time (DefiLlama)</strong></td>
+<td>Speed, not truth. A separate app with no verdict or poster record, priced for whales</td>
+</tr>
+<tr>
+<td><a href="https://247terminal.com/">247 Terminal</a></td>
+<td>Sub-500ms headlines, one-click CEX/Hyperliquid trades</td>
+<td>US$99–199 (to US$499)</td>
+<td>181 Whop members</td>
+<td>Speed plus execution. No source check, no on-X layer</td>
+</tr>
+<tr>
+<td><a href="https://www.proliquid.xyz/">Proliquid</a></td>
+<td>Free terminal, AI importance score, matched markets</td>
+<td>Free (DEX fees)</td>
+<td>Claims US$1B+ yearly volume</td>
+<td>No verdict, no poster record, separate app</td>
+</tr>
+<tr>
+<td><a href="https://reflex.trade/">Reflex</a></td>
+<td>Hyperliquid news feed, AI "Sentinel" scores, Telegram /long /short</td>
+<td>Waitlist</td>
+<td>Not live</td>
+<td>Sentiment and execution, not verification</td>
+</tr>
+<tr>
+<td><a href="https://newsflash.sh/docs">Newsflash</a></td>
+<td>Clusters outlet articles into events with a corroboration count, API/MCP</td>
+<td>Free, US$29/mo premium</td>
+<td>Unknown</td>
+<td>Outlets only (not X posters), no X overlay, no market mapping. It could be a supplier</td>
+</tr>
+<tr>
+<td>Grok (@grok replies, "breaking news checker" prompts)</td>
+<td>Ad-hoc "is this true?" answers</td>
+<td>Free</td>
+<td>Built into X</td>
+<td>Slow (ask per post), no record per poster, can repeat unverified claims (Askwatch review). <strong>The main substitute</strong></td>
+</tr>
+<tr>
+<td><a href="https://fable.market/">fable</a></td>
+<td>Free X extension: rug/shill labels, call records, launch forensics, live coin charts</td>
+<td>Free</td>
+<td>Open source</td>
+<td>Coins and KOL calls, not news headlines</td>
+</tr>
+<tr>
+<td><a href="https://www.unmsk.org/">UNMSK</a> / <a href="https://chromewebstore.google.com/detail/ethos-everywhere/jblacjfeljfigeglloiclnoehlhnmgne">Ethos Everywhere</a> / <a href="https://github.com/miraekims/Truthlayer">TruthLayer</a></td>
+<td>Token risk and KOL wallets on X; credibility scores; holder checks</td>
+<td>Free / US$16</td>
+<td>Small</td>
+<td>Coin or account trust, not headline truth</td>
+</tr>
+<tr>
+<td><a href="https://onlykols.io/">OnlyKOLs</a>, <a href="https://mihenkai.com/">Mihenk</a>, VOXCH, Santiment</td>
+<td>Score KOLs' <strong>price calls</strong></td>
+<td>Early access / B2B</td>
+<td>Small</td>
+<td>Price-call accuracy, not news accuracy</td>
+</tr>
+<tr>
+<td>Larpcheck (<a href="https://larpcheck.app/">larpcheck.app</a>)</td>
+<td>Reply bot verdicts on coin posts</td>
+<td>Free + $LARPCHECK</td>
+<td>Default checker under coin posts (X bot)</td>
+<td>Coins only, and its own token panel is disputed</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Why incumbents won't build it soon.</strong> Tree and 247 sell latency to people who trade the first print. Telling those users a headline is single-source slows the click they're paying for. Proliquid and Reflex monetise trade fees, and a "contradicted" label kills trades. fable and UNMSK are coin-risk tools whose data model is wallets, not newswires. Grok could do it, but X has no incentive to publish "this poster is often wrong" scores about its own high-engagement accounts. <strong>Honest caveat:</strong> any of them could ship a verdict badge in weeks. The moat is the scorecard history and being on the post, not the model.</p>
+<h3>Product and UX</h3><p><strong>First minute.</strong> Install the extension and open x.com. Under a "🚨 BREAKING: [exchange] confirms $XXM hack" post a grey line appears (illustrative mock-up, not real data): <code>SINGLE-SOURCE · no official exchange post or blog yet · poster: first-and-right 9/31, contradicted 7/31 · [exchange token] −4.1% 5m · BTC −0.3%</code>. Tap it for the Backstory card: the primary-source search done (official X accounts, company blog/RSS, exchange announcement API, SEC EDGAR, top newswires via RSS), what was found, and the poster's last 10 market headlines with outcomes. When the official account confirms, the line turns green and a Telegram ping fires for watchlisted markets.</p>
+<p><strong>MVP stack (all free tiers where possible).</strong></p>
+<ul>
+<li>Chrome MV3 extension in TypeScript. It reads only the post the user is viewing (text, ID, handle) and sends a hash and ID to the backend.</li>
+<li>Next.js on Vercel plus Supabase (Postgres) for verdicts, poster records and auth (wallet or email).</li>
+<li>Worker on a A$10/month VPS:</li>
+<li>(1) a claim extractor (small LLM call, cached per post ID);</li>
+<li>(2) a primary-source matcher: allow-list of ~300 official X accounts and domains, company and exchange RSS, Binance/Coinbase/OKX/Upbit announcement endpoints, SEC EDGAR full-text search and newswire RSS; optionally Newsflash as a corroboration feed;</li>
+<li>(3) a market mapper: entity-to-ticker table for Hyperliquid (info API incl. HIP-3 dexes), Phoenix markets and Solana tokens via DexScreener;</li>
+<li>(4) an outcome job at T+1h and T+24h that sets confirmed, contradicted or still single-source and records the price move.</li>
+<li>Telegram bot (grammY), USDC via Solana Pay to a public wallet, card via Lemon Squeezy, and $TPLN burns verified by reading the user's signed burn transaction.</li>
+</ul>
+<p><strong>Week-by-week (solo, ~20–25 h/week).</strong></p>
+<ol>
+<li>Backfill and labelling tool: 40 headline accounts, 30 days, hand-label 100, plus the outcome job. This is also the kill test (below).</li>
+<li>Primary-source matcher plus entity→market mapper, and the verdict API with cache.</li>
+<li>Chrome extension strip and Backstory card, free/Pro gating and payments, plus the Telegram bot.</li>
+<li>Public scorecard pages (built from IDs and embeds), polish and Chrome Web Store submission (unlisted until Ethan OKs public listing).</li>
+</ol>
+<p><strong>Advanced parts.</strong> Claim-to-entity resolution across tickers and pre-IPO names. Point-in-time scoring ("first" means the earliest post among poster accounts before the primary source). An outcome model that separates "contradicted" from "never confirmed". Latency: aim for a verdict within 15s of a new post for watchlisted accounts.</p>
+<p><strong>What's hard.</strong> Getting verdicts right on ambiguous stories (partial confirmations, "sources say"). Avoiding defamatory labels. Coverage of non-English primary sources (Upbit, Korean and Chinese outlets).</p>
+<p><strong>What's clonable in a weekend.</strong> The strip UI plus an LLM "is this true" call, which is basically fable plus a Grok prompt. <strong>Not clonable:</strong> months of time-stamped poster records with outcomes, and the maintained official-source allow-list.</p>
+<h3>Token design (pump.fun)</h3><ul>
+<li><strong>Job (product use only).</strong> (1) <strong>Burn per use:</strong> non-Pro users burn a fixed $TPLN amount from their own wallet per deep check, priced at about US$0.25 at launch and re-pegged monthly (The Codex pattern). (2) <strong>Burn for a subscription:</strong> a month of Pro can be paid by burning $TPLN worth US$29 (the Tree News pattern, which is verified at US$61k/30d). (3) <strong>Hold for access:</strong> wallets holding a set amount get Pro limits while they hold, verified by wallet signature (the KOLscan pattern: hold 1M $KOLS). Card and USDC payments stay available and are never converted into token buys.</li>
+<li><strong>Launch plan.</strong> pump.fun only (Ethan's rule; Trench Bot and X bot: no meta shift, 11 of 13 legit or risky coins with real liquidity launched on pump.fun). Launch after <strong>25 paying users</strong> and the legal consult, at a product-reveal post from the official X account with a working extension link. Plan a second beat 1–3 hours later: publish the first public scorecard (Trench Bot: survivors had a second wave). SOL pair. <strong>Mint and freeze authority confirmed revoked on-chain</strong> before announcing. A <strong>small labelled dev buy</strong> (≤0.5 SOL, wallet published) and <strong>no bundles</strong>, no snipers and no caller packages (Trench Bot: LASTCALL and Codex callers were flagged within 30 minutes). <strong>Holder Rewards off and Tokenized Agent buybacks off.</strong> The CA is posted from the official X account and pinned on the site. Reserve the $TPLN ticker early, because strangers launch coins about products (growth bot lesson, 22 Oct). $TAPE is taken on Solana (TAPE ~US$55k FDV; "Launch Tape"), so the ticker changes to $TPLN, which had no DexScreener match on 22 Oct.</li>
+<li><strong>On-chain fee flow and verification.</strong> Every in-app burn is the user's own SPL burn transaction carrying a memo with the check ID. A public page lists burns from the indexer and links them to Solscan. Creator fees (0.30% on the curve, 0.30–0.95% on PumpSwap at small caps per <a href="https://pump.fun/docs/fees">pump.fun fees</a>) go to a published wallet and are treated as <strong>bonus income only</strong>. They're never used for buybacks or burns. The repo is public from day one (extension, verdict rules, burn verifier).</li>
+<li><strong>Comparable tokenised products (organic vs shilled).</strong></li>
+<li><strong>Tree News (TREE):</strong> the only verified organic spend found (DefiLlama burns).</li>
+<li><strong>KOLscan ($KOLS hold-to-access):</strong> live paid tiers.</li>
+<li><strong>The Codex ($CODEX):</strong> quota plus burn per question. Self-reported US$970 creator fees in a day. Trench Bot found top-10 holders at ~42%, paid callers pushing it, and no burn visible yet.</li>
+<li><strong>Larpcheck ($LARPCHECK):</strong> public "61% bots" allegations (X bot).</li>
+<li><strong>CrawlHive:</strong> real use but ~US$20k mcap (Trench Bot), so usage doesn't drive price.</li>
+<li><strong>Lesson:</strong> don't project token income. Subscriptions pay the bills.</li>
+<li><strong>Legal line.</strong> No holder payouts, no revenue- or fee-funded buybacks or burns, and no "profit", "yield" or "number go up" language. The token is a prepaid usage and access credit. ASIC: INFO 225 treats some digital assets as financial products. A token with a pure consumptive use and no profit expectation is lower risk, but this is not legal advice, so it gets covered in the fixed-fee consult. US: avoid marketing to US persons as an investment (Howey turns on expectation of profits from others' efforts). Verdicts are factual (sourced or not sourced), never "long/short" calls, which keeps the product away from "financial product advice" and AFSL triggers.</li>
+</ul>
+<h3>Budget and founder load (A$; US$1 ≈ A$1.43; estimates unless sourced)</h3><table>
+<thead>
+<tr>
+<th>Item</th>
+<th>One-off</th>
+<th>Monthly</th>
+<th>4-month total</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Domain</td>
+<td>25</td>
+<td></td>
+<td>25</td>
+</tr>
+<tr>
+<td>Chrome Web Store fee (US$5)</td>
+<td>8</td>
+<td></td>
+<td>8</td>
+</tr>
+<tr>
+<td>VPS for worker and Telegram bot</td>
+<td></td>
+<td>10</td>
+<td>40</td>
+</tr>
+<tr>
+<td>LLM inference (claim extraction and verdicts, cached per post; ~300 unique checks/day at ~US$0.002)</td>
+<td></td>
+<td>20</td>
+<td>80</td>
+</tr>
+<tr>
+<td>X API pay-per-use (US$0.005 per post read, <a href="https://x-preview.mintlify.app/x-api/getting-started/pricing">pricing</a>): ~3,000-post backfill US$15, then ~100 spot reads/day</td>
+<td>21</td>
+<td>21</td>
+<td>105</td>
+</tr>
+<tr>
+<td>Vercel, Supabase, Hyperliquid/Phoenix/DexScreener APIs, RSS, EDGAR</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>Fixed-fee legal consult (defamation in scorecards, general-advice line, token as usage credit); get a quote first</td>
+<td>300</td>
+<td></td>
+<td>300</td>
+</tr>
+<tr>
+<td>Token launch: network/rent ~A$5 plus labelled dev buy ≤0.5 SOL (~US$55 at TrenchBay's US$109/SOL reference)</td>
+<td>83</td>
+<td></td>
+<td>83</td>
+</tr>
+<tr>
+<td>Contingency</td>
+<td>50</td>
+<td></td>
+<td>50</td>
+</tr>
+<tr>
+<td><strong>Committed total</strong></td>
+<td></td>
+<td></td>
+<td><strong>A$691</strong></td>
+</tr>
+<tr>
+<td>DexScreener profile US$299 (~A$428): <strong>only from revenue</strong>, after ≥US$500 collected</td>
+<td></td>
+<td></td>
+<td>(0 from budget)</td>
+</tr>
+</tbody>
+</table>
+<p>Runway: about A$51/month of running costs, with ~A$309 unallocated. That's about 6 more months even with zero revenue, or the DexScreener profile if revenue lags. <strong>Founder load:</strong> 20–25 h/week for 4 weeks of build, then ~10 h/week. Support is ~2–3 h/week (verdict disputes, payments). Disputes are the main support cost, so each verdict card has a "dispute with source" button that feeds the labelling queue.</p>
+<h3>Business model and unit economics (estimates marked)</h3><ul>
+<li><strong>Pricing benchmarked:</strong> Pro at US$29 sits under 247 (US$99) and far under Tree's paid tiers. It's above UNMSK (US$16) because verdicts cost more to run than holder lookups. Desk at US$99 matches 247's entry price for API and seats.</li>
+<li><strong>Cost to serve (estimate):</strong> verdicts are computed once per post and shared by every user who sees it, so marginal cost per user is about US$0.30–0.80/month (LLM, X spot reads, DB). Card fees ~5% + US$0.50 per charge; USDC and token payments ~US$0.001.</li>
+<li><strong>Gross margin:</strong> ~90% on Pro (estimate).</li>
+<li><strong>Channels (no ads, no sales calls):</strong></li>
+<li>Reply under viral wrong headlines with the strip screenshot, from Ethan's account and only with his OK.</li>
+<li>A public weekly "Headline scorecard" thread (which accounts were first and right).</li>
+<li>A free Telegram channel of verdict flips (single-source → confirmed or contradicted).</li>
+<li>A 25% revenue-share referral, as 247 does on Whop.</li>
+<li>Listing in Hyperliquid and Solana tool directories.</li>
+<li><strong>Payback:</strong> acquisition cash cost ≈ US$0, so payback happens in month one. Time cost is the constraint.</li>
+</ul>
+<h3>Go-to-market for a solo founder</h3><p><strong>First 10 users.</strong> (1) People already asking "@grok is this true" under market headlines (61 a week with crypto words; reply with the verdict card, with Ethan's OK). (2) Traders posting about ANTHROPIC/IREN/NVDA perps on Phoenix and trade.xyz (Tapeline thesis handles). (3) Hyperliquid and Solana trader Telegram groups. (4) Small callers and funds who'd use the Desk webhook to avoid reposting fakes.</p>
+<p><strong>60-day plan.</strong></p>
+<ul>
+<li>Days 1–10: private backfill and kill test.</li>
+<li>Days 11–25: build the extension and Telegram bot.</li>
+<li>Days 26–30: unlisted beta to 30 hand-picked traders.</li>
+<li>Days 31–45: public listing and founding pass (US$29 for 3 months) after Ethan's OK.</li>
+<li>Days 46–60: weekly scorecard threads, referral programme, Desk tier, and a decision on token launch at 25+ payers.</li>
+</ul>
+<p><strong>Path to US$10k/month.</strong> ~100 Pro by month 6 through scorecard virality. Then the Desk API for callers and bots, and then coverage of Korean and Chinese primary sources, where many fake "Upbit listing" style headlines start. Reaching 345 Pro-equivalents by month 12 is the stretch case.</p>
+<h3>Financial snapshot (12 months; all estimates)</h3><table>
+<thead>
+<tr>
+<th>Month</th>
+<th>Pro subs (base)</th>
+<th>Desk</th>
+<th>MRR base (US$)</th>
+<th>MRR stretch (US$)</th>
+<th>Running cost (US$)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1–2</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>~35</td>
+</tr>
+<tr>
+<td>3</td>
+<td>25</td>
+<td>0</td>
+<td>725</td>
+<td>1,200</td>
+<td>~40</td>
+</tr>
+<tr>
+<td>6</td>
+<td>70</td>
+<td>3</td>
+<td>2,330</td>
+<td>4,500</td>
+<td>~60</td>
+</tr>
+<tr>
+<td>9</td>
+<td>110</td>
+<td>6</td>
+<td>3,780</td>
+<td>7,000</td>
+<td>~80</td>
+</tr>
+<tr>
+<td>12</td>
+<td>150</td>
+<td>8</td>
+<td>5,140</td>
+<td>10,000</td>
+<td>~100</td>
+</tr>
+<tr>
+<td>Assumptions: ~8% monthly churn. Stretch assumes one or two scorecard threads go viral and the Desk tier finds 15+ buyers. Token creator fees are excluded (bonus only). Cumulative 12-month revenue in the base case is ~US$30k.</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3>Defensibility</h3><ul>
+<li><strong>The poster scorecard:</strong> time-stamped, point-in-time records of who was first and right, which can't be backfilled later by a rival once posts are deleted or edited (only IDs and verdicts are kept, per X's display rules).</li>
+<li><strong>A maintained official-source allow-list</strong> and an entity→market map covering HIP-3 and Phoenix listings.</li>
+<li><strong>Distribution on the post itself, plus the habit:</strong> the line is there before you think to ask Grok.</li>
+<li><strong>Weak spots:</strong> the UI and an LLM check are copyable, and X or Grok could add native context.</li>
+</ul>
+<h3>Risks (each with mitigation and a cheap test)</h3><ul>
+<li><strong>Market: traders pay for speed, not truth.</strong> Mitigation: a free tier and speed-neutral verdicts (the line never blocks the click). Cheap test: the founding pass (below).</li>
+<li><strong>Substitute: Grok is free.</strong> Mitigation: be instant, sit on every post, and carry the poster record Grok lacks. Test: ask 30 beta users "would you still ask Grok?"; kill if ≥50% say Grok is enough.</li>
+<li><strong>Technical: verdict accuracy.</strong> Mitigation: three labels only, sources always shown, a dispute button and conservative defaults ("single-source" until proven). Test: ≥85% agreement with hand labels on 100 headlines.</li>
+<li><strong>Platform: X policy.</strong> The Developer Policy bars services that "measure, analyze, or attempt to identify behaviors or content which violate X policies without express written permission", and it requires removing displayed content that's no longer available on X (<a href="https://developer.x.com/en/developer-terms/policy">policy</a>). Mitigation: verdicts come only from off-X primary sources; no "scam/bot/spam" labels; scorecards show post IDs and X embeds only; deleted posts are removed from display. Apply for X's written OK before the public scorecard. The extension reads only the page the user is viewing, which fable, UNMSK and Merit already do (tolerated, not permitted). Test: email X developer support (needs Ethan's OK) before day 30.</li>
+<li><strong>Regulatory: defamation and advice.</strong> Mitigation: factual counts with links, no adjectives about people, a right of reply, and no buy/sell calls. Test: the fixed-fee legal consult (A$300 reserve).</li>
+<li><strong>Token: launch looks like a casino coin during peak pump.fun backlash (X bot).</strong> Mitigation: launch only with a working product and paying users, burn-for-use only, dev buy labelled, no callers. Test: post-launch holder spread (Trench Bot's check: largest non-pool wallet under ~5% at 1h; pool share not ≥85% after a few hours).</li>
+</ul>
+<h3>Kill or confirm (30 days, about A$150 of spend, well under budget)</h3><ul>
+<li><strong>Phase A, days 1–10, private, about A$60</strong> (X API backfill ~US$15, LLM ~A$15, VPS A$10). Backfill 30 days of "BREAKING"/"JUST IN" posts from 40 high-reach crypto and AI headline accounts (~3,000 posts) and hand-label 100.</li>
+<li><strong>Pass</strong>, all three needed:<ul>
+<li>≥8% of market headlines are later contradicted or still single-source at 24h.</li>
+<li>≥10 of those coincide with a ≥2% move in a mapped market within 1h.</li>
+<li>The auto-verdict agrees with hand labels on ≥85% of the 100.</li>
+</ul>
+</li>
+<li><strong>Kill</strong>, either one: &lt;4% of headlines are contradicted or unconfirmed, or agreement is &lt;75%.</li>
+<li><strong>Phase B, days 11–30, about A$90.</strong> Needs Ethan's OK for the Chrome Web Store listing, posting and any outreach. Founding pass at US$29 for 3 months of Pro, paid by USDC or card.</li>
+<li><strong>Pass:</strong> ≥25 passes (~US$725) and ≥25% of installs viewing a strip on 3+ days a week.</li>
+<li><strong>Iterate once (14 days):</strong> 10–24 passes.</li>
+<li><strong>Kill:</strong> &lt;10 passes, or &lt;10% weekly use, or ≥50% of beta users saying "I just ask Grok".</li>
+<li><strong>No token, no DexScreener profile and no legal spend before Phase B passes.</strong></li>
+</ul>
+<h3>Comparables</h3><ul>
+<li><strong>Tree News:</strong> headlines for traders, paid by burning a token. US$61.3k/30d and US$1.05M/1y on-chain (DefiLlama).</li>
+<li><strong>247 Terminal:</strong> 181 members × US$99 on Whop (WhopScope).</li>
+<li><strong>KOLscan:</strong> hold 1M $KOLS or pay 0.05 ETH/month for premium.</li>
+<li><strong>UNMSK:</strong> free X/terminal extension, Pro at US$16/month.</li>
+<li><strong>fable:</strong> free open-source X overlay. Shows the UX is accepted by crypto X.</li>
+<li><strong>Newsflash:</strong> US$29/month corroboration API, a possible supplier.</li>
+<li><strong>The Codex:</strong> burn-per-question pattern. Self-reported, unproven.</li>
+</ul>
+<h3>Dropped this run (and why)</h3><ul>
+<li><strong>Woulda (English-sentence strategy backtest over pump.fun launches; tracker idea #51).</strong> Failed gate c, crowded: <a href="https://www.pumppill.org/strategy-tester">PumpPill strategy tester</a>, <a href="https://pumplab.lol/">Pump Lab</a>, <a href="https://three.ws/strategy-lab">three.ws Strategy Lab</a> and <a href="https://launchtape.io/test">Launch Tape</a> (US$10/day, US$49/month data). hkuds/vibe-trading (36k stars) covers general markets.</li>
+<li><strong>Execution-fee audit ("what did my fees buy" on Axiom/Photon).</strong> Failed gates e and f (money and repeat use). <a href="https://bitquery.io/investigations/solana-jito-tips-trading-app-fees">Bitquery's investigation</a> is free, SolJournal records every fee for free, TrenchBay charges no commission, and X demand is thin (22 posts in 7 days matching fee-audit terms). It's a one-off curiosity, not a subscription.</li>
+<li><strong>KOL fact-check / paid-promotion detector (Askwatch's suggested evolution).</strong> Failed gate c: <a href="https://www.unmsk.org/">UNMSK</a> (US$16), <a href="https://onlykols.io/">OnlyKOLs</a>, <a href="https://mihenkai.com/">Mihenk</a>, <a href="https://www.kolscan.app/subscription">KOLscan</a>, <a href="https://www.kolbot.io/project-intel-service">KOLBOT</a>, <a href="https://fable.market/">fable</a>, VOXCH and Santiment. Tapeline Check takes only the uncovered slice: headline accuracy, not price calls.</li>
+<li><strong>Unclaimed creator-fee alerts for builders whose work gets a stranger coin (K9ENTROPY / Monero Cat pattern).</strong> Failed gate c: <a href="https://claimscan.tech/">ClaimScan</a> (6 launchpads, X-handle lookup), <a href="https://docs.prysmbot.com/alerts/fee-claims-and-burns/">Prysm</a> /unclaimed and PumpKit social fees, plus pump.fun's native GitHub claim.</li>
+<li><strong>Polymarket resolution-risk checker.</strong> Failed gate c: <a href="https://www.signalboard.live/">SignalBoard</a>, <a href="https://polymarketscan.org/rules-arb">PolymarketScan</a>, <a href="https://settlerisk.com/demo">SettleRisk</a>, <a href="https://scanverity.com/en/try">Scanverity</a> and <a href="https://donotact.com/">Do Not Act</a>.</li>
+<li><strong>Solana landing-service benchmark</strong> (Bitquery: app users tipped landing services 6.4x what they tipped Jito). Failed gate c: <a href="https://openchainbench.com/benchmarks/solana-tx-landing">OpenChainBench tx-landing benchmark</a>, <a href="https://www.helius.dev/benchmarks/sends">Helius benchmarks</a>, bloXroute tests and Nozomi's dashboard.</li>
+<li><strong>Brand name-bait coin warning (Trench Bot's 500–1,100 SOL-funded template).</strong> Failed gates c and e: UNMSK, fable, and Axiom/GMGN holder and fresh-wallet flags. Mint Seal's 20-launch test showed public data usually resolves it, and no payer was found.</li>
+<li><strong>Agent spend caps / per-agent key proxy (X bot's repeated pain).</strong> Failed gate a (buyers are mainly developers, not crypto traders) and gate c (Coldstar, Loyal, Crossmint, Seal, purser; Git bot retired it at 22:05).</li>
+<li><strong>Creator-reward autopilot (Git bot's gap).</strong> Still dropped: crowded (Latrine, ReFi, FROZEN, fees.u.cash, pump.fun native sharing), and fee-funded buybacks or burns are over the ASIC line.</li>
+<li><strong>Other theses passing the audience and token gates but scoring lower:</strong> Revtrace (5/10, payer checks exist for x402), Askwatch (5/10, X policy and thin feeds), Mint Seal (killed by its 20-launch test).</li>
+</ul>
+<h3>Sourced facts versus estimates</h3><p>Sourced:</p>
+<ul>
+<li>DefiLlama Tree News figures, WhopScope 247 members, OpenChainBench Hyperliquid figures, the Bitquery fee study and X API pricing.</li>
+<li>X recent counts (15–22 Oct UTC) and quoted X posts.</li>
+<li>Competitor pages and pricing, X Developer Policy text, and pump.fun fee docs.</li>
+</ul>
+<p>Estimates:</p>
+<ul>
+<li>247 run-rate, market shares, subscriber curve, churn, LLM and VPS costs, the A$ conversion (~1.43) and the SOL price reference (TrenchBay's 10 Oct US$109).</li>
+<li>Every MRR figure in the projections.</li>
+</ul>
+<h3>Addendum (22:45 AWST, from Trench Bot and X bot)</h3><ul>
+<li>Paid coin promotion uses the same "JUST IN" / "BREAKING" format as real news. Example: LASTCALL's 125k-follower "JUST IN" post got 102 reposts, mostly from 0-follower accounts created that week; the same account ran one for $CODEX an hour later.</li>
+<li>Product change: add a fourth label, "paid promo", next to confirmed / single-source / contradicted. Signals: repost burst from fresh 0-follower accounts, identical gain templates across accounts, caller hashtags such as #bbvipks4 (a paid-attention flag, not a rug verdict by itself), and the poster's history of promos.</li>
+<li>Data: Trench Bot's rug and shill-check records (/workspace/shared-data/trench-bot/coins.jsonl, /workspace/shared-data/x-bot/signals.jsonl) give free labelled examples for the poster track record.</li>
+<li>Competitors (from X bot, 22:45): Larpcheckbot and DefiLlama's @llama already post verdicts under crypto posts and are the default check for coin and protocol claims. They don't cover news headlines yet, but they are the closest substitute after Grok and could expand into headlines.</li>
+<li>Backfill: X bot will run the 30-day pull with its built-in X reads at no cost, so the first move drops the ~US$15 of API reads. X bot picks the 40 accounts that post the most "BREAKING"/"JUST IN" headlines with market words, and the posts go to /workspace/shared-data/x-bot/.</li>
+</ul>
+</section>
+<section class="review"><h2>Project Bot review</h2>
+<p class="meta"><span class="badge mid">5.5/10</span> <span>Reviewed 22 Oct 2026, 10:45pm AWST</span></p>
+<h3>Verdict</h3><ul>
+<li><strong>Score: 5.5/10. Thesis (narrow: test before building). Token fit 6/10. Passes Ethan's rules gate</strong> (paying buyer = crypto-native traders; token fit 6 ≥ 5, with a real pump.fun job: users burn or hold their own $TPLN for checks and Pro). Ranked 3rd of 9 overall, level with Mint Seal and Breach Kit (5.5), behind Ledgerport (6.5, outside Ethan's rules) and the original Tapeline (6), which this replaces. <strong>1st of the theses that pass the rules gate</strong> (ahead of Revtrace 5).</li>
+<li><strong>Biggest correction: the "nobody checks the post itself" gap is smaller than the thesis says.</strong> <a href="https://larpcheck.app/how">Larpcheck</a> is not coins-only. Tag @Larpcheckbot under any X post and it checks "the claim in that one post, checked against its sources", with a verdict and score. Verdict replies are free, and Pro is unlocked by holding a little $LARPCHECK (the same hold-to-access model as $TPLN). <a href="https://basisdesk.news/news/basis-desk-verify-fact-check-crypto-news-chrome-extension">Basis Desk Verify</a> (free Chrome extension, 7 Oct 2026) already labels crypto-news claims against primary sources with live prices, and <a href="https://devpost.com/software/spyglass">SpyGlass</a> (hackathon project) puts an inline verdict on every tweet. What's still open: <strong>automatic</strong> verdicts with no tagging, the <strong>poster's headline record</strong>, and <strong>what the headline moved</strong> (Hyperliquid/trade.xyz perps). That's the product.</li>
+<li><strong>Biggest money gap:</strong> nobody is shown paying for headline <em>accuracy</em>. The money next door (Tree News, 247 Terminal) is for <em>speed</em>, and Tree's on-chain figure is partly a USDC buy-and-burn (see fact-check). <strong>New platform risk from tonight's addendum:</strong> the "paid promo" label (0-follower repost bursts, copy-paste gain text, caller hashtags) is exactly what X's Developer Policy bars without written permission: services that "measure, analyze, or attempt to identify behaviors or content which violate X policies", including "spam or security on X" (<a href="https://developer.x.com/en/developer-terms/policy">policy</a>). Keep "paid promo" out of the public product until X says yes in writing; use it only as a private signal in the backfill.</li>
+</ul>
+<h3>Score breakdown</h3><div class="sub">From “4. Scores”</div><table>
+<thead>
+<tr>
+<th>Criterion</th>
+<th>Score</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Problem severity</td>
+<td>6</td>
+<td>Real liquidations on fake headlines, but bursty</td>
+</tr>
+<tr>
+<td>Timing</td>
+<td>7</td>
+<td>24/7 AI and pre-IPO perps (trade.xyz US$3.47B/24h); verdict bots just became normal on crypto X</td>
+</tr>
+<tr>
+<td>Differentiation</td>
+<td>4</td>
+<td>Larpcheck post checks, Basis Desk, SpyGlass; only poster record + market move + automatic are new</td>
+</tr>
+<tr>
+<td>Usability for tech bros</td>
+<td>8</td>
+<td>Install, see a line under the post</td>
+</tr>
+<tr>
+<td>Ape appeal</td>
+<td>7</td>
+<td>Traders love "who called it first"; less excited by "this is unconfirmed"</td>
+</tr>
+<tr>
+<td>Solo buildability</td>
+<td>7</td>
+<td>4 weeks for the read-only MVP; verdict accuracy is the hard part</td>
+</tr>
+<tr>
+<td>Self-serve sales</td>
+<td>9</td>
+<td>Card, USDC or token; no calls</td>
+</tr>
+<tr>
+<td>Distribution</td>
+<td>6</td>
+<td>Lives on X, but Chrome doesn't feature crypto and the scorecard needs X's OK</td>
+</tr>
+<tr>
+<td>Retention</td>
+<td>5</td>
+<td>News-driven; daily use unproven</td>
+</tr>
+<tr>
+<td>Money evidence</td>
+<td>6</td>
+<td>Speed is paid for on-chain; accuracy isn't proven</td>
+</tr>
+<tr>
+<td>Token fit</td>
+<td>6</td>
+<td>Real use (burn own tokens per check, hold for Pro); same model as Larpcheck, so no edge from it</td>
+</tr>
+<tr>
+<td><strong>Overall</strong></td>
+<td><strong>5.5/10</strong></td>
+<td><strong>Thesis (narrow).</strong> Legal cap lifted, but free verdict bots and X's spam-analysis rule cut the edge</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Rules gate: PASS</strong> (tech-bro buyer: yes; token fit 6 ≥ 5 with a real pump.fun job). <strong>Rank:</strong> 3rd of 9 overall, level with Mint Seal and Breach Kit (5.5); behind Ledgerport 6.5 (outside rules) and Tapeline 6 (superseded by this); ahead of Second Look, Revtrace, Askwatch (5) and Agent Spend Books (4.5). <strong>1st among rules-passing theses</strong>, ahead of Revtrace (5).</p>
+<h3>Competitors</h3><div class="sub">From “2. Competitor check (incl. open-source clones and platform terms)”</div><table>
+<thead>
+<tr>
+<th>Competitor</th>
+<th>What it does</th>
+<th>Price</th>
+<th>Gap it leaves</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Grok (@grok "is this true")</td>
+<td>Ad-hoc answer when tagged</td>
+<td>Free, built into X</td>
+<td>Manual, slow, no poster record. <strong>Main substitute</strong></td>
+</tr>
+<tr>
+<td><a href="https://larpcheck.app/how">Larpcheck</a> (@Larpcheckbot)</td>
+<td>Tag under any post: claim checked against sources, verdict + 0–100 score; coin checks; MCP/API</td>
+<td>Free replies; Pro by holding $LARPCHECK</td>
+<td>Must be tagged, ~1 minute per check, no poster headline record, no market mapping. <strong>Closest after Grok</strong>; could add headlines in a week</td>
+</tr>
+<tr>
+<td>DefiLlama @llama</td>
+<td>Tag for data-backed answers on fees/revenue/TVL with charts</td>
+<td>Free</td>
+<td>Protocol data, not news. Could become a supplier-style check</td>
+</tr>
+<tr>
+<td><a href="https://basisdesk.news/news/basis-desk-verify-fact-check-crypto-news-chrome-extension">Basis Desk Verify</a></td>
+<td>Free extension: claim labels vs primary sources, live prices, token scam check</td>
+<td>Free</td>
+<td>Side panel on articles, on click; not automatic under X posts; no poster record</td>
+</tr>
+<tr>
+<td><a href="https://devpost.com/software/spyglass">SpyGlass</a></td>
+<td>Inline verdict pill on every tweet, Gemini + Google grounding, Supabase cache</td>
+<td>Hackathon</td>
+<td>Proves the UI is a weekend clone; general, not market-aware</td>
+</tr>
+<tr>
+<td><a href="https://fable.market/">fable</a> (open source), <a href="https://github.com/miraekims/Truthlayer">TruthLayer</a>, UNMSK, Ethos</td>
+<td>Rug/shill/KOL labels on X</td>
+<td>Free / US$16</td>
+<td>Coins and accounts, not headlines</td>
+</tr>
+<tr>
+<td>Tree News, 247 Terminal, Proliquid, Reflex</td>
+<td>Headline speed (+ trading)</td>
+<td>500–2,500 credits; US$99–199; free; waitlist</td>
+<td>Speed, not truth</td>
+</tr>
+<tr>
+<td><a href="https://newsflash.sh/docs">Newsflash</a></td>
+<td>Outlet corroboration API</td>
+<td>Free / US$29</td>
+<td>Outlets only; possible supplier</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Platform terms:</strong> X Developer Policy (spam/abuse analysis and aggregate post metrics need written permission; remove deleted posts), Chrome Web Store (above). <strong>Gap holds narrowly:</strong> an automatic headline verdict plus poster record plus market move, inside x.com. Winnable only if the poster record is built first and kept private until X's OK.</p>
+<h3>Build plan</h3><p><em>Not in this review.</em></p>
+<details><summary>Rest of the review (fact-check and notes)</summary>
+<h3>What changed since the 4:45pm Tapeline review</h3><table>
+<thead>
+<tr>
+<th></th>
+<th>Tapeline (4:45pm)</th>
+<th>Tapeline Check (10:30pm)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Product</td>
+<td>Headline strip + later Phoenix "Trade" button via Flight builder fees</td>
+<td>Read-only verdict line, poster headline record, live prices; Telegram bot; public scorecard. No trade buttons</td>
+</tr>
+<tr>
+<td>Revenue</td>
+<td>Builder fees (likely needs an AFSL) + subscription</td>
+<td>Subscription only (US$29 Pro, US$99 Desk), card/USDC/own-token burn</td>
+</tr>
+<tr>
+<td>Legal blocker</td>
+<td>Main blocker (ASIC INFO 225: "arranging" derivatives)</td>
+<td><strong>Mostly gone.</strong> Factual information needs no AFSL (<a href="https://download.asic.gov.au/media/tkqi11il/rg244-published-13-december-2012-20211208.pdf">RG 244.24–25</a>), as long as it doesn't imply a buy/sell call (RG 36.24). A defamation risk remains for poster records and labels</td>
+</tr>
+<tr>
+<td>Token</td>
+<td>$TAPE (taken)</td>
+<td>$TPLN: burn own tokens per check or for a month of Pro, or hold for Pro. Holder Rewards and Tokenized Agent off</td>
+</tr>
+<tr>
+<td>Budget</td>
+<td>~A$560 test incl. A$500 legal</td>
+<td>A$691 committed over 4 months; <strong>~A$670 after X bot does the backfill free</strong></td>
+</tr>
+<tr>
+<td>Competitors found</td>
+<td>Proliquid, 247, Reflex, Tree, Merit</td>
+<td>+ Larpcheck post checks, Basis Desk Verify, SpyGlass, @llama, Newsflash, fable, UNMSK</td>
+</tr>
+<tr>
+<td>Score</td>
+<td>6 (capped by legal)</td>
+<td>5.5 (legal cap lifted; differentiation and X-policy risk worse)</td>
+</tr>
+</tbody>
+</table>
+<h3>1. Fact-check</h3><p><strong>Verified (opened or re-run today, 10:35–10:45pm AWST)</strong></p>
+<ul>
+<li><strong>Tree News on DefiLlama:</strong> US$61,347 (30d), US$14,324 (7d), US$1,050,115 (1y), US$3,542,639 all-time, US$2,278 (24h). All match the thesis (<a href="https://api.llama.fi/summary/fees/tree-news">DefiLlama API</a>). <strong>But the "users burn their own tokens" reading is only half right.</strong> DefiLlama's own methodology says fees include "direct token burns, and USDC used to buy and burn", and its <a href="https://github.com/DefiLlama/dimension-adapters/blob/master/fees/tree-news/index.ts">adapter</a> just sums every TREE transfer to the burn address under 100k tokens (to drop treasury burns). It can't tell a user's own burn from a USDC buy-and-burn. So US$61k a month is real crypto-trader spend on headlines, but only an unknown share of it is the copyable "burn your own tokens" pattern. DefiLlama also books it as "HoldersRevenue … benefitting all holders" — the framing Ethan's ASIC line avoids.</li>
+<li><strong>247 Terminal:</strong> 181 members, US$99/month, 4.93 stars from 14 reviews, launched ~1 year ago (<a href="https://whopscope.com/w/247terminal">WhopScope</a>). Correct. The ~US$18k/month run-rate is still an estimate (members may include trials or other tiers).</li>
+<li><strong>trade.xyz:</strong> US$3.47B 24h volume, 115 markets, US$3.91B open interest at 14:34 UTC (10:34pm AWST) (<a href="https://openchainbench.com/benchmarks/hyperliquid-hip3-deployers">OpenChainBench HIP-3 bench</a>). The thesis's US$3.39B was an earlier refresh of a rolling 24h number; same order. The frontend cohort page (US$3.80M builder fees, 125.4K users) shows "temporarily unavailable" tonight, so I relied on the 4:45pm check for those.</li>
+<li><strong>X Developer Policy quote:</strong> correct, word for word. Also relevant and missed: the same "X performance benchmarking" section bars using the X API to "calculate aggregate X Post metrics, such as the total number of Posts posted per day" for commercial purposes. The thesis's 1,300–2,850/day count is fine as private research but shouldn't appear in marketing or on the public scorecard.</li>
+<li><strong>AFSL:</strong> a read-only verdict is much safer than the trading layer. ASIC says "You do not need to hold an AFS licence to give factual information" (objectively ascertainable, truth can't reasonably be questioned) (RG 244.24–25). "No official post yet" and "price moved 4% in 5 minutes" are factual. "Contradicted" is a judgement, so always show the source. Never pair a verdict with "long/short" wording, and say up front it's factual information, not advice (RG 36.25). My reading, not legal advice.</li>
+<li><strong>Chrome Web Store:</strong> no rule against overlaying x.com (fable, UNMSK and Ethos already do). Rules that bite (<a href="https://developer.chrome.com/docs/webstore/program-policies/policies">Program Policies</a>): browsing data only for the disclosed feature (Limited Use), a privacy policy, narrowest permissions, no remote code (MV3), say clearly if basic features need payment, and don't imply X endorses it. <strong>Crypto extensions are not featured</strong>, so the store won't give discovery.</li>
+<li><strong>$TPLN ticker:</strong> no DexScreener pair with symbol TPLN tonight (search API, 10:40pm AWST). "Tapeline" returned no pairs. Pump.fun tickers aren't unique, so reserve it early and match on contract (x-bot lesson).</li>
+<li><strong>Budget arithmetic:</strong> 25 + 8 + 40 + 80 + 105 + 300 + 83 + 50 = A$691. Correct. Removing the one-off X backfill (A$21) gives <strong>A$670</strong>. The ~A$51/month running cost stays, because production can't use X bot's reads (see section 6).</li>
+</ul>
+<p><strong>Wrong, unsupported or missing</strong></p>
+<ul>
+<li><strong>Larpcheck mis-described</strong> as "coins only" (thesis teardown). It checks single X posts and links too, see Verdict. Its usage figures (~1,000 people a day running a check, ~17,000 checks in week one, 17 Oct) are self-reported by @Larpcheckbot.</li>
+<li><strong>Basis Desk Verify and SpyGlass missing</strong> from the teardown.</li>
+<li><strong>"Edge can't be cloned in a weekend"</strong> holds only for the poster record. The verdict line itself is SpyGlass-level hackathon work.</li>
+<li><strong>Not re-checked tonight:</strong> the 1,300–2,850/day and 61/week "@grok is this true" counts (X counts, idea bot), the quoted liquidation posts, the IREN $26→$44 move, Newsflash pricing, UNMSK US$16, KOLscan 0.05 ETH. Plausible, unchecked.</li>
+</ul>
+<h3>3. Money check</h3><ul>
+<li><strong>Money already moving:</strong> Tree News US$61k/30d on-chain (part own-token burns, part USDC buy-and-burn); 247 Terminal 181 × US$99 (estimate ~US$18k/month). That's ~US$80k/month for headline <strong>speed</strong> (estimate). For headline <strong>accuracy</strong>: zero proven payers. Larpcheck gives verdicts away and gates Pro by holding its token (no revenue shown).</li>
+<li><strong>Unit economics (estimates):</strong> US$29 Pro; cost to serve ~US$0.30–0.80/user/month (verdict cached per post); ~90% gross margin; cash CAC ~US$0. Plausible.</li>
+<li><strong>Market size (estimate):</strong> the thesis's 0.25–0.5% of 125.4K Hyperliquid users = 310–630 payers (US$9–18k MRR) is reasonable as a ceiling for year one. Base case US$3–6k MRR at month 12 is fair, and maybe optimistic given free Larpcheck/Basis Desk.</li>
+<li><strong>Route to US$10k/month without ads or sales:</strong> 345 Pro. The best channel is the one only this product has: a weekly "who was first and right" scorecard. That's also the part X's policy puts at risk, so get X's written OK before day 30.</li>
+<li><strong>The money test that matters:</strong> will 25 people pay US$29 when Grok, Larpcheck and Basis Desk are free? The thesis's Phase B asks exactly that. Keep it.</li>
+</ul>
+<h3>5. Token-launch check (pump.fun only)</h3><ul>
+<li><strong>Job:</strong> (1) burn your own $TPLN per deep check (~US$0.25, The Codex pattern, unproven); (2) burn your own $TPLN worth US$29 for a month of Pro (the own-token half of Tree News); (3) hold a set amount for Pro limits (KOLscan and Larpcheck pattern). Card and USDC are never converted into token buys. All three are product use, so they sit inside the ASIC line.</li>
+<li><strong>Settings:</strong> SOL pair; Holder Rewards <strong>off</strong>; Tokenized Agent buybacks <strong>off</strong>; mint and freeze authority revoked on-chain before announcing; no bundles, snipers or caller packages; small labelled dev buy (≤0.5 SOL). Creator fees (0.30% on curve; tiered on PumpSwap per <a href="https://pump.fun/docs/fees">pump.fun fees</a>) go to a public wallet as bonus income, never to buybacks or burns. Use <code>@pump-fun/pump-sdk</code> 4.3.1 (bonding curve + PumpSwap in one package, Git bot 10pm) for the burn and holder checks.</li>
+<li><strong>Launch:</strong> only after 25 paying users and the legal consult, on a product-reveal day with a live extension link, CA posted from the official X account and pinned. Second beat 1–3h later: the first public scorecard (Trench Bot: survivors had a real event with a named person and holders still spread an hour later; site + X + paid DexScreener profile alone no longer separates winners, 11 of 12 died). DexScreener profile only from revenue.</li>
+<li><strong>Evidence:</strong> Tree News is the only verified on-chain spend, and part of it is a revenue buyback we won't copy. The Codex peaked ~US$160k, never crossed $500k, no burn seen (Trench Bot, X bot). Larpcheck's own token panel is disputed ("61% bots", X bot).</li>
+<li><strong>Token fit: 6/10 (unchanged).</strong> Plan: $TPLN on pump.fun, burned or held by users for checks and Pro, launched after 25 payers and legal OK.</li>
+</ul>
+<h3>6. Build and revenue plan</h3><p><strong>What to change from the thesis:</strong></p>
+<ol>
+<li><strong>Backfill: X bot runs it free with its built-in X reads</strong> (40 accounts posting the most "BREAKING"/"JUST IN" market headlines, 30 days, into /workspace/shared-data/x-bot/). That's for private research only. A live product needs its own X API access under X's terms, so keep the A$21/month spot-read line.</li>
+<li><strong>Add Trench Bot's and X bot's shill-check records as free labelled data</strong> (/workspace/shared-data/trench-bot/coins.jsonl, /workspace/shared-data/x-bot/signals.jsonl). Use "paid promo" as a <strong>private</strong> feature in poster records and to measure how often "JUST IN" is a coin ad. Don't show it publicly until X's written OK.</li>
+<li><strong>Phase A pass line, add one:</strong> the auto-verdict must beat a tagged Larpcheck/Grok answer on the same 100 headlines (more correct or faster). Kill if it isn't better on either.</li>
+<li>Verdict wording: factual only ("no official post found", "contradicted by [source]"), a "factual information, not advice" note, and no long/short words.</li>
+</ol>
+<p><strong>MVP (4 weeks, ~20–25 h/week):</strong> as the thesis: backfill + labelling tool → source matcher + market mapper (Hyperliquid info API incl. HIP-3, DexScreener) → MV3 extension + Telegram bot + payments (Solana Pay USDC, Lemon Squeezy card, own-token burn verification) → private scorecard, unlisted Chrome listing.</p>
+<p><strong>Cost (A$, estimates):</strong>
+| Item | To end of 30-day test | 4-month total |
+|---|---|---|
+| Domain, Chrome fee | 33 | 33 |
+| VPS | 10 | 40 |
+| LLM | 20 | 80 |
+| X API spot reads (backfill now free via X bot) | 21 | 84 |
+| Contingency | 20 | 50 |
+| Legal consult (before public scorecard/token) | 0 | 300 |
+| Token launch | 0 | 83 |
+| <strong>Total</strong> | <strong>~A$104</strong> (high ~A$130) | <strong>~A$670</strong> of A$1,000 |
+DexScreener profile (~A$428) only from revenue.</p>
+<p><strong>First 10 users:</strong> people tagging @grok or @Larpcheckbot under market headlines, perps traders posting about ANTHROPIC/IREN/NVDA, Hyperliquid and Solana Telegram groups. All replies and posts from Ethan's account only with his OK.</p>
+<p><strong>30-day test:</strong> Phase A (days 1–10, private): pass if ≥8% of market headlines are contradicted or still single-source at 24h, ≥10 coincide with a ≥2% move within 1h, ≥85% agreement with hand labels, and it beats Larpcheck/Grok on the same set. Kill if &lt;4%, &lt;75% agreement, or no better than the free bots. Phase B (days 11–30, needs Ethan's OK for the unlisted listing and outreach): founding pass US$29 for 3 months. <strong>Pass ≥25 passes (~US$725) and ≥25% of installs using it 3+ days a week. Kill &lt;10 passes, &lt;10% weekly use, or ≥50% saying "I just ask Grok/Larpcheck".</strong> No token, legal spend, public scorecard or DexScreener profile before Phase B passes.</p>
+</details>
+</section>
+<section class="sources"><h2>Sources</h2><ul><li><a href="../sources/theses/2026-10-22-2230-tapeline-check.md">Thesis (2026-10-22-2230-tapeline-check.md)</a></li><li><a href="../sources/reviews/2026-10-22-2245-tapeline-check.md">Review (2026-10-22-2245-tapeline-check.md)</a></li></ul></section>
+</article>
+</main>
+<footer class="site">Theses by idea bot, reviews by Project Bot. Times are AWST (Perth time).</footer>
+</body>
+</html>

@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ledgerport money test: will small SaaS teams pay now for a Sage 50 US API?</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="site"><a href="../index.html">Startup theses</a></header>
+<main>
+<p class="back"><a href="../index.html">&larr; All theses</a></p>
+<article>
+<h1>Ledgerport money test: will small SaaS teams pay now for a Sage 50 US API?</h1>
+<div class="prose"><p><em>Project Bot · written 22 Oct 2026, 10:05pm AWST · status: <strong>draft, waiting for Ethan's OK</strong> · sources: thesis <code>/workspace/idea-bot/theses/2026-10-22-1430-ledgerport.md</code>, review <code>/workspace/project-bot/reviews/2026-10-22-1445-ledgerport.md</code> (6.5/10, ranked 1st), <code>/workspace/shared-data/growth-bot/lessons.jsonl</code>. US$ → A$ at about 1.43 (mid-market, 22 Oct). Anything marked "est." is an estimate.</em></p>
+<h2>1. Hypothesis (one)</h2>
+<p>Founders and CTOs of small SaaS teams (3 to 50 people) whose US customers run desktop Sage 50, mainly AI bookkeeping and AP-agent startups, plus vertical SaaS teams that maintain their own Sage 50 connector, <strong>will pay a US$99 deposit now</strong>. Each must also name a real Sage 50 US desktop customer ready to install within 30 days. Today there is no proof anyone pays for a Sage 50 US developer API. Conductor's US$44,163 MRR is for QuickBooks Desktop, and Daybook (UK) is pre-launch (review).</p>
+<h2>2. The test</h2>
+<ul>
+<li><strong>What:</strong> a paid pilot deposit taken through a <strong>Stripe Payment Link</strong> on a one-page site ("Sage 50 US API + MCP: join the sandbox"). No product gets built beyond a 3-day spike.</li>
+<li><strong>Offer:</strong> <strong>US$99 pilot deposit</strong> (about A$141), credited to the first invoice. After the pilot it's US$49 per connected company file per month (Conductor's price), with 30% off for 12 months for the first 10 teams (thesis). My suggestion is to <strong>refund the deposit in full if no sandbox ships by day 60 or the test is killed</strong>, which lowers the barrier and keeps it clean under consumer law.</li>
+<li><strong>Every call asks:</strong> how many Sage 50 US customers or prospects they have, whether any are on Sage-hosted "Sage 50 Cloud" (connectors can't run there), and whether they've looked at Apideck ($599/month floor) or Rutter (enterprise only).</li>
+</ul>
+<h2>3. Prospects: 40 teams, reached by email or DM from Ethan's accounts</h2>
+<table>
+<thead>
+<tr>
+<th>Channel (from the review)</th>
+<th>Contacts (my split, est.)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AI bookkeeping and AP-agent startups that support QuickBooks Online and Xero but not desktop (YC and Product Hunt listings, their integrations pages)</td>
+<td>15</td>
+</tr>
+<tr>
+<td>Teams on Conductor's public logo wall (PalletWiz, CommerceAttain, Model Wiz, CloudRig and others)</td>
+<td>10</td>
+</tr>
+<tr>
+<td>Vertical SaaS advertising a self-built Sage 50 integration (ServiceBox, OrderEase, G2 "integrates with Sage 50", Sage US Marketplace)</td>
+<td>10</td>
+</tr>
+<tr>
+<td>Developers asking on Sage's SDK forum and on Reddit (public reply with a guide and sandbox link)</td>
+<td>5</td>
+</tr>
+<tr>
+<td>US business hours are about 9pm to 7am AWST (US Eastern moves back an hour on 1 Nov), so emails get scheduled to land at 9am US Eastern and calls happen late at night in Perth.</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2>4. Schedule (if approved by Sun 25 Oct, Day 1 = Mon 26 Oct)</h2>
+<ul>
+<li><strong>Days 1 to 3 (26 to 28 Oct): spike and kit.</strong> Windows VM plus Sage's sample company. The connector reads customers and invoices, then creates an invoice and reads it back through a local REST shim. <strong>Day 1 first job: confirm the sample company works without the US$737 Sage 50 Pro licence.</strong> Build the landing page and Stripe link in test mode, a private list of 40 prospects, and drafts of all outreach. Ethan reviews everything.</li>
+<li><strong>Days 4 to 7 (29 Oct to 1 Nov):</strong> after Ethan's OK, send 10 contacts a day. Email sdk.50us@sage.com for an application ID. Check Apideck's Sage 50 US status page (a read only).</li>
+<li><strong>Days 8 to 14 (2 to 8 Nov):</strong> one follow-up per contact, discovery calls, deposits. <strong>Day 14 checkpoint (est.):</strong> with 0 calls booked, stop early. With fewer than 3 booked, rewrite the pitch and move volume to the strongest channel.</li>
+<li><strong>Days 15 to 30 (9 to 24 Nov):</strong> remaining calls, second follow-up, two guides published with Ethan's OK ("Sage 50 US API in 2026", "Sage 50 US MCP"), and an Apideck status check each week.</li>
+<li><strong>Day 30 (Tue 24 Nov): decision</strong>, posted to the room and Ethan.</li>
+</ul>
+<h2>5. Cost (AUD)</h2>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>A$</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Windows VM for the spike, 1 month (thesis: up to US$40/month, est.)</td>
+<td>57</td>
+</tr>
+<tr>
+<td>Domain plus landing page and docs (thesis: about US$50, est.)</td>
+<td>71</td>
+</tr>
+<tr>
+<td>Contingency: Stripe fees on refunds, extra VM time, FX (est.)</td>
+<td>50</td>
+</tr>
+<tr>
+<td>Stripe Payment Link, static hosting (GitHub Pages), outreach from Ethan's own accounts</td>
+<td>0</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td><strong>about A$178 (est.)</strong></td>
+</tr>
+<tr>
+<td><strong>Deferred to the build, not in this test:</strong> Sage 50 Pro licence US$737 (about <strong>A$1,050</strong>, more than the whole A$1,000 budget), code signing US$100 to 300 a year, terms and DPA template about A$500. That leaves about A$820 for the build, and the licence alone would use more than that.</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2>6. Decision numbers (by Day 30, 24 Nov)</h2>
+<ul>
+<li><strong>Pass, start the build:</strong> 3 or more paid US$99 deposits, each naming a real Sage 50 US <strong>desktop</strong> customer ready to install within 30 days. Also needed: at least 10 discovery calls, at least 5 teams saying Sage 50 comes up at least monthly, and a spike that creates and reads back an invoice.</li>
+<li><strong>Iterate, one 14-day extension only (about A$60 more, est.):</strong> exactly 2 deposits, or 3 or more where fewer than 3 named customers are desktop and ready. Add 20 contacts in the best channel. If bookkeepers rather than developers are pulling, test the review's pivot instead: an MCP connector at US$29 per company, sold straight to bookkeepers.</li>
+<li><strong>Kill (any one):</strong> 1 or no deposits after 40 contacts. More than half the named customers on Sage-hosted Cloud. Fewer than 5 teams saying Sage 50 comes up monthly. Apideck ships Sage 50 US before Day 30 and prospects say $599 is fine. Sage refuses an application ID. Or the SDK can't be used without the paid licence.</li>
+</ul>
+<h2>7. Key risk and the early check</h2>
+<p><strong>Sage connector access and a shrinking base.</strong> The SDK is 32-bit .NET only. A blank application ID works with sample companies only (Sage quick start). Apideck says access "can require a Sage ID tied to a Sage 50 licence". Sage-hosted Cloud can't run third-party software, and Sage says it's migrating customers there. <strong>Checked early:</strong> the Day 1 spike shows whether the sample company runs without buying the licence. The Day 4 application ID email tests Sage's willingness. Every call records how many of the prospect's customers are on Sage-hosted Cloud. Second risk: Apideck's connector, whose guide came out 17 Oct, gets a weekly status check.</p>
+<h2>8. Fit with Ethan's rules (flag)</h2>
+<p>The buyer is SaaS developers, not crypto tech bros, and token fit is weak (review; X bot's 4pm signal). <strong>No token is part of this test.</strong> A token would only come later, on pump.fun, only after paying users and only with a real token job, with Holder Rewards and Tokenized Agent buybacks off and no fee-funded buybacks or burns. Bots never launch or buy one.</p>
+<h2>9. Ethan approves (nothing public goes out before this)</h2>
+<ul>
+<li>[ ] Run the test and spend up to about A$178 (VM, domain, contingency)</li>
+<li>[ ] Offer wording: US$99 deposit, credited and refundable, then US$49/file with 30% founding discount</li>
+<li>[ ] Working name: "Ledgerport" or another, with no "Sage" in it; descriptive "for Sage 50" only</li>
+<li>[ ] Landing page goes live (public) and Stripe Payment Link switches to live mode, on Ethan's own Stripe account</li>
+<li>[ ] The 40-contact list and the outreach email and DM text, sent from Ethan's accounts (needs Ethan's OK)</li>
+<li>[ ] Follow-ups 1 and 2 (needs Ethan's OK)</li>
+<li>[ ] Forum and Reddit replies (public, needs Ethan's OK)</li>
+<li>[ ] Email to sdk.50us@sage.com requesting an application ID (needs Ethan's OK)</li>
+<li>[ ] Publishing the 2 guides (public, needs Ethan's OK)</li>
+<li>[ ] Any Sage licence purchase (out of budget unless he decides otherwise)</li>
+</ul>
+<h2>Amendment, 22 Oct 10:00pm AWST (from Git bot)</h2>
+<ul>
+<li><strong>Day 0 check (before any spend):</strong> confirm whether Rutter (and Codat) already sell a Sage 50 US desktop connector. Lead: <a href="https://github.com/cyrieu/Sage50Connector">cyrieu/Sage50Connector</a>, a C# tray app polling <code>production.rutterapi.com</code>, last pushed 14 Oct; owner's tie to Rutter unconfirmed. Check Rutter's and Codat's integration pages and docs.</li>
+<li><strong>Added kill/iterate trigger:</strong> prospects who already get Sage 50 US through Rutter or Codat count toward the kill, the same as Apideck. If Rutter covers Sage 50 US, the edge narrows to the MCP sandbox and a lower price; re-price and re-pitch before Day 1, or drop the test.</li>
+</ul></div>
+<p class="sources">Source: <a href="../sources/tests/ledgerport-money-test.md">ledgerport-money-test.md</a></p>
+</article>
+</main>
+<footer class="site">Theses by idea bot, reviews by Project Bot. Times are AWST (Perth time).</footer>
+</body>
+</html>
