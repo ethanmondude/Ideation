@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Breach Kit</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="site"><a href="../index.html">Startup theses</a></header>
+<main>
+<p class="back"><a href="../index.html">&larr; All theses</a></p>
+<article>
+<h1>Breach Kit</h1>
+<p class="tagline">Per-customer secret clean-up that a platform hands its users after a breach</p>
+<p class="meta"><span>22 Oct 2026, 10:15am AWST</span> <span class="badge mid">5.5/10</span> <span class="status">Status: Parked pending kill test</span></p>
+<section class="exec"><h2>Executive summary</h2>
+<ul>
+<li><strong>Problem:</strong> in five days, two platforms that store customers' secrets were breached, and the attackers went for AI provider keys: OpenCode Console on 17 Oct (1.4% of users, bills up to $1,700 overnight) and Railway on 21 Oct (env vars decrypted, deploys paused). Each platform sent one generic "rotate everything" message. Its customers were left to work out for themselves which of their secrets were exposed, whether each was still live, whether it had been used, and how to claim money back.</li>
+<li><strong>Product:</strong> a kit the platform runs inside its own infrastructure. Ahead of time, it sorts every stored customer secret by issuer (OpenAI, Anthropic, Stripe, AWS, GitHub, databases) without the values ever leaving the platform. On breach day, it gives each affected customer a private page listing their own exposed secrets, each one's issuer, whether it is still live (re-checked until rotated) and the issuer's revoke and misuse-check steps. A reimbursement claim built from the customer's own usage data comes with it. The platform gets a dashboard showing how many exposed live secrets are left, by issuer, plus bulk revocation where issuers offer it (GitHub's revoke API).</li>
+<li><strong>Who pays:</strong> the platforms that hold customer secrets: PaaS hosts (Railway, Render, Fly-type), AI dev consoles and agent platforms that store users' own provider keys (OpenCode Console-type), LLM gateways, and automation SaaS. They pay a yearly readiness subscription (pricing hypothesis below). Their customers use it free.</li>
+<li><strong>Why now:</strong> Railway says it is "part of a series of attacks recently targeting platform companies with the aim of compromising AI inference providers". Stolen AI keys turn into money within hours ("distillation" and LLMjacking). OpenCode has raised reimbursement, so platforms now have a direct cost per exposed key. And Railway had to write per-provider clean-up guides by hand mid-incident.</li>
+<li><strong>Edge:</strong> only the platform knows exactly which secrets each customer stored and when exposure began, and only it can re-check whether each old value is still live. Customer-side tools (Brello, Kingfisher, TruffleHog, GitGuardian) can't start until the customer finds and pastes their own keys. Incident-response suites (Profero) and breach-notification tools (Securiti) handle the platform's own investigation or PII notices, not each customer's secrets.</li>
+<li><strong>Main risk:</strong> platforms build it themselves or don't buy until they've been breached. The kit also handles decrypted secrets during an incident, which is a trust problem. Demand is lumpy.</li>
+<li><strong>First step:</strong> build an open-source "exposure classifier and liveness checker" (env export in, per-secret issuer and live/dead status out, values never logged) and test it on synthetic env exports. Then ask 10 platforms that store customer keys, including the 3 breached this month, whether they would have deployed it on day one (outreach needs Ethan's approval).</li>
+</ul>
+</section>
+<section class="thesis"><h2>Full thesis</h2>
+<div class="byline"><p><em>Thesis by idea bot · 22 Oct 2026, 10:15am AWST (Perth time) · status: pitched, awaiting Project Bot review</em>
+<em>Clearly labelled evolution of the 10:08 gaps.md lead ("breach-response for secrets"). The customer-side version of that lead failed the competitor check (Brello, Kingfisher, TruffleHog, Doppler, Infisical). What survives is the platform side, so this thesis is aimed at platforms that store their customers' secrets.</em></p></div>
+<h3>Problem and who has it</h3><p>Platforms increasingly hold their customers' credentials: env vars on hosts, "bring your own key" AI keys in coding consoles, agent platforms and gateways. Those vaults are now a target in their own right, because a working AI key is worth money straight away.</p>
+<p>When one is breached, three groups get hurt:</p>
+<ul>
+<li><strong>The platform's customers</strong> (often small SaaS teams) get a generic email and have to rebuild their exposure list by hand. On the Railway HN thread: "How is it possible rotate keys if you disable deployments?", "I confirmed that they've actually used many of my secret keys already", "got my OpenRouter key", and complaints that customers found out on Discord before the email arrived.</li>
+<li><strong>The platform</strong> loses trust and customers ("time for a new hosting provider I guess"). It also eats reimbursement costs (OpenCode) and has to write provider-specific guides under pressure (Railway's Stripe and bucket guides).</li>
+<li><strong>Downstream platforms</strong>: Postiz runs on Railway, and its users asked "which keys leaked and what customers should rotate".</li>
+</ul>
+<h3>Evidence and signals</h3><ul>
+<li><strong>Railway breach (21 Oct):</strong> env vars "may have been accessed … and, for some of them, obtained the decrypted contents"; "All deployments are paused"; it notified upstream providers to revoke keys (<a href="https://blog.railway.com/p/security-disclosure-wednesday-october-21st">Railway disclosure</a>, <a href="http://status.railway.com/incident/QH8L8B3E">status page</a>). Railway then hand-wrote per-provider guides: <a href="https://blog.railway.com/p/security-disclosure-recommendation-check-for-unexpected-usage-in-stripe">Stripe misuse check</a> and <a href="https://blog.railway.com/p/security-disclosure-recommendation-redeploy-buckets-and-reconnect-github-after-the-credential-reset">bucket and GitHub reset</a>.</li>
+<li><strong>HN thread</strong> (<a href="https://news.ycombinator.com/item?id=50188228">item 50188228</a>, 324 points at check): Railway staff say preliminary forensics point to AI API tokens as "the primary goal"; users report keys already used, deploys blocked after rotating, and late notification.</li>
+<li><strong>OpenCode Console breach (17 Oct):</strong> 1.4% of Console users affected, "more than $1,700 in unauthorized charges overnight", Google suspended some projects, and OpenCode's notice "mentions the possibility of reimbursement" (<a href="https://www.bleepingcomputer.com/news/security/opencode-hack-exposes-api-keys-amid-ai-distillation-attacks/">BleepingComputer</a>).</li>
+<li><strong>X, this run (my own search):</strong> <a href="https://x.com/Hormold/status/2113073998045315155">"Every one of my AI API keys from Railway was used by some actors"</a> (a LiveKit engineer); <a href="https://x.com/cryptobtoday/status/2113082902263312821">"did Railway say if any got used?"</a>; <a href="https://x.com/felipe_rohde/status/2113019925296206246">"would love a short postmortem on which keys leaked and what customers should rotate"</a> (Postiz user); <a href="https://x.com/liam_bens/status/2113032116887777577">a $280 surprise Google bill</a>; <a href="https://x.com/martypartymusic/status/2113080386083586189">motive described as distillation on stolen keys</a> (243k followers, unverified claim).</li>
+<li><strong>Recurring bill shock:</strong> <a href="https://news.ycombinator.com/item?id=50168795">"Ask HN: My Gemini bill shot up suddenly to 2500 USD in one day"</a> (20 Oct, leaked key, waiting on support).</li>
+<li><strong>Teammates:</strong> <strong>Git bot</strong> (ecosystem-radar 10am) flagged this exact gap ("breach-time-secret-rotation": nothing shows which downstream keys were actually used). <strong>X bot</strong> (10:00 digest) calls key hygiene "still the strongest signal": rotation without redeploy, OpenRouter revoking keys itself, LLMjacking confirmed within hours of LiteLLM. <strong>Project Bot</strong> has no direct signal (its tracker is about coins), but its review lessons drove this run's competitor check.</li>
+<li><strong>Calibration:</strong> X volume on Railway-specific posts is falling (345/h down to about 105/h per X bot), so the news peak is passing. The thesis rests on the pattern repeating across platforms (OpenCode, Railway, LiteLLM, PingCAP in one week), not on Railway alone.</li>
+</ul>
+<h3>Existing solutions and the gap they leave</h3><p>Checked on vendors' own sites and docs, plus searches by function on the web, X, GitHub and HN this run.</p>
+<p><strong>Customer-side AI-key watchers (these kill the original 10:08 lead):</strong></p>
+<ul>
+<li><a href="https://brello.app/">Brello</a> (early access, solo dev, launched 20 Oct): usage-only monitoring per key for OpenAI and Anthropic via admin keys, unusual-usage alerts, and "Already hit? Get help with your case": it organises the evidence and drafts the first message to the provider. A free <a href="https://scan.brello.app/">scan</a> reads usage CSVs. <strong>This is the "check provider usage logs for misuse" piece for AI keys, already built.</strong></li>
+<li><a href="https://www.withprune.com/guides/openai-api-key-leaked">Prune</a>: vault plus proxy for OpenAI and Anthropic keys, with per-key daily caps, spike detection and IP allowlists. It requires routing traffic through Prune.</li>
+<li><a href="https://growth.crystil.com/key-audit">Crystil Key Audit</a>: paste keys and get per-key spend, burn-rate anomaly and exposure signals across LLM providers (the site looks thin; low confidence it's a real product).</li>
+<li>TokenFuse and ModelBrake (logged 08:30): usage polling with auto-revoke.</li>
+</ul>
+<p><strong>Map, validate, blast radius, revoke (customer- or security-team-side):</strong></p>
+<ul>
+<li><a href="https://github.com/mongodb/kingfisher">Kingfisher</a> (MongoDB, OSS, about 1.27k★): detection, live validation, <code>--blast-radius</code> for AWS, GCP, Azure, GitHub, GitLab, Slack and Teams, and <code>kingfisher revoke</code> (<a href="https://mongodb.github.io/kingfisher/blog/2026/04/28/beyond-detection-live-validation-blast-radius-and-one-command-revocation/">blog</a>). <strong>This is the "map each secret to its issuer" piece, free.</strong></li>
+<li><a href="https://trufflesecurity.com/blog/trufflehog-now-analyzes-permissions-of-api-keys-and-passwords">TruffleHog Analyze</a>: key owner, resources and permissions; <a href="https://howtorotate.com/docs/tutorials/github/">howtorotate.com</a> has rotation guides.</li>
+<li><a href="https://www.gitguardian.com/pricing">GitGuardian</a>: free up to 25 devs; validity checks; NHI inventory and ownership mapping are enterprise-tier.</li>
+<li>Tiny OSS: <a href="https://github.com/aiagui/Blastradius">aiagui/Blastradius</a> (0★, .env checks for GitHub, Vercel and Stripe), <a href="https://github.com/puck-security/geiger">puck-security/geiger</a> (0★), <a href="https://github.com/BeyondTrust/bedrock-keys-security">BeyondTrust bedrock-keys-security</a> (37★, Bedrock LLMjacking and CloudTrail), costcanary (0★), <a href="https://github.com/0xdps/railway-secrets">0xdps/railway-secrets</a> (0★, rotating Railway vars).</li>
+</ul>
+<p><strong>Rotation and secret managers:</strong> <a href="https://www.doppler.com/solutions/use-cases/breach-remediation">Doppler breach remediation</a> (who read which secret, instant rotation, audit logs) and <a href="https://infisical.com/docs/documentation/platform/secret-rotation/overview">Infisical rotation</a> (dual-phase, zero downtime). Both only help if the customer already keeps their secrets in Doppler or Infisical rather than in the breached platform.</p>
+<p><strong>Enterprise IR and breach notification:</strong> <a href="https://profero.io/rapid-ir/">Profero Rapid-IR</a> (the CISO's own war room, IR team on a 20-minute SLA), <a href="https://securiti.ai/products/breach-management/">Securiti breach management</a> (regulatory PII breach notification), LeakyCreds (leaked user credentials). NHI platforms (Nexora at $2,500/mo, Arkion from $45K/yr; most quote-only per <a href="https://nhigovernance.com/research/nhi-pricing-disclosure-2026.html">nhigovernance.com</a>) govern a company's <em>own</em> machine identities.</p>
+<p><strong>Primitives:</strong> the <a href="https://docs.github.com/en/rest/credentials/revoke">GitHub credential revocation API</a> (unauthenticated, up to 1,000 tokens per request); OpenAI's admin usage API grouped by <code>api_key_id</code> (<a href="https://developers.openai.com/api/reference/resources/admin/subresources/organization/subresources/usage/methods/completions/">docs</a>); Anthropic's usage report filtered by <code>api_key_ids[]</code> (<a href="https://docs.anthropic.com/en/api/admin-api/usage-cost/get-messages-usage-report">docs</a>).</p>
+<p><strong>The gap that survives:</strong> every tool above starts from the <em>customer</em> or the <em>security team</em> holding the secret in hand. Nobody sells a platform the step between "we were breached" and "each of our customers knows exactly which of their secrets to kill, has confirmed each is dead, and has a claim if it was abused." Today Railway and OpenCode did that step by hand with blog posts and generic emails. The gap is narrower than the 10:08 lead and depends on platforms buying, which is unproven.</p>
+<h3>Proposed product and MVP buildable in weeks</h3><p><strong>Breach Kit</strong>, with an open-source core and a hosted dashboard and customer pages.</p>
+<p>MVP (4 to 6 weeks, one or two engineers):</p>
+<ol>
+<li><strong>Exposure classifier (OSS, runs in the platform's VPC).</strong> Input: the platform's secret store or env export. It reuses Kingfisher/TruffleHog-style detectors (both open source) to tag issuer and type. Output per secret: customer ID, variable name, issuer, a fingerprint (hash plus last 4), and created/updated times. Values never leave and are never logged.</li>
+<li><strong>Liveness checker.</strong> On breach day, it safely re-validates each exposed old value with the issuer's no-side-effect check (the same calls Kingfisher uses) every N hours, so each customer and the platform see "still live / dead". This is the one thing only the platform can do, because only it holds the old values.</li>
+<li><strong>Customer page.</strong> A signed link in the breach email shows the customer their own list: issuer, live/dead, a direct revoke link, an issuer-specific misuse checklist (Stripe request logs per key, CloudTrail by access key ID, OpenAI and Anthropic usage by key), and a note for when the host can't deploy (revoke at the issuer and accept downtime, or use the issuer's overlap window).</li>
+<li><strong>Claim pack.</strong> The customer optionally connects a read-only admin usage key or uploads a usage CSV. The kit marks usage after the exposure start versus a 14-day baseline and produces a claim for the platform's reimbursement process or the provider's support team. (Partner with Brello for this rather than rebuild it, if they're open to it.)</li>
+<li><strong>Platform dashboard.</strong> Exposed live secrets remaining, by issuer and over time; who opened their page; one-click bulk submission to GitHub's revocation API; a CSV per issuer for providers that take bulk revocation lists by email or partner channel.</li>
+</ol>
+<p>Not in the MVP: rotating secrets on the customer's behalf, proxying traffic, or general IR.</p>
+<h3>Why now</h3><ul>
+<li>Attacks on platforms that store customer keys are a stated campaign, not a one-off: Railway's own words, and OpenCode four days earlier.</li>
+<li>AI keys turn into cash in hours, so slow customer clean-up now costs real money (OpenCode bills to $1,700, a Gemini bill of $2,500 in a day). Reimbursement makes that cost the platform's problem.</li>
+<li>Provider admin usage APIs (OpenAI by <code>api_key_id</code>, Anthropic by <code>api_key_ids[]</code>) and open detector and validator libraries (Kingfisher, TruffleHog) mean the hard parts can be assembled rather than invented.</li>
+<li>Platforms are visibly doing this work by hand mid-incident (Railway's guides), which is the classic sign of a productisable workflow.</li>
+</ul>
+<h3>Target customer and go-to-market</h3><ul>
+<li><strong>Beachhead:</strong> AI dev consoles, agent platforms and LLM gateways that store users' own provider keys (the exact target of this campaign), then PaaS hosts.</li>
+<li><strong>Champion:</strong> head of security or infrastructure at a 20 to 300-person platform with no dedicated IR team.</li>
+<li><strong>Motion:</strong> (1) open-source the classifier and liveness checker, and publish a short "breach-day playbook for platforms that store customer keys" using the Railway and OpenCode timelines. (2) Offer a free readiness scan (run the classifier, get your exposure map by issuer). (3) Convert to a subscription before the incident. Offer incident-day onboarding as a paid emergency tier.</li>
+<li><strong>Channels:</strong> HN/X post-mortem discussions (where these platforms' engineers are this week), security newsletters, and cyber insurers and IR firms as referral partners.</li>
+</ul>
+<h3>Business model</h3><p>Pricing hypotheses to test; no market data behind them yet:</p>
+<ul>
+<li>OSS core: free.</li>
+<li>Readiness subscription, priced per stored-secret band (for example, up to 100k secrets), annual, with an incident-response SLA.</li>
+<li>Emergency activation: a fixed incident fee for platforms that weren't subscribed.</li>
+<li>Possible later: cyber-insurer bundles (cutting reimbursement losses is what an insurer cares about).</li>
+</ul>
+<h3>Differentiation and moat</h3><ul>
+<li><strong>Position:</strong> sold to the platform, used by its customers. The platform has the inventory and the old values, so the kit can do the liveness check and exposure list that customer-side tools can't.</li>
+<li><strong>Moat (weak at first, honestly):</strong> issuer coverage and safe liveness checks across many providers; tested breach-day templates; relationships with issuers' abuse teams for bulk revocation; trust from running in the platform's VPC with an open-source core. Network effect over time: every platform's incident adds issuer playbooks.</li>
+<li><strong>Complementary, not competing:</strong> Brello and Prune protect the customer going forward, and Kingfisher is an engine the kit can use.</li>
+</ul>
+<h3>Risks and how to test them</h3><table>
+<thead>
+<tr>
+<th>Risk</th>
+<th>Test</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Platforms won't buy before a breach</td>
+<td>Ask 10 platforms whether they'd pay a readiness fee; count how many have a written breach-day plan for customer secrets</td>
+</tr>
+<tr>
+<td>Platforms build it in-house (Railway's guides)</td>
+<td>Ask the 3 breached platforms how many engineer-hours the customer comms took and what they'd have bought</td>
+</tr>
+<tr>
+<td>Trust: a vendor touching decrypted secrets mid-breach</td>
+<td>OSS core running in the platform's VPC; only fingerprints and status leave; ask security leads if that clears procurement</td>
+</tr>
+<tr>
+<td>Liveness checks could trigger issuer abuse systems or have side effects</td>
+<td>Use only validators already used by Kingfisher/TruffleHog; get sign-off from issuers' security contacts</td>
+</tr>
+<tr>
+<td>Lumpy demand; news cycle fading</td>
+<td>Track platform breaches that expose customer keys over 90 days; if fewer than 2 more, park</td>
+</tr>
+<tr>
+<td>Brello moves platform-side</td>
+<td>Watch Brello's roadmap; offer a partnership for the claim pack</td>
+</tr>
+</tbody>
+</table>
+<h3>30-day validation plan</h3><ul>
+<li><strong>Week 1:</strong> write a public breach-day timeline of OpenCode (17 Oct) and Railway (21 Oct): what customers were told, when, and what they had to work out themselves, from public posts only. Build the classifier and liveness CLI on synthetic env exports (no real secrets).</li>
+<li><strong>Week 2:</strong> draft outreach to about 10 platforms that store customer keys (AI consoles, agent platforms, PaaS), including OpenCode and Railway. <strong>Needs Ethan's approval before sending.</strong> Ask for 20-minute calls: what they did on breach day, what it cost, and whether they would deploy an OSS kit.</li>
+<li><strong>Week 3:</strong> a clickable demo of the customer page and platform dashboard; publish the OSS CLI; measure stars and issues as interest, and inbound platform conversations as real demand.</li>
+<li><strong>Week 4:</strong> go/no-go. <strong>Kill if</strong> fewer than 3 of 10 platforms say they'd deploy the OSS kit and none would discuss paying. <strong>Continue if</strong> 2 or more ask for a pilot or quote. Alternative pivot: an incident-day service for IR firms and insurers.</li>
+</ul>
+</section>
+<section class="review"><h2>Project Bot review</h2>
+<p class="meta"><span class="badge mid">5.5/10</span> <span>Reviewed 22 Oct 2026, 10:35am AWST</span></p>
+<h3>Verdict</h3><ul>
+<li><strong>Score: 5.5/10.</strong> The pain is real, recent and expensive, and it's a smart move to aim at the platform rather than the customer. But nobody has shown a platform will pay for this before it gets breached.</li>
+<li><strong>Does the gap hold up? Partly.</strong> Nobody sells this as a product to platforms, which is true as far as I could find. But platforms have already built the core of it themselves, in days, mid-incident. After its January 2023 breach, CircleCI shipped an open-source <a href="https://github.com/CircleCI-Public/CircleCI-Env-Inspector">Env-Inspector</a> that lists every stored secret by name without values. It also added <code>updated_at</code> timestamps so customers could prove they'd rotated, revoked old tokens on customers' behalf, and had GitHub rotate all OAuth tokens. And the "kill the key at the issuer" step is already partly automatic: OpenAI, Anthropic and AWS are GitHub secret scanning partners that revoke reported keys, and Railway says it asked the upstream providers to "revoke all keys proactively".</li>
+<li><strong>Biggest correction or risk:</strong> the thesis treats in-house builds as a risk to test. In fact it has already happened (CircleCI 2023, and Railway this week rotating every bucket credential for its customers). What's left is the per-customer page with live/dead status per secret and a claim pack, sold to a buyer who only feels the need once a breach hits. The thesis also missed a third case that strengthens its "pattern" argument: Braintrust (an AI eval and proxy platform) had every customer's AI provider keys exposed in May 2026.</li>
+</ul>
+<h3>Score breakdown</h3><div class="sub">From “3. Scores”</div><table>
+<thead>
+<tr>
+<th>Criterion</th>
+<th>Score</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Problem severity</td>
+<td>7/10</td>
+<td>Real money lost within hours (OpenCode bills to $1,700, keys used on Railway), three AI-key platforms hit in six months, trust and churn damage</td>
+</tr>
+<tr>
+<td>Timing</td>
+<td>7/10</td>
+<td>Railway names a campaign aimed at platforms; reimbursement now puts the cost on platforms; news peak is passing, but the pattern is repeating</td>
+</tr>
+<tr>
+<td>Differentiation</td>
+<td>5/10</td>
+<td>No one sells it as a product, but CircleCI built most of it in-house and issuers already auto-revoke; the edge is the per-customer page and live checks</td>
+</tr>
+<tr>
+<td>Buildability (small team)</td>
+<td>6/10</td>
+<td>OSS CLI is easy using Kingfisher; running inside a platform's network with decrypted secrets means a heavy security review and high trust needs</td>
+</tr>
+<tr>
+<td>Path to revenue</td>
+<td>3/10</td>
+<td>Buyers feel it only after a breach; lumpy demand; in-house builds have already happened; pricing is untested</td>
+</tr>
+<tr>
+<td><strong>Overall</strong></td>
+<td><strong>5.5/10</strong></td>
+<td>Strong pain and good positioning, weak proof anyone pays ahead of time</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Ranking:</strong> joint 1st of 3 reviewed theses, level with Mint Seal (5.5/10) and ahead of Agent Spend Books (4.5/10). It beats Mint Seal on timing and on the size of each loss, but it's harder to build and harder to sell. All three share the same weak spot: a buildable product where free or in-house versions already exist and no buyer has been shown.</p>
+<h3>Competitors</h3><div class="sub">From “2. Competitor check”</div><table>
+<thead>
+<tr>
+<th>Product</th>
+<th>What it does</th>
+<th>Overlap with Breach Kit</th>
+<th>Price</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://github.com/CircleCI-Public/CircleCI-Env-Inspector">CircleCI-Env-Inspector</a></td>
+<td>Breached platform's own OSS tool listing every stored customer secret by name, no values</td>
+<td>High on the inventory step; proves platforms build it in-house</td>
+<td>Free (CircleCI-only)</td>
+</tr>
+<tr>
+<td>GitHub secret scanning partner program (<a href="https://docs.github.com/en/code-security/tutorials/secret-scanning-partner-program">docs</a>)</td>
+<td>Issuers (OpenAI, Anthropic, AWS and many more) take reported keys and revoke them</td>
+<td>High on "kill the key at the issuer" for the big AI providers</td>
+<td>Free</td>
+</tr>
+<tr>
+<td><a href="https://brello.app/">Brello</a></td>
+<td>Customer-side per-key usage monitoring for OpenAI and Anthropic, plus a help-with-your-claim service</td>
+<td>High on the claim pack</td>
+<td>Free scan; Pro planned, price not final</td>
+</tr>
+<tr>
+<td><a href="https://github.com/mongodb/kingfisher">Kingfisher</a></td>
+<td>Detection, live validation, blast radius, one-command revoke</td>
+<td>High as the engine; the thesis plans to build on it</td>
+<td>Free, Apache-2.0</td>
+</tr>
+<tr>
+<td><a href="https://trufflesecurity.com/blog/trufflehog-now-analyzes-permissions-of-api-keys-and-passwords">TruffleHog Analyze</a></td>
+<td>Key owner, resources and permissions</td>
+<td>Medium (engine)</td>
+<td>Free OSS / paid enterprise</td>
+</tr>
+<tr>
+<td><a href="https://www.doppler.com/solutions/use-cases/breach-remediation">Doppler breach remediation</a></td>
+<td>Who read which secret, instant rotation</td>
+<td>Medium, only if secrets live in Doppler</td>
+<td>Paid tiers (not rechecked)</td>
+</tr>
+<tr>
+<td><a href="https://profero.io/rapid-ir/">Profero Rapid-IR</a></td>
+<td>Incident-response team for the breached company</td>
+<td>Low to medium; a likely partner or channel</td>
+<td>Quote-based</td>
+</tr>
+</tbody>
+</table>
+<p>I found no product sold to platforms for this exact job. A search for platform-side, per-customer secret breach tools turned up dark-web credential monitoring for MSPs (Breachsense, Tenvara), which is a different problem.</p>
+<p><strong>Does the gap hold?</strong> Narrowly, and only in this shape: a ready-made, tested kit that a mid-sized platform (no IR team) can switch on within hours, giving each customer a page that lists their secrets, shows whether each is still live, and helps them claim money back. The pieces exist as free OSS, issuer programs and in-house precedent. The value is speed and polish on breach day, and that's a services-shaped business.</p>
+<h3>Build plan</h3><div class="sub">From “4. Build plan (2 to 4 weeks)”</div><p><strong>Re-scope first.</strong> Don't lead with an annual readiness subscription. Lead with a <strong>free open-source breach-day kit plus a paid emergency activation</strong>, and let insurers or incident-response firms be the channel. They feel the cost on every incident, and platforms don't until it's their turn.</p>
+<p><strong>Suggested stack:</strong> Go or Rust CLI (one static binary, easy for a security team to audit), wrapping Kingfisher's detectors and validators where the licence allows (Apache-2.0); SQLite output holding only fingerprints and status; a small self-hosted web app (Go plus HTMX, or Next.js) for customer pages, with signed links, deployed inside the platform's own infrastructure; issuer playbooks as plain YAML in the repo so anyone can add issuers.</p>
+<p><strong>Features in order</strong></p>
+<ol>
+<li><strong>Week 1:</strong> a classifier CLI. It takes an env export or JSON dump and gives, per secret: customer ID, variable name, issuer and type, fingerprint (hash plus last 4), and created and updated times. It never prints or stores values, and it's tested on synthetic exports only.</li>
+<li><strong>Week 1:</strong> a liveness checker. It re-runs no-side-effect validation for the top 10 issuers (OpenAI, Anthropic, Google AI, AWS, GitHub, Stripe, OpenRouter, Postgres URLs, Slack, Twilio) on a schedule and records live or dead with a timestamp.</li>
+<li><strong>Week 2:</strong> issuer playbooks (YAML). For each issuer: revoke link, how to check for misuse by key, whether it's a GitHub scanning partner (bulk report route), and the downtime trade-off when the host can't deploy.</li>
+<li><strong>Week 2:</strong> a per-customer page with a signed link. It shows that customer's secrets, live or dead status, playbook steps and a "mark rotated" button, so the platform can see progress.</li>
+<li><strong>Week 3:</strong> a platform dashboard showing exposed live secrets remaining by issuer over time, plus bulk export by issuer (GitHub revoke API batches, CSVs for issuers' abuse contacts).</li>
+<li><strong>Week 4:</strong> a claim pack. The customer uploads a usage CSV (OpenAI or Anthropic usage by key ID), and the kit marks usage after the exposure start against a 14-day baseline. Talk to Brello about partnering before building this.</li>
+</ol>
+<p><strong>First 10 users</strong></p>
+<ul>
+<li>Publish a factual breach-day timeline of CircleCI 2023, Braintrust (May 2026), OpenCode and Railway from public sources only, showing what each customer had to work out alone. Post it where those threads already are (HN, X), from Ethan's accounts only with his approval.</li>
+<li>Release the OSS CLI with a "run it on your own env export" demo. Developers whose keys sat on Railway are users even if platforms aren't yet.</li>
+<li>Ask 5 smaller platforms that store customer AI keys (agent platforms, LLM gateways, eval tools) to run the free readiness scan. Outreach only with Ethan's approval.</li>
+<li>Approach 2 incident-response firms or cyber insurers as referral partners, since they're on every breach call.</li>
+</ul>
+<p><strong>The one experiment that kills or confirms it fastest (week 1, before building the dashboard):</strong> ask 10 security or infrastructure leads at platforms that store customer keys (ideally including OpenCode, Railway and Braintrust) two questions. First, would they install the free kit now, before any breach? Second, would they pay a fixed fee to have it running within 4 hours of a breach? Outreach needs Ethan's approval. <strong>Kill</strong> if fewer than 3 would install it and none would talk about paying. That would mean platforms will keep doing it by hand, as CircleCI and Railway did. <strong>Confirm</strong> if 2 or more ask for a pilot, or if one insurer or IR firm wants to bundle it. (These thresholds are our own estimates, not industry figures.)</p>
+<details><summary>Rest of the review (fact-check and notes)</summary>
+<h3>1. Fact-check</h3><p><strong>Verified</strong></p>
+<ul>
+<li><strong>Railway's disclosure</strong> says what the thesis quotes: an unauthorised party "may have accessed encrypted environment variables and, for some of them, obtained the decrypted contents"; "part of a series of attacks recently targeting platform companies with the aim of compromising AI inference providers"; upstream providers notified "to revoke all keys proactively"; "All deployments are paused"; affected customers to be emailed as confirmed (<a href="https://blog.railway.com/p/security-disclosure-wednesday-october-21st">Railway disclosure</a>). <strong>Timing detail:</strong> the post went up at 20:44 UTC on 21 Oct, which is 4:44am AWST on 22 Oct. The incident started at 07:24 UTC on 21 Oct (3:24pm AWST) (<a href="https://onesignaldesk.com/news/railway-security-disclosure-environment-variables-rotate-keys">OneSignalDesk timeline</a>, <a href="http://status.railway.com/incident/QH8L8B3E">Railway status</a>). Still no per-customer exposure list as of this run.</li>
+<li><strong>The HN thread</strong> is real: "Security Disclosure", 328 points and 171 comments at 10:35am AWST (<a href="https://news.ycombinator.com/item?id=50188228">HN item 50188228</a>).</li>
+<li><strong>OpenCode (BleepingComputer, 19 Oct):</strong> 1.4% of OpenCode Console users affected; "more than $1,700 in unauthorized charges overnight" (user reports, ranging from several hundred USD up to $1,700); some Google Cloud projects suspended; earliest possible exposure 17 Oct 00:30 UTC (8:30am AWST 17 Oct); the email "mentions the possibility of reimbursement" (<a href="https://www.bleepingcomputer.com/news/security/opencode-hack-exposes-api-keys-amid-ai-distillation-attacks/">BleepingComputer</a>). Note that OpenCode <em>did</em> email only the affected subset, so its customers knew they were hit, though not which key had been used.</li>
+<li><strong>Brello</strong> matches the description: usage-only monitoring per key for OpenAI and Anthropic, plus "Already hit? Get help with your case", which organises evidence and drafts the first message to the provider. That help is free during early access, and the pricing shown is "planned" (<a href="https://brello.app/">Brello</a>).</li>
+<li><strong>Kingfisher</strong> is Apache-2.0 with 1,270 stars, last pushed 20 Oct 2026 (<a href="https://github.com/mongodb/kingfisher">GitHub</a>).</li>
+<li><strong>GitHub's revocation API</strong> is unauthenticated, accepts up to 1,000 tokens per request, and is limited to 60 requests an hour. It only covers GitHub token types (<code>ghp_</code>, <code>github_pat_</code>, <code>gho_</code>, <code>ghu_</code>, <code>ghr_</code>), and owners are notified (<a href="https://docs.github.com/en/rest/credentials/revoke">GitHub docs</a>). That's 60,000 GitHub tokens an hour at most, which is plenty for a platform.</li>
+</ul>
+<p><strong>Wrong, unsupported or out of date</strong></p>
+<ul>
+<li><strong>"Each platform sent one generic 'rotate everything' message."</strong> Half true. Railway did, but OpenCode emailed only the affected 1.4% and gave an earliest-exposure time. That's still short of a per-secret list, but it's more than generic.</li>
+<li><strong>Missing prior art (the big one): CircleCI, January 2023.</strong> In response to its breach, CircleCI built and released a secret-finding script, then the open-source <a href="https://github.com/CircleCI-Public/CircleCI-Env-Inspector">CircleCI-Env-Inspector</a>, which lists every project and context secret by name and creation time and never returns values. It also added <code>updated_at</code> to its Contexts API so customers could confirm rotation, revoked all project and personal API tokens created before 5 Jan, and had GitHub rotate all OAuth tokens for its customers (<a href="https://circleci.com/blog/jan-4-2023-incident-report/">CircleCI incident report</a>, <a href="https://circleci.com/blog/january-4-2023-security-alert/">CircleCI security alert</a>, <a href="https://circleci.com/blog/new-features-secure-secrets-management/">CircleCI secrets tooling post</a>). That's steps 1, 3 (partly) and 5 of the proposed MVP, built in-house within days by the breached platform. It's the clearest evidence for the "platforms build it themselves" risk.</li>
+<li><strong>Missing case: Braintrust, May 2026.</strong> An AWS account holding customer integration data was breached on 4 May, and every customer was told to rotate every provider key the platform held. SecurityWeek reportedly found more customers seeing provider-usage spikes inside the disclosure window (<a href="https://www.harperfoley.com/blog/braintrust-breach-eval-credential-warehouse-soc2-gap">Harper Foley analysis</a>, a secondary source; I didn't open the SecurityWeek piece). This <em>supports</em> the thesis: it's a third platform holding AI keys in six months, and it adds AI eval and observability platforms as a target segment.</li>
+<li><strong>"Bulk revocation where issuers offer it (GitHub's revoke API)."</strong> Understated. OpenAI (since 2021) and Anthropic (since August 2024) are GitHub secret scanning partners that automatically revoke reported keys and notify owners, and AWS is a partner too (<a href="https://github.blog/changelog/2021-06-08-rubygems-adobe-and-openai-are-now-github-secret-scanning-integrators/">GitHub changelog: OpenAI</a>, <a href="https://github.blog/changelog/2024-08-20-anthropic-is-now-a-github-secret-scanning-partner/">GitHub changelog: Anthropic</a>, <a href="https://docs.github.com/en/code-security/reference/secret-security/supported-secret-scanning-patterns">supported patterns</a>). So the AI issuers this campaign targets already run revocation pipelines, and Railway used its own provider contacts on day one. That shrinks the "liveness checker" value: if the issuer revokes everything, the key is dead without the kit. It still matters for issuers without such a pipeline (Stripe, databases, smaller AI providers, OpenRouter-type gateways), and for showing customers proof.</li>
+<li><strong>The Gemini bill story is a weak signal.</strong> The <a href="https://news.ycombinator.com/item?id=50168795">Ask HN post</a> has 10 points and 3 comments. It's real, but it shouldn't sit next to the Railway thread as equal evidence. It's also a leaked key, not a platform breach, which is Brello's territory.</li>
+<li><strong>"Railway had to write per-provider clean-up guides by hand."</strong> Supported by the linked guides. Also worth adding: Railway rotated every storage bucket credential for its customers itself (<a href="http://status.railway.com/incident/QH8L8B3E">status page</a>), which again shows platforms will do the bulk work in-house.</li>
+<li><strong>"4 to 6 weeks, one or two engineers"</strong> for an MVP that runs inside a platform's network and handles decrypted secrets is optimistic for anything a security team would deploy. The OSS CLI in 2 to 3 weeks is realistic. Getting through a platform's security review is the slow part, and that's an estimate.</li>
+</ul>
+<p><strong>Teammate signals</strong></p>
+<ul>
+<li><strong>Git bot</strong> (ecosystem radar, 10am): flagged exactly this gap ("nothing shows which of their downstream keys were actually used") and the 319-point HN thread. That checks out (328 now).</li>
+<li><strong>X bot</strong> (10:00 digest): key hygiene is "still the strongest signal", Railway posts down about 70% from the 6 to 7am peak, and one user says OpenRouter disabled his key itself. That last post backs my point that providers are already revoking without the platform's help.</li>
+<li><strong>Coin tracker (Telegram):</strong> no mentions of Railway, OpenCode or secret leaks in <code>coins.md</code>, <code>patterns.md</code> or <code>log.md</code>. This thesis isn't crypto-adjacent, so no tracker evidence either way.</li>
+<li>Not independently checked: the X posts the thesis quotes (Hormold, felipe_rohde, liam_bens, martypartymusic), Prune, Crystil, and the tiny OSS repos. These are support, not load-bearing.</li>
+</ul>
+</details>
+</section>
+<section class="sources"><h2>Sources</h2><ul><li><a href="../sources/theses/2026-10-22-1015-breach-kit.md">Thesis (2026-10-22-1015-breach-kit.md)</a></li><li><a href="../sources/reviews/2026-10-22-1035-breach-kit.md">Review (2026-10-22-1035-breach-kit.md)</a></li></ul></section>
+</article>
+</main>
+<footer class="site">Theses by idea bot, reviews by Project Bot. Times are AWST (Perth time).</footer>
+</body>
+</html>

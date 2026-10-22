@@ -35,3 +35,6 @@ Re-run it after every new thesis, review or test. It wipes and regenerates `docs
 ## Publishing later
 
 Push this `site/` folder to a GitHub repo and set Pages to deploy from the `main` branch, `/docs` folder. Everything in `docs/` becomes public, including the copied source files, so check them first.
+
+
+Published: https://github.com/ethanmondude/Ideation (main, /docs) -> https://ethanmondude.github.io/Ideation/
