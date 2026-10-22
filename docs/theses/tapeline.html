@@ -1,0 +1,582 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tapeline</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="site"><a href="../index.html">Startup theses</a></header>
+<main>
+<p class="back"><a href="../index.html">&larr; All theses</a></p>
+<article>
+<h1>Tapeline</h1>
+<p class="tagline">Trade the AI headline, in one click, on Solana perps</p>
+<p class="meta"><span>22 Oct 2026, 4:30pm AWST</span> <span class="badge mid">6/10</span> <span class="status">Status: Pitched, awaiting Project Bot review</span></p>
+<section class="exec"><h2>Executive summary</h2>
+<ul>
+<li><strong>Problem.</strong> AI news now moves tradable markets around the clock: Anthropic and OpenAI pre-IPO perps, AI-linked stock perps (NVDA, IREN, CRWV) and AI coins. Tech-bro traders see the headline on X, then lose minutes working out which market it moves, whether the rumour is real, and which venue lists it. On 18 Oct an unconfirmed "Anthropic deal" post sent the IREN perp on Hyperliquid from about $26 to $44 and back (<a href="https://x.com/NighthawkTradez/status/2111862558416409005">NighthawkTradez</a>, 279k views; <a href="https://x.com/crosswatchhq/status/2111905714520395930">Crosswatch</a>).</li>
+<li><strong>Product.</strong> A browser overlay on X plus a Telegram bot. It detects an AI headline, shows the 1 to 5 markets it moves (for example ANTHROPIC, NVDA, IREN, SOL), adds a source check that labels the story confirmed, single-source or denied, and opens a one-tap long or short on <strong>Phoenix perps</strong> (Solana) through Phoenix's new <strong>Flight builder codes</strong>. Login is with a Solana wallet, and the trading key is a scoped session key in an embedded wallet that can't withdraw.</li>
+<li><strong>Who pays and how much.</strong> Traders pay a builder fee of 5 basis points (0.05%) on filled taker volume, collected on-chain by Phoenix and public. This is the Hyperliquid builder-code model. There, 86 frontends earned <strong>$3.80M in 30 days on $8.72B of routed volume</strong>, and small specialist apps make $10k to $35k a month from a few hundred users (Mass: $35.1k from 258 users; Moonbot: $16.7k from 148) (<a href="https://openchainbench.com/hyperliquid">OpenChainBench, 22 Oct</a>).</li>
+<li><strong>Token job.</strong> $TAPE is staked to cut your builder fee from 5 to 2.5 bps and to unlock instant (zero-delay) alerts, and it's spent on deep source checks. It launches on Bags, so creator fees are visible on-chain. There are no buybacks from revenue and no payouts to holders.</li>
+<li><strong>Cost against A$1,000.</strong> About A$560 one-off plus A$95 a month, so roughly A$940 covers four months of runway (itemised below). The biggest unknown cost is legal advice, which is <strong>not</strong> in the budget (see the main risk).</li>
+<li><strong>Path to the first $10k a month.</strong> That needs about $20M of routed taker volume a month at 5 bps, which is 1.6% of Phoenix's current $1.26B per 30 days (<a href="https://defillama.com/perps/chain/solana">DefiLlama</a>), or roughly 200 to 300 active traders, in line with the Hyperliquid comparables. Base case: $3k to $6k a month by month 12. The $10k a month needs a second venue, adding Hyperliquid's builder-code markets (Entropy, trade.xyz).</li>
+<li><strong>Why now.</strong> Phoenix launched Flight codes in May 2026 (<a href="https://www.kucoin.com/news/insight/SOL/6a078285d064730007b5da6d">aixbt via KuCoin</a>). It listed an <strong>ANTHROPIC pre-IPO perp on 20 to 21 Oct</strong> and runs a $25k trading campaign around it (<a href="https://x.com/PhoenixTrade/status/2113004091320553976">PhoenixTrade</a>, <a href="https://x.com/solana_defi/status/2111882741746892875">solana_defi</a>). The Claude Duet and Anthropic IPO talk is the top AI story on X today. I found no third-party Flight frontend.</li>
+<li><strong>Edge, risk and first move.</strong> The edge is the headline-to-market mapping with a rumour check, on a venue no X overlay serves yet. Raindrop, Xeet and Merit cover Hyperliquid cashtags only. <strong>The main risk is regulatory:</strong> running a frontend that offers leveraged equity and pre-IPO derivatives from Australia may count as a financial service needing an AFSL, so get a paid legal opinion before any real-money launch. <strong>First move this week:</strong> build a read-only overlay (headline to markets, plus the source check, no trading) and measure clicks.</li>
+<li><strong>Verdict: test, about 35% confidence.</strong> The money model is proven and verifiable on-chain, and the venue is open, but the legal question and thin Phoenix volume could each kill it.</li>
+</ul>
+</section>
+<section class="thesis"><h2>Full thesis</h2>
+<div class="byline"><p><em>Idea bot thesis, Thu 22 Oct 2026, 16:30 AWST (Perth). Path: /workspace/idea-bot/theses/2026-10-22-1630-tapeline.md</em></p></div>
+<h3>Problem and user</h3><p><strong>User.</strong> A Solana-native trader in Ethan's audience who already trades memecoins on Axiom or GMGN, holds USDC, follows AI news on X, and has started trading "the AI story" as markets. Their options are pre-IPO perps (Anthropic on Phoenix and on Entropy, a Hyperliquid HIP-3 venue) and 24/7 stock perps (NVDA, IREN, CRWV, PLTR on Phoenix and trade.xyz).</p>
+<p><strong>How they do it today.</strong> They read a post, open a second tab with Phoenix, Hyperliquid or trade.xyz, find the ticker, ask @grok "is this real?" (people literally did this under the IREN post: <a href="https://x.com/JPINVESTS23/status/2111890817715458191">JPINVESTS23</a>), then size and enter by hand. Each step costs time in a market that reprices within minutes. Rumour trades also cost money when the story is false: IREN round-tripped from about $26 to $44 and back to about $26 over a weekend, on reports that "remain unconfirmed by either side" (<a href="https://x.com/grok/status/2111890962284732823">grok reply</a>).</p>
+<p><strong>What it costs them.</strong> I can't source per-user losses; that's an evidence gap. The sourced proxies are trading spend: users pay Hyperliquid frontends 0.009% to 0.206% of notional on top of exchange fees for convenience (<a href="https://cleansky.io/blog/hyperliquid-builder-codes-based-trade-xyz-distribution-2026/">CleanSky</a>), and pay Cielo $59 to $199 a month for wallet tracking and alerts (<a href="https://cielo.finance/">Cielo</a>).</p>
+<h3>Evidence of money</h3><ul>
+<li><strong>Builder-code frontends earn verifiable on-chain fees.</strong> On Hyperliquid, 86 tracked frontends earned $3.80M over 30 days on $8.72B volume, from 125.4k users (<a href="https://openchainbench.com/hyperliquid">OpenChainBench</a>). Lifetime, 102 interfaces earned $89.99M, with a median of about $104.9k (<a href="https://cleansky.io/blog/hyperliquid-builder-codes-based-trade-xyz-distribution-2026/">CleanSky, Aug 2026</a>). Fills per builder are published daily at <code>stats-data.hyperliquid.xyz/Mainnet/builder_fills/{address}/{date}.csv.lz4</code>.</li>
+<li><strong>Small, focused apps make real money there (last 30 days):</strong> Mass $35.1k from 258 users, Metascalp $25.3k from 565, Moonbot $16.7k from 148, Onchain.cc $16.6k from 1.2k, Pear $12.3k from 221, Dexly Trade $10.9k from 167 (<a href="https://openchainbench.com/hyperliquid">OpenChainBench</a>).</li>
+<li><strong>Equity and pre-IPO perps are where crypto traders spend now.</strong> trade.xyz's HIP-3 markets made $9.54M in fees in July 2026 (<a href="https://cleansky.io/blog/hyperliquid-builder-codes-based-trade-xyz-distribution-2026/">CleanSky</a>) and did $3.42B in 24h on 22 Oct (<a href="https://openchainbench.com/hyperliquid">OpenChainBench</a>). Entropy, which lists Anthropic and OpenAI pre-IPO perps, did $1.47B in 28 days. On X, "RWA perps volume surges 75% since August" (<a href="https://x.com/0xgodzubby/status/2112099678053409020">0xgodzubby</a>).</li>
+<li><strong>Phoenix (the target venue):</strong> $1.259B in 30-day perp volume and about $27M open interest on 22 Oct (<a href="https://defillama.com/perps/chain/solana">DefiLlama</a>). Base fees are 3.5 bps taker and 0.5 bps maker, and the Flight builder fee is added on top (<a href="https://docs.phoenix.trade/phoenix/matching-engine/fees.md">Phoenix fees</a>). Markets include 40 US equities, QQQ, SPY, gold and oil, and a 6x ANTHROPIC pre-IPO perp (<a href="https://docs.phoenix.trade/phoenix/real-world-assets/market-specs.md">market specs</a>).</li>
+<li><strong>Real user quotes:</strong> "anthropic pre-ipo perps went live on phoenix tonight, up to 6x long or short, and the first thing i want to know is what the mark price is anchored to" (<a href="https://x.com/hndy/status/2112698518389293271">hndy</a>). "Anthropic was valued at $965B in its last funding round. Perps price it around $1.9T" (<a href="https://x.com/PinkBrains_io/status/2113142024459395488">PinkBrains_io</a>).</li>
+<li><strong>Teammates' signals.</strong> X bot's 4pm digest has Anthropic IPO talk and Claude Duet as the leading AI topics, pricing posts, and "Agents need their own principal" (the scoped-key design). Trench Bot found that the coins that moved real money two ways had <strong>a real-world trigger at minute zero</strong> (Kimchi, PHP); Tapeline turns the trigger into the trade. X bot and Git bot's spend-cap signals feed the no-withdraw session key.</li>
+</ul>
+<h3>Market sizing (bottom-up; assumptions labelled)</h3><ul>
+<li><strong>Reachable users (assumption):</strong> Hyperliquid frontends reached 125.4k 30-day users (<a href="https://openchainbench.com/hyperliquid">OpenChainBench</a>). Phoenix's own user count isn't public, so I assume about 5% to 10% of that, or 6k to 12k monthly active Phoenix traders (estimate).</li>
+<li><strong>Revenue per active user (comparables):</strong> in the Hyperliquid long tail, 30-day builder revenue per user runs from about $14 (Onchain.cc) to $136 (Mass) and $113 (Moonbot). I use $40 a month, an estimate for a mid-frequency news trader at 5 bps on about $80k of monthly taker notional.</li>
+<li><strong>Serviceable revenue:</strong> with 250 active traders at $40 that's $10k a month. A 2.5% share of a 10k-trader Phoenix base gives the same. On Phoenix alone today, $10k a month means routing 1.6% of all its volume as taker flow, so treat $10k a month as needing Phoenix to grow or a second venue (Hyperliquid builder codes, capped at 0.1% per side).</li>
+<li><strong>Ceiling sense-check:</strong> the whole Hyperliquid frontend layer earns about $3.8M a month. A 0.25% share of that size of market is about $10k a month.</li>
+</ul>
+<h3>Competitive teardown</h3><table>
+<thead>
+<tr>
+<th>Competitor</th>
+<th>What it does</th>
+<th>Pricing</th>
+<th>Traction or revenue</th>
+<th>Gap it leaves</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Phoenix web app and Vulcan CLI (<a href="https://docs.phoenix.trade/llms.txt">docs</a>)</td>
+<td>Official trading UI, plus a CLI with TWAP, grid and TA strategies for agents</td>
+<td>Base fees only</td>
+<td>$1.26B per 30 days (venue total)</td>
+<td>No news-to-market mapping, no X overlay or Telegram bot; Phoenix wants third parties on Flight</td>
+</tr>
+<tr>
+<td><a href="https://chromewebstore.google.com/detail/raindrop-%E2%80%94-self-custodial/gaaflmmgendmjlnbjmkfifnmfgoebmkd">Raindrop</a>, <a href="https://github.com/XeetDeveloper/xeet">Xeet</a>, <a href="https://www.meritoverlay.com/">Merit</a></td>
+<td>X overlays that detect <strong>cashtags</strong> and trade Hyperliquid perps inline</td>
+<td>Builder fee</td>
+<td>Not public</td>
+<td>Hyperliquid only; they need a <code>$TICKER</code> in the post. A headline like "Anthropic signs a cloud deal" carries none, and there's no rumour check</td>
+</tr>
+<tr>
+<td><a href="https://docs.bankr.bot/features/hyperliquid/">Bankr</a></td>
+<td>Tag @bankrbot on X to trade, including Hyperliquid perps</td>
+<td>Fees (see docs)</td>
+<td>Large; has the BNKR token</td>
+<td>You must already know the trade and type it; no headline mapping; not Phoenix</td>
+</tr>
+<tr>
+<td><a href="https://x.com/crosswatchhq/status/2111905714520395930">Crosswatch</a>, @grok replies</td>
+<td>Fact-check replies on market rumours</td>
+<td>Free</td>
+<td>Small (Crosswatch), huge (Grok)</td>
+<td>No trade button; Grok won't route orders</td>
+</tr>
+<tr>
+<td>Entropy, trade.xyz frontends (<a href="https://openchainbench.com/hyperliquid">Phantom, MetaMask, Based</a>)</td>
+<td>Trade pre-IPO and stock perps on Hyperliquid</td>
+<td>0.04% to 0.09% builder fees</td>
+<td>Top 4 earn $560k to $700k a month</td>
+<td>Wallet giants, but general UIs with no news layer</td>
+</tr>
+<tr>
+<td>Jupiter Perps, GMX on Solana (<a href="https://defillama.com/perps/chain/solana">DefiLlama</a>)</td>
+<td>Solana perps</td>
+<td>Venue fees</td>
+<td>GMX $27.3B, Jupiter $4.8B per 30 days</td>
+<td>Crypto majors only, no AI-equity or pre-IPO markets</td>
+</tr>
+<tr>
+<td>Cielo, Hyperdash</td>
+<td>Alerts, wallet tracking, terminals</td>
+<td>$0 to $199 a month (Cielo)</td>
+<td>Hyperdash $120.7k a month in builder fees</td>
+<td>Wallet-driven, not headline-driven</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Why incumbents won't simply build it.</strong> Phoenix explicitly pushes order flow to third-party builders through Flight, so it competes with partners only at its peril. The X overlays are Hyperliquid-native and built around cashtag parsing, so they could add Phoenix and headline mapping, and that's the copy risk. Wallets (Phantom) build general UIs, not a news product.</p>
+<p><strong>What survived the four checks.</strong> Incumbents' sites: none map headlines to markets. Platform directory: Phoenix has no public Flight builder list, and searches found no third-party Flight frontend (Jito's JTX moved perps to "winter" per <a href="https://tradersunion.com/news/cryptocurrency-news/show/3698266-jito-jtx-mobile-app-perps-roadmap/">Traders Union</a>). GitHub and changelogs: Phoenix's Rise SDK has Flight support in beta. Indie search on X and the web: the X overlays above are all Hyperliquid cashtag tools. <strong>The gap is narrow:</strong> a headline-to-market overlay with a rumour check, on Phoenix's equity and pre-IPO markets. It's a race, not a moat.</p>
+<h3>Product and user experience</h3><p><strong>First minute.</strong> Install the extension (or open the Telegram bot), connect Phantom or Solflare, and approve one session key with "trade only, max $X a day, no withdrawals". Under any AI headline on X a small strip appears, for example: <code>ANTHROPIC +0.0% · IREN −3.1% · CRWV · [Source: single source, unconfirmed]</code>. Tapping "Long $100 IREN 3x" places a Phoenix taker order with the Flight code attached. A fill card and PnL show inline, and closing is one tap.</p>
+<p><strong>Under the hood (advanced but invisible).</strong></p>
+<ul>
+<li>An entity-to-market graph: companies, labs, products, people and suppliers map to listed perps. For example "Anthropic" maps to ANTHROPIC, plus its cloud and chip partners only when the post says so. It's built from Phoenix's market list and an LLM pass over the post with a hand-checked mapping table. The confidence score is shown.</li>
+<li>Source check: the claim is matched against primary sources (company X accounts, official blogs, SEC filings, Reuters and Bloomberg headlines through free RSS) and labelled confirmed, single-source or denied, with links. It <strong>never</strong> says "buy".</li>
+<li>The session key comes from a Privy or Turnkey embedded wallet with a policy that only allows the Phoenix program, a per-day notional cap, and withdrawals only to the user's main wallet. Both vendors document program allowlists and spend limits (<a href="https://docs.privy.io/controls/policies/overview">Privy</a>, <a href="https://www.turnkey.com/pricing">Turnkey</a>). Phoenix recommends one embedded wallet per user (<a href="https://docs.phoenix.trade/builder-codes">Flight docs</a>).</li>
+<li>The executor uses the Rise SDK in TypeScript with the Flight builder authority, Phoenix's WebSocket order book and mark price, and pre-trade liquidation estimates from the <code>place-isolated-market-order-enhanced</code> endpoint.</li>
+</ul>
+<p><strong>MVP (4 weeks, solo with AI coding tools).</strong></p>
+<ul>
+<li>Week 1: Phoenix Rise SDK on devnet or with small sizes, Flight builder registration, embedded-wallet session key with policy.</li>
+<li>Week 2: Chrome extension (MV3) that reads the visible post text, plus the mapping service (Node with Postgres, LLM calls only for new headlines).</li>
+<li>Week 3: source checker using RSS feeds and official accounts, the Telegram bot, and the fill and PnL cards.</li>
+<li>Week 4: a public dashboard of builder-fee revenue read from the chain, a geoblock, terms, and a closed beta.</li>
+</ul>
+<p><strong>What's genuinely hard.</strong> Keeping the mapping precise, so it never pushes a trade on a wrong ticker. Latency from headline to strip in under 2 seconds. Running a fair source check without paid news APIs. Thin Phoenix order books on smaller equity perps, where slippage warnings have to be shown.</p>
+<p><strong>What a copycat could clone in a weekend.</strong> The trade button and the Flight integration. They can't easily clone the tuned mapping table, the track record of correct and incorrect rumour labels, or the distribution.</p>
+<h3>Token design</h3><ul>
+<li><strong>Job in the product.</strong> (1) <strong>Fee tier:</strong> staking 50k $TAPE (an illustrative number) lowers your builder fee from 5 to 2.5 bps. The discount is enforced by the backend setting a lower Flight fee for that wallet if per-order fees are supported; this must be verified, and the fallback is a rebate in $TAPE from the marketing budget, not from revenue. (2) <strong>Access:</strong> stakers get zero-delay strips, while free users see strips 30 seconds late. (3) <strong>Spend:</strong> deep source checks (multi-source, with an archived evidence pack) cost a small $TAPE amount, and spent tokens are burned. These are usage burns, not revenue-funded buybacks.</li>
+<li><strong>Launch route.</strong> <strong>Bags</strong> (Solana), because it links the mint to the creator's X account at launch, which matters after today's impersonator problems (Mint Seal research), and creator fees go to a public wallet. pump.fun is the alternative, at about the same cost.</li>
+<li><strong>How fees flow and how to verify them.</strong> Builder fees accrue as collateral on the Flight builder trader account on-chain (<a href="https://docs.phoenix.trade/builder-codes">Flight docs</a>). A public dashboard reads that account and the Bags creator-fee wallet. Product revenue (builder fees) and token income (creator fees) are reported separately.</li>
+<li><strong>Public repo from day one.</strong> The extension, the mapping table and the dashboard are open; the scoring prompts and the API keys are not.</li>
+<li><strong>Comparables.</strong> Bankr's BNKR is a token tied to a trading product on X. Based (BASED) launched in March 2026 and got one revenue rebound month, then kept falling (<a href="https://cleansky.io/blog/hyperliquid-builder-codes-based-trade-xyz-distribution-2026/">CleanSky</a>). Trench Bot found CrawlHive, a real, used product, sits at about $20k market cap, so <strong>product use doesn't make the token rise</strong>. Don't plan income from token price. X bot flagged $FRENS (a trading-terminal coin) as shilled with templated posts, so give the token a job and skip paid shilling.</li>
+<li><strong>Legal line.</strong> No revenue sharing, buybacks from revenue, staking yield or profit language. Staking only changes the fee tier and access. It's still a utility token attached to a <strong>derivatives</strong> product, which raises the risk profile; see Risks.</li>
+</ul>
+<h3>Budget and founder load (A$; estimates unless linked)</h3><table>
+<thead>
+<tr>
+<th>Item</th>
+<th>One-off</th>
+<th>Monthly</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Domain (.xyz or .trade)</td>
+<td>25</td>
+<td></td>
+</tr>
+<tr>
+<td>Chrome Web Store developer fee (US$5)</td>
+<td>8</td>
+<td></td>
+</tr>
+<tr>
+<td>Solana RPC: Helius developer tier (est. US$49)</td>
+<td></td>
+<td>75</td>
+</tr>
+<tr>
+<td>Hosting: Vercel hobby plus a small VPS for the bot and mapper</td>
+<td></td>
+<td>10</td>
+</tr>
+<tr>
+<td>Database: Neon or Supabase free tier</td>
+<td></td>
+<td>0</td>
+</tr>
+<tr>
+<td>LLM inference: small model, new headlines only (est.)</td>
+<td></td>
+<td>10</td>
+</tr>
+<tr>
+<td>Privy embedded wallets (free under 500 MAU, 50k signatures) (<a href="https://www.privy.io/pricing">Privy pricing</a>)</td>
+<td></td>
+<td>0</td>
+</tr>
+<tr>
+<td>Flight builder registration rent plus test trading float</td>
+<td>150</td>
+<td></td>
+</tr>
+<tr>
+<td>Token launch on Bags (fees plus a small first buy)</td>
+<td>150</td>
+<td></td>
+</tr>
+<tr>
+<td>Terms of use and privacy templates</td>
+<td>80</td>
+<td></td>
+</tr>
+<tr>
+<td>Beta trader float for testing fills</td>
+<td>150</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td><strong>~563</strong></td>
+<td><strong>~95</strong></td>
+</tr>
+<tr>
+<td>Four months of runway: 563 + 4 × 95 = <strong>about A$943</strong>. That fits, with no margin for a legal opinion (likely A$1.5k to A$5k; an estimate, not a quote).</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Founder load.</strong> About 30 hours a week for 4 weeks to build, then about 10 hours a week to run (keeping the mapping table current and watching markets). Support load is moderate, because trading users have urgent questions about fills.</p>
+<h3>Business model and unit economics</h3><ul>
+<li><strong>Price:</strong> 5 bps builder fee on taker fills, compared with Hyperliquid builders' effective rates of 0.009% (Axiom) to 0.206% (pvp.trade), with MetaMask at 0.085% (<a href="https://cleansky.io/blog/hyperliquid-builder-codes-based-trade-xyz-distribution-2026/">CleanSky</a>). All-in cost to the user is 8.5 bps per taker trade, against about 4.5 bps base taker on Hyperliquid plus that venue's builder fee.</li>
+<li><strong>Cost to serve:</strong> about A$95 a month in fixed costs (estimate). Variable cost is close to zero per trade, plus LLM calls per unique headline (not per user).</li>
+<li><strong>Gross margin:</strong> over 90% after about $1.5k a month in revenue (estimate).</li>
+<li><strong>Acquisition:</strong> X (the product lives where the headline is), Phoenix's Flight partner channel and campaigns (the $25k Anthropic campaign shows Phoenix pays for flow), and Solana trader Telegram groups. Paid ads aren't needed and may be barred for derivatives.</li>
+<li><strong>Payback:</strong> no paid acquisition is planned; payback is immediate per trade.</li>
+</ul>
+<h3>Go-to-market for a solo founder</h3><ul>
+<li><strong>First 10 users.</strong> Traders already posting about ANTHROPIC on Phoenix and Entropy (handles above). Reply under AI headlines with a screenshot of the strip, read-only. Ask Phoenix's team for a Flight partner spot.</li>
+<li><strong>60 days.</strong> Days 1 to 14: read-only overlay, measuring clicks per strip. Days 15 to 30: closed beta with trading for 30 wallets from non-restricted regions, subject to the legal check. Days 31 to 60: Telegram bot, public revenue dashboard, then the token launch (only if the beta passes).</li>
+<li><strong>Toward $10k a month.</strong> Add Hyperliquid builder codes for Entropy and trade.xyz markets (cap 0.1% per side) so the same headline offers the best venue. Add a "headline replay" page showing how markets moved after each story, as shareable content.</li>
+</ul>
+<h3>Financial snapshot (12 months; all estimates)</h3><table>
+<thead>
+<tr>
+<th>Month</th>
+<th>Active traders</th>
+<th>Routed taker volume</th>
+<th>Builder MRR (5 bps)</th>
+<th>Creator-fee income</th>
+<th>Costs</th>
+<th>Profit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1 to 2</td>
+<td>0 to 30 (beta)</td>
+<td>$0 to $0.5M</td>
+<td>$0 to $250</td>
+<td>$0</td>
+<td>A$95</td>
+<td>small loss</td>
+</tr>
+<tr>
+<td>3</td>
+<td>60</td>
+<td>$1.5M</td>
+<td>$750</td>
+<td>uncertain (not forecast)</td>
+<td>A$95</td>
+<td>~+$690</td>
+</tr>
+<tr>
+<td>6</td>
+<td>120</td>
+<td>$4M</td>
+<td>$2,000</td>
+<td>not forecast</td>
+<td>A$150</td>
+<td>~+$1.9k</td>
+</tr>
+<tr>
+<td>9</td>
+<td>180</td>
+<td>$7M</td>
+<td>$3,500</td>
+<td>not forecast</td>
+<td>A$200</td>
+<td>~+$3.4k</td>
+</tr>
+<tr>
+<td>12 (base)</td>
+<td>250</td>
+<td>$10M</td>
+<td>$5,000</td>
+<td>not forecast</td>
+<td>A$250</td>
+<td>~+$4.8k</td>
+</tr>
+<tr>
+<td>12 (bull, with Hyperliquid added)</td>
+<td>450</td>
+<td>$20M+</td>
+<td>$10,000+</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Assumptions: $40k of monthly taker notional per active trader in the base case, rising to about $80k for the bull case, 5 bps, and no token income counted because of Trench Bot's CrawlHive evidence. Bear case: Phoenix volume stalls, giving under $1k a month.</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3>Defensibility</h3><p>A thin moat: the tuned headline-to-market graph, a public scorecard of rumour labels, first-mover status as a Flight partner, and a token-holding user base with a lower fee tier. Not defensible against Raindrop or Bankr adding headline mapping; speed matters.</p>
+<h3>Risks</h3><table>
+<thead>
+<tr>
+<th>Risk</th>
+<th>What could go wrong</th>
+<th>Mitigation</th>
+<th>Cheap test</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Regulatory (main)</strong></td>
+<td>Operating, from Australia, a frontend for leveraged equity and pre-IPO derivatives may count as dealing in or arranging financial products and need an AFSL. Many perp interfaces block the US, UK, Canada and often Australia (<a href="https://x.com/shtanga0x/status/2112851817784582641">shtanga0x</a>)</td>
+<td>Launch read-only first. Get a fixed-fee legal opinion before any trading. Geoblock restricted regions. Never give advice</td>
+<td>One-hour fixed-fee consult (outside the A$1k budget; needs Ethan's OK)</td>
+</tr>
+<tr>
+<td>Market</td>
+<td>Phoenix volume is small ($1.26B per 30 days) and campaign-driven; news traders may stay on Hyperliquid</td>
+<td>Plan the Hyperliquid builder-code adapter from day one</td>
+<td>Read-only strip click-through by venue</td>
+</tr>
+<tr>
+<td>Platform</td>
+<td>Flight is in beta, Phoenix may change fees or invite gating, or build its own overlay</td>
+<td>Keep the venue layer abstract</td>
+<td>Ask Phoenix about partner terms</td>
+</tr>
+<tr>
+<td>Technical</td>
+<td>Wrong ticker mapping leads to a bad trade</td>
+<td>Show confidence, require a tap, never auto-trade</td>
+<td>Back-test the mapping on 200 past AI headlines</td>
+</tr>
+<tr>
+<td>Token</td>
+<td>Pump and dump, or securities framing</td>
+<td>Utility-only design, no revenue buybacks, launch after product-market fit</td>
+<td>Hold the token until 100 traders</td>
+</tr>
+<tr>
+<td>Key security</td>
+<td>Session key leak</td>
+<td>Policy-capped embedded wallet, no withdrawals to new addresses</td>
+<td>Red-team the policy on devnet</td>
+</tr>
+</tbody>
+</table>
+<h3>Kill or confirm (30 days, read-only first, under A$150)</h3><ul>
+<li>Ship the read-only overlay (no trading, no token) to 200 installs, using X replies and Solana and AI trader groups.</li>
+<li><strong>Confirm</strong> if: 25% or more of installs click a market strip at least once a week, at least 40 users join the trading waitlist with a wallet, the mapping is 90% or more correct on 200 back-tested headlines, and the legal consult says a geoblocked frontend is workable.</li>
+<li><strong>Kill</strong> if: fewer than 10% weekly clicks, or fewer than 15 waitlist wallets, or the legal advice says an AFSL is needed. Also kill if Raindrop or Bankr ships headline mapping for Phoenix within the window.</li>
+</ul>
+<h3>Comparables</h3><ul>
+<li>Hyperliquid specialists (last 30 days, on-chain): Mass $35.1k, Moonbot $16.7k, Pear $12.3k, Dexly $10.9k (<a href="https://openchainbench.com/hyperliquid">OpenChainBench</a>).</li>
+<li>pvp.trade (Telegram perps) has $7.98M in lifetime builder fees but is now at $3.9k a month, a warning about incentive-driven volume (<a href="https://cleansky.io/blog/hyperliquid-builder-codes-based-trade-xyz-distribution-2026/">CleanSky</a>).</li>
+<li>Conductor (Ledgerport's model twin) shows that a focused solo product can reach $43.7k MRR (<a href="https://x.com/felipe_rohde/status/2112923125654683762">TrustMRR via felipe_rohde</a>). That isn't the same market, only the playbook.</li>
+</ul>
+<h3>Candidates checked this run and why they lost</h3><ul>
+<li><strong>Spend-capped signer for bot wallets (X bot, Git bot):</strong> crowded and mostly free. DCP (free OSS, Solana, Telegram approvals), WaaP for Agents (free, Telegram approvals), Coldstar, WAIaaS, SeekerClaw, Squads spending limits, Privy stateful policies and Turnkey policies all cover it (<a href="https://dcpagent.com/">DCP</a>, <a href="https://docs.waap.human.tech/for-agents">WaaP</a>, <a href="https://docs.squads.so/main/navigating-your-squad/settings/spending-limits">Squads</a>). It fails the money test.</li>
+<li><strong>Pay-on-validation escrow for x402 sellers (Git bot):</strong> x402r already ships auth-capture escrow with an arbiter (<a href="https://docs.x402r.org/sdk/delivery-arbiter">x402r</a>), and the median organic x402 seller makes <strong>$0.01 a month</strong> (<a href="https://x402stats.io/reports/2026-10">x402stats Oct 2026</a>). No buyer.</li>
+<li><strong>Hyperliquid agent risk relay, automation, order-flow heatmaps and X overlays:</strong> crowded (MCPify, HyperGuard, Axon, Senpi at $50 to $270 a month; DeFi Saver, Gainium; MMT, Tape Delta; Raindrop, Xeet, Merit).</li>
+</ul>
+<h3>Addendum (16:40 AWST, from Git bot&#x27;s GitHub check)</h3><ul>
+<li>Correction: third-party Phoenix perps frontends already exist: <a href="https://github.com/GuiBibeau/harness-trade">harness-trade</a> (14★, Phoenix perps + Jupiter), <a href="https://github.com/nagumo-dawnlabs/harpoon">harpoon</a> (one-click follow/fade on Phoenix and Hyperliquid), and <a href="https://github.com/UpScalp/upscalp-phoenix-integration-pack">UpScalp's Phoenix pack</a> (Solana Foundation grant). The edge is not "first Phoenix frontend"; it's the headline-to-market mapping with a source check and one-tap trade, which has no open-source equivalent found. Whether any rival uses Flight builder codes is still unverified.</li>
+<li>Build base: the official Phoenix perps SDK <a href="https://github.com/Ellipsis-Labs/rise-public">rise-public</a> is actively maintained.</li>
+</ul>
+</section>
+<section class="review"><h2>Project Bot review</h2>
+<p class="meta"><span class="badge mid">6/10</span> <span>Reviewed 22 Oct 2026, 4:45pm AWST</span></p>
+<h3>Verdict</h3><ul>
+<li><strong>Score: 6/10. Thesis (money is real), capped at 6 by a legal blocker. Token fit 6/10.</strong> Ranked 2nd of 6 overall, but it's the best fit so far for Ethan's audience and token rule (Ledgerport scores higher but fails both).</li>
+<li><strong>Biggest correction:</strong> "nobody maps headlines to markets" is wrong. <a href="https://www.proliquid.xyz/tree-of-alpha-alternative">Proliquid</a> (free, 500+ news sources, "matched markets and quick LONG/SHORT", pre-IPO markets, Hyperliquid fee from 0.005%), <a href="https://247terminal.com/">247 Terminal</a> (US$99 then US$199 a month, one-click headline trades on Hyperliquid) and <a href="https://reflex.trade/">Reflex</a> (Hyperliquid, AI ticker tagging on news, Telegram /long /short, waitlist) already do it. Also, <a href="https://www.meritoverlay.com/">Merit</a> is a spot-swap overlay (Jupiter/Kyber, 1% fee, half to the poster), not a Hyperliquid perps overlay as the thesis says. What's left is narrower: inside X itself, with a rumour label, on Phoenix's Solana equity and pre-IPO perps.</li>
+<li><strong>Biggest money gap:</strong> the revenue model (a builder fee on leveraged equity and pre-IPO perps) probably can't legally be run by an Australian solo founder without an AFSL. ASIC's updated INFO 225 (29 Oct 2025) treats perpetual futures as leveraged derivatives and says people "arranging" deals in derivatives need an AFSL; the class no-action letter excludes derivatives and its application deadline was 30 June 2026. Phoenix's own terms also exclude anyone where offering perps would trigger licensing. So: build and charge for the <strong>read-only</strong> product first; the trading layer only after a paid legal opinion.</li>
+</ul>
+<h3>Score breakdown</h3><div class="sub">From “4. Scores”</div><table>
+<thead>
+<tr>
+<th>Criterion</th>
+<th>Score</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Problem severity</td>
+<td>6</td>
+<td>Real (rumour round-trips like IREN), but fast traders already have tools</td>
+</tr>
+<tr>
+<td>Timing</td>
+<td>8</td>
+<td>Pre-IPO and equity perps are where traders are moving; Flight is new</td>
+</tr>
+<tr>
+<td>Differentiation</td>
+<td>5</td>
+<td>Headline→market exists; X overlay + rumour verdict + Phoenix is the angle</td>
+</tr>
+<tr>
+<td>Usability for tech bros</td>
+<td>8</td>
+<td>Install, see a strip under the tweet, value in seconds</td>
+</tr>
+<tr>
+<td>Ape appeal</td>
+<td>8</td>
+<td>This audience trades AI narratives and pays US$99–500/month for news speed</td>
+</tr>
+<tr>
+<td>Solo buildability</td>
+<td>6</td>
+<td>Read-only MVP in 3 weeks is fine; trading key policies and latency are harder</td>
+</tr>
+<tr>
+<td>Self-serve sales</td>
+<td>9</td>
+<td>Wallet or card, no sales calls</td>
+</tr>
+<tr>
+<td>Distribution</td>
+<td>7</td>
+<td>Lives on crypto X itself</td>
+</tr>
+<tr>
+<td>Retention</td>
+<td>6</td>
+<td>Bursty, news-driven; weekly use likely, daily not proven</td>
+</tr>
+<tr>
+<td>Money evidence</td>
+<td>8</td>
+<td>On-chain builder fees and public terminal pricing</td>
+</tr>
+<tr>
+<td>Token fit</td>
+<td>6</td>
+<td>Real fee-tier job, but a token on a derivatives product doubles legal risk</td>
+</tr>
+<tr>
+<td><strong>Overall</strong></td>
+<td><strong>6/10</strong></td>
+<td>Capped at 6: the core revenue (builder fees) can't be tested legally within A$1,000</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Rank:</strong> 2nd of 6, behind Ledgerport (6.5) and ahead of Mint Seal, Breach Kit (5.5), Second Look (5) and Agent Spend Books (4.5). On Ethan's own constraints (tech-bro buyers, own token) it's the strongest so far.</p>
+<h3>Competitors</h3><div class="sub">From “2. Competitor check”</div><table>
+<thead>
+<tr>
+<th>Competitor</th>
+<th>What it does</th>
+<th>Price</th>
+<th>Gap it leaves</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.proliquid.xyz/">Proliquid</a></td>
+<td>Free terminal; 500+ news sources, AI importance score, matched markets, quick LONG/SHORT; CEXs + Hyperliquid, Lighter, Extended, RISEx; pre-IPO markets</td>
+<td>$0/month; DEX fee from 0.005%</td>
+<td>A separate web app, not inside X; no Phoenix/Solana; no rumour verdict</td>
+</tr>
+<tr>
+<td><a href="https://247terminal.com/">247 Terminal</a></td>
+<td>Sub-500ms headlines with buy/sell buttons, Binance, Bybit, Blofin, Hyperliquid, Polymarket</td>
+<td>US$99 → US$199/month</td>
+<td>Pro speed-trader tool, CEX API keys, no Solana, no source check</td>
+</tr>
+<tr>
+<td><a href="https://reflex.trade/">Reflex</a></td>
+<td>Hyperliquid news feed, AI tickers and sentiment, one-click, Telegram bot</td>
+<td>Waitlist</td>
+<td>Closest match in features; Hyperliquid only, not live</td>
+</tr>
+<tr>
+<td><a href="https://www.treeofalpha.com/">Tree of Alpha</a></td>
+<td>Fastest news aggregator, multi-account terminal</td>
+<td>US$500–2,500/month</td>
+<td>Whale-priced</td>
+</tr>
+<tr>
+<td><a href="https://www.meritoverlay.com/">Merit</a>, Raindrop, Xeet</td>
+<td>Trade on the tweet (cashtags/contracts)</td>
+<td>1% swap (Merit); builder fees</td>
+<td>Needs a ticker in the post; spot or Hyperliquid; no headline mapping</td>
+</tr>
+<tr>
+<td><a href="https://docs.bankr.bot/features/hyperliquid/">Bankr</a></td>
+<td>Tag the bot to trade</td>
+<td>Fees</td>
+<td>You must know the trade</td>
+</tr>
+<tr>
+<td>Phoenix app, harness-trade, harpoon, UpScalp</td>
+<td>Phoenix frontends</td>
+<td>Base / builder fees</td>
+<td>No news layer</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Does the gap exist?</strong> Only narrowly. Headline-to-market mapping with one-click trading exists (Proliquid free, 247 paid, Reflex coming). Unserved: (1) it shows up <em>on the X post itself</em>, so there's no second app; (2) a <strong>rumour verdict</strong> (confirmed / single-source / denied with links), which none of them sell; (3) Phoenix's Solana-native AI equity and ANTHROPIC markets. <strong>Winnable niche for a solo founder:</strong> "is this AI headline real, and what does it move?" as an X overlay for Solana traders. The rumour verdict is the product; trading is a later add-on.</p>
+<h3>Build plan</h3><p><em>Not in this review.</em></p>
+<details><summary>Rest of the review (fact-check and notes)</summary>
+<h3>1. Fact-check</h3><p><strong>Verified (opened today)</strong></p>
+<ul>
+<li><strong>OpenChainBench Hyperliquid board:</strong> 86 tracked frontends, US$3.80M 30-day builder fees on US$8.72B volume, 125.4K users. Mass.money US$35.1K / 258 users, Metascalp US$25.3K / 565, Moonbot US$16.7K / 148, Onchain.cc US$16.6K / 1.2K, Pear US$12.3K / 221, Dexly US$10.9K / 167, Hyperdash US$120.7K, pvp.trade US$3.9K. Entropy US$1.47B (28 days); trade.xyz US$3.40B in 24h (the thesis's US$3.42B was an earlier refresh). All match (<a href="https://openchainbench.com/hyperliquid">OpenChainBench</a>). <strong>Caveat the thesis missed:</strong> the page warns that 20 of the last 30 days in Hyperliquid's per-builder feed are partial, so these 30-day figures "read low". That makes the comparables conservative, which helps the thesis.</li>
+<li><strong>Phoenix volume:</strong> US$1.259B 30-day, US$65.5M 24h, US$277.7M 7-day, OI US$27.33M (<a href="https://defillama.com/perps/chain/solana">DefiLlama</a>). Correct. For scale, GMX on Solana did US$27.3B and Jupiter US$4.77B over 30 days.</li>
+<li><strong>Phoenix fees:</strong> 3.5 bps taker, 0.5 bps maker, Flight builder fee stacks on top (<a href="https://docs.phoenix.trade/phoenix/matching-engine/fees.md">fees</a>). Correct.</li>
+<li><strong>Flight:</strong> register on-chain, set your bps, fees accrue as collateral on your builder trader account, withdraw any time; fees only on taker fills today; Rise SDK support "currently in beta"; Phoenix recommends one embedded wallet per user (<a href="https://docs.phoenix.trade/builder-codes">Flight docs</a>). Correct.</li>
+<li><strong>Token fee tier is technically possible.</strong> The thesis said per-wallet fees "must be verified". The Rise SDK README documents a <code>feeBpsOverride</code> setting that emits "Flight's fee-override proxy instruction" (<a href="https://github.com/Ellipsis-Labs/rise-public/blob/master/ts/README.md">rise-public README</a>). So a lower fee for stakers can be set per order, no rebate needed.</li>
+<li><strong>Markets:</strong> 40 equity perps (incl. NVDA 20x, IREN 10x, CRWV 10x, PLTR 10x), QQQ, SPY, TLT, gold, silver, copper, oil, and ANTHROPIC pre-IPO at 6x isolated (<a href="https://docs.phoenix.trade/phoenix/real-world-assets/market-specs.md">market specs</a>). Correct.</li>
+<li><strong>Third-party Phoenix frontends exist</strong> (Git bot, accepted in the thesis addendum): <a href="https://github.com/GuiBibeau/harness-trade">harness-trade</a>, <a href="https://github.com/nagumo-dawnlabs/harpoon">harpoon</a>, <a href="https://github.com/UpScalp/upscalp-phoenix-integration-pack">UpScalp pack</a>. I also found no public list of Flight builders, so "first Flight partner" is unproven either way.</li>
+</ul>
+<p><strong>Wrong, unsupported or missing</strong></p>
+<ul>
+<li><strong>"No one maps headlines to markets" — wrong.</strong> See Proliquid, 247 Terminal, Reflex and Tree of Alpha in section 2.</li>
+<li><strong>Merit mis-described.</strong> It's a 1% spot-swap overlay on x.com with half the fee paid to the poster; "Tokenomics: trade to earn, coming soon" (<a href="https://www.meritoverlay.com/">Merit</a>). It's still a competitor for the "trade on the tweet" habit, and its pay-the-poster mechanic is a neat distribution idea Tapeline lacks.</li>
+<li><strong>Legal risk understated.</strong> The thesis treats it as one risk among several. It's the main blocker:</li>
+<li>ASIC: perps on digital assets are leveraged derivatives; anyone "arranging" (bringing into effect) a derivative deal for others needs an AFSL with derivatives authorisation (<a href="https://www.asic.gov.au/regulatory-resources/digital-transformation/digital-assets-financial-products-and-services">ASIC INFO 225</a>). The <a href="https://download.asic.gov.au/media/3q3jwena/asic-class-no-action-letter-for-digital-asset-businesses-published-29-october-2025.pdf">class no-action letter</a> only covered firms that applied by 30 June 2026. Equity and pre-IPO perps are derivatives regardless of crypto. An order router that takes a fee per trade looks like "arranging". (My reading of the guidance, not legal advice.)</li>
+<li>Phoenix <a href="https://www.phoenix.trade/terms-of-service">terms</a> 2.2(e): Restricted Persons include anyone in a jurisdiction where offering perps is restricted "or in which such offering or provision would subject the Company to any licensing" requirement. Australia isn't named (US, Canada, UK are), but this clause may still cover Australian users and builders. Ask Phoenix directly.</li>
+<li>ASIC's 2:1 retail leverage cap on crypto derivatives (cited by a <a href="https://chainhelm.com/en/phoenix-referralcode/">third-party guide</a>, not checked at source) contrasts with Phoenix's 6x to 25x.</li>
+<li><strong>Budget:</strong> the A$943 plan includes A$150 token launch and A$300 of trading floats, leaving ~A$57 (Trench Bot's point). It misses the US$299 DexScreener profile (~A$460, estimate) that every non-farm coin in Trench Bot's scan paid, and a legal opinion (the thesis estimates A$1.5k–5k). Both push past A$1,000. Fixed below by dropping trading and the token from the 30-day test.</li>
+<li><strong>Not verified:</strong> "Phoenix launched Flight in May 2026" (KuCoin/aixbt source only), the $25k Anthropic campaign and the IREN $26 to $44 move (X posts, not re-opened). Treat as plausible, unchecked.</li>
+</ul>
+<p><strong>Strong evidence the thesis missed</strong></p>
+<ul>
+<li><strong>People pay real subscriptions for news-to-trade speed:</strong> Tree of Alpha Sprout US$500/month, Sapling US$2,500/month (<a href="https://www.treeofalpha.com/">Tree</a>); 247 Terminal US$99 launch, US$199 standard, US$299 planned, sold through Whop with a 25% referral programme (<a href="https://247terminal.com/ran">247</a>). That's the money evidence for a read-only paid product, which the thesis didn't consider.</li>
+<li><strong>Proliquid claims US$1B+ annual volume</strong> on a free terminal with news (self-reported), showing the builder-fee model works for news terminals too.</li>
+</ul>
+<h3>3. Money check</h3><ul>
+<li><strong>Money already moving:</strong> Hyperliquid builder fees US$3.8M/30 days with small apps at US$10k–35k/month (on-chain, verifiable); news terminals sell at US$99–2,500/month (Tree, 247); Cielo charges US$59–199/month for alerts (thesis source). Phoenix base fees on US$1.26B ≈ US$441k/30 days (estimate: 3.5 bps × volume, ignoring maker share).</li>
+<li><strong>Unit economics (estimates):</strong></li>
+<li>Read-only plan: US$29/month (anchored well under 247's US$99). Cost to serve ≈ US$0.50/user/month (LLM runs once per headline, shared by all users). Cost to win a customer ≈ $0 cash (X replies, Ethan's time). Cash payback: first month.</li>
+<li>Builder fee (only after legal OK): 5 bps on taker fills ≈ US$40/month per active trader (thesis estimate, consistent with the Hyperliquid long tail).</li>
+<li><strong>Market size, bottom-up (estimate):</strong> Hyperliquid frontends reach 125.4K monthly users; assume 1–2% would pay for an X-native AI-headline checker = 1,250–2,500 buyers × US$29 = <strong>US$36k–72k MRR ceiling</strong> (read-only). Builder-fee upside on Phoenix alone is capped by its size: US$10k/month needs US$20M/month taker flow, 1.6% of all Phoenix volume (thesis maths checks out).</li>
+<li><strong>Wedge and moat:</strong> first group = Solana traders already posting about ANTHROPIC/IREN/NVDA perps, who check rumours by asking @grok in replies. Moat is thin: a public scorecard of rumour verdicts (track record) and being where the headline is. Proliquid or Merit could add an extension in weeks; speed matters.</li>
+<li><strong>Route to US$10k/month without ads or sales:</strong> 345 subscribers at US$29 (estimate). Channels: replies under big AI headlines with the strip screenshot, a public "rumour scorecard" page that gets shared, Telegram alert bot, a 25%-revenue referral like 247's, and Phoenix/Entropy community spots. The builder fee is the second leg only if licensing is solved.</li>
+</ul>
+<h3>5. Token-launch check</h3><ul>
+<li><strong>Job:</strong> pay for instant (zero-delay) strips and deep source checks in $TAPE, burned on use; holders get the faster tier. Fee discount on trades via <code>feeBpsOverride</code> is possible later, but tying a token to derivatives trading adds legal exposure, so keep the token on the read-only product. Core buyers (Solana traders) do hold coins, so no side-token is needed. Builder fees are verifiable on-chain (builder trader account); a read-only subscription paid in USDC to a public wallet is too.</li>
+<li><strong>Launch route (checked today):</strong> <a href="https://pump.fun/docs/fees">pump.fun</a>: no create fee (rent only), 0.015 SOL graduation fee, creator fee 0.30% on the curve, tiered 0.30%→0.05% on PumpSwap by market cap. <a href="https://docs.bags.fm/how-to-guides/customize-token-fees">Bags</a>: 2% trade fee, 1% to the creator/claimers pool (new configs give the deployer 25% of that pool; <a href="https://support.bags.fm/en/articles/13434876-royalty-earned">help centre</a> says creators earn 1%), links the mint to the creator's X. <a href="https://believe.app/faqs">Believe</a>: dynamic fee falling to 2%, split 50/50 (FAQ; the older playbook says 70/30), graduates at US$100k mcap to Meteora. Plain SPL + Meteora/Raydium needs your own liquidity, which the budget can't fund. <strong>Pick Bags</strong> (highest creator share, X-linked identity against impersonators).</li>
+<li><strong>Money (estimate):</strong> if $TAPE trades US$10k/day after launch, Bags' 1% ≈ US$100/day (~US$3k/month), likely falling fast; CrawlHive, a real product, sits at ~US$13k daily volume and ~US$20k mcap (Trench Bot). Don't plan on it; subscription revenue is the business.</li>
+<li><strong>Evidence:</strong> Trench Bot: only coins with a real trigger at minute zero (Kimchi, PHP) drew two-way volume; all non-farm coins paid the US$299 DexScreener profile; PANGEA (product coin with fee buybacks) got labelled "rigged" for mint authority and insiders. X bot: $FRENS and Gomo (trading-terminal coins) were shilled with templated posts; BNKR is the working precedent for a trading-bot token. Git bot: CrawlHive's revenue buyback is flagged as a security risk. No comparable Phoenix product token found.</li>
+<li><strong>Risks:</strong> ASIC: no revenue share, no buybacks from revenue (Trench Bot agrees: it cited PANGEA's fee buyback only as a warning), no profit language. Rug perception: revoke mint/freeze, no bundled wallets, small labelled dev buy. Customers: traders won't be scared by a token; regulators and Phoenix might be.</li>
+<li><strong>Token fit: 6/10. Plan:</strong> $TAPE on Bags, used to unlock instant strips and pay for deep checks (burned), launched at a product-reveal post only after 100 paying users and a legal OK.</li>
+</ul>
+<h3>6. Build and revenue plan (read-only first)</h3><p><strong>MVP, 3 weeks (stack: Chrome MV3 extension in TypeScript, Next.js on Vercel free, Supabase free, a small LLM, Phoenix public API for mark prices; no RPC or trading needed):</strong></p>
+<ol>
+<li><strong>The one-minute wow:</strong> open X, any AI headline gets a strip: "ANTHROPIC −2.1% · IREN +4.3% · single source, unconfirmed (links)". Prices from Phoenix's mark-price endpoint.</li>
+<li>Rumour verdict: match the claim against official company accounts, blogs, SEC filings and RSS headlines; label confirmed / single-source / denied.</li>
+<li>Public rumour scorecard page (every verdict, was it right after 24h) — shareable content and the moat.</li>
+<li>Paywall: 30-second delay free, instant + deep checks for paid (USDC via Solana Pay to a public wallet, or card via Lemon Squeezy/Stripe).</li>
+<li>Telegram alert bot for the same strips.</li>
+<li>Later, only after legal advice: "Trade on Phoenix" button via Flight with session keys.</li>
+</ol>
+<p><strong>Cost (AUD, estimates):</strong>
+| Item | Up-front | Monthly |
+|---|---|---|
+| Domain | 25 | |
+| Chrome Web Store fee (US$5) | 8 | |
+| Vercel, Supabase, Phoenix API | 0 | 0 |
+| Small VPS for the checker and Telegram bot | | 10 |
+| LLM calls (per headline, shared) | | 15 |
+| Fixed-fee legal consult on read-only vs trading (get a quote first; reserve) | ~500 | |
+| <strong>Total to end of 30-day test</strong> | | <strong>~A$560</strong> (A$60 without the legal consult) |
+Not in the test: token launch, DexScreener profile (~A$460), trading floats. Adding all of them would push past A$1,000, which is why they wait for revenue.</p>
+<p><strong>First 10 paying users:</strong> traders already posting about ANTHROPIC and IREN perps (the handles in the thesis), people asking @grok "is this real?" under AI rumours, Phoenix and Entropy Discords, and Solana trader Telegram groups. Reply with a strip screenshot (Ethan approves all posting).</p>
+<p><strong>30-day test aimed at real money:</strong> sell a "Founding pass": US$29 for 3 months of instant strips and deep checks, paid in USDC or card. <strong>Target: 25 passes (~US$725) and ≥25% of installs using a strip weekly. Kill if fewer than 10 passes or under 10% weekly use.</strong> In parallel, get the legal answer on the trading layer; if it says AFSL needed, Tapeline stays a read-only product and the builder-fee plan is dropped. No outreach, posting or token launch without Ethan's approval; never buy a token.</p>
+</details>
+</section>
+<section class="sources"><h2>Sources</h2><ul><li><a href="../sources/theses/2026-10-22-1630-tapeline.md">Thesis (2026-10-22-1630-tapeline.md)</a></li><li><a href="../sources/reviews/2026-10-22-1645-tapeline.md">Review (2026-10-22-1645-tapeline.md)</a></li></ul></section>
+</article>
+</main>
+<footer class="site">Theses by idea bot, reviews by Project Bot. Times are AWST (Perth time).</footer>
+</body>
+</html>
