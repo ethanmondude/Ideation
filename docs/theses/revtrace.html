@@ -1,0 +1,666 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Revtrace</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="site"><a href="../index.html">Startup theses</a></header>
+<main>
+<p class="back"><a href="../index.html">&larr; All theses</a></p>
+<article>
+<h1>Revtrace</h1>
+<p class="tagline">Who is actually paying? Organic on-chain revenue for Solana product coins</p>
+<p class="meta"><span>22 Oct 2026, 6:15pm AWST</span> <span class="badge mid">5/10</span> <span class="status">Status: Pitched, awaiting Project Bot review</span></p>
+<section class="exec"><h2>Executive summary</h2>
+<ul>
+<li><strong>Problem:</strong> "Real revenue" is now the pitch for Solana product coins, but it's self-reported and often manufactured. On PONS, 91.8% of new-token volume was self-funded (<a href="https://www.ponsfiles.com/">ponsfiles</a>). StonkFun's buyback was claimed at $2.09M; the chain shows $1.23M (<a href="https://bitquery.io/investigations/is-stonkfun-dumping-on-holders">Bitquery</a>). Pump.fun doesn't verify who deposits into a Tokenized Agent (<a href="https://pump.fun/docs/tokenized-agent-disclaimer">docs</a>).</li>
+<li><strong>Product:</strong> Paste a contract address into the site or the Telegram bot and get organic revenue (independent payers) against creator-linked deposits, buybacks claimed against done, and price to organic revenue, every figure linked to its transactions. A leaderboard ranks coins by organic revenue. Log in with X or a wallet.</li>
+<li><strong>Who pays:</strong> Teams pay US$149 to verify their fee wallets and get a badge (under DexScreener's US$299 profile) and US$299 a month for a labelled featured slot (TrustMRR's price). Traders pay US$19 a month for Pro alerts. Agents pay US$0.01 per API call over x402.</li>
+<li><strong>Token:</strong> $TRACE on Bags. Hold it for Pro, spend it on deep traces (burned), or post it as a bond to flag suspect revenue (slashed if the flag is wrong). No buybacks or payouts. Revtrace's own fee wallets appear on its own leaderboard.</li>
+<li><strong>Cost:</strong> About A$610 for 3 months (A$695 for 4), which includes a A$300 legal reserve. The DexScreener profile waits until there's revenue.</li>
+<li><strong>Path to US$10k MRR:</strong> 6 slots ($1.8k) + 25 verifications a month ($3.7k) + 200 Pro users ($3.8k) + API ($0.7k). Base case is about US$8.5k by month 12; bear case US$1.5k.</li>
+<li><strong>Why now and the edge:</strong> Tokenized Agents (March 2026) and revenue coins are producing claims faster than anyone checks them, and the checks so far (ponsfiles, Bitquery) are one-off reports. Gem Screener and ICM take revenue as reported. Revtrace's edge is checking whether the payers are independent of the team.</li>
+<li><strong>Main risk and first move:</strong> Teams may not pay to be scrutinised, and a false "self-funded" label risks defamation. This week: a 3-day spike counting all Tokenized Agent deposits and their payers, then a draft of Revenue Census #1 for Ethan to approve.</li>
+</ul>
+<p><strong>Verdict: test, about 40% confidence.</strong> Paying for verified revenue is proven next door (TrustMRR: about US$300k in 9 months, self-reported). The open question is whether coin teams pay.</p>
+</section>
+<section class="thesis"><h2>Full thesis</h2>
+<div class="byline"><p><em>Idea bot thesis, Thu 22 Oct 2026, 18:15 AWST (Perth). Path: /workspace/idea-bot/theses/2026-10-22-1815-revtrace.md. Working name; I haven't checked the name or domain for conflicts.</em></p></div>
+<h3>Problem and user</h3><p><strong>User 1, the trader (free and Pro).</strong> A Solana tech bro who now buys "revenue coins" (product tokens with fees, buybacks or agent revenue) and wants to know whether the revenue is real before buying in size. Today they rely on the project's own dashboard (Veil, copyfomo, StonkFun /revenue), a DefiLlama page if the coin has one, or a reply asking an AI bot. Sample asks on X: "Onchain proof of revenue I can actually verify myself" (<a href="https://x.com/TiTan_Web3_/status/2108070120266563955">TiTan_Web3_</a>); "Dashboards mean little without direct onchain proof of revenue" (<a href="https://x.com/HilaryGray789/status/2102386064027447352">HilaryGray789</a>); "are buybacks gonna be visible onchain per week or just a total" (<a href="https://x.com/madeby_neo/status/2112472777932325312">madeby_neo</a>). A forensics trader had a bot pick apart Veil's "revenue is live" post: "0.3% fee … → 2-of-2 team multisig. Not buybacks. Not holders" (<a href="https://x.com/0nchain_frenzy/status/2112911972379349190">0nchain_frenzy</a>, quoting <a href="https://x.com/BrotherMKT/status/2112916396040433854">Veil</a>: "$61,387 earned in the first week verifiable on chain").</p>
+<p><strong>User 2, the honest team (payer).</strong> A builder who launched a product coin (Tokenized Agent, Bags or Believe app, StonkFun-style launchpad, x402 seller) and needs strangers to believe the revenue. Today they hand-build dashboards (GitHub has one-coin "fee-flow audit" and buyback dashboards pushed this week, e.g. <a href="https://github.com/Zhaohh0706/brodie-terminal">brodie-terminal</a>), pay US$299 for a DexScreener profile, or pay for reach: X bot found TermiX revenue claims pushed by a reply campaign, with figures that disagree with each other, and AXIS paying 0.25% of supply to Kaito leaderboards (X bot 6pm digest).</p>
+<p><strong>What the problem costs.</strong></p>
+<ul>
+<li>On PONS, about US$20M of a US$30M headline day was manufactured, and "every $1 spent produces $282 of reported volume" (<a href="https://www.ponsfiles.com/">ponsfiles</a>).</li>
+<li>StonkFun's buyback was overstated by 70% (US$2.09M claimed against US$1.23M). At least US$1.41M of reward money went to wallets tied to StonkFun but left out of its own ledger (<a href="https://bitquery.io/investigations/is-stonkfun-dumping-on-holders">Bitquery</a>).</li>
+<li>Team wallets on the Solana AI project Kled sold about US$800k of tokens after promising a US$500k buyback (<a href="https://pro-blockchain.com/en/solana-ai-project-kled-team-wallets-dumps-800k-tokens-after-promising-a-500k-buyback-plan">report</a>).</li>
+<li>Trench Bot's 6pm log classed 9 of 19 coins above US$500k as fake-market-cap farms.</li>
+</ul>
+<h3>Evidence of money</h3><ul>
+<li><strong>Paying to be verified is a proven model next door.</strong> TrustMRR (read-only Stripe-style keys, no crypto wallets supported per its <a href="https://trustmrr.com/faq">FAQ</a>) made just over US$300k plus about US$30k in acquisition fees in its first 9 months, mostly from ad spots and marketplace fees (<a href="https://shippedandpaid.com/cases/trustmrr-verified-revenue-marketplace-330k-9-months-cursor/">Shipped &amp; Paid</a>, self-reported). Its sidebar slots sold out at US$299, then US$699–1,499 a month (<a href="https://newsletter.marclou.com/p/i-made-an-app-in-24-hours-and-20-378-the-next-day">Marc Lou</a>). <strong>The on-chain sister niche has no equivalent.</strong> TrustMRR doesn't read wallets, and Bags itself is listed on TrustMRR only through Stripe (<a href="https://trustmrr.com/startup/bags">TrustMRR: BAGS</a>).</li>
+<li><strong>Coin teams already pay for legitimacy.</strong> Every non-farm coin in Trench Bot's log paid the US$299 DexScreener Enhanced Token Info, and none of the 10 rugs or farms did. KIMCHIBULL paid US$3,999 for a 24-hour boost (Trench Bot, 18:10 scan).</li>
+<li><strong>Traders and agents pay per check.</strong> Dexra charges 0.005 USDC per pre-trade check, and CrawlHive gates lookups by token holding (Git bot, 6pm radar). Cielo charges US$59–199 a month for alerts (<a href="https://cielo.finance/">Cielo</a>). <em>Caution:</em> trader analytics subscriptions on TrustMRR are small (TraderSpy US$355 MRR from about 5,700 users (<a href="https://trustmrr.com/startup/traderspy">TrustMRR</a>); a Hyperliquid orderflow tool US$882 MRR (<a href="https://trustmrr.com/category/crypto-web3">category</a>)). So the plan leads with team-side revenue, not trader subscriptions.</li>
+<li><strong>The revenue pool being claimed is large.</strong> Solana apps earned US$143M of protocol revenue in August 2026 (<a href="https://solanacompass.com/news/solana-tops-all-blockchains-for-app-revenue-in-august-2026-with-143m-capturing-38-of-global-total">Solana Compass / DefiLlama</a>). Bags reports US$26.16M of protocol revenue across 160.7k coins since January 2025 (<a href="https://bags.holdings/revenue-stats/">Bags stats</a>).</li>
+<li><strong>Teammate signals (corroborated).</strong> X bot: "verifiable usage" claims (TermiX) are "easy to screenshot and hard to trust" (<a href="https://x.com/Armstro57/status/2113160596245946545">Armstro57</a>); "publish the dashboard and let usage speak." Trench Bot: farms dominate fake market cap, and traders need two-way, organic flows. Git bot: buy-side checks are turning into paid MCP, REST and Telegram tools (Dexra, CrawlHive), and its clone-family gap needs the same funder-clustering engine Revtrace uses.</li>
+</ul>
+<h3>Market sizing (bottom-up; assumptions labelled)</h3><ul>
+<li><strong>Coins with revenue claims (assumption):</strong> 300 to 1,000 live Solana product coins at any time (Tokenized Agents, StonkFun and Bags apps, Believe launches, x402 sellers), and 100 to 300 new ones a month. I couldn't find a public count of Tokenized Agents; the day-1 spike measures it.</li>
+<li><strong>Team verification:</strong> if 10% of 200 new revenue coins a month pay US$149, that's 20 × 149 = <strong>US$2,980 a month</strong> (estimate).</li>
+<li><strong>Featured slots:</strong> 6 slots × US$299 = <strong>US$1,794 a month</strong> if they sell out at TrustMRR's opening price (assumption: lower traffic than TrustMRR's 2M-view launch).</li>
+<li><strong>Pro:</strong> 100 to 200 × US$19 = <strong>US$1.9k–3.8k a month</strong> (assumption: 1–2% of 10k monthly free users).</li>
+<li><strong>API/MCP:</strong> 50k to 100k calls × US$0.01 = <strong>US$500–1,000 a month</strong> (assumption).</li>
+<li><strong>Ceiling sense-check:</strong> about US$7k–10k MRR on Solana alone. More needs Base (Bankr coins, x402 sellers) and Hyperliquid builder-code apps. A niche, not a venture-scale market, which suits a solo bootstrapper.</li>
+</ul>
+<h3>Competitive teardown</h3><table>
+<thead>
+<tr>
+<th>Competitor</th>
+<th>What it does</th>
+<th>Pricing</th>
+<th>Traction / revenue</th>
+<th>Gap left</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://defillama.com/revenue/chain/solana">DefiLlama</a> fees/revenue/holders revenue</td>
+<td>Protocol revenue rankings from adapters</td>
+<td>Free</td>
+<td>Industry default</td>
+<td>Needs an adapter per protocol, so the small-coin long tail is missing. Takes revenue at face value. Its StonkFun buyback figure (US$0.43M) disagreed with the chain (US$1.23M)</td>
+</tr>
+<tr>
+<td><a href="https://cymetica.com/gem-screener">Gem Screener (Cymetica)</a></td>
+<td>Ranks tokenised apps by market cap ÷ revenue; free API and MCP</td>
+<td>Free</td>
+<td>Not public</td>
+<td>"Covers only tokenized projects DeFiLlama tracks"; refreshes every 6h; no payer check; "Upside" framing reads like advice</td>
+</tr>
+<tr>
+<td><a href="https://madeonsol.com/tools/icm-analytics">ICM Analytics</a></td>
+<td>Fundamentals for ICM tokens: revenue, P/S, DAU</td>
+<td>Freemium, now selling a B2B "data layer" (<a href="https://icm-analytics.com/">site</a>)</td>
+<td>2 reviews</td>
+<td>"Only a small curated set of tokens"; "self-reported… methodology isn't transparent"</td>
+</tr>
+<tr>
+<td><a href="https://gettokenvalue.com/">gettokenvalue</a>, <a href="https://finconda.com/crypto/onchain">Finconda</a>, Token Terminal</td>
+<td>Price-to-revenue for the top 30–44 protocols, or institutional coverage</td>
+<td>Free / institutional</td>
+<td>—</td>
+<td>Big protocols only</td>
+</tr>
+<tr>
+<td><a href="https://pump.studio/tokenized-agents">Pump Studio</a></td>
+<td>Tokenized Agent console; revenue API from "verified payments"</td>
+<td>Free</td>
+<td>Top 100 <strong>by market cap</strong></td>
+<td>"Verified" means a valid invoice, not an independent payer. No revenue leaderboard</td>
+</tr>
+<tr>
+<td><a href="https://bankr.bot/terminal/agents/0xc72c01aab5f5678dc1d6f5c6d2b417d91d402ba3">Bankr terminal</a></td>
+<td>Per-token "project revenue" for Bankr launches (Base)</td>
+<td>Free</td>
+<td>US$24M creator fees platform-wide</td>
+<td>Counts trading creator fees as revenue; Base and its own launches only</td>
+</tr>
+<tr>
+<td><a href="https://www.bowyer.app/desk/leaders">Bowyer revenue leaders</a></td>
+<td>Verified subscriptions and x402 revenue</td>
+<td>Free</td>
+<td>US$0 verified revenue shown</td>
+<td>Robinhood Chain and its own apps only</td>
+</tr>
+<tr>
+<td><a href="https://www.ponsfiles.com/">ponsfiles</a>, <a href="https://bitquery.io/investigations/is-stonkfun-dumping-on-holders">Bitquery investigations</a>, Knox research</td>
+<td>One-off forensic reports</td>
+<td>Free (Bitquery sells data and MCP)</td>
+<td>Viral reports</td>
+<td>Not continuous, not per-coin, no lookup or alerts</td>
+</tr>
+<tr>
+<td>Project dashboards (Veil, copyfomo, StonkFun /revenue, Ravenhood)</td>
+<td>Each team's own revenue page</td>
+<td>Free</td>
+<td>—</td>
+<td>Self-reported, so the conflict of interest is the whole problem</td>
+</tr>
+<tr>
+<td>Rug and holder checkers (RugCheck, Dexra, CrawlHive, Bubblemaps)</td>
+<td>Contract, holder and bundle risk</td>
+<td>Free to per-call</td>
+<td>Git bot: CrawlHive 137★</td>
+<td>Not about revenue</td>
+</tr>
+<tr>
+<td><a href="https://www.believescreener.com/">Believe Screener</a> (tokenised, $BSCREENER)</td>
+<td>Market cap, volume and holders for Believe coins</td>
+<td>Free</td>
+<td>—</td>
+<td>No revenue</td>
+</tr>
+</tbody>
+</table>
+<p><strong>What survived all four checks.</strong></p>
+<ol>
+<li><em>Incumbents' own sites:</em> none separates independent payers from creator-funded ones.</li>
+<li><em>Platform directories:</em> pump.fun ships the deposit primitive but disclaims verification, and Pump Studio ranks by market cap. In MadeOnSol's Solana tool directory, ICM Analytics is the nearest listing, and it's curated and self-reported.</li>
+<li><em>GitHub and changelogs (last 30 days):</em> no repo for revenue verification, wash-revenue detection or proof of revenue on Solana (GitHub search returned 0). Only single-coin dashboards exist (brodie-terminal, hype-buyback-dashboard) and a pump.fun creator tracer CLI (<a href="https://github.com/idrode/MarXol">MarXol</a>).</li>
+<li><em>Web and X by function:</em> revenue screeners exist (Gem Screener, ICM) but take revenue as given; the forensics are one-off.</li>
+</ol>
+<p><strong>The gap:</strong> a continuous, per-coin, long-tail organic-revenue check with team-signed fee wallets, a buyback check and alerts.</p>
+<p><strong>Why incumbents won't build it.</strong> DefiLlama is a neutral aggregator that lists protocols through adapters, and judging payers would mean accusing listed protocols. Launchpads (pump.fun, Bags, StonkFun) profit from volume and fees regardless of who pays, as PONS shows. Gem Screener and ICM chose the opposite approach: breadth from DefiLlama, or a curated list. Bitquery sells data and uses investigations as marketing.</p>
+<h3>Product and user experience</h3><p><strong>First minute.</strong> Open revtrace (web) or the Telegram bot and paste a CA. You get a card like this:</p>
+<p><code>$VEIL · 7d revenue $61.4k → organic $X (N independent payers) · creator-linked $Y (Z%) · fees go to 2-of-2 team multisig, buyback claimed 20% → done W% · P/organic-rev 30d: Q×</code></p>
+<p>Each number links to its transactions on Solscan. One tap adds an alert (Pro). The leaderboard shows product coins by 7d and 30d organic revenue. Teams click "Verify my coin", sign with the creator wallet and fee wallets, pay US$149 in USDC or by card, and get a live badge to embed on their site.</p>
+<p><strong>Under the hood (advanced but invisible).</strong></p>
+<ul>
+<li><strong>Revenue capture:</strong> Tokenized Agent deposit addresses and invoice payments (<code>@pump-fun/agent-payments-sdk</code>, invoice PDAs); declared or team-signed fee wallets for other coins; x402 receipts.</li>
+<li><strong>Payer-independence graph:</strong> for each paying wallet, walk funding back up to 3 hops (first funder, common funders, timing). Flag "creator-linked" when the funding reaches the creator, dev or insider cluster (creator from pump.fun's API, plus same-block or same-funder bundles). Mark CEX-funded payers "unattributed", never "organic". Detect circular flows (deposit → creator claim → new wallets → deposit). Thresholds follow the ponsfiles method: self-funded opening buy, 40+ wallets, funder share.</li>
+<li><strong>Buyback check:</strong> compare the claimed % (pump.fun's on-chain buyback setting or the team's public claim) with actual on-chain buys and burns per week.</li>
+<li><strong>Price-to-organic-revenue</strong> on circulating market cap (DexScreener/Birdeye price), shown as a fact, never as "upside".</li>
+<li><strong>Wording rule:</strong> "not shown to be organic", not "fake". Methodology page, evidence links and a right-of-reply form on every flag.</li>
+</ul>
+<p><strong>MVP stack:</strong> Next.js on Vercel (free), Supabase (free), a TypeScript indexer on a small VPS with Helius webhooks and RPC (free 1M credits, US$49/month for 10M; <a href="https://www.helius.dev/pricing">Helius</a>), grammY Telegram bot, Solana Pay plus Lemon Squeezy, x402 for the API.</p>
+<p><strong>Week-by-week (solo, about 25–30 h/week).</strong></p>
+<ul>
+<li><strong>W1:</strong> enumerate Tokenized Agents and deposits; seed 30 revenue coins' fee wallets from their own dashboards; funding-trace worker.</li>
+<li><strong>W2:</strong> scoring (organic / creator-linked / unattributed), buyback check, coin page plus leaderboard.</li>
+<li><strong>W3:</strong> Telegram <code>/rev &lt;CA&gt;</code>, verify-my-coin flow (wallet signatures plus payment), embeddable badge.</li>
+<li><strong>W4:</strong> Pro alerts, x402/MCP endpoint, methodology page, Revenue Census #1 report (draft for Ethan).</li>
+</ul>
+<p><strong>What's hard.</strong> Getting false positives low (shared funders such as CEX hot wallets and faucet-style funders). Keeping credit use inside RPC limits during bursts. Covering fee designs that aren't simple transfers (tax tokens, LP fees). Legal-safe wording.</p>
+<p><strong>What a copycat clones in a weekend:</strong> a leaderboard of reported revenue (Gem Screener already is one). <strong>What they can't clone quickly:</strong> the payer-graph labels with a low error rate, the archive of team-signed fee wallets, and months of history.</p>
+<h3>Token design</h3><ul>
+<li><strong>Jobs:</strong> (1) <strong>Access:</strong> hold or stake a set amount of $TRACE for Pro alerts, as an alternative to US$19 a month. (2) <strong>Spend:</strong> deep traces (5-hop graph plus PDF evidence pack) cost $TRACE, and the tokens are burned. (3) <strong>Flag bond:</strong> anyone can stake $TRACE to flag a coin's revenue for review. If the flag is upheld the bond comes back, and a listed USDC bounty is paid <strong>for the work</strong> out of the operating budget. If it's rejected the bond is burned. (4) Teams can pay verification in $TRACE at a discount.</li>
+<li><strong>Launch route: Bags.</strong> It links the mint to the creator's X account and has a public creator-fee pool; Tapeline's review compared Bags, pump.fun and Believe fees. Launch at a real event: publishing Revenue Census #1, which fits Trench Bot's "real trigger at minute zero" finding. Mint and freeze revoked, small labelled dev buy, no bundles.</li>
+<li><strong>On-chain fee flow and verification:</strong> USDC verification and API income go to a public wallet; $TRACE creator fees go to the Bags creator wallet. Revtrace lists <strong>itself</strong> on its own leaderboard, with product revenue and creator fees reported separately, so its own token can't hide behind its own tool.</li>
+<li><strong>Creator fees vs subscriptions:</strong> plan on <strong>zero</strong> token income. CrawlHive, a real product with users, sits at about US$20k market cap (Trench Bot). Subscriptions and verifications are the business.</li>
+<li><strong>Public repo from day one:</strong> the indexer, scoring rules and methodology are open, so anyone can reproduce a label. The wallet-cluster label database and API keys stay private.</li>
+<li><strong>Comparables:</strong> Believe Screener ($BSCREENER) is a tokenised screener. Bubblemaps (BMT) and Kaito (KAITO) are analytics tokens. X bot found $FRENS and Gomo terminal coins pushed by templated shilling; Trench Bot found that PANGEA's revenue buyback drew a "rigged" label. So: no paid callers, no buybacks.</li>
+<li><strong>Legal line:</strong> no revenue share, no buybacks from revenue, no staking yield, no profit language. The flag bounty is payment for a service, not a holder return. Featured slots are labelled "sponsored" and never change a coin's numbers.</li>
+</ul>
+<h3>Budget and founder load (A$; estimates unless linked)</h3><table>
+<thead>
+<tr>
+<th>Item</th>
+<th>One-off</th>
+<th>Monthly</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Domain (.fun/.xyz)</td>
+<td>25</td>
+<td></td>
+</tr>
+<tr>
+<td>Helius Developer (<a href="https://www.helius.dev/pricing">US$49</a>) from month 2 (free tier in month 1)</td>
+<td></td>
+<td>75</td>
+</tr>
+<tr>
+<td>Small VPS for indexer and bot</td>
+<td></td>
+<td>10</td>
+</tr>
+<tr>
+<td>Vercel, Supabase, Telegram, GitHub</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>Legal reserve: factual-information and defamation review of the methodology page and wording (fixed-fee quote first)</td>
+<td>300</td>
+<td></td>
+</tr>
+<tr>
+<td>Bags token launch: small labelled dev buy plus rent</td>
+<td>30</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Total, 3 months</strong></td>
+<td><strong>≈ A$610</strong> (355 one-off + 85 × 3)</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Total, 4 months</strong></td>
+<td><strong>≈ A$695</strong></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Not included until there's revenue: the DexScreener profile for $TRACE (US$299 ≈ A$460), X API for an auto-reply bot, and paid boosts (never). <strong>Founder load:</strong> 25–30 h/week for 4 weeks, then 10–15 h/week. Support is mostly teams disputing labels (plan 2–4 h/week) and verification checks.</p>
+<h3>Business model and unit economics</h3><ul>
+<li><strong>Pricing (benchmarked):</strong> team verification US$149 one-off plus US$49 a year to keep the badge live (below DexScreener's US$299). Featured slot US$299 a month (TrustMRR's opening price). Pro US$19 a month (below Cielo's US$59). API US$0.01 per call (2× Dexra's US$0.005, with more data per call).</li>
+<li><strong>Cost to serve (estimate):</strong> about 60 Helius credits to trace a new payer 3 hops, so 10M credits covers about 150k new payers a month for US$49. Little or no LLM use (cards are templates). Hosting about A$10.</li>
+<li><strong>Gross margin (estimate):</strong> above 90% after US$500 MRR.</li>
+<li><strong>Channels (no ads):</strong></li>
+<li>Census reports in the ponsfiles and Bitquery style, which spread on their own (Ethan posts them).</li>
+<li>Replies under "real revenue" posts with a card screenshot (Ethan approves each one).</li>
+<li>Embeddable badges that link back, as TrustMRR's do.</li>
+<li>A free MCP listing (Glama, MCP Registry).</li>
+<li>Telegram trader groups.</li>
+<li><strong>CAC:</strong> about A$0 cash, paid in Ethan's time. <strong>Payback:</strong> immediate on verifications, which are paid up front.</li>
+</ul>
+<h3>Go-to-market for a solo founder</h3><ul>
+<li><strong>First 10 paying users.</strong> Honest teams already posting "revenue is live" dashboards (Veil, copyfomo, Ravenhood and Tokenized Agent builders) get a free pre-filled coin page and an offer to verify for US$149. Traders who asked for "onchain proof I can verify myself" get free Pro for 30 days. All outreach and posting waits for Ethan's approval.</li>
+<li><strong>60-day plan.</strong> Days 1–3 spike. Days 4–28 MVP. Day 21: Census #1 (top 50 revenue coins, organic vs not). Day 30: verification and Pro open. Day 45: Census #2 plus Telegram bot launch, with the $TRACE launch only if there are 100 paying users and the legal review is clean. Day 60: x402/MCP API.</li>
+<li><strong>Path to US$10k MRR:</strong> see the executive summary. The key lever is whether the census reports make "verified on Revtrace" something traders expect before buying.</li>
+</ul>
+<h3>Financial snapshot (12 months; all estimates, US$ MRR-equivalent including one-off verifications)</h3><table>
+<thead>
+<tr>
+<th>Month</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+<th>7</th>
+<th>8</th>
+<th>9</th>
+<th>10</th>
+<th>11</th>
+<th>12</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Team verifications (#)</td>
+<td>0</td>
+<td>3</td>
+<td>6</td>
+<td>9</td>
+<td>12</td>
+<td>14</td>
+<td>16</td>
+<td>18</td>
+<td>20</td>
+<td>22</td>
+<td>24</td>
+<td>25</td>
+</tr>
+<tr>
+<td>Featured slots (#)</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>2</td>
+<td>2</td>
+<td>3</td>
+<td>3</td>
+<td>4</td>
+<td>4</td>
+<td>5</td>
+<td>5</td>
+<td>6</td>
+</tr>
+<tr>
+<td>Pro users (#)</td>
+<td>0</td>
+<td>10</td>
+<td>25</td>
+<td>40</td>
+<td>55</td>
+<td>70</td>
+<td>85</td>
+<td>100</td>
+<td>115</td>
+<td>130</td>
+<td>145</td>
+<td>160</td>
+</tr>
+<tr>
+<td>Revenue (US$)</td>
+<td>0</td>
+<td>640</td>
+<td>1,670</td>
+<td>2,700</td>
+<td>3,430</td>
+<td>4,310</td>
+<td>4,900</td>
+<td>5,780</td>
+<td>6,360</td>
+<td>7,240</td>
+<td>7,830</td>
+<td>8,560</td>
+</tr>
+<tr>
+<td>Costs (A$)</td>
+<td>35</td>
+<td>85</td>
+<td>85</td>
+<td>85</td>
+<td>85</td>
+<td>85</td>
+<td>100</td>
+<td>100</td>
+<td>100</td>
+<td>120</td>
+<td>120</td>
+<td>120</td>
+</tr>
+</tbody>
+</table>
+<p>Assumptions: US$149 per verification, US$299 per slot, US$19 per Pro user, API excluded (upside). Revenue = verifications × 149 + slots × 299 + Pro × 19. <strong>Bear case at month 12:</strong> US$1.5k (teams don't pay; only Pro). <strong>Bull case:</strong> US$12k+ (census reports become a standard; Base added).</p>
+<h3>Defensibility</h3><ul>
+<li>Team-signed fee-wallet registry and badge backlinks: network effects like TrustMRR's.</li>
+<li>A growing archive of labelled wallet clusters (creator, insider, farm funders), shared with Git bot's clone-family gap.</li>
+<li>A record as a neutral referee, built on public methodology and reproducible labels.</li>
+<li>Being first to cover Tokenized Agents. All of this is modest; the moat is data plus trust, built over months.</li>
+</ul>
+<h3>Risks</h3><table>
+<thead>
+<tr>
+<th>Risk</th>
+<th>Type</th>
+<th>Mitigation</th>
+<th>Cheap test</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Teams with fake revenue avoid scrutiny, and honest teams think their own dashboard is enough</td>
+<td>Market</td>
+<td>Lead with free coverage of every coin (teams can't opt out), so verification becomes the way to answer a flag</td>
+<td>30-day test: ≥8 teams pay US$149</td>
+</tr>
+<tr>
+<td>Too few Tokenized Agents have meaningful deposits</td>
+<td>Market</td>
+<td>Cover StonkFun, Bags apps and x402 sellers from day 1</td>
+<td>Day-1 spike: sum all agent deposits over 30 days</td>
+</tr>
+<tr>
+<td>False "creator-linked" labels lead to defamation claims</td>
+<td>Technical / legal</td>
+<td>Ponsfiles-style "not shown to be organic" wording, CEX funders marked unattributed, evidence links, right of reply, A$300 legal review</td>
+<td>Hand-check 40 payers; error rate under 5%</td>
+</tr>
+<tr>
+<td>A ranking of tokens counts as financial product advice (ASIC INFO 225)</td>
+<td>Regulatory</td>
+<td>Factual information only: no "upside", picks or buy/sell words; general disclaimer; no personal advice; legal review covers this</td>
+<td>Lawyer's quote and opinion before launch</td>
+</tr>
+<tr>
+<td>pump.fun, DefiLlama or Gem Screener adds a payer check</td>
+<td>Platform</td>
+<td>Move fast; offer the labels as an API to them (partner, not rival)</td>
+<td>Watch changelogs monthly</td>
+</tr>
+<tr>
+<td>RPC costs spike in memecoin bursts</td>
+<td>Technical</td>
+<td>Trace only payers into revenue addresses (far fewer than traders), cache funders</td>
+<td>Measure credits per coin in the spike</td>
+</tr>
+<tr>
+<td>Token seen as a conflict (referee holds its own coin)</td>
+<td>Token</td>
+<td>List itself on its own leaderboard, sponsored slots labelled, open scoring repo, no buybacks</td>
+<td>Ask 20 testers whether a token reduces trust</td>
+</tr>
+</tbody>
+</table>
+<h3>Kill or confirm (30 days, under A$150 cash)</h3><ul>
+<li><strong>Spike (days 1–3, A$0):</strong> count Tokenized Agents with deposits in the last 30 days, total deposits, and the organic share across 30 seeded revenue coins. <strong>Kill</strong> if total traceable revenue across all coins found is under US$50k per 30 days (too small to referee).</li>
+<li><strong>Accuracy (days 4–10):</strong> hand-check 40 flagged payers. <strong>Pass</strong> if under 5% are wrong; <strong>kill or rework</strong> if over 10%.</li>
+<li><strong>Paid validation (days 11–30, needs Ethan's OK for outreach and posting):</strong> publish Census #1 and offer founding verification at US$99 and Pro at US$19.</li>
+<li><strong>Confirm</strong> if: at least 8 paid verifications, at least 10 paid Pro users, and at least 150 bot users with at least 30% returning in week 2.</li>
+<li><strong>Kill</strong> if: fewer than 3 verifications <strong>and</strong> fewer than 5 Pro users.</li>
+<li>Cash: domain plus one month of VPS ≈ A$35; Helius stays on the free tier. The legal review comes only if the test confirms.</li>
+</ul>
+<h3>Comparables</h3><p>TrustMRR (the verified-revenue leaderboard model, its ad-slot pricing, the 3% marketplace fee). DexScreener Enhanced Token Info (the US$299 legitimacy fee). ponsfiles and Bitquery (forensic method and demand for reports). Gem Screener and ICM Analytics (revenue screeners that take revenue as reported). Dexra and CrawlHive (pay-per-check and token-gated checks). Believe Screener (a tokenised screener).</p>
+<h3>Candidates checked this run and why they lost</h3><ul>
+<li><strong>Clone-family check for pre-trade APIs</strong> (Git bot, Trench Bot): per-mint scanners are plentiful (Dexra, CrawlHive, RugCheck) and there's no proof anyone pays for clustering alone. Its funder-clustering engine is reused here instead.</li>
+<li><strong>Pre-IPO perps tracker:</strong> <a href="https://data.hyperliquid.build/pre-ipo/">data.hyperliquid.build/pre-ipo</a> and Talos already show implied valuations for free.</li>
+<li><strong>HIP-3 analytics:</strong> HypeTrad, HIP3RLIQUID, HypurrView and a HIP-3 funding-comparison site, all free.</li>
+<li><strong>Key inventory after Railway</strong> (X bot's top pain): still crowded (Doppler, Infisical, GitGuardian, as of 08:30 today).</li>
+<li><strong>More builder-code frontends:</strong> fomo makes US$1.52M in 30 days, but pump.fun and wallets are moving in, and there's the AFSL risk (Tapeline lesson).</li>
+</ul>
+</section>
+<section class="review"><h2>Project Bot review</h2>
+<p class="meta"><span class="badge mid">5/10</span> <span>Reviewed 22 Oct 2026, 6:45pm AWST</span></p>
+<h3>Verdict</h3><ul>
+<li><strong>Score: 5/10. Lead, not thesis (capped: no real proof anyone pays for a payer check). Token fit 5/10.</strong> Ranked 5th of 7, level with Second Look, behind Ledgerport (6.5), Tapeline (6), Mint Seal and Breach Kit (5.5).</li>
+<li><strong>Biggest correction:</strong> "no one checks whether the payers are independent" is wrong. The exact engine already exists for x402 and Base agent revenue: <a href="https://opensea.io/tools/x402-bazaar/base/297175214257758199">Dewash</a> (US$4.99 per check, "two hop on-chain USDC funding trace separates organic demand from circular self payment rings", payable on Base or Solana), <a href="https://github.com/solana-foundation/pay-skills/pull/36">x402watch</a> (labels every x402 buyer wallet organic / self-test / suspected wash), <a href="https://x402stats.io/methodology">x402stats</a> (raw vs organic revenue), <a href="https://chainward.ai/decodes/termix-on-chain">ChainWard</a> (free on-chain decodes) and <a href="https://commonworld.one/atlas/">Commonworld Atlas</a> (claims vs evidence). Allium sells x402 tables with self-dealing flags. What's left is narrower: <strong>Solana product-coin fee wallets and pump.fun Tokenized Agent deposits</strong>, which none of these cover.</li>
+<li><strong>Biggest money gap:</strong> the closest paid product has almost no buyers. x402gle shows Dewash at <strong>1 settlement all time (US$4.99)</strong> (<a href="https://x402gle.com/resources/75f5b522-b774-4d21-9d75-27e38eb4fd49">x402gle</a>). ChainWard's checks are free. TrustMRR, the model the thesis copies, makes verification <strong>free</strong> and earns from sponsors and its marketplace (<a href="https://trustmrr.com/faq">FAQ</a>). So the US$149 team verification fee is the untested core. Best path: free reports to build an audience first, then sell sponsor slots and token-gated alerts, with a small pre-sale to test whether teams pay.</li>
+</ul>
+<h3>Score breakdown</h3><div class="sub">From “4. Scores”</div><table>
+<thead>
+<tr>
+<th>Criterion</th>
+<th>Score</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Problem severity</td>
+<td>7</td>
+<td>TermiX 99% circular, StonkFun buyback overstated, Tokenized Agent deposits unverified</td>
+</tr>
+<tr>
+<td>Timing</td>
+<td>7</td>
+<td>Revenue coins and Tokenized Agents are fresh; Base/x402 already has checkers</td>
+</tr>
+<tr>
+<td>Differentiation</td>
+<td>4</td>
+<td>Same engine exists (Dewash, x402watch, ChainWard); only the Solana coin scope is new</td>
+</tr>
+<tr>
+<td>Usability for tech bros</td>
+<td>8</td>
+<td>Paste a CA, get one card with linked transactions</td>
+</tr>
+<tr>
+<td>Ape appeal</td>
+<td>6</td>
+<td>Traders love forensics, but it's a "don't buy" tool, not upside</td>
+</tr>
+<tr>
+<td>Solo buildability</td>
+<td>7</td>
+<td>Indexer plus funder graph on free tiers in 3–4 weeks; false positives are the hard part</td>
+</tr>
+<tr>
+<td>Self-serve sales</td>
+<td>7</td>
+<td>Wallet or card checkout; teams may want to argue before paying</td>
+</tr>
+<tr>
+<td>Distribution</td>
+<td>7</td>
+<td>Reports and coin cards spread on crypto X; Ethan has no big audience yet</td>
+</tr>
+<tr>
+<td>Retention</td>
+<td>5</td>
+<td>Traders check before a buy; alerts help; teams pay once</td>
+</tr>
+<tr>
+<td>Money evidence</td>
+<td>3</td>
+<td>Closest paid product has 1 sale; TrustMRR verification is free</td>
+</tr>
+<tr>
+<td>Token fit</td>
+<td>5</td>
+<td>Burn-on-use deep traces work, but a referee holding its own coin is a conflict</td>
+</tr>
+<tr>
+<td><strong>Overall</strong></td>
+<td><strong>5/10</strong></td>
+<td><strong>Lead.</strong> Capped at 6 for no proof of payment, then lower for overlap with free tools</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Rank:</strong> 5th of 7, level with Second Look (5), behind Ledgerport 6.5, Tapeline 6, Mint Seal 5.5 and Breach Kit 5.5, ahead of Agent Spend Books 4.5. It pairs naturally with Mint Seal (legitimacy for coins). The best build may be one "coin truth" product combining Mint Seal's signed links with Revtrace's revenue check.</p>
+<h3>Competitors</h3><div class="sub">From “2. Competitor check”</div><table>
+<thead>
+<tr>
+<th>Competitor</th>
+<th>What it does</th>
+<th>Price</th>
+<th>Gap it leaves</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://402radar.io/api.x402node.dev">Dewash (x402node)</a></td>
+<td>Two-hop funding trace: independent customers vs self-funded volume for an x402 payTo</td>
+<td>US$4.99/check</td>
+<td>x402 payTo only; 1 sale all time (x402gle)</td>
+</tr>
+<tr>
+<td><a href="https://github.com/solana-foundation/pay-skills/pull/36">x402watch</a> / <a href="https://x402stats.io/methodology">x402stats</a></td>
+<td>Labels x402 buyers (organic, self-test, wash); raw vs organic revenue</td>
+<td>Paid micro-calls / free</td>
+<td>x402 only; not coin fee wallets</td>
+</tr>
+<tr>
+<td><a href="https://chainward.ai/">ChainWard</a></td>
+<td>Free decodes (TermiX 99% circular) and Pay/Hold wallet checks</td>
+<td>Free</td>
+<td>Base and BNB only; one-off decodes</td>
+</tr>
+<tr>
+<td><a href="https://commonworld.one/atlas/">Commonworld Atlas</a></td>
+<td>Claim vs evidence cards for agent platforms</td>
+<td>Free</td>
+<td>Agent platforms, not coins</td>
+</tr>
+<tr>
+<td><a href="https://bitquery.io/investigations/is-stonkfun-dumping-on-holders">Bitquery</a> / <a href="https://www.ponsfiles.com/">ponsfiles</a></td>
+<td>Forensic reports</td>
+<td>Free (Bitquery sells data/MCP)</td>
+<td>One-off</td>
+</tr>
+<tr>
+<td><a href="https://data.birdeye.so/docs/use-cases/risk-and-integrity/wash-trading-detector">Birdeye wash detector</a></td>
+<td>Solana wash-volume score</td>
+<td>Birdeye API plans</td>
+<td>Volume, not revenue payers</td>
+</tr>
+<tr>
+<td><a href="https://cymetica.com/gem-screener">Gem Screener</a>, ICM Analytics, DefiLlama</td>
+<td>Revenue and P/S rankings</td>
+<td>Free</td>
+<td>Take revenue as reported</td>
+</tr>
+<tr>
+<td><a href="https://pump.studio/blog/tokenized-agents-pump-studio">Pump Studio</a>, ClawPump</td>
+<td>Tokenized Agent console, "verified payments" revenue API</td>
+<td>Free</td>
+<td>"Verified" = valid invoice, not independent payer</td>
+</tr>
+<tr>
+<td>Daybreak, cabal-hunter/radar MCP, DeployerDNA, Dexra, CrawlHive, RugCheck (Git bot)</td>
+<td>Deployer, cabal and pre-trade checks</td>
+<td>Free to 0.005 USDC/check</td>
+<td>Not about revenue</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Does the gap exist?</strong> Only narrowly: a <strong>continuous, Solana-native organic-revenue score for product coins</strong>, covering Tokenized Agent deposits, declared fee wallets and buyback-claimed-vs-done, shown on a coin page and in Telegram. <strong>Winnable niche:</strong> "the ChainWard/x402stats of Solana product coins", with pump.fun Tokenized Agents as the first beachhead. Nobody covers them, and the deposit address makes them easy to index.</p>
+<h3>Build plan</h3><p><em>Not in this review.</em></p>
+<details><summary>Rest of the review (fact-check and notes)</summary>
+<h3>1. Fact-check</h3><p><strong>Verified (opened today)</strong></p>
+<ul>
+<li><strong>ponsfiles:</strong> 91.8% of new-token volume on PONS is "wallets buying from themselves"; US$29.9M a day of new-token volume; "Every $1 spent produces $282 of reported volume"; "~$20M manufactured" of a "$30,000,000" headline (<a href="https://www.ponsfiles.com/">ponsfiles</a>). Correct. <strong>Two things the thesis didn't say:</strong> PONS is on <strong>Robinhood Chain (an Ethereum L2), not Solana</strong>, and the 91.8% is about trading volume, not product revenue. The page also stresses "no link was found between PONS and any operator". It's a good method template, not Solana revenue evidence.</li>
+<li><strong>StonkFun (Bitquery):</strong> buyback cited by backers at US$2.09M, chain shows US$1.23M (58% of the day's revenue); at least US$1.41M of reward money went to wallets tied to StonkFun that its ledger leaves out; DefiLlama showed only US$0.43M of buybacks that day (<a href="https://bitquery.io/investigations/is-stonkfun-dumping-on-holders">Bitquery</a>). All correct. Fair context: Bitquery found the "fee drain" mostly paid holders back (US$56.2M of US$56.3M) and says the buybacks are real.</li>
+<li><strong>pump.fun Tokenized Agent disclaimer:</strong> "The Pump Platform does not verify the legitimacy of Token Agents, their offering, or third party sites directing persons to transfer assets to an Agent Deposit Address" (<a href="https://pump.fun/docs/tokenized-agent-disclaimer">pump.fun</a>). Correct. It also says anyone can deposit, deposits fund hourly buyback-and-burn, and the rest is claimable by the creator. So a creator can deposit their own money and call it revenue, which is the problem Revtrace targets.</li>
+<li><strong>TrustMRR:</strong> "just over $300,000 in revenue plus around $30,000 in acquisition fees" in 9 months, <strong>self-reported</strong>, mostly ad spots and marketplace fees (<a href="https://shippedandpaid.com/cases/trustmrr-verified-revenue-marketplace-330k-9-months-cursor/">Shipped &amp; Paid</a>). Correct. Missing context: Marc Lou already had about 100K X followers, and the launch post reached 2.9M views. Ethan doesn't start with that audience.</li>
+<li><strong>X posts:</strong> all three exist. But the demand signal is thin. TiTan_Web3_'s "Onchain proof of revenue I can actually verify myself" is a reply to a poll with <strong>13 views and 1 like</strong>. 0nchain_frenzy's Veil teardown has 12 views. Veil's own "revenue is live" post has 14.1k views and 326 likes. Small fix: "$61,387 earned in the first week verifiable on chain" is from <a href="https://x.com/veilzk">@veilzk</a> (post 2112908460665053679), and <a href="https://x.com/BrotherMKT/status/2112916396040433854">BrotherMKT</a> is a promoter quoting it, not Veil.</li>
+</ul>
+<p><strong>Wrong, unsupported or outdated</strong></p>
+<ul>
+<li><strong>"GitHub search returned 0" and "no competitor separates independent payers":</strong> wrong for x402 and Base (see Verdict and section 2). True only for Solana coin fee wallets and Tokenized Agent deposits, as far as I could find.</li>
+<li><strong>TrustMRR pricing:</strong> the thesis anchors featured slots at "US$299 a month (TrustMRR's price)". TrustMRR's own FAQ now says the sponsor spot "starts at $399 for 7 days". Listing and verification are <strong>free</strong>, and paid add-ons are US$19 and US$79. US$299 was the opening price.</li>
+<li><strong>"Every non-farm coin in Trench Bot's log paid the US$299 DexScreener profile":</strong> not quite. Trench Bot's latest scan says 6 coins paid (OA, KIMCHIBULL, PANGEA, Kimchi, PHP, CHOO). The three anonymous risky coins from run 2 (WOFI, AOP, Grok) and all 10 rugs or farms did not. The thesis also says "9 of 19" farms; the log says 10.</li>
+<li><strong>TermiX "conflicting figures" (X bot):</strong> they don't really conflict. DefiLlama shows US$126,867 in 30-day revenue (Base US$64,654), US$16,468 over 7 days on Base, and US$583,689 cumulative (<a href="https://defillama.com/protocol/termix">DefiLlama</a>). The X posts quoted different windows and chains. ChainWard found DefiLlama's total <strong>within 5%</strong> of the chain. The real story is worse, and it's the best live example for this thesis: <strong>99.11% of TermiX's fees came from 18,862 wallets hiring each other, and the 488 normal-looking wallets paid US$2.12 in fees in 30 days</strong> (<a href="https://chainward.ai/decodes/termix-on-chain">ChainWard</a>). So the revenue figure is accurate and almost none of it is outside demand. But ChainWard published that free on 2 Oct, so the gap on Base is already being filled.</li>
+<li><strong>Gem Screener:</strong> described correctly (DefiLlama-based, 6-hourly, "Upside" framing, no payer check). It lists STONK as a "degen pick" at 34x, taking revenue as reported (<a href="https://cymetica.com/gem-screener">Gem Screener</a>). Also worth knowing: its own counter shows <strong>243 visitors in 30 days</strong>, so a revenue screener alone doesn't draw a crowd.</li>
+<li><strong>Not re-opened (treat as plausible, unchecked):</strong> Kled US$800k sale, Solana Compass US$143M, Bags US$26.16M stats, Pump Studio, Bankr and Bowyer rows, the Helius credit maths.</li>
+</ul>
+<p><strong>Strong evidence the thesis missed</strong></p>
+<ul>
+<li><strong>The idea has been built and given away.</strong> A Moltbook post ran a "seller-funded-payer test" on the top 3 x402 sellers and found <strong>99.5% of xpay's x402 revenue was USDC that had left its own wallet</strong>. It offers the test free for any seller (<a href="https://www.moltbook.com/post/775bd1aa-c9e4-4905-8da6-abf6917a0d60">Moltbook</a>). Artemis flagged about 86% of Solana's all-time x402 activity as gamed (cited by <a href="https://x402stats.io/methodology">x402stats</a>).</li>
+<li><strong>Ready-made wording rules.</strong> Bitquery's <a href="https://docs.bitquery.io/docs/usecases/wash-trading-signals/">wash-trading guide</a> says "Say what you measured" and treats "wash volume" as "a claim about intent that the data does not support". ponsfiles uses "not shown to be manufactured". Revtrace should adopt both.</li>
+<li><strong>Birdeye already sells the trader-side detector.</strong> Its <a href="https://data.birdeye.so/docs/use-cases/risk-and-integrity/wash-trading-detector">Wash Trading Detector</a> combines five signals on Solana tokens. It covers volume, not revenue payers.</li>
+<li><strong>Git bot (room notes):</strong> deployer-history and cabal tools already exist (daybreak, cabal-hunter-mcp, cabal-radar-mcp, DeployerDNA). That's the same funder-clustering Revtrace needs. None of them is pointed at revenue deposits (per Git bot; I didn't re-open them). Building on open code like these lowers build time.</li>
+</ul>
+<h3>3. Money check</h3><ul>
+<li><strong>Money already moving (close by):</strong> DexScreener Enhanced Token Info at US$299 was paid by 6 coins in Trench Bot's log. That buys visibility, though, not scrutiny. TrustMRR (self-reported US$300k+ in 9 months) shows sponsor slots sell on a busy verified-revenue site. <strong>Money for payer checks themselves: near zero</strong> (Dewash 1 × US$4.99; ChainWard, x402stats, Moltbook and ponsfiles are free). Cielo at US$59–199/month shows traders pay for alerts (thesis source).</li>
+<li><strong>Unit economics (estimates):</strong> cost to serve is low (indexing only deposit and fee-wallet inflows, not every trade). The thesis's above-90% margin is plausible. CAC is about A$0 cash if reports spread. Payback is immediate on any up-front fee. The unknown is conversion, not cost.</li>
+<li><strong>Bottom-up size (estimate, thesis assumptions):</strong> about US$7k–10k MRR ceiling on Solana even if teams pay. If teams won't pay, the model drops to sponsor slots plus Pro alerts, roughly the thesis's US$1.5k bear case. Treat US$10k/month as unlikely without Base and x402, where free rivals already exist.</li>
+<li><strong>Wedge and moat:</strong> the wedge is a public Tokenized Agent organic-revenue leaderboard (a census). The moat is thin: a labelled funder-wallet archive, team-signed fee wallets and a record of accurate calls. ChainWard or x402stats could add Solana coins quickly.</li>
+<li><strong>Route to first US$10k/month without ads:</strong> not credible on teams alone. A realistic order: (1) free census reports and coin pages to earn an audience; (2) sponsor slots, labelled "sponsored", at whatever traffic supports (TrustMRR now charges US$399 per 7 days with a 200k-visitor-a-month audience; expect far less); (3) Pro alerts paid in USDC or by holding $TRACE; (4) team verification as an upsell when a coin is flagged. All estimates.</li>
+</ul>
+<h3>5. Token-launch check</h3><ul>
+<li><strong>Job:</strong> (1) hold $TRACE for Pro alerts instead of US$19/month; (2) spend $TRACE on deep traces (5-hop graph plus evidence pack), burned on use; (3) teams can pay verification in $TRACE. <strong>Drop the flag bond from v1.</strong> Slashing other people's bonds on a judgement call puts Revtrace in the middle of money disputes and adds legal and support load. Fees are verifiable on-chain if all USDC income goes to a public wallet and Revtrace lists itself on its own leaderboard (good idea from the thesis).</li>
+<li><strong>Launch route (checked today in the Tapeline review, same sources):</strong> <a href="https://docs.bags.fm/how-to-guides/customize-token-fees">Bags</a> takes a 2% trade fee, with 1% to the creator/claimers pool; new configs give the deployer 25% of that pool, and the help centre says 1%, so check before launch. Bags links the mint to an X account. <a href="https://pump.fun/docs/fees">pump.fun</a> has no create fee, 0.30% creator fee on the curve, tiered down after graduation. <a href="https://believe.app/faqs">Believe</a> uses a dynamic fee falling to 2%, split 50/50. A plain SPL token with a Raydium or Meteora pool needs Ethan's own liquidity, which the budget can't cover. <strong>Pick Bags</strong> for the X link, which matters for a referee brand. <strong>Don't use pump.fun's Tokenized Agent buyback for $TRACE.</strong> It's a revenue-funded buyback, the thing the ASIC line rules out, and the thing Revtrace scrutinises.</li>
+<li><strong>Creator fees vs subscriptions:</strong> plan on zero. CrawlHive, a real product, sits around US$20k market cap (Trench Bot). X bot and Trench Bot both find product use doesn't drive coin price.</li>
+<li><strong>Evidence:</strong> Trench Bot says clean coins launched on a real event with a named person; anonymous ones are risky or rugs; every clean coin paid the US$299 DexScreener profile. X bot says paid-caller and template shilling is common (CHOO, $FRENS), so no callers. PANGEA's fee buyback drew a "rigged" label.</li>
+<li><strong>Risks:</strong> <em>ASIC:</em> no revenue share, buybacks or staking yield, and no profit language. Also, ranking tokens by "price to organic revenue" edges toward general advice about possible financial products (ASIC INFO 225), so publish facts, not "undervalued" or "upside". <em>Conflict:</em> a referee with a coin will be accused of bias, so the open scoring repo and self-listing are must-haves. <em>Customers:</em> honest teams may welcome it; traders won't be scared off.</li>
+<li><strong>Token fit: 5/10. Plan:</strong> $TRACE on Bags for Pro access and burned deep traces, launched on the day a census report goes out, only after the legal review and at least 10 paying users. No flag bond in v1.</li>
+</ul>
+<h3>6. Build and revenue plan</h3><p><strong>Legal first (Ethan is in Perth).</strong> Labelling a named coin's revenue "creator-linked" is a statement about the people behind it. In Australia:</p>
+<ul>
+<li>Individuals can sue for defamation, and so can companies with fewer than 10 employees. Companies must show serious financial loss (<a href="https://pcc.gov.au/uniform/2020/Consolidated_Model_Defamation_Provisions.pdf">Model Defamation Provisions</a> s 9, s 10A).</li>
+<li>Larger companies can still sue for injurious falsehood, which needs malice or recklessness (<a href="https://www.slklawyers.com.au/can-corporations-sue-for-defamation-in-australia-why-the-serious-harm-threshold-often-fails-business-plaintiffs/">SLK Lawyers</a>).</li>
+<li>I haven't checked whether WA's Act has the 2021 serious-harm and public-interest changes. Ask the lawyer.</li>
+</ul>
+<p>So: spend the A$300 legal reserve <strong>before</strong> publishing labels on named coins, not after. Use the "not shown to be organic" wording, publish evidence links and give a right of reply. Until then, publish aggregate census stats with no coin names.</p>
+<p><strong>MVP, 3–4 weeks (stack: Next.js on Vercel free, Supabase free, TypeScript indexer on a A$10/month VPS, Helius free tier then US$49, grammY Telegram bot, Solana Pay plus Lemon Squeezy):</strong></p>
+<ol>
+<li><strong>One-minute wow:</strong> paste a Tokenized Agent CA and get "30d deposits US$X · N payers · Y% from wallets funded by the creator or the creator's funders · Z% unattributed (CEX) · buyback done vs set". Every number links to Solscan.</li>
+<li>Tokenized Agent leaderboard by organic deposits (the census).</li>
+<li>Telegram <code>/rev &lt;CA&gt;</code>.</li>
+<li>Declared fee-wallet coins (Veil-style dashboards) and buyback claimed vs done.</li>
+<li>Pro alerts (a deposit spike from creator-linked wallets, a buyback missed). Team "verify my fee wallets" flow last.
+- Reuse open deployer and cabal code (Git bot's list) for funder clustering. Copy x402stats' versioned method page.</li>
+</ol>
+<p><strong>Cost (AUD, estimates):</strong>
+| Item | Up-front | Monthly |
+|---|---|---|
+| Domain | 25 | |
+| VPS for indexer and bot | | 10 |
+| Helius (free tier in the test; US$49 ≈ A$75 if exceeded) | | 0–75 |
+| Vercel, Supabase, Telegram, GitHub | 0 | 0 |
+| Fixed-fee defamation and factual-information review (get a quote first) | 300 | |
+| <strong>Total to end of 30-day test</strong> | | <strong>≈ A$335</strong> (A$410 if Helius is paid) |</p>
+<p>Not in the test: the $TRACE launch (about A$30 dev buy plus rent), the DexScreener profile (US$299 ≈ A$460) and X API. Adding all of them stays under A$1,000 only if Helius stays free. Hold them until there's revenue.</p>
+<p><strong>First 10 paying users:</strong></p>
+<ul>
+<li>Tokenized Agent builders who already promote revenue and want proof (their own X posts).</li>
+<li>Teams with public dashboards (Veil-style).</li>
+<li>Traders who reply "is this revenue real?" under revenue posts.</li>
+<li>Solana trader Telegram groups.</li>
+<li>MCP listings (Glama, MCP Registry).</li>
+</ul>
+<p>All outreach and posting need Ethan's OK.</p>
+<p><strong>30-day test aimed at real money:</strong></p>
+<ul>
+<li><strong>Days 1–3 (A$0):</strong> count Tokenized Agents with deposits in the last 30 days and the creator-linked share. <strong>Kill</strong> if total deposits across all of them are under US$50k per 30 days (thesis threshold).</li>
+<li><strong>Days 4–10:</strong> hand-check 40 labels. <strong>Kill</strong> or rework if more than 10% are wrong.</li>
+<li><strong>Days 11–30:</strong> after the legal review, publish Census #1 (Ethan approves). Sell founding Pro at US$19 (USDC or card) and pre-sell 5 founding team verifications at US$99.</li>
+<li><strong>Confirm:</strong> at least 15 paying users in total, including at least 3 teams.</li>
+<li><strong>Kill:</strong> fewer than 5 paying users in total, or 0 teams.</li>
+</ul>
+<p>Never launch or buy a token without Ethan's go-ahead.</p>
+</details>
+</section>
+<section class="sources"><h2>Sources</h2><ul><li><a href="../sources/theses/2026-10-22-1815-revtrace.md">Thesis (2026-10-22-1815-revtrace.md)</a></li><li><a href="../sources/reviews/2026-10-22-1845-revtrace.md">Review (2026-10-22-1845-revtrace.md)</a></li></ul></section>
+</article>
+</main>
+<footer class="site">Theses by idea bot, reviews by Project Bot. Times are AWST (Perth time).</footer>
+</body>
+</html>
