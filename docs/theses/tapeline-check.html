@@ -408,6 +408,14 @@
 <li>Data: Trench Bot's rug and shill-check records (/workspace/shared-data/trench-bot/coins.jsonl, /workspace/shared-data/x-bot/signals.jsonl) give free labelled examples for the poster track record.</li>
 <li>Competitors (from X bot, 22:45): Larpcheckbot and DefiLlama's @llama already post verdicts under crypto posts and are the default check for coin and protocol claims. They don't cover news headlines yet, but they are the closest substitute after Grok and could expand into headlines.</li>
 <li>Backfill: X bot will run the 30-day pull with its built-in X reads at no cost, so the first move drops the ~US$15 of API reads. X bot picks the 40 accounts that post the most "BREAKING"/"JUST IN" headlines with market words, and the posts go to /workspace/shared-data/x-bot/.</li>
+<li>Backfill done (X bot, 23:00): 4,134 headline posts from 40 accounts in /workspace/shared-data/x-bot/tapeline-backfill/. Findings: most headlines are copied word for word (9 headlines on 3+ accounts), so single-source can trace to the first poster; paid promo uses the same format (MaxelRowan 109 of 125 posts "JUST IN: $TICKER"); volume is very uneven (popmemecoin ~330 a day), so the extension needs a per-account rate cap. Second batch to add: WatcherGuru, Cointelegraph, BitcoinArchive, BSCNews, coinbureau. Labelling 100 headlines is under way in /workspace/idea-bot/data/tapeline-labels.jsonl.</li>
+<li>Labels (23:15): Project Bot labelled 100 (71 confirmed, 8 contradicted, 1 single-source, 20 paid promo; about 1 in 4 would mislead a trader once stale, early, wrong-figure and wrong-actor headlines are counted). The verdict format becomes "confirmed, but 6 days old" style rather than true/false. Blind check: idea bot's 30 matched 27 (90%, kappa 0.79). Every check needs a "posted before?" search, because reposted old news caused 2 of 3 misses. Head-to-head with @grok and @Larpcheckbot waits on X bot's reply pull.</li>
+<li>Head-to-head (X bot, 23:20): only 15 of the 100 labelled posts got any @grok or @Larpcheckbot reply (Grok 14, Larpcheck 1), all under big accounts. None of the 8 contradicted or 7 stale/premature posts got a checker reply; 1 of 20 paid promos did (Larpcheck, correct). On 6 true-but-misleading headlines Grok caught 2 and missed 3, possibly 4. 25 of 36 reply matches are inferred. Private half of the kill test passes: the gap is coverage plus stale/framing flags, not raw accuracy. Next steps (Chrome Web Store listing, US$29 founding pass, asking X for written OK) need Ethan's OK.</li>
+<li>Labels v2 (Project Bot, 23:17): misleading types are 11 stale, 4 wrong_figure, 4 overstated, 3 wrong_actor, 1 early; 16 marked posted_before (3 are copies within the dataset). Stale dominates, so the "posted before?" search is the core check to build first. posted_before=false only covers the 40 sampled accounts.</li>
+<li>Correction (Project Bot, 23:17): 23 headlines carry a misleading type, 11 of them stale. Among the 16 confirmed-but-misleading, 6 are stale; the other 5 stale ones are contradicted reposts. Stale is still the biggest type, so the build order holds.</li>
+<li>00:04 23 Oct: X bot found Paparazzi ($PAPA), which burns its token to pay for fact-check credits, the same token model as $TPLN. Project Bot is checking its coverage and usage. Explicit "@grok is this true" asks with market words run only 15-40 a day, so build the extension that checks posts without being asked, not a reply bot.</li>
+<li>00:05: Trench Bot found no live $PAPA; closest is $PAPZ "Paparazzi" on pump.fun (~$2.9k mcap, same-second copycat mint), so there is no on-chain traction yet, pending the official CA. Git bot partial sweep: only abandoned non-crypto X fact-check extensions (ragizaki/TwitterFactCheck, SravyaUllamgunta/TrustX); the stale-headline search is open on GitHub. Full rerun in the 8am run.</li>
+<li>00:22: Paparazzi ($PAPA) is on Robinhood Chain, not Solana; Solana $PAPZ mints are copycats. It self-reports 1,092 readers and 7,065 tips in a day and 10.5M burned; its treasury pays news catchers from revenue, which our token rules bar. It is a token-model comparison, not a direct Solana rival.</li>
 </ul>
 </section>
 <section class="review"><h2>Project Bot review</h2>
@@ -551,6 +559,73 @@
 </table>
 <p><strong>Platform terms:</strong> X Developer Policy (spam/abuse analysis and aggregate post metrics need written permission; remove deleted posts), Chrome Web Store (above). <strong>Gap holds narrowly:</strong> an automatic headline verdict plus poster record plus market move, inside x.com. Winnable only if the poster record is built first and kept private until X's OK.</p>
 <h3>Build plan</h3><p><em>Not in this review.</em></p>
+<h3>Re-scores (living review)</h3>
+<h4>Re-score 23 Oct 2026 8:50am AWST (v1, new evidence)</h4><p><strong>Covers:</strong> idea bot's v1 thesis (no v2 file had landed at 8:50am; idea bot claimed a v2 run at 8:31am). New evidence since the 22 Oct 11:20pm validation update: idea bot's automated "posted before?" stale-check prototype (/workspace/idea-bot/data/stale-check/README.md, run against my 100 labels), Git bot's thesis refinement (git-bot:refine, pumpdata.fun as a data source and agent channel), six Trench Bot thesis notes for Tapeline Check (trench-bot/thesis-inputs.jsonl, 8:40am), and Growth Bot's new rule that every version needs an AI-agent distribution path (refine-protocol.md).</p>
+<p><strong>Weak spots from the last review, checked:</strong></p>
+<ul>
+<li>Differentiation (Larpcheck, Basis Desk, SpyGlass): <strong>still open.</strong> No new rival to the headline check, but nothing yet proves our verdicts beat theirs.</li>
+<li>"Nobody pays for accuracy": <strong>still open.</strong> No money evidence has moved; the US$29 founding-pass test is parked until Ethan picks this thesis to launch as a coin (not waiting on him).</li>
+<li>"Date check is the real edge": <strong>partly tested.</strong> The labels showed stale news is the biggest failure type (11 of 23 misleading headlines) and no free checker replied under any stale post. Idea bot's prototype found the earlier story for 6 of 11 stale posts using a free news search, but keyword matching false-flagged 23 to 38 of 69 fresh posts, so a same-event judge (small LLM or embeddings) is required. Pass line set by idea bot: 8+ of 11 caught with 5 or fewer false flags on the same 80 rows. The Google News RSS feed used is personal, non-commercial only, so production needs another source.</li>
+<li>X policy on "paid promo": <strong>still open</strong> (private only).</li>
+</ul>
+<p><strong>Fact-check of new claims:</strong> pumpdata.fun's own page confirms 300 free lookups a day with no key, then US$0.005 a call for launch and deployer lookups (US$0.01 for a 50-wallet batch) paid in USDC over x402 on Solana, a free key for 2,000 a day, US$10/month for 20,000 a day, an MCP server at pumpdata.fun/mcp, and a Telegram bot (@pumpdatafun_bot) that runs a contract check and can /watch a dev (<a href="https://pumpdata.fun">pumpdata.fun</a>). That makes it both a near-free data source for dev-wallet checks and a free rival for any "paste a contract, get a dev check" feature. It doesn't check headlines or posters. Trench Bot's coin notes (dev-tied organic poster on BTC, staircase wash on MrBeast, frozen DexScreener feed on FORK, Project Kimchi vs Kimchi mint mix-up) come from its own logs; small samples, medium confidence.</p>
+<p><strong>Competitors the sweep missed:</strong> pumpdata.fun's Telegram contract check (@pumpdatafun_bot), found on pumpdata.fun's own homepage via Git bot's radar. Partial overlap only (coin/dev checks, not headlines). Logged in missed-competitors.jsonl.</p>
+<p><strong>Refined idea:</strong> Tapeline Check should stop leading with a bare true/false verdict, because 90% of market-moving originals were true. Lead with two things free checkers don't do: a <strong>"first happened" date stamp</strong> ("real, but this happened 8 Oct; posted 14 days late") and the <strong>poster's record</strong>, which for coin posts includes a <strong>dev-tie flag</strong> (poster talked to or promoted the dev, via pumpdata.fun's free tier) and <strong>exact-mint resolution</strong> before judging. Any market cap or liquidity shown is read from the pool on-chain, not DexScreener. Ship the same check as an x402/MCP endpoint and a Grok Bot template alongside the extension. Evidence supports the direction (stale is the biggest failure class and is uncovered), but not yet the accuracy.</p>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>Old</th>
+<th>New</th>
+<th>Reason and source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Solo buildability</td>
+<td>7</td>
+<td>7.5</td>
+<td>Stale-check retrieval ran free in one session with no LLM or paid API (idea bot prototype); dev-wallet data near free on pumpdata.fun's 300/day tier (verified on its site)</td>
+</tr>
+<tr>
+<td>Differentiation</td>
+<td>4</td>
+<td>4</td>
+<td>Date stamp + dev-tie are uncovered, but the prototype doesn't yet hit the accuracy pass line; no lift until it does</td>
+</tr>
+<tr>
+<td>Distribution</td>
+<td>6</td>
+<td>6</td>
+<td>Agent channels are real (pumpdata uses MCP/x402), but v1 doesn't include one and Larpcheck already has MCP/API; +0.5 once a version ships it</td>
+</tr>
+<tr>
+<td>Money evidence</td>
+<td>6</td>
+<td>6</td>
+<td>Nothing new on paying for accuracy</td>
+</tr>
+<tr>
+<td>Token fit</td>
+<td>6</td>
+<td>6</td>
+<td>Unchanged; Trench Bot's launch notes (one pinned mint, no boosts, no paid callers) are already in the plan</td>
+</tr>
+<tr>
+<td><strong>New overall: 5.5/10</strong></td>
+<td>5.5</td>
+<td><strong>5.5</strong></td>
+<td>Unchanged: build got cheaper, but differentiation and money evidence haven't moved</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Rules gate: PASS</strong> (tech-bro buyer; token fit 6 ≥ 5). Still 1st among rules-passing theses; 3rd of 9 overall behind Ledgerport 6.5 (outside rules) and Tapeline 6 (superseded by this).</p>
+<p><strong>What would lift this score (updated):</strong></p>
+<ol>
+<li>Same-event judge hits the pass line (8+ of 11 stale caught, 5 or fewer false flags on the 80 rows): Differentiation 4 → 5.5, overall about +0.5. Free, private.</li>
+<li>v2 builds in the date stamp, dev-tie flag, exact-mint resolution, on-chain pool reads and an x402/MCP endpoint, with a licensed news source named and costed: Distribution +0.5, overall about +0.25.</li>
+<li>Any evidence that traders pay for accuracy (for example a Whop or on-chain product selling verification rather than speed): Money evidence 6 → 7, overall about +0.5. The founding-pass test stays parked until Ethan picks this thesis.</li>
+</ol>
 <details><summary>Rest of the review (fact-check and notes)</summary>
 <h3>What changed since the 4:45pm Tapeline review</h3><table>
 <thead>
@@ -652,6 +727,17 @@
 DexScreener profile (~A$428) only from revenue.</p>
 <p><strong>First 10 users:</strong> people tagging @grok or @Larpcheckbot under market headlines, perps traders posting about ANTHROPIC/IREN/NVDA, Hyperliquid and Solana Telegram groups. All replies and posts from Ethan's account only with his OK.</p>
 <p><strong>30-day test:</strong> Phase A (days 1–10, private): pass if ≥8% of market headlines are contradicted or still single-source at 24h, ≥10 coincide with a ≥2% move within 1h, ≥85% agreement with hand labels, and it beats Larpcheck/Grok on the same set. Kill if &lt;4%, &lt;75% agreement, or no better than the free bots. Phase B (days 11–30, needs Ethan's OK for the unlisted listing and outreach): founding pass US$29 for 3 months. <strong>Pass ≥25 passes (~US$725) and ≥25% of installs using it 3+ days a week. Kill &lt;10 passes, &lt;10% weekly use, or ≥50% saying "I just ask Grok/Larpcheck".</strong> No token, legal spend, public scorecard or DexScreener profile before Phase B passes.</p>
+<h3>Validation update, 22 Oct 11:20pm AWST</h3><ul>
+<li>100 headlines hand-labelled (/workspace/shared-data/project-bot/tapeline-labels.jsonl): 71 confirmed, 8 contradicted, 1 single-source, 20 paid_promo; 10% of market-moving originals wrong, ~1 in 4 misleading once stale/early/wrong-figure/wrong-actor framing counts. idea bot's blind 30 matched 27 (90%, kappa 0.79).</li>
+<li>Head-to-head (X bot, /workspace/shared-data/x-bot/tapeline-backfill/checker-replies.jsonl): only 15 of 100 posts got any @grok or @Larpcheckbot reply; none of the 8 contradicted or 7 stale/early posts did; 1 of 20 promos (Larpcheck, correct). Grok never disagreed with a label but caught only 2 of 6 true-but-misleading framings. 25 of 36 reply matches are inferred.</li>
+<li>Result: the data half of the kill test passes. The free checkers' gap is coverage (tag-only) and framing (stale/misleading), which is exactly Tapeline's verdict format. Score stays 5.5 until the money half (US$29 founding passes, kill below 10) is run, which needs Ethan's OK.</li>
+</ul>
+<h3>Update, 23 Oct 12:25am AWST: Paparazzi and template rings</h3><ul>
+<li>Paparazzi ($PAPA) is on Robinhood Chain, not Solana (X bot). Solana $PAPZ mints are copycats. It self-reports 1,092 readers, 7,065 tips a day and 10.5M burned. It posts its own BREAKING headlines with a 29–50/100 trust score. Its payouts are funded by revenue, which our rules bar. Overlap: headline trust scoring. No overlap: it's not a browser extension inside X, it doesn't search for earlier posts, and it's not on Solana. Score unchanged at 5.5.</li>
+<li>Feature idea from Trench Bot run 5: flag identical lines posted by several accounts within 60s (a template ring). Coins those rings pushed fell 67–75% within an hour. It's cheap to build on the "posted before?" search.</li>
+<li>Caveat (Trench Bot, 12:23am): the 67–75% figure comes from a handful of coins pushed by one ring. Show the ring flag without a number until it covers about 20 coins and more than one ring.</li>
+<li>Competitors the sweep missed: Larpcheck post checks (Larpcheck's own how-it-works page and its X replies), Basis Desk Verify (web search for crypto fact-check Chrome extensions), SpyGlass (Devpost hackathon search). Logged in /workspace/shared-data/project-bot/missed-competitors.jsonl.</li>
+</ul>
 </details>
 </section>
 <section class="sources"><h2>Sources</h2><ul><li><a href="../sources/theses/2026-10-22-2230-tapeline-check.md">Thesis (2026-10-22-2230-tapeline-check.md)</a></li><li><a href="../sources/reviews/2026-10-22-2245-tapeline-check.md">Review (2026-10-22-2245-tapeline-check.md)</a></li></ul></section>
