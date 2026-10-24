@@ -13,7 +13,7 @@
 <article>
 <h1>Clean Feed v1</h1>
 <p class="tagline">The real-or-copycat checker for Solana addresses, tickers and links in your X feed</p>
-<p class="meta"><span>24 Oct 2026, 10:21am AWST</span> <span class="badge mid">5/10</span></p>
+<p class="meta"><span>24 Oct 2026, 10:21am AWST</span> <span class="badge mid">5.5/10</span></p>
 <section class="exec"><h2>Executive summary</h2>
 <ul>
 <li><strong>Lead job.</strong> On every Solana contract address (CA), $ticker or token link in the X feed, replies and Communities, Clean Feed <strong>automatically</strong> stamps one of four verdicts, with no paste and no click:</li>
@@ -820,7 +820,7 @@
 </ul>
 </section>
 <section class="review"><h2>Project Bot review</h2>
-<p class="meta"><span class="badge mid">5/10</span> <span>Reviewed 24 Oct 2026, 10:45am AWST</span></p>
+<p class="meta"><span class="badge mid">5.5/10</span> <span>Reviewed 24 Oct 2026, 10:45am AWST</span></p>
 <h3>Verdict</h3><ul>
 <li><strong>Score: 5.0/10 (PROVISIONAL, feed set pending). Token fit 6/10. Passes Ethan's rules gate.</strong> Innovation 5, Usability 8, Uniqueness 4.</li>
 <li><strong>Down from 5.5 at 10:45am.</strong> That first score came before any blind results. Two of the three blind sets are now in:</li>
@@ -1032,6 +1032,868 @@
 - <strong>Budget line:</strong> about A$72 to day 30 (A$52 itemised plus about A$20 contingency) and A$545 over 4 months; A$455 headroom; hard cap A$25/month. Once free limits bind, pumpdata.fun's US$10/month key (≈A$14) takes running costs to about A$34/month, so lift the cap to about A$35 or drop the LLM line; the unknown is candidate-search calls on big families.
 - <strong>Money test:</strong> parked until Ethan picks this thesis to launch as a coin (US$9 founding Pro, pass ≥25 paid and ≥30% active 3+ days a week). Not waiting on him.</li>
 </ol>
+<h3>Re-scores (living review)</h3>
+<h4>Re-score 24 Oct 2026 12:45pm AWST (v2, new evidence)</h4><p><strong>Covers:</strong> idea bot's <strong>Clean Feed v2</strong> (<code>/workspace/idea-bot/theses/2026-10-24-1230-clean-feed-v2.md</code>, landed 12:37pm AWST, 486 lines, sha256 56ac8098…de3b). It replaces the v1 re-score I was asked to do, because v2 landed during this run. It's a new version of the same thesis id (<code>idea-bot:thesis:clean-feed</code>), not a new thesis, so this is a re-score, not a fresh full review. The v2 version page is <code>2026-10-24-1245-clean-feed-v2.md</code>.</p>
+<p>Also covers the new evidence since 10:46am:</p>
+<ul>
+<li>all five teammates' brief sections;</li>
+<li>idea bot's family cost check (12:31pm);</li>
+<li>Git bot's 12:06 refinement (dafeiyu-cleaner, Firefox);</li>
+<li>Trench Bot run 12 (the 13.0–14.6% template band, and copies parking supply in the real creator's wallet);</li>
+<li>X bot's pinned-CA finding (two-way link check 0 of 3);</li>
+<li>the Mint Seal Part B rebuild and Git bot's disputes;</li>
+<li>Growth Bot's 12:40 lessons.</li>
+</ul>
+<p>No holdout or sealed label was opened, and no blind set was run.</p>
+<p><strong>New overall: 5.5/10 (v2). Up from 5.0 PROVISIONAL (v1).</strong> Token fit 6. Innovation 5, Usability 8, Uniqueness 4. <strong>Closest rival: EDGERUN.</strong></p>
+<p><strong>Rules gate: PASS.</strong> The paying buyer is a tech-bro trader, token fit is 6 (≥5), the cost is about A$449–589 over 4 months, it launches on pump.fun only, and there are no holder payouts or buybacks. Lead cap 6 applies: nobody is shown paying for anything close.</p>
+<p><strong>"PROVISIONAL, feed set pending" is removed.</strong> It was waiting on my 60-post blind feed set. Ethan's 11:28am rule paused that set, and the scheduled holdout and feed-set routines are paused too. The score now rests on desk evidence plus quick feasibility checks, the same standard every thesis is held to now. The feed set survives as AT-12, which Claude Code runs on fixtures (and on a fresh 60 posts only if Ethan wants them). Mint Seal Part B (AT-16) stays as the one frozen, single-use check, because it only decides whether <code>realCall</code> ships. Neither can lift the score above the cap of 6 while nobody pays.</p>
+<p><strong>Reasons in one line:</strong></p>
+<ul>
+<li><strong>Up:</strong> v2 designs out v1's failed "real" claim, and the build is now verified cheap and specified end to end.</li>
+<li><strong>Held back:</strong> EDGERUN already draws CA lines in the X feed, and nobody pays for this job.</li>
+</ul>
+<p><strong>Refined idea (one sentence):</strong> Clean Feed is the store-listed X extension that folds drainer, lure and shill replies with a one-line crypto reason. Its red pill flags a reply CA that differs from the one the thread's author posted, and every other CA gets a facts-only family line ("1 of 12+ mints called $X · oldest ≠ deepest · deployer N launches"). "The real one is X" stays off until AT-16 passes.</p>
+<h3>Scores</h3>
+<table>
+<thead>
+<tr>
+<th>Criterion</th>
+<th>v1 (10:46am)</th>
+<th>v2 now</th>
+<th>Why it moved (source)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Problem severity</td>
+<td>7</td>
+<td>7</td>
+<td>Unchanged. Trench Bot run 12 adds 16 name-bait coins over $500k in ~1h40m (11 already back at ~$1.8k), and X bot's 12:00 digest adds 3 new "check the mint, not the name" complaints, but the row already counted this pain</td>
+</tr>
+<tr>
+<td>Timing</td>
+<td>7</td>
+<td><strong>6</strong></td>
+<td>Down. The in-X CA slot is filling: EDGERUN, Verixy, Safe CA (CWS v1.0.0) and Solified all put data next to CAs on x.com today (sites read 12:35pm AWST). Demand is real, but the window is closing</td>
+</tr>
+<tr>
+<td>Differentiation</td>
+<td>4</td>
+<td>4</td>
+<td>Unchanged. v2 drops the commodity "which mint is real" lead and adds thread CA mismatch, oldest ≠ deepest and paid-only attention, which no page I read claims. EDGERUN already counts same-CA pushes and mints per ticker on X, so the net is flat</td>
+</tr>
+<tr>
+<td>Usability</td>
+<td>8</td>
+<td>8</td>
+<td>Unchanged. 5 steps, under 30s, no setup; no mobile</td>
+</tr>
+<tr>
+<td>Ape appeal</td>
+<td>7</td>
+<td>7</td>
+<td>Unchanged. The neutral default removes "the real one is X", but the red "different CA from the one @author posted in this thread" pill answers the most common reply scam before the click</td>
+</tr>
+<tr>
+<td>Solo buildability</td>
+<td>7</td>
+<td><strong>8</strong></td>
+<td>Up, with evidence. Free tiers verified on the providers' pages today: Workers 100k/day, Upstash 500K commands/month, Helius 1M credits, Jupiter 1 RPS, pumpdata.fun 2,000/day free key. idea bot's 12:31 check found 3 calls and ~0.4s per cold family lookup. rules_v2 is frozen and ready to port. <code>realCall</code> off removes the hardest part from v1. 31 numbered tests exist. Limits: Jupiter's 1 RPS global cap and DexScreener per-IP limits on shared Worker IPs</td>
+</tr>
+<tr>
+<td>Self-serve sales</td>
+<td>8</td>
+<td>8</td>
+<td>Unchanged</td>
+</tr>
+<tr>
+<td>Distribution</td>
+<td>6</td>
+<td>6</td>
+<td>Unchanged. CWS, MCP and x402; a Firefox build is cheap through WXT but unproven; no audience; outreach needs Ethan's OK</td>
+</tr>
+<tr>
+<td>Retention</td>
+<td>6</td>
+<td>6</td>
+<td>Unchanged. Daily use if folds stay right; one wrong red pill costs trust</td>
+</tr>
+<tr>
+<td>Money evidence</td>
+<td>4</td>
+<td>4</td>
+<td>Unchanged. Every in-feed rival is free (EDGERUN, Verixy "Pro coming later", Safe CA, Solified, Buddy). RugSlayer prices scans at US$0.01 (its page), but no buyers are shown</td>
+</tr>
+<tr>
+<td>Token fit</td>
+<td>6</td>
+<td>6</td>
+<td>Unchanged. Hold for Pro is clean; burn-for-deep-checks moves to v1.1; pump.fun fees re-read today with no change</td>
+</tr>
+<tr>
+<td><strong>Innovation (tech bros)</strong></td>
+<td>5</td>
+<td><strong>5</strong></td>
+<td>idea bot says 6; I keep 5. Thread CA mismatch and oldest ≠ deepest are new uses of the thread and the pool account. But in-browser on-chain reads plus feed push-counting already ship in EDGERUN, so it's not newly possible tech</td>
+</tr>
+<tr>
+<td><strong>Usability (tech bros)</strong></td>
+<td>8</td>
+<td><strong>8</strong></td>
+<td>Agree with idea bot: first fold or pill inside X in under 30s, no wallet or login</td>
+</tr>
+<tr>
+<td><strong>Uniqueness (tech bros)</strong></td>
+<td>4</td>
+<td><strong>4</strong></td>
+<td>idea bot says 5; I keep 4. <strong>Closest rival: EDGERUN</strong> (under-post line on X: "which mint it really is", mints per $TICKER, "six accounts inside eleven minutes is one push", creator record; no server; not in CWS). The one thing we do that it doesn't, per its own page: fold scam replies with a reason, and flag a reply CA that differs from the root author's CA. That's new, but small and copyable in a release, and no head-to-head has been run, so it stays at 4</td>
+</tr>
+<tr>
+<td>Measured accuracy</td>
+<td>4</td>
+<td><strong>retired</strong></td>
+<td>It measured the "real is X" stamp, which v2 ships switched off. Under Ethan's 11:28 rule, the shipped behaviour is covered by Claude Code's AT fixtures (AT-01–AT-31). AT-16 is the one remaining single-use feasibility gate, and it only switches <code>realCall</code> on</td>
+</tr>
+<tr>
+<td>Build-readiness (Growth Bot checklist, info only)</td>
+<td>n/a</td>
+<td><strong>9/10</strong></td>
+<td>v2 covers all 10 checklist sections; it loses one for a competitor table missing the closest rival (EDGERUN), fixed in the brief below</td>
+</tr>
+<tr>
+<td><strong>Overall</strong></td>
+<td><strong>5.0 PROVISIONAL</strong></td>
+<td><strong>5.5</strong></td>
+<td>The 14 scored rows average 6.2 (87/14), capped at 6 because nobody pays for anything close. Cut 0.5 because the closest rival already draws in-feed CA lines on X, and v2's new edge is unproven and copyable. <strong>Up 0.5 from v1:</strong> v2 removes v1's failed claim by design (neutral default, <code>realCall</code> off), the stack is verified free, a 3-call ~0.4s lookup is measured, and the brief is build-ready. That drops the 4-point accuracy row that held v1 down</td>
+</tr>
+</tbody>
+</table>
+<h3>Score history</h3>
+<table>
+<thead>
+<tr>
+<th>When (AWST)</th>
+<th>Version</th>
+<th>Score</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>24 Oct, 10:45am</td>
+<td>v1</td>
+<td>5.5/10 provisional</td>
+<td>First desk score, before blind results</td>
+</tr>
+<tr>
+<td>24 Oct, 10:46am</td>
+<td>v1</td>
+<td>5.0/10 provisional (feed set pending)</td>
+<td>Blind Set A failed; Set B pass trivial; measured accuracy 4</td>
+</tr>
+<tr>
+<td><strong>24 Oct, 12:45pm</strong></td>
+<td><strong>v2</strong></td>
+<td><strong>5.5/10 (no longer provisional)</strong></td>
+<td>v2 ships the failed "real" call switched off and adds thread evidence (CA mismatch, oldest ≠ deepest). Stack verified free; 3-call ~0.4s lookup measured; build-ready brief. Accuracy row retired. Closest rival is now EDGERUN, which caps Uniqueness at 4 and pulls Timing to 6</td>
+</tr>
+</tbody>
+</table>
+<h3>Weak spots from the last review, against the new evidence</h3>
+<table>
+<thead>
+<tr>
+<th>Weak spot raised at 10:45–10:46am</th>
+<th>New evidence</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>"Real" fails on unverified coins (0 of 4 named right)</td>
+<td>v2 ships <code>realCall</code> off with a neutral default (AT-17/18). idea bot's 12:31 check: none of real Kimchi, AOP or CHOO is Jupiter-verified, so v1's cause is confirmed. Jupiter organicScore was 0 on real AOP, so it can't be a required signal</td>
+<td><strong>Fixed by design</strong>; naming waits on AT-16</td>
+</tr>
+<tr>
+<td>Never condemn a held-up coin</td>
+<td>Neutral is never a flag; post rules never judge the coin; AT-13 (≤3/100 keeps)</td>
+<td><strong>Fixed by design</strong></td>
+</tr>
+<tr>
+<td>Name matching (ELON → Dogelon)</td>
+<td>Exact match after suffix stripping; TB case 12</td>
+<td><strong>Fixed by design</strong></td>
+</tr>
+<tr>
+<td>Text rules: 2 of 17 out of sample</td>
+<td>rules_v2 now gets 16/17 on batch 2, but it was tuned on that batch</td>
+<td><strong>Open</strong> (no clean out-of-sample read); batch 2 is now a regression fixture</td>
+</tr>
+<tr>
+<td>Paid-attention modifier untestable</td>
+<td>Specified as R10 / <code>paid_only</code> (≥5 posts, 0 organic)</td>
+<td><strong>Specified, untested</strong></td>
+</tr>
+<tr>
+<td>Lookup cost unknown; A$25 cap broken by the VPS</td>
+<td>Hetzner SG CPX12 €15.99/month confirmed on Hetzner's page. Workers and Upstash free tiers confirmed. 3 calls and ~0.4s per cold family. Results capped at 30/20, so counts show as "M+"</td>
+<td><strong>Fixed.</strong> Running cost A$0, cap A$35</td>
+</tr>
+<tr>
+<td>Uniqueness vs Buddy, OGfinder, Vamp Alert</td>
+<td>v2 moves the lead to thread evidence. <strong>New: EDGERUN and Verixy already put CA data in the X feed</strong></td>
+<td><strong>Open.</strong> Closest rival is now EDGERUN</td>
+</tr>
+<tr>
+<td>Head-to-head vs rivals</td>
+<td>Not run</td>
+<td><strong>Open</strong> (lift item 3, light check)</td>
+</tr>
+<tr>
+<td>Payer evidence</td>
+<td>None; every new rival is free</td>
+<td><strong>Open</strong> (money test only once Ethan picks it)</td>
+</tr>
+</tbody>
+</table>
+<h3>Fact-check of new claims (12:32–12:40pm AWST)</h3>
+<ul>
+<li><strong>Hetzner Singapore CPX12 €15.99/month excl. VAT:</strong> ✓ on <a href="https://www.hetzner.com/cloud-singapore/">Hetzner's Singapore page</a> (read 12:32pm AWST). The Workers move stands.</li>
+<li><strong>Cloudflare Workers Free 100k/day and 10ms CPU; Paid US$5 minimum:</strong> ✓ <a href="https://developers.cloudflare.com/workers/platform/pricing/">pricing page</a> (updated 2 Oct 2026). This settles Git bot's "[price unverified]". Also confirmed: KV free is 1,000 writes/day, and D1 free is 100k rows written/day.</li>
+<li><strong>Upstash Free 250MB, 500K commands/month; pay-as-you-go US$0.20/100K with a budget cap:</strong> ✓ <a href="https://upstash.com/pricing/redis">pricing</a>.</li>
+<li><strong>Helius Free 1M credits, 10 RPS, DAS 2/s; Developer US$49:</strong> ✓ <a href="https://www.helius.dev/pricing">pricing</a>.</li>
+<li><strong>Jupiter free key 1 RPS, keyless 0.5 RPS, Developer US$25:</strong> ✓ <a href="https://developers.jup.ag/docs/portal/plans">plans</a>. New fact: <code>/tokens/v2/search</code> costs 10 credits, but the free plan has unlimited credits. The 1 RPS limit is global to the backend.</li>
+<li><strong>DexScreener search 300/min:</strong> partly ✓. The live reference page shows 60/min headings only for profile, boost and meta endpoints. The 300/min search heading appears in the search-index copy of the same page and in two third-party write-ups. The docs' own Q&amp;A says it's "not specified". Treat 300/min as likely, not certain. Terms allow commercial use, but not for a product that competes with DEX Screener (<a href="https://docs.dexscreener.com/api/api-terms-and-conditions">terms</a>).</li>
+<li><strong>pumpdata.fun 300/day no key, 2,000/day free key, US$10/month for 20,000/day, x402 from US$0.005:</strong> ✓ <a href="https://pumpdata.fun">homepage</a> (read 12:33pm). This replaces my 23 Oct figure.</li>
+<li><strong>pump.fun fees:</strong> ✓ <a href="https://pump.fun/docs/fees">fees page</a>, updated 17 Oct 2026, unchanged (0% create, 1.25% curve with 0.30% to the creator, 0.015 SOL graduation, 0.45% app Platform Fee).</li>
+<li><strong>CoinGecko "US$29/mo for commercial":</strong> partly ✓. That's the yearly-billed price. Month to month it's US$35. Demo shows no commercial licence and requires attribution (<a href="https://www.coingecko.com/en/api/pricing">pricing</a>).</li>
+<li><strong>CWS fee:</strong> the registration page confirms a one-time fee and lists Australia as supported, but doesn't state the amount (US$5 comes from Google's publish doc).</li>
+<li><strong>dafeiyu-cleaner "MIT":</strong> ✓ LICENSE file is MIT (GitHub API says NOASSERTION), 41★. Its DeepSeek fallback conflicts with AT-27, so we borrow the UX only.</li>
+<li><strong>v2's gate-c claim, "no tool found ships the combination":</strong> <strong>overstated.</strong> EDGERUN already does in-X lines with mint identity, mints per ticker and push counting. The narrower claim holds: folding plus thread CA mismatch.</li>
+</ul>
+<h3>Fresh competitor check (missed by v1 and v2)</h3>
+<table>
+<thead>
+<tr>
+<th>New rival (logged in missed-competitors.jsonl)</th>
+<th>What it does</th>
+<th>Model</th>
+<th>Threat</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><a href="https://edgerun.pro/">EDGERUN</a></strong></td>
+<td>Line under each X post with a Solana mint: "which mint it really is", how many mints wear a $TICKER, same-contract pushes from several accounts within minutes, top-holder funding, creator record, and the poster's wallet trades where an index links one. Also works on pump.fun, DexScreener and Solscan. No server</td>
+<td>Free, open repo; not in CWS (load unpacked)</td>
+<td><strong>High: closest rival.</strong> No folding or thread CA mismatch mentioned</td>
+</tr>
+<tr>
+<td><strong><a href="https://verixy.io/">Verixy</a></strong></td>
+<td>X-only extension: highlights every CA and $symbol; hover card with market data, GoPlus risk and top-10 holders; picks the highest market cap when symbols clash; routes to GMGN</td>
+<td>Free MVP, "Pro tier coming later"</td>
+<td>Medium. Hover-only, no verdict, no folding</td>
+</tr>
+<tr>
+<td><strong><a href="https://www.solified.app/">Solified</a></strong></td>
+<td>Risk badge next to every Solana address on any page (X included), look-alike address alerts, clipboard-hijack and pre-transaction warnings</td>
+<td>Free</td>
+<td>Low–medium. Single-address risk</td>
+</tr>
+<tr>
+<td><strong><a href="https://vexlore.xyz/">Vexlore</a></strong></td>
+<td>Chrome/Edge side panel plus Telegram bot: OG vs VAMP, bundles, dev lineage; claims 309K+ requests and 35+ group chats (self-reported)</td>
+<td>Core free</td>
+<td>Medium in Telegram; paste-based on desktop</td>
+</tr>
+<tr>
+<td><strong><a href="https://volley.fun/tools">Volley</a></strong></td>
+<td>Web copycat detector ("which one is the original") among other tools</td>
+<td>Free tools; VOLLEY token</td>
+<td>Low</td>
+</tr>
+</tbody>
+</table>
+<h3>What would lift this score</h3>
+<ol>
+<li><strong>AT-16 passes once (Mint Seal Part B, already frozen):</strong> <code>realCall</code> turns on. Uniqueness 4 → 5 and ape appeal 7 → 8, about +0.5 overall, still under the cap of 6. <em>Size:</em> Claude Code's week-2 shadow engine (est. 2–3 days) plus about an hour of Project Bot scoring; A$0. A fail changes nothing.</li>
+<li><strong>Payer evidence:</strong> a 30-day US$9 founding Pro, run only once Ethan picks this thesis, with ≥25 paid and ≥30% active 3+ days a week. Money evidence 4 → 6, which lifts the cap of 6 and could take the overall to 6–6.5. <em>Size:</em> about A$73 and 30 days.</li>
+<li><strong>Quick thread-evidence check vs EDGERUN, Verixy and Buddy</strong> (a feasibility check, not a blind set): on 20 public memecoin reply threads with a known root CA, count how often each tool marks the wrong-CA reply. If they miss it in ≥30% and Clean Feed's <code>thread_mismatch</code> catches it, Uniqueness 4 → 5 and Differentiation 4 → 5. <em>Size:</em> about 2 hours once the week-1 extension exists. If EDGERUN ships folding or thread mismatch first, Uniqueness drops to 3.</li>
+</ol>
+<h3>Claude Code build brief (v2, updated at this re-score)</h3>
+<p><em>Build Clean Feed v1 from this section alone. Base document: idea bot's v2 thesis (<code>/workspace/idea-bot/theses/2026-10-24-1230-clean-feed-v2.md</code>, sha256 56ac8098…de3b at 12:38pm AWST), plus my changes marked <strong>[PB 24 Oct]</strong>. Prices were checked on each provider's own page on 24 Oct between 12:32 and 12:40pm AWST unless marked. FX is US$1 = A$1.424 (Frankfurter/ECB, 23 Oct) and SOL = A$145.99. "(est.)" means estimate, "[unverified]" means not checked against a source. "Clean Feed" is a working name: a CWS extension with that name already exists.</em></p>
+<p><strong>Summary.</strong> Clean Feed is a read-only Chrome extension (Firefox build as a stretch) for tech-bro Solana traders on desktop x.com. It folds drainer, airdrop-lure, caller-ad and copy-paste shill replies into one grey bar with a crypto-specific reason. It also puts a factual pill on every CA, $ticker and token link in posts and replies. The pill uses the thread itself as evidence: "different CA from the one @author posted in this thread", "1 of 12+ mints called $KIMCHI", "oldest ≠ deepest", "deployer 825 launches". It never names "the real one" until the engine passes Mint Seal Part B (the flag <code>realCall</code> stays off). There's no wallet in the extension, no buy button, no sign-up and no LLM, and post text never leaves the browser. Revenue comes from Pro (US$9/month or holding $CFEED) and agents (MCP plus x402 at US$0.005 a check).</p>
+<p><strong>One-minute wow.</strong> Install, then open any memecoin reply thread on x.com. Nine drainer and shill replies are already folded ("Hidden · 10%-supply airdrop lure · same text as 9 others · Show"). The one reply pushing a different contract has a red pill: "different CA from the one @kimchi1x posted in this thread". Every other CA carries a grey line saying how many mints share its ticker. There's nothing to set up.</p>
+<p><strong>Target user.</strong> Desktop Chrome, Brave or Arc users who find coins on crypto Twitter and in X Communities and trade on Axiom, GMGN or Photon. Community mods and caller-group admins are a secondary group. They pay with a card, USDC or by holding $CFEED. Mobile is out, because the X app can't run extensions.</p>
+<h4>What changed from idea bot's v2 brief [PB 24 Oct]</h4>
+<ol>
+<li><strong>Closest rival is now EDGERUN</strong> (edgerun.pro, read 12:35pm AWST), and v2's competitor table misses it. EDGERUN already draws a line under X posts showing "which mint it really is", how many mints wear a $TICKER, and when several accounts posted the same contract within minutes ("six accounts inside eleven minutes is one push"). It also shows holder funding, the creator's other launches, and where an index links one, the poster's wallet trades. It runs in the browser with no server and isn't in the Chrome Web Store yet. Its page says nothing about folding or hiding posts, or about a reply CA differing from the root post's CA. <strong>Rewrite v2's one-sentence edge:</strong> "Clean Feed is the store-listed X extension that folds scam replies with a crypto reason and flags a reply CA that differs from the one the thread's author posted. It never crowns a 'real' coin until two independent on-chain signals agree."</li>
+<li><strong>Add to the teardown:</strong> EDGERUN, Verixy (X extension with hover cards on every CA and $symbol; picks the highest market cap when symbols clash; free MVP, "Pro coming"), Solified (a risk badge on every Solana address on any page), Vexlore (Chrome/Edge side panel plus a Telegram "OG vs VAMP" bot; claims 309K+ requests, self-reported) and Volley's copycat detector (web). All are logged in missed-competitors.jsonl.</li>
+<li><strong>Don't copy dafeiyu-cleaner's LLM fallback</strong> (Git bot's 12:06 suggestion). Sending doubtful posts to an LLM breaks AT-27, which says post text never leaves the browser. Borrow only its rules-first, per-comment badge-with-reason UX. Its LICENSE file is MIT (read 12:33pm AWST), though GitHub's API reports NOASSERTION, so keep the attribution.</li>
+<li><strong>Cut from v1:</strong> the dispute lock (its escrow is "design at build time", so it isn't build-ready) and burn-for-deep-check (no deep check exists in v1). Both move to v1.1. v1 Pro is card or hold only.</li>
+<li><strong>Rate-limit facts that shape the engine:</strong>
+   - Jupiter's free key allows <strong>1 request a second for the whole backend</strong>, so at most about 60 cold family lookups a minute. Queue them and show <code>checking…</code>.
+   - DexScreener limits are <strong>per IP</strong>. Cloudflare Workers share outbound IPs, so another tenant could use up the limit [unverified risk]. Log 429s in week 2. If they show up, fall back to Jupiter-only candidates.</li>
+<li><strong>CoinGecko stays out of v1 entirely, not just the engine.</strong> The Demo plan shows no commercial licence and requires attribution. Commercial use starts at Basic, US$35/month (US$29/month billed yearly), about A$50/month, which is over the A$35 cap. The name-bait guard uses the curated brand map plus Jupiter <code>isVerified</code> instead.</li>
+<li><strong>Answer to v2's open question on AT-16:</strong> use the proportions locked at 11:27am AWST. That's at least 50% of scored copy groups and at least 55% of scored copy-first groups (5 of 9 at today's counts), with disputed rows left out.</li>
+</ol>
+<h4>v1 features in build order (each with acceptance criteria)</h4>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Feature</th>
+<th>Done when (acceptance)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><strong>Local fold layer.</strong> MutationObserver on the timeline; extraction (base58 32–44, checked to decode to 32 bytes with bs58; <code>$TICKER</code>; pump.fun, DexScreener, Axiom and Birdeye URLs; the expanded t.co host). rules_v2 ported 1:1 to TypeScript (frozen hash fb532d15…d596). Fold bar with Show and Not spam. Strictness (Relaxed, Balanced default, Strict). Raw view. Local-only mode</td>
+<td>AT-01–AT-11 and AT-25 pass on fixtures; the port matches rules_v2's design numbers (152/162, 0/60, 13/13; method check only); a live reply thread folds</td>
+</tr>
+<tr>
+<td>2</td>
+<td><strong>Local pill rules (no API):</strong> thread CA mismatch, two CAs for one ticker from one author, a major ticker next to a <code>…pump</code> mint, an EVM address for a Solana ticker, lookalike handle</td>
+<td>AT-08 ≥16/18, AT-30, Trench Bot cases TB-1..15</td>
+</tr>
+<tr>
+<td>3</td>
+<td><strong>API and shadow copy engine</strong> (Hono on Workers, <code>/v1/check/mint</code> batching up to 20, <code>/v1/check/link</code>). Family lookup, on-chain reads, deployer history, vote families A–D, <code>realCall=false</code>, would-be answers logged</td>
+<td>AT-19–AT-22, AT-31; ≤40 subrequests and CPU p95 &lt;8ms per cold check; CI grep finds no <code>coingecko</code>; Part B prediction file written and hashed</td>
+</tr>
+<tr>
+<td>4</td>
+<td><strong>Coin pills from the engine:</strong> neutral family line, amber facts (oldest ≠ deepest, deployer record, curve bought out at launch), red coin rules (name-bait, fake fund, the 13.0–14.6% / 0.24% / 0.05% template, paid-only attention). Warnings only: a coin rule never hides a post</td>
+<td>AT-13, AT-14, AT-15, AT-17, AT-18</td>
+</tr>
+<tr>
+<td>5</td>
+<td><strong>"Why" panel and controls:</strong> signals for and against, family list with on-chain reserves and holders, deployer record, copy-CA button, Solscan links, per-account always-show and always-hide (local), privacy line ("checked locally" vs "looked up: CA only")</td>
+<td>AT-23, AT-24, AT-26–AT-29</td>
+</tr>
+<tr>
+<td>6</td>
+<td><strong>Pro and agents:</strong> free tier of 30 automatic stamps a day, then click-to-check. Pro via a hosted card checkout link [provider fees unverified] or a $CFEED hold check on the website (after launch only). MCP <code>check_ca</code>/<code>check_link</code> free for 50 a day; x402 (Solana, USDC) at US$0.005 after that</td>
+<td>Unlisted CWS build passes review; MCP and x402 return the same JSON as <code>/v1/check/mint</code></td>
+</tr>
+<tr>
+<td>7</td>
+<td><strong>Gate (one run, no tuning afterwards):</strong> Project Bot scores AT-16 on the hashed predictions. A pass flips <code>realCall</code> through a rule-pack data update. A fail leaves it off, which kills nothing</td>
+<td>AT-16</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Stretch: Firefox build from the same WXT code [AMO listing cost unverified]</td>
+<td>Same AT suite passes in Firefox</td>
+</tr>
+</tbody>
+</table>
+<h4>Acceptance tests (the room's AT-01..AT-29 merged list, plus v2's AT-30/31 and Trench Bot's 15 cases)</h4>
+<p>Harness: <code>npm test</code> plus Playwright on saved x.com fixture pages, so no live login is needed. Design data may be used freely: X bot's <code>shared-data/x-bot/clean-feed/examples.jsonl</code> (222 rows), <code>pinned-ca.jsonl</code> (17 mints), idea bot's 148 resolved links, and Trench Bot's <code>clean-feed-cases.jsonl</code>. <strong>[PB 24 Oct]</strong> Per Growth Bot's 12:40 lesson, Trench Bot's 182-case Set A and idea bot's batch 2 (17 scam replies) are already burned. Ship them as regression fixtures, not blind gates.</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Test</th>
+<th>Pass line</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AT-01</td>
+<td>Non-genuine design rows folded, dimmed or flagged</td>
+<td>≥146/162 (90%)</td>
+<td>Proposal</td>
+</tr>
+<tr>
+<td>AT-02</td>
+<td>Genuine design rows hidden or dimmed</td>
+<td>0/60</td>
+<td>Proposal</td>
+</tr>
+<tr>
+<td>AT-03</td>
+<td>The 13 named hard cases (creator warnings, "wrong CA", official pump.fun/Phantom/Solana posts, Cointelegraph) stay visible</td>
+<td>13/13</td>
+<td>Proposal</td>
+</tr>
+<tr>
+<td>AT-04</td>
+<td>Phishing rows flagged</td>
+<td>40/40</td>
+<td>Proposal</td>
+</tr>
+<tr>
+<td>AT-05</td>
+<td>Reply-spam rows folded</td>
+<td>44/44</td>
+<td>Proposal</td>
+</tr>
+<tr>
+<td>AT-06</td>
+<td>Template rows folded</td>
+<td>36/36</td>
+<td>Proposal</td>
+</tr>
+<tr>
+<td>AT-07</td>
+<td>Farmed-hype rows dimmed or folded</td>
+<td>22/22</td>
+<td>Proposal</td>
+</tr>
+<tr>
+<td>AT-08</td>
+<td>Impostor rows caught (text plus local pill rules)</td>
+<td>≥16/18</td>
+<td>Proposal</td>
+</tr>
+<tr>
+<td>AT-09</td>
+<td>Old-news rows never folded</td>
+<td>0/2</td>
+<td>Proposal</td>
+</tr>
+<tr>
+<td>AT-10</td>
+<td>148 resolved links</td>
+<td>All 41 flagged hosts flagged; 0 flags on twitter.com, x.com, axiom.trade, t.me, solscan.io</td>
+<td>Proposal</td>
+</tr>
+<tr>
+<td>AT-11</td>
+<td>Local-only mode</td>
+<td>AT-01 ≥90% (without the 18 impostor rows) with 0 network requests</td>
+<td>Proposal</td>
+</tr>
+<tr>
+<td>AT-12</td>
+<td>Scam folding on a feed set the rules weren't written from</td>
+<td>≥85% of scams folded (also ≥85% without brand bait), ≤3% of genuine posts hidden. <strong>[PB 24 Oct]</strong> Floor: run it on Set A (182) and batch 2 as fixtures now. The fresh 60-post set (Build task 0) runs only if Ethan wants it</td>
+<td>Locked 85/3</td>
+</tr>
+<tr>
+<td>AT-13</td>
+<td>Trench Bot's 100-coin keep set (<code>trench-bot/clean-feed-holdout-keep/cases_blind.jsonl</code>, sha256 099cb9d8…0321)</td>
+<td>≤3/100 stamped copy or scam; the neutral stamp isn't a flag; report with and without the 26 famous names</td>
+<td>Locked</td>
+</tr>
+<tr>
+<td>AT-14</td>
+<td>A copy is ever called "real" (any set, including X bot's 18 impostors and the 14 pinned-ca copies)</td>
+<td>0</td>
+<td>Locked</td>
+</tr>
+<tr>
+<td>AT-15</td>
+<td>Real KIMCHI, AOP and PHP stamped "copy"</td>
+<td>0/3 (neutral passes)</td>
+<td>Proposal</td>
+</tr>
+<tr>
+<td>AT-16</td>
+<td>Mint Seal Part B (<code>trench-bot/mint-seal-holdout/partB/mints_blind.jsonl</code>, sha256 2db3e62d…b2d3), run once, predictions hashed first, no CoinGecko</td>
+<td>Right real coin named in ≥50% of scored copy groups and ≥55% of scored copy-first groups (5/9 today); wrong coin in ≤2 copy groups and 0 of 17 all-fake; 0 of 14 plain keeps stamped copy or scam; neutral is a miss, not an error; disputed rows left out; report with and without the 8 low-confidence labels</td>
+<td>Locked</td>
+</tr>
+<tr>
+<td>AT-17</td>
+<td>Day-one default</td>
+<td>Fixture shows <code>no confirmed real mint</code> whenever the engine can't confirm; it never hides or dims</td>
+<td>Locked</td>
+</tr>
+<tr>
+<td>AT-18</td>
+<td><code>realCall</code></td>
+<td>Off in the shipped build; remote config can't turn it on until AT-16 passes</td>
+<td>Locked</td>
+</tr>
+<tr>
+<td>AT-19</td>
+<td>Local-cache stamp</td>
+<td>Renders on the next frame</td>
+<td>Proposal</td>
+</tr>
+<tr>
+<td>AT-20</td>
+<td>Server-cache stamp</td>
+<td>p95 ≤2s, p50 ≤500ms</td>
+<td>Proposal</td>
+</tr>
+<tr>
+<td>AT-21</td>
+<td>Cold stamp</td>
+<td>p95 ≤8s; <code>checking…</code> within 300ms; 10s timeout shows <code>unverified</code></td>
+<td>Proposal</td>
+</tr>
+<tr>
+<td>AT-22</td>
+<td>Spend cap</td>
+<td>Server, RPC and data ≤A$35/month by server counter; calls logged per uncached stamp; at the cap, <code>unverified</code> and local folding</td>
+<td>Proposal</td>
+</tr>
+<tr>
+<td>AT-23</td>
+<td>First use</td>
+<td>&lt;30s, ≤5 steps, no sign-up, wallet or key</td>
+<td>Locked</td>
+</tr>
+<tr>
+<td>AT-24</td>
+<td>Surfaces: For You, Following, replies, quote cards, Communities, search, profiles</td>
+<td>≥95% of CAs stamped per fixture; each post checked once (Communities fixture to capture in week 1)</td>
+<td>Proposal</td>
+</tr>
+<tr>
+<td>AT-25</td>
+<td>Fail open on a DOM change</td>
+<td>Hide nothing; "Clean Feed paused" badge</td>
+<td>Proposal</td>
+</tr>
+<tr>
+<td>AT-26</td>
+<td>Performance, 60s scripted scroll</td>
+<td>No long task &gt;50ms from the extension; ≤2ms median per post; FPS within 5%; ≤50MB after 30 min; idle CPU about 0</td>
+<td>Proposal</td>
+</tr>
+<tr>
+<td>AT-27</td>
+<td>Privacy network log over the 222 rows rendered as a page</td>
+<td>Only CA, link-host or handle strings leave; 0 requests with post text; no default telemetry</td>
+<td>Locked</td>
+</tr>
+<tr>
+<td>AT-28</td>
+<td>Explainability</td>
+<td>100% of folds carry a reason ≤80 characters; factual; never accuses a named person</td>
+<td>Proposal</td>
+</tr>
+<tr>
+<td>AT-29</td>
+<td>Undo and control</td>
+<td>One-click Show; one-click always-show (local); 3 modes; Raw toggle always visible</td>
+<td>Proposal</td>
+</tr>
+<tr>
+<td>AT-30</td>
+<td>Thread CA mismatch</td>
+<td>Fires when a reply CA ≠ the root author's CA for the same $T; never on the root author's own replies or on warning posts</td>
+<td>Proposal</td>
+</tr>
+<tr>
+<td>AT-31</td>
+<td>Family count</td>
+<td>Shows "M+" whenever a search hit its cap (DexScreener 30 pairs, Jupiter 20 results)</td>
+<td>Proposal</td>
+</tr>
+<tr>
+<td>TB-1..15</td>
+<td>Trench Bot's 15 design cases (CHOO free-host link folds without touching the coin; @RaOnChain warning kept; $ELON never "copy of Dogelon"; NODF fake-fund warning; KIMCHINU neutral; JTO no warning)</td>
+<td>15/15</td>
+<td>Proposal</td>
+</tr>
+</tbody>
+</table>
+<p>Sealed labels (AT-13, AT-16) are opened only by Project Bot, and only after the predictions hash is posted. Claude Code never opens them.</p>
+<h4>Out of scope for v1</h4>
+<ul>
+<li>"The real one is X" turned on (it waits for AT-16).</li>
+<li>Dispute lock and burn-for-deep-checks (v1.1).</li>
+<li>Telegram bot (v1.1, DM only).</li>
+<li>Receipts chip (parked).</li>
+<li>Tapeline stamp.</li>
+<li>Any LLM.</li>
+<li>CoinGecko.</li>
+<li>X API.</li>
+<li>Buy, swap or wallet-connect inside the extension.</li>
+<li>Public account scores or leaderboards.</li>
+<li>Uploading post text.</li>
+<li>Mobile.</li>
+<li>Domain-age (RDAP) lookups (optional, cost unverified).</li>
+</ul>
+<h4>Screens and flows</h4>
+<ul>
+<li><strong>Extension on x.com:</strong></li>
+<li>first-run toast ("Clean Feed is on · checks locally · only CAs leave your browser");</li>
+<li>pills (grey neutral, amber fact, red rule hit, in our own rounded style, never a checkmark or X blue or gold);</li>
+<li>fold bar <code>Hidden · &lt;reason&gt; · Show · Not spam</code>;</li>
+<li>"why" panel on click;</li>
+<li>"Clean Feed paused" badge;</li>
+<li>the popup has 3 controls only (Strictness, Raw view, Pro);</li>
+<li>the options page has the always-show/always-hide lists, the local-only toggle, a "what we send" log, and (after launch) the pinned $CFEED CA.</li>
+<li><strong>Web</strong> (static assets on the same Worker):</li>
+<li><code>/</code> install and privacy;</li>
+<li><code>/c/{mint}</code>, a public read-only check page with a share link, using the same API;</li>
+<li><code>/pro</code>, with the hosted card checkout link and, after launch, the hold check (<code>signMessage</code> nonce, never a transaction);</li>
+<li><code>/rules</code>, listing every rule with its trigger and reason text;</li>
+<li><code>/privacy</code> (Limited Use);</li>
+<li><code>/token</code>, after launch only, with the pinned CA, published wallets and dev-buy label.</li>
+<li><strong>Telegram (v1.1 only):</strong> a DM bot where <code>/check &lt;CA&gt;</code> returns the same pill text and a <code>/c/{mint}</code> link. No group auto-replies, because Vamp Alert, OGfinder and Rick own that.</li>
+</ul>
+<h4>Data sources and APIs (verified 24 Oct, 12:32–12:40pm AWST unless marked)</h4>
+<table>
+<thead>
+<tr>
+<th>Source</th>
+<th>Endpoint / package</th>
+<th>Auth</th>
+<th>Free tier / limit</th>
+<th>Paid step</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cloudflare Workers</td>
+<td>Hono + Wrangler</td>
+<td>Account</td>
+<td>100,000 requests/day, 10ms CPU per invocation (<a href="https://developers.cloudflare.com/workers/platform/pricing/">pricing, updated 2 Oct 2026</a>)</td>
+<td>Paid US$5/month minimum, 10M requests included, then US$0.30 per million</td>
+<td>The free tier resets 00:00 UTC (8am AWST). Fail closed to local folding. Don't use KV as the cache: its free tier allows 1,000 writes/day. D1 free tier: 100k rows written/day</td>
+</tr>
+<tr>
+<td>Upstash Redis</td>
+<td><code>@upstash/redis</code> (REST)</td>
+<td>Token</td>
+<td>250MB, 500K commands/month, 10GB bandwidth, 1 database (<a href="https://upstash.com/pricing/redis">pricing</a>)</td>
+<td>Pay-as-you-go US$0.20 per 100K commands; the budget cap rate-limits instead of overcharging</td>
+<td>MGET batches; skip L2 above 450K a month</td>
+</tr>
+<tr>
+<td>Helius RPC</td>
+<td><code>@solana/kit</code>, helius-sdk</td>
+<td>API key</td>
+<td>1M credits/month, 10 RPS, DAS 2/s, getProgramAccounts 5/s (<a href="https://www.helius.dev/pricing">pricing</a>)</td>
+<td>Developer US$49/month (A$69.78)</td>
+<td>Standard RPC = 1 credit, DAS = 10</td>
+</tr>
+<tr>
+<td>Jupiter Tokens v2</td>
+<td><code>GET https://api.jup.ag/tokens/v2/search?query=</code> (keyless: <code>lite-api.jup.ag</code>)</td>
+<td>Free key</td>
+<td>1 RPS, unlimited credits; keyless 0.5 RPS (<a href="https://developers.jup.ag/docs/portal/plans">plans</a>)</td>
+<td>Developer US$25/month (A$35.60), 10 RPS</td>
+<td>Search costs 10 credits (free on the Free plan). Returns up to 20 results (idea bot, 12:31pm)</td>
+</tr>
+<tr>
+<td>DexScreener</td>
+<td><code>GET /latest/dex/search?q=</code>, <code>GET /tokens/v1/solana/{≤30 mints}</code></td>
+<td>None</td>
+<td>Search 300/min per its reference heading (read via search index; the live page body didn't render it); profile/boost endpoints 60/min (<a href="https://docs.dexscreener.com/api/reference">reference</a>)</td>
+<td>None sold</td>
+<td>Commercial use allowed, but not for a product whose main purpose competes with DEX Screener (<a href="https://docs.dexscreener.com/api/api-terms-and-conditions">terms</a>). Per-IP. Search returns 30 pairs. Never use <code>liquidity.usd</code> as a signal</td>
+</tr>
+<tr>
+<td>pumpdata.fun</td>
+<td><code>GET /free/launch/{mint}</code>, <code>GET /deployer/{address}</code></td>
+<td>None / free key</td>
+<td>300 lookups/day with no key; a free key gives 2,000/day (<a href="https://pumpdata.fun">homepage</a>, read 12:33pm)</td>
+<td>US$10/month for 20,000/day (A$14.24); or x402 from US$0.005 a call</td>
+<td>Cache deployers for 7 days</td>
+</tr>
+<tr>
+<td>pump.fun on-chain</td>
+<td><code>@pump-fun/pump-sdk</code> decoders</td>
+<td>RPC</td>
+<td>RPC credits only</td>
+<td>–</td>
+<td>pump-public-docs has no licence: read it, don't copy it. The frontend API is blocked from servers</td>
+</tr>
+<tr>
+<td>MetaMask eth-phishing-detect</td>
+<td>Bundled snapshot</td>
+<td>–</td>
+<td>Free (DBAD licence, per Git bot)</td>
+<td>–</td>
+<td>Secondary reason only. Don't bundle ScamSniffer (GPL-3.0) or the Phantom list (no licence)</td>
+</tr>
+<tr>
+<td>Chrome Web Store</td>
+<td>Developer dashboard</td>
+<td>Google account</td>
+<td>One-time registration fee (<a href="https://developer.chrome.com/docs/webstore/register">Google</a>); US$5 per <a href="https://github.com/GoogleChrome/webstore-docs/blob/master/publish.md">Google's publish doc</a>; Australia is a supported country</td>
+<td>–</td>
+<td>Single purpose: "verify crypto content on X". <code>storage</code> permission only, no remote code, no token talk on the listing</td>
+</tr>
+<tr>
+<td>x402</td>
+<td>x402-foundation/x402 (svm)</td>
+<td>Wallet</td>
+<td>Facilitator fees from the 10:45 review: CDP 1,000 free a month, then US$0.001; PayAI about US$0.00133 per Solana settlement</td>
+<td>–</td>
+<td>That's 20–30% of a US$0.005 price. x402 transfers to <code>payTo</code> and can't burn</td>
+</tr>
+<tr>
+<td>CoinGecko</td>
+<td><strong>Not used in v1</strong></td>
+<td>–</td>
+<td>Demo: 10k calls/month, 100/min, attribution, no commercial licence shown (<a href="https://www.coingecko.com/en/api/pricing">pricing</a>)</td>
+<td>Basic US$35/month (US$29 billed yearly), commercial</td>
+<td>Over the cap. It's also the Part B answer key</td>
+</tr>
+<tr>
+<td>Card checkout, Telegram Bot API, Firefox AMO</td>
+<td>–</td>
+<td>–</td>
+<td>[unverified]</td>
+<td>[unverified]</td>
+<td>Check at build time</td>
+</tr>
+</tbody>
+</table>
+<h4>Stack and repo layout</h4>
+<p>TypeScript throughout. WXT (MV3, Chrome plus Firefox), Hono on Cloudflare Workers (Wrangler), <code>@upstash/redis</code>, <code>@solana/kit</code>, helius-sdk, <code>@pump-fun/pump-sdk</code>, bs58, tldts, fastest-levenshtein, and a homoglyph map built from Unicode <code>confusables.txt</code>. All of these are MIT or Apache per Git bot's 11:25am check.</p>
+<pre><code>clean-feed/
+  extension/   entrypoints/{content.ts, background.ts, popup/, options/}
+               lib/{extract.ts, thread.ts, rules/{post.ts, link.ts, pill.ts}, render.ts, cache-idb.ts, health.ts}
+               config/{selectors.json, rulepack.json, brands.json, majors.json, allowlist.json, migrations.json}
+  api/         src/{index.ts, routes/{check-mint.ts, check-link.ts, mcp.ts, x402.ts, pro.ts},
+                    engine/{family.ts, onchain.ts, deployer.ts, votes.ts, verdict.ts, coin-rules.ts},
+                    cache.ts, spend.ts, shadow-log.ts}  wrangler.toml
+  web/         index.html, c/[mint].html, pro.html, rules.html, privacy.html, token.html (after launch)
+  shared/      types.ts, norm-name.ts, base58.ts (used by extension and api)
+  test/        fixtures/x-pages/*.html, design/{x-bot-examples.jsonl, pinned-ca.jsonl, trench-cases.jsonl, links148.jsonl,
+               setA-182.jsonl, batch2-17.jsonl}, at/*.spec.ts (Playwright), unit/*.test.ts
+  docs/        RULES.md, PRIVACY.md
+</code></pre>
+<h4>Data model</h4>
+<ul>
+<li><strong>Extension (IndexedDB, never uploaded):</strong></li>
+<li><code>verdicts[mint]</code>: pill JSON, <code>checked_at</code>. TTL 10 minutes for mints under 24h old, 6h for older ones.</li>
+<li><code>threads[conversation_id]</code>: root author, root CAs by $T.</li>
+<li><code>seen[author]</code>: CAs and tickers by conversation, kept 60 minutes.</li>
+<li><code>dupkeys[key]</code>: count and authors, kept 24h.</li>
+<li><code>accounts[handle]</code>: always-show or always-hide.</li>
+<li><code>settings</code>: strictness, raw, local-only.</li>
+<li><code>rulepack_version</code>.</li>
+<li><code>free_counter[date]</code>.</li>
+<li><code>pro_token</code>.</li>
+<li><strong>Server (Upstash, one hash per key with a TTL):</strong></li>
+<li><code>mint:{mint}</code>: symbol, name, created_slot, mint_auth, freeze_auth, graduated, reserves_quote (on-chain), holders, deployer, first10s_buyers, family_key, flags[], shadow_candidate, checked_at.</li>
+<li><code>family:{norm_name}</code>: mints[], truncated (bool), fetched_at. TTL 10 minutes.</li>
+<li><code>deployer:{addr}</code>: launches, graduations, last_launch. TTL 7 days.</li>
+<li><code>link:{etld1}</code>: rule, list_hit.</li>
+<li><strong>Counters (Workers Cache API, not Redis):</strong></li>
+<li><code>spend:{yyyymm}</code></li>
+<li><code>rl:{install_id}:{date}</code></li>
+<li><strong>Shadow log</strong> (D1 table <code>shadow(mint, family_key, candidate, votes_json, ts)</code>, within the D1 free write limit) for the Part B prediction file.</li>
+<li><strong>Pro (after launch):</strong></li>
+<li><code>pro:{install_id}</code>: plan (card or hold), wallet (if held), expires.</li>
+<li>Hold re-checked every 30 days through Helius <code>getTokenAccountsByOwner</code>.</li>
+</ul>
+<h4>Token integration ($CFEED on pump.fun, only after the launch gate and Ethan's pick)</h4>
+<ul>
+<li><strong>What's on-chain:</strong></li>
+<li>one SPL token created on pump.fun, with mint and freeze authority confirmed off;</li>
+<li>a labelled dev buy of no more than 0.5 SOL from a published wallet;</li>
+<li>creator fees paid to a published operating wallet used for hosting only.</li>
+</ul>
+<p>Nothing else runs on-chain in v1: no program, no staking, no escrow.
+- <strong>v1 mechanic: hold to unlock Pro.</strong>
+  - The website asks for a <code>signMessage</code> nonce (never a transaction).
+  - The server reads the SPL balance. At or above the threshold, it issues a 30-day Pro token to the install ID.
+- <strong>v1.1 mechanic: burn your own</strong> for deep checks, priced under Rempart's US$0.15.
+  - The user signs an SPL <code>burn</code> of their own tokens.
+  - The server confirms mint, amount and owner on-chain, then credits the account.
+  - The public ledger links each credit to its burn signature.
+- <strong>Never:</strong> holder payouts, buybacks, revenue share, staking yield, creator-fee buy-and-burn, Holder Rewards or Tokenized Agent. Card and USDC revenue never buys $CFEED.
+- <strong>pump.fun fees</strong> (<a href="https://pump.fun/docs/fees">fees page</a>, updated 17 Oct 2026, re-read 12:32pm AWST):
+  - Creating a coin carries no platform fee.
+  - Bonding-curve trades pay 1.25%, of which 0.30% goes to the creator.
+  - Graduation costs 0.015 SOL.
+  - After graduation, the canonical PumpSwap pool pays the creator 0.95% at a market cap of 420–1,470 SOL, falling to 0.05% above 98,240 SOL.
+  - Web and mobile app trades add a 0.45% Platform Fee, including the creator's first buy.
+- <strong>Dogfood:</strong> add $CFEED to the extension's family map at launch, so its copycats get stamped from minute one.</p>
+<h4>Legal wording guardrails (ASIC; not legal advice; the A$300 consult (est.) signs off before launch)</h4>
+<ul>
+<li><a href="https://www.asic.gov.au/regulatory-resources/digital-transformation/digital-assets-financial-products-and-services">INFO 225</a>: a label like "utility" doesn't decide a token's status; its rights and benefits do. Example 8, a membership NFT that unlocks access, is "unlikely to be a managed investment scheme".</li>
+<li>Per Project Bot's 11:45am brief (not re-read this run): ASIC's no-action period ended 30 Sep 2026, and the DAF Act starts 9 Apr 2027.</li>
+<li><strong>Say:</strong> "$CFEED unlocks Pro access in Clean Feed. It isn't an investment and gives no right to profits or revenue."</li>
+<li><strong>Never say:</strong> returns, price targets, "number go up", "burns raise the price", "not a financial product", "ASIC-compliant" or "approved".</li>
+<li>No paid promoters (<a href="https://www.asic.gov.au/regulatory-resources/financial-services/giving-financial-product-advice/discussing-financial-products-and-services-online">INFO 269</a>).</li>
+<li>No token talk on the CWS listing.</li>
+<li>Pills state facts ("different CA from the one @A posted"), never "scammer" about a named person.</li>
+</ul>
+<h4>Launch checklist</h4>
+<ol>
+<li><strong>Pick a name.</strong> Run a CWS, X and DexScreener check on "Mintmark", "CA Lens" and "Trench Filter" (none cleared yet).</li>
+<li><strong>Ship the build:</strong> register the domain, deploy the Worker, set the spend cap, then publish an unlisted CWS build with the privacy disclosure (single purpose, Limited Use, no remote code).</li>
+<li><strong>Acceptance:</strong> all Locked ATs pass. AT-16 has been run once (whichever way it went) and <code>realCall</code> is set from the result.</li>
+<li><strong>Money test,</strong> only once Ethan picks this thesis: a 30-day US$9 founding Pro. Pass is ≥25 paid and ≥30% of installs active 3+ days a week.</li>
+<li><strong>Token,</strong> only after the gate and the legal consult:
+   - launch on pump.fun with Holder Rewards and Tokenized Agent off;
+   - confirm the authorities are off on-chain;
+   - make the labelled dev buy of ≤0.5 SOL and publish the no-sell policy (est. 90 days);
+   - pin one CA on the site, the X account and the extension settings;
+   - no bundles, snipers or paid callers.</li>
+<li><strong>Ongoing:</strong> a weekly pattern-pack refresh (data only) and a weekly rival changelog watch (EDGERUN, Buddy, Verixy, fable).</li>
+</ol>
+<h4>AUD cost line (verified prices; estimates marked)</h4>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Up-front</th>
+<th>Monthly</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CWS registration (US$5)</td>
+<td>A$7.12</td>
+<td></td>
+</tr>
+<tr>
+<td>Domain .com at cost (US$11.17/yr, Project Bot 11:45am)</td>
+<td>A$15.91/yr</td>
+<td></td>
+</tr>
+<tr>
+<td>Workers Free / Upstash Free / Helius Free / Jupiter free key / DexScreener / pumpdata.fun free key</td>
+<td></td>
+<td>A$0</td>
+</tr>
+<tr>
+<td>Paid steps if needed, only from revenue: Workers Paid A$7.12, Upstash pay-as-you-go (budget-capped), pumpdata.fun A$14.24, Jupiter Developer A$35.60, Helius Developer A$69.78</td>
+<td></td>
+<td><strong>Hard cap A$35</strong></td>
+</tr>
+<tr>
+<td>Legal consult (token and ToS)</td>
+<td>A$300 (est.)</td>
+<td></td>
+</tr>
+<tr>
+<td>Token launch: ≤0.5 SOL dev buy (A$73.00), 0.45% fee, rent ~0.02 SOL (third-party est.)</td>
+<td>~A$76.24 (est.)</td>
+<td></td>
+</tr>
+<tr>
+<td>Contingency</td>
+<td>A$50 (est.)</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>30-day test</strong> (no token, no legal): about <strong>A$73</strong> lean, A$108 worst case at the cap.</li>
+<li><strong>Build plus 4 months</strong> with legal and the token: about <strong>A$449</strong> lean, <strong>A$589</strong> worst case. That leaves about A$411 of headroom under A$1,000.</li>
+<li><strong>Over A$1,000 only if:</strong></li>
+<li>Helius Business at US$499/month (A$710.58) is needed;</li>
+<li>CoinGecko commercial plus every paid tier is added without the cap;</li>
+<li>the legal quote comes in above about A$700.</li>
+</ul>
+<p>None of these is needed for v1.</p>
+<h4>Open questions (each with the quick check that settles it)</h4>
+<ul>
+<li><strong>DexScreener 429s from Workers' shared IPs:</strong> log them in week 2. Fallback: Jupiter-only candidates.</li>
+<li><strong>Communities fixture:</strong> capture one in week 1.</li>
+<li><strong>Card checkout fees, Telegram and AMO costs:</strong> check at build time.</li>
+<li><strong>Reading a profile's bio or pinned post the user hasn't opened:</strong> default to profiles already rendered in the user's own browser only.</li>
+<li><strong>A fuller family index</strong> (paging or a pump.fun create-event index): only if "M+" truncation hurts AT-16.</li>
+</ul>
 <details><summary>Rest of the review (fact-check and notes)</summary>
 <h3>Blind results (predictions frozen 10:41am AWST, before any label was opened)</h3><p>Method: <code>METHOD.md</code>. The post rules are idea bot's saved <code>rules_v0.py</code>, unchanged (sha256 56087f56…e07d). idea bot saved no copycat-engine code, so I built the stamp from the thesis text with no tuning:</p>
 <ul>
