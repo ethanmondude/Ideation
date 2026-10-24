@@ -1,0 +1,408 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Marshal v6.3 ($MRSHL)</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="site"><a href="../index.html">Startup theses</a></header>
+<main>
+<p class="back"><a href="../index.html">&larr; All theses</a></p>
+<article>
+<h1>Marshal v6.3 ($MRSHL)</h1>
+<p class="tagline">The X-native trench guard, with a click guard that checks what the post wrote, now on its pre-registered last test</p>
+<p class="meta"><span>24 Oct 2026, 8:30pm AWST</span> <span class="badge pending">Review pending</span></p>
+<section class="exec"><h2>Executive summary</h2>
+<ul>
+<li><strong>Problem:</strong> the scam sits on the path from an X post to a buy. 703 coins crossed US$500k in Trench Bot's log, and about 98.5% rugged (run 16 alone: 23 new, 23 rugs). Copy mints, shill rings, reply spam and borrowed endorsements surround every call, and nobody shows a trader which accounts actually cost <em>them</em> money.</li>
+<li><strong>Product:</strong> Marshal, a read-only Chrome extension for x.com that also reads terminal tab URLs.</li>
+<li>It folds caller ads only when two signals agree, along with same-template rings and slow reply spam.</li>
+<li>It red-badges a terminal page that isn't the coin the post wrote.</li>
+<li>It can show, on your device, what each account that sent you has cost or made you in SOL.</li>
+<li>It adds coin facts with no score.</li>
+<li><strong>Who pays, how much:</strong> desktop Solana traders who find coins on X. The core is free, and <strong>Pro is US$9 a month or hold $MRSHL</strong>. Comparables are CALIBER Pro at US$19.99 and Frontrun at US$75/180. No payer has been shown yet.</li>
+<li><strong>Token's job:</strong> hold for Pro, and burn your own tokens per agent call (v1.1). No payouts, no buybacks and no revenue-funded burns. Launch on pump.fun only after 25 or more paying users, a legal consult and Ethan's pick.</li>
+<li><strong>Cost vs A$1,000:</strong> <strong>~A$73 to day 30, A$449–549 over 4 months</strong>, including ~A$300 legal (est.) and ~A$76 launch (est.). The running cap is A$25 a month.</li>
+<li><strong>Path to US$10k/month:</strong> about 1,112 cash Pro users. <strong>Base case is US$1–3k MRR at month 12 (est.)</strong>, so US$10k is upside.</li>
+<li><strong>Why now, edge, main risk:</strong> the buy click moved to terminals and the rugs ride that gap. The edge is the rules that judge the poster's behaviour across posts: two-step caller ads, same-template rings and slow reply spam, plus the post-to-coin-page guard. <strong>Main risk, now measured:</strong> wrong-coin landings are rare (0 in 20 link threads), so the flagship guard seldom fires, and the poster-behaviour rules overlap with funded rivals.</li>
+<li><strong>First move this week:</strong> Project Bot scores the frozen 20 Oct calls against Trench Bot's outcomes and Git bot's rival file. <strong>Verdict: test, about 30% confident</strong> (down from build-to-test 45%). It's <strong>park at 6.5 if Set A fails</strong> (my est. ~70%). If it's parked, the next run refines the next-best rule-passing thesis. Marshal's poster-behaviour rules are kept as a module another thesis can reuse.</li>
+</ul>
+<blockquote>
+<p>The sections from "Problem and user" to "Risks" carry over from v6.2 without change (v6.3 changed rules, not the market, pricing, token or budget). The rows that changed are "Kill or confirm", "Screened and dropped", "Build brief" and "Feasibility checks", below.</p>
+</blockquote>
+</section>
+<section class="thesis"><h2>Full thesis</h2>
+<div class="byline"><p><em>idea bot, Sat 24 Oct 2026, ~8:21–8:45pm AWST (Perth). Thesis id <code>idea-bot:thesis:clean-feed</code>, version 6.3. It's a refine of v6.2, which Project Bot scored at 6.5 after v6.2 failed all three lines on the 21 Oct set: 1 unique real flag, 7 main-set false flags and 2 untrue control flags (<code>shared-data/project-bot/marshal-h2h-score-21oct.md</code>). The build file <code>theses/marshal-BUILD.md</code> v6.3 (rules_v2.3, 1,353 lines, AT-01 to AT-105) was frozen at 19:51:25 AWST with sha256 <code>b913e340…ae4f6e</code>. My blind calls on X bot's unseen 20 Oct sets were frozen at 20:32:50 AWST: <code>research/2026-10-24-marshal-v6.3-h2h-20oct-calls.md</code>, sha <code>7506cbde…836e</code>. No outcome, rival, sealed or holdout file was opened. (est.) = estimate.</em></p></div>
+<h3>What changed in v6.3 (tied to each weakness Project Bot named)</h3><ul>
+<li><strong>False flags (v6.2 had 7 on the main set and 2 on controls on 21 Oct):</strong></li>
+<li><strong>What changed:</strong> dup folds now need ≥2 accounts with the same text on the same CA plus a funnel or ring link. One author's template is grey only.</li>
+<li>The two-step caller ad only looks at posts made <em>before</em> the one being checked.</li>
+<li>The "$SOL", "$ETH" and other chain-ticker pills skip a chain that's only named as the quote.</li>
+<li>A 0x address with a chain prefix like <code>ethereum:</code> stays silent.</li>
+<li>WARNING words must be whole words.</li>
+<li><code>mentions()</code> splits compound coin names for R11.</li>
+<li><strong>Result on the unseen 20 Oct set:</strong> 6 main-set rows fire (5 distinct mint-reason flags) and 2 controls fire. Every flag states a true post fact by my read. The open risk is a ruling on tracker-bot authors (#12/#20).</li>
+<li><strong>Uniqueness (stuck at 6):</strong></li>
+<li><strong>New:</strong> a <strong>slow reply-spam rule</strong>: the same CA in replies in ≥4 other accounts' conversations within 24 h. It fired on 20 Oct #16 (Luminexx001, 5 conversations in 2 h).</li>
+<li><strong>New:</strong> a <strong>deployer-repeat</strong> pill: the poster keeps pushing one dev wallet's coins. It found 0 fires across 12 callers, so no unique catch.</li>
+<li><strong>New:</strong> the <strong>click guard compares the landing with what the post wrote</strong>. v6.2 compared the link with itself, so it could never mismatch.</li>
+<li><strong>Honest read:</strong> 2–4 unique real flags on 20 Oct, against a line of 5. Uniqueness likely stays 6.</li>
+<li><strong>The guard's edge (the main uniqueness claim):</strong> measured, and it's rare.</li>
+<li>Set B: <strong>0 wrong-coin landings in 20 link threads</strong>.</li>
+<li>Set A: 0 in 20 threads and 1 in 10 controls. In control C10, @SolanaMemesScan's "Chart &amp; Trade" link opens a different "Lacy" mint from the <code>solana:7PEa…pump</code> it writes, and the guard catches it.</li>
+<li>The wallet stamp check: 1 of 20 buys (5%).</li>
+<li><strong>The guard is correct but would fire about once per 50 coin posts.</strong></li>
+<li><strong>Missed competitors and demand evidence:</strong> no change. There's still no payer, and only the paid test (after Ethan's pick) can fix that. X bot's 8pm digest adds Larpcheckbot posting buyback and burn verdicts at volume. That's pressure on the Receipts feature (Revtrace v2), not on the guard.</li>
+<li><strong>Token, budget, usability, innovation:</strong> unchanged from v6.2: token fit ~6.5–7, ~A$73 to day 30, A$449–549 over 4 months.</li>
+<li><strong>Abandon rule, applied (Ethan, 8:14pm: "don't be afraid to abandon"):</strong> Project Bot's locked kill rule says Marshal is <strong>parked at 6.5 with no v6.4</strong> if Set A fails any line and Set B has fewer than 3 wrong-coin landings.</li>
+<li><strong>The Set B half has already happened (0).</strong> So Marshal survives only if Project Bot judges Set A at ≥5 unique real flags, ≤2 main false flags and ≤1 untrue control.</li>
+<li>I expect a park (about 70%). The plan if parked is written below: the next run moves to the next-best rule-passing thesis instead of patching Marshal.</li>
+</ul>
+<h3>Problem and user</h3><ul>
+<li><strong>User:</strong> tech-bro desktop traders and builders (Chrome, Brave, Arc) who find coins on CT and in X Communities and buy on GMGN, Axiom, Photon, Jupiter or pump.fun. Secondary: Community mods and caller-group admins.</li>
+<li><strong>Pains (sourced):</strong></li>
+<li><strong>Wrong mint at the buy moment:</strong> see the summary; "Got drained $100 with a fake gmgn bot" (<a href="https://x.com/0xCalvary/status/2106105256933249432">@0xCalvary</a>); malicious "Axiom Enhancer" extensions (<a href="https://labs.sqrx.com/hidden-in-plain-sight-how-we-followed-one-malicious-extension-to-uncover-a-multi-extension-a6f3f0792b98">SQRX Labs</a>).</li>
+<li><strong>Rings and relays:</strong> 4 of 5 known ring accounts found across 3 coins, with 0 false rings on Kimchi and $shiit (Trench Bot <code>ring-check.md</code>). @AlphaPulsevw posted six $GTA 6 milestones in 6 min, then @Unlimited_sol0 relayed them 7 min later (<a href="https://x.com/AlphaPulsevw/status/2113882240585269684">1</a>, <a href="https://x.com/Unlimited_sol0/status/2113884074242687420">2</a>; snowflake times 14:36 and 14:43 AWST, this run). An unfilled "[Add launch MC]" template (<a href="https://x.com/Alpharadarp/status/2113881137256784245">@Alpharadarp</a>). "If 20 accounts post the same take word for word, ignore all 20" (<a href="https://x.com/rgznpro/status/2113875176660296153">@rgznpro</a>).</li>
+<li><strong>Borrowed endorsement:</strong> anondog linked a Bonk Guy post about another coin, made 8.5 days before the mint. The coin touched US$559k, then fell 77% in one 5-min candle (Trench Bot run 14).</li>
+<li><strong>No personal memory:</strong> caller boards score accounts for everyone (CALIBER, Caller Track, GMGN Callout, Kolscan). None tells you what an account cost <em>you</em>. A coin falling 80% says nothing when ~98.5% of US$500k coins rug, so the stamp measures from <strong>your</strong> buy and in <strong>your</strong> SOL.</li>
+<li><strong>Workarounds:</strong> paste into RugCheck/PastTokenBot, tag @Larpcheckbot, open Buddy on the coin page, keep notes or spreadsheets of "who burned me".</li>
+</ul>
+<h3>Evidence of money</h3><ul>
+<li><strong>Paid overlays and caller tools:</strong> Frontrun US$75/180 a month, self-reported profitable (<a href="https://www.frontrun.pro/pricing">pricing</a>); <strong>CALIBER Pro US$19.99/mo, US$189/yr, US$399 lifetime</strong> (<a href="https://chromewebstore.google.com/detail/caliber/fkelefefncjbipiaoeanffmhjpgdkjdl">CWS</a>); X-Relay US$15–69/mo (<a href="https://x-relay.com/pricing.html">pricing</a>); Xanguard Convergence Tracker from US$100/mo in SOL (<a href="https://xanguard.tech/pricing/">pricing</a>); Tweet Catcher Pro €300/mo (per X-Relay, unverified).</li>
+<li><strong>Money at the buy moment:</strong> Axiom US$31.85M of fees in 30 days (<a href="https://memefees.com/terminals/axiom">memefees</a>). Merit takes 1% per overlay swap, half to the poster (<a href="https://www.meritoverlay.com/">meritoverlay.com</a>).</li>
+<li><strong>Per-call agent checks:</strong> swap-gate US$0.008/call over x402 (README, no verified usage; <a href="https://github.com/rezearcher/plugin-swap-gate">repo</a>); pumpdata US$0.005/lookup, US$0.02 full pre-buy check.</li>
+<li><strong>Hold-to-unlock:</strong> Bubblemaps (premium gated by holding BMT).</li>
+<li><strong>Missing:</strong> nobody is shown paying for this exact check. Scam Sniffer's default-on fee was dropped after backlash. US$9 Pro is a hypothesis.</li>
+</ul>
+<h3>Bottom-up market sizing (estimates labelled)</h3><ul>
+<li>Reach (sourced): Frontrun 40k–80k CWS users; CALIBER tracks 850+ KOLs (its listing); Control Panel for Twitter 300k.</li>
+<li><strong>A (est.):</strong> 5,000–15,000 installs in year 1 × 2–4% Pro × US$9 = <strong>US$0.9–5.4k MRR</strong>; 30% of Pro by token hold (no cash) → cash ≈ 70%.</li>
+<li><strong>B (est.):</strong> agent skill 1,000–5,000 calls/day × US$0.01 = US$300–1,500/month gross, less a 20–30% facilitator cut. Burned-$MRSHL calls bring no cash, by design.</li>
+<li><strong>Base: US$1–3k MRR at month 12 (est.).</strong> US$10k needs ~1,112 cash Pro (~7.4% of 15k installs).</li>
+</ul>
+<h3>Competitive teardown</h3><p>v4's full table (24+ tools; none carries the clicked post to the coin page, none credits your own result to the post that sent you) stands, with v5/v6 additions recorded in the build file §1 (PaperTrench, SolTracks, XSCAN; Frontrun at 90,000+ users). <strong>New in v6.2:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Rival</th>
+<th>What it does</th>
+<th>Price / traction</th>
+<th>Gap it leaves</th>
+<th>Threat</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://x.com/ProvisoFi/status/2113835119010103707">ProvisoFi</a></td>
+<td>Robinhood Chain + Hyperliquid trading app; roadmap item "follower outcomes beside caller pnl"</td>
+<td>No price; 255 followers; created 18 Oct</td>
+<td>Not Solana, not live, public per-caller not per-user, not inside X</td>
+<td>Low–medium (idea overlap)</td>
+</tr>
+<tr>
+<td><a href="https://x.com/KOLdotpredict/status/2113821738782142551">KOLshi</a></td>
+<td>Prediction markets on Solana KOL wallet PnL</td>
+<td>Token not live; 1 follower</td>
+<td>Bets on the poster's PnL, not your own</td>
+<td>Low</td>
+</tr>
+<tr>
+<td>CabalSpy ID (Git bot radar run 15)</td>
+<td>Login-with-X plus wallets verified by a tiny on-chain payment, live PnL sold to other apps</td>
+<td>Paid SDK [price not checked]</td>
+<td>Poster-side identity; no click history, no guard</td>
+<td>Medium (could power a rival's poster PnL)</td>
+</tr>
+<tr>
+<td><a href="https://github.com/Smurfetc/solana-memecoin-calls-dataset">smugcalls dataset</a></td>
+<td>CC0 log of 10,769 pump.fun calls with called cap and later peak</td>
+<td>Free</td>
+<td>One caller's calls, no reader-side outcome</td>
+<td>None (data, not a rival)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Gate c on the lead:</strong> still passes. 2 new attempts at follower outcomes, neither working, neither on device or per user.</p>
+<h3>Product and UX</h3><p><strong>First minute (AT-23: &lt;30 s, ≤5 steps, no sign-up, wallet or X login):</strong></p>
+<ol>
+<li>Add to Chrome. Toast: "Marshal is on · checks locally · only CAs leave your browser".</li>
+<li>On x.com, every CA, $ticker and token link gets a pill (grey fact, amber warning, red rule hit; never green). Lure replies fold: <code>Hidden · airdrop lure ("check memepage") · Show · Not spam</code>.</li>
+<li>A post brags "$MIL JUST HIT $10.6M MC" → <code>claimed $10.6M · live $427k (DexScreener, 14:29)</code>.</li>
+<li>Click a reply's chart link to GMGN → one-time site permission → if the mint differs: <code>⚠ Not the mint in the post you came from (@author, 1 min ago) · Why · Dismiss</code>. The buy panel is untouched.</li>
+<li>(Optional, later) Popup → "Led you here" → paste a public wallet address → "Tracking from today. Nothing leaves your browser." From the next buy on, accounts that sent you get a small stamp: <code>led you here 3× · −1.4 SOL · 1 of 3 held 24h</code>.</li>
+</ol>
+<p><strong>Led-you-here: how it reads.</strong> It's always <em>your</em> result, never a verdict on the account. Lines: "you're −1.4 SOL across 2 coins from this account" (realized + marked to market, labelled); "1 fell 80% within 1h of your buy"; "1 of 3 held 24h" (24h after your buy, price ≥50% of your entry). No number out of 10, no colour above amber, never uploaded, and the "Why" panel shows each buy with its post link and Solscan tx. A history button backfills only <strong>back to your install day</strong>, because Marshal has no clicks from before then. That removes the 20–60 min sync Git bot measured for a full 30-day pull.</p>
+<p><strong>Advanced tech:</strong> post → terminal provenance through <code>chrome.storage.session</code> (guard) and an IndexedDB click log (90 days, local); owner-based swap matching on the user's own RPC; X snowflake dating for R11; jsQR in an OffscreenCanvas worker (last in v1); gain-line ring graph with relay-pair edges.</p>
+<p><strong>What's hard:</strong> X DOM churn (fail open); terminal URL formats (Jupiter, Axiom, Photon unverified); referrer after the t.co hop; matching swaps through routers (match on token-balance owner, not signer; USDC-routed buys; non-SOL quotes → "unknown"); public RPC 429s (Git bot: 429s after a few calls at ~1 call per 3 s; idea bot: 0×429 on 51 calls), so offer a "use your own free Helius key" field.</p>
+<p><strong>Clonable:</strong> EDGERUN could add provenance and claimed-MC; Frontrun or Axiom could join X data to PnL. <strong>Not clonable:</strong> each user's own click history (it starts at their Marshal install), the ring rules tuned on Trench Bot's and X bot's labelled rings, and the read-only, no-wallet-connect trust story.</p>
+<p><strong>Scores (mine; Project Bot scores officially), with change from v3's official scores:</strong> <strong>Innovation 7 (+1)</strong>: personal post-to-trade attribution on device is new, and its pieces (owner-matched swap parsing, click provenance) became cheap only recently. <strong>Usability 8 (=)</strong>: first value &lt;30 s is unchanged; led-you-here is a one-paste opt-in later; no mobile. <strong>Uniqueness 6.5 (+1.5)</strong>: head-to-head passed (6) plus an unclaimed lead with only Partial rivals. Closest rival: EDGERUN for the feed, Frontrun for attribution. What we do that they can't: the guard's click memory.</p>
+<h3>Token design on pump.fun ($MRSHL)</h3><ul>
+<li><strong>v1 job: hold to unlock Pro.</strong> Website <code>signMessage</code> nonce (never a transaction, never in the extension) → server reads the SPL balance via Helius → 30-day Pro token, re-checked on renewal.</li>
+<li><strong>v1.1 job: burn your own per use.</strong> (a) <strong>Agents</strong> using the Marshal skill (ElizaOS plugin + MCP tool) prepay by signing an SPL <code>burn</code> of their own $MRSHL; the server checks mint, amount, owner and signature on-chain and credits N calls; a public ledger links every credit to its burn tx. (b) <strong>Humans</strong> burn for deep deployer-farm traces. x402 can't do this, because it transfers to <code>payTo</code>, so it's a separate flow.</li>
+<li><strong>USDC path:</strong> agents may instead pay US$0.01/call in USDC over x402. That's <strong>plain income for hosting and the business. It's never swapped into $MRSHL, never burned and never distributed.</strong> Card revenue is treated the same.</li>
+<li><strong>Never:</strong> holder payouts, revenue share, staking yield, revenue- or creator-fee-funded buybacks or burns, profit promises.</li>
+<li><strong>Launch rules:</strong> pump.fun only, <strong>after</strong> the first paying users (≥25 Pro or ≥30% of installs active 3+ days a week) plus the legal consult, and only once Ethan picks Marshal. <strong>Mint and freeze authority off</strong> (confirm on-chain). <strong>Small labelled dev buy ≤0.5 SOL</strong> from a published wallet, no-sell policy (est. 90 days). <strong>No bundles, snipers or paid callers.</strong> <strong>Holder Rewards OFF, Tokenized Agent buybacks OFF.</strong> <strong>Pin one official CA on day one</strong> (site, X, extension settings), and Marshal stamps $MRSHL copies "not the pinned CA" from minute one. Don't send supply to a famous wallet or link a famous post (Trench Bot run 14).</li>
+<li><strong>Fee flow and verification</strong> (<a href="https://pump.fun/docs/fees">pump.fun fees</a>, updated 17 Oct 2026): 0 create fee; 1.25% curve fee with 0.30% to the creator; 0.45% app Platform Fee; PumpSwap creator fee tiers by market cap. Creator fees go to a <strong>published operating wallet used for hosting only</strong>, verifiable on Solscan. <strong>Creator fees are a bonus, never the plan.</strong></li>
+<li><strong>Public repo:</strong> extension, Worker and burn-credit verifier are MIT, so anyone can confirm there's no wallet access, no post-text upload and no USDC→$MRSHL swap code.</li>
+<li><strong>Comparables:</strong> allowed: Bubblemaps (hold-to-unlock), Larpcheck's original hold-to-access. Barred: Buddy (80% fee buyback-burn), Raindrop (50% swap fees), fable (50% API revenue), Larpcheck's claimed 60% buyback, Merit's "trade to earn" tokenomics (coming soon, unspecified). Organic vs shilled attention is not measured for any of them.</li>
+<li><strong>Legal line (not legal advice; the A$300 consult signs off):</strong> ASIC <a href="https://www.asic.gov.au/regulatory-resources/digital-transformation/digital-assets-financial-products-and-services">INFO 225</a>: rights decide status, not labels. Say: "$MRSHL unlocks Pro access and pays for Marshal checks when you burn your own. It isn't an investment and gives no right to profits or revenue." Never say returns, price, "burns raise the price", "not a financial product" or "ASIC-compliant". No paid promoters (INFO 269). No token talk on the CWS listing.</li>
+<li><strong>Token fit (my est.): 6.5–7</strong> (v3: 6). Two plain use jobs (hold for access, burn own per use), with no cash ever flowing into the token.</li>
+</ul>
+<h3>Budget (A$; US$1 = A$1.424, Frankfurter/ECB 23 Oct via Project Bot)</h3><table>
+<thead>
+<tr>
+<th>Item</th>
+<th>One-off</th>
+<th>Monthly</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CWS developer fee US$5</td>
+<td>7.12</td>
+<td></td>
+</tr>
+<tr>
+<td>Domain .com</td>
+<td>15.91/yr</td>
+<td></td>
+</tr>
+<tr>
+<td>Workers Free, Upstash Free, Helius Free (1M credits; <a href="https://www.helius.dev/pricing">pricing</a> re-read 4:27pm), DexScreener, GeckoTerminal, Jupiter free key</td>
+<td></td>
+<td>0</td>
+</tr>
+<tr>
+<td>Led-you-here RPC</td>
+<td></td>
+<td>0 to us (user's own key or public RPC)</td>
+</tr>
+<tr>
+<td>Paid steps only from revenue (Workers Paid ~A$7.12, Upstash PAYG)</td>
+<td></td>
+<td><strong>hard cap A$25</strong></td>
+</tr>
+<tr>
+<td>Legal consult (token, ToS, privacy) (est.)</td>
+<td>300</td>
+<td></td>
+</tr>
+<tr>
+<td>Token launch: ≤0.5 SOL dev buy + 0.45% fee + rent (est.)</td>
+<td>~76.24</td>
+<td></td>
+</tr>
+<tr>
+<td>Contingency (est.)</td>
+<td>50</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>Day 30: ~A$73. 4 months: A$449 lean / A$549 worst</strong> (cap filled every month). Headroom ≥A$451.</li>
+<li><strong>Founder load (est.):</strong> Claude Code builds; Ethan reviews and ships, ~20 h/week for 3 weeks, then ~10 h/week.</li>
+</ul>
+<h3>Unit economics (estimates)</h3><ul>
+<li><strong>Free:</strong> fold layer, local pills, gated guard, led-you-here (it's local, so free is honest), 30 server stamps a day.</li>
+<li><strong>Pro US$9/mo or hold $MRSHL:</strong> unlimited stamps, ring alerts on coins you hold, Communities strict preset; in v1.1 also the shared burst layer, Hold mode and deep traces.</li>
+<li><strong>Agent skill (v1.1):</strong> US$0.01/call USDC (20 free/day) or burned $MRSHL credits. Marginal cost ~US$0 (oEmbed + DexScreener cached per mint) up to the cap.</li>
+<li><strong>Cost driver:</strong> distinct mints, not users (cached per mint). Acquisition cash ~US$0.</li>
+</ul>
+<h3>Go-to-market (solo; all outreach and posting only with Ethan&#x27;s OK)</h3><ol>
+<li><strong>Proof first:</strong> a public side-by-side vs EDGERUN, Buddy and Verixy on 20 threads + 10 terminal clicks (Project Bot's lift item 1).</li>
+<li><strong>The "receipts for yourself" hook:</strong> a local share card ("Accounts that cost me SOL this week", handles blurred by default). It's the most viral object and needs no server.</li>
+<li>CWS listing, single purpose "verify crypto content on X and the coin page you open from it".</li>
+<li><strong>Agent path:</strong> ElizaOS plugin + MCP tool + Claude Code/Cursor skill (where swap-gate and pumpdata already distribute).</li>
+<li>No paid callers, no referrals.</li>
+</ol>
+<h3>12-month snapshot (estimates)</h3><table>
+<thead>
+<tr>
+<th>Month</th>
+<th>Installs</th>
+<th>Pro</th>
+<th>MRR (US$)</th>
+<th>Cumulative out-of-pocket (A$)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>0–200 (unlisted)</td>
+<td>0–10</td>
+<td>0–90</td>
+<td>~73</td>
+</tr>
+<tr>
+<td>3</td>
+<td>1,500</td>
+<td>40</td>
+<td>~0.4k</td>
+<td>~450 (incl. legal + launch if picked)</td>
+</tr>
+<tr>
+<td>6</td>
+<td>5,000</td>
+<td>120</td>
+<td>~1.1k + skill ~0.1k</td>
+<td>~500</td>
+</tr>
+<tr>
+<td>12</td>
+<td>10–15k</td>
+<td>200–350</td>
+<td>~1.8–3.2k + skill 0.2–1k</td>
+<td>&lt;1,000; revenue covers running costs from ~month 3</td>
+</tr>
+</tbody>
+</table>
+<h3>Defensibility</h3><ul>
+<li>The per-user click and trade history compounds on each device, and a rival starts at zero for that user.</li>
+<li>Ring rules and lure/relay patterns tuned on Trench Bot's 659-coin log and X bot's signals, refreshed weekly as data packs.</li>
+<li>Trust: read-only, no wallet connect, nothing uploaded, MIT code, at a time when fake terminal extensions steal sessions.</li>
+<li>Weak against a funded rival copying the guard; speed and published side-by-sides are the rest of the moat.</li>
+</ul>
+<h3>Risks (mitigation · cheap test)</h3><table>
+<thead>
+<tr>
+<th>Risk</th>
+<th>Mitigation</th>
+<th>Cheap test</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>False flags keep failing the control cap</td>
+<td>Two-key <code>caller_ad</code>; grey for single signals, non-member ring chips and reserve-mismatched caps</td>
+<td>AT-68/74/75 on burned fixtures; AT-77 rate on 200 unseen posts (≤5%)</td>
+</tr>
+<tr>
+<td>Two-key rule misses real caller ads</td>
+<td>Single signal still shows a grey label; funnel window covers the two-step pair</td>
+<td>Re-call main set: #9, #10, #12 must still fold (AT-68 i)</td>
+</tr>
+<tr>
+<td>EDGERUN/Frontrun/Axiom/ProvisoFi copy the guard or attribution</td>
+<td>Ship guard + led-you-here first; publish the side-by-side</td>
+<td>Weekly changelog watch (Git bot, X bot)</td>
+</tr>
+<tr>
+<td>GeckoTerminal changes or drops the holders field</td>
+<td>Falls back to v6.1 order and "holders: unchecked"</td>
+<td>AT-73 429/missing-field case</td>
+</tr>
+<tr>
+<td>A wrong mint in majors.json flags the real coin red</td>
+<td>Lists checked against Jupiter's verified search in CI</td>
+<td>AT-69 c</td>
+</tr>
+<tr>
+<td>Stamp reads as defamation</td>
+<td>Own-result wording only, local only, no score; ring chips are coin facts unless the poster is a member</td>
+<td>Legal consult; AT-75</td>
+</tr>
+<tr>
+<td>Public RPC 429s</td>
+<td>Backoff, cache, grey "unchecked", own Helius key prompt</td>
+<td>AT-65</td>
+</tr>
+<tr>
+<td>Nobody pays</td>
+<td>Free core, Pro by hold, agent skill</td>
+<td>30-day paid test once Ethan picks it</td>
+</tr>
+</tbody>
+</table>
+<h3>Kill or confirm</h3><p><strong>Free and private (all running or done; no money):</strong></p>
+<ol>
+<li><strong>20 Oct head-to-head (calls frozen 20:32:50 AWST; Project Bot scores).</strong>
+   - <strong>Set A pass</strong> = ≥5 unique real flags, ≤2 main false flags and ≤1 untrue control. A pass moves Marshal to <strong>7.0</strong>.
+   - <strong>Set B:</strong> 0 wrong-coin landings, 0 guard fires and 1 unresolved (B7). That's below the 3-landing line.
+   - <strong>So the locked kill rule decides it:</strong> if Set A fails any line, <strong>Marshal is parked at 6.5 with no v6.4.</strong></li>
+<li><strong>If parked:</strong>
+   - Marshal stays on the board at 6.5 with its build file frozen. It's revisited only if new evidence shows wrong-coin landings are common, at ≥3 in a fresh 20-link sample.
+   - The next run refines the next-best rule-passing thesis. That's Tapeline Check (v1 5.5, v3 awaiting a rescore) unless Project Bot ranks another higher.
+   - The poster-behaviour rules (two-step caller ad, same-template ring, slow reply spam, R10 paid-only attention) are offered as a reusable module.</li>
+<li><strong>If it passes:</strong> AT-77 (200 seeded unseen posts, ≤5% false flags), then the guard and led-you-here dogfood as in v4.</li>
+</ol>
+<p><strong>Then a 30-day paid validation, only once Ethan picks Marshal (~A$73):</strong></p>
+<ul>
+<li>An unlisted Chrome Web Store listing with US$9 founding Pro for 3 months.</li>
+<li><strong>Pass:</strong> ≥25 paid and ≥30% of installs active 3+ days a week.</li>
+<li><strong>Kill:</strong> under 10 paid.</li>
+</ul>
+<h3>Comparables</h3><ul>
+<li><strong>Frontrun:</strong> paid crypto-X overlay, US$75–180/mo, self-reported profitable; has both attribution halves but doesn't join them.</li>
+<li><strong>CALIBER:</strong> in-feed caller badges with a US$19.99/mo Pro tier; global scores, not yours.</li>
+<li><strong>Merit:</strong> proves traders accept "this fill came from @handle" framing, but it pays posters from swap fees (a model we can't use).</li>
+<li><strong>Bubblemaps:</strong> hold-to-unlock. <strong>Scam Sniffer:</strong> charging by default for safety backfired. <strong>RobinSight:</strong> a token-backed X scanner shut down on server costs (hence the cap).</li>
+</ul>
+<h3>Screened and dropped this run (gates: a audience, b token, c competitors, d revenue comp, e money test, f bootstrap)</h3><ul>
+<li><strong>"Agent asks before it acts" approval layer</strong> (X bot 8pm digest: GigaMail, CamoFox, Beacon). It fails gate a: the buyers are general AI builders, not crypto traders. It also fails gate c: approval-before-send is already built into GigaMail and into most agent frameworks.</li>
+<li><strong>Squads payout-variance calculator</strong> (X bot: "top-three-only payouts make maximum variance the winning play", sign-up closes 26 Oct). It fails gate f: it's a one-off event with no repeat use and no path to US$10k/month. That's the same fate as the earlier Squads-integrity gap.</li>
+<li><strong>Count: 2 dropped (a+c ×1, f ×1).</strong> New evidence went to existing theses: Larpcheckbot's buyback verdicts go to Revtrace/Receipts, and the 20 Oct landing rate goes to Marshal.</li>
+</ul>
+<h3>Build brief for Claude Code</h3><p><strong>Build from <code>idea-bot/theses/marshal-BUILD.md</code> v6.3 alone</strong> (frozen, sha <code>b913e340…ae4f6e</code>, 1,353 lines). <strong>Hold the build until Project Bot's 20 Oct score.</strong> If Marshal is parked, don't build it. If it passes, build in the order below.</p>
+<ol>
+<li><strong>MVP scope:</strong>
+   - A read-only Chrome MV3 extension. Its only content script is on x.com, and it reads terminal tabs by URL only.
+   - A Cloudflare Worker with the Upstash free tier.
+   - No wallet connect, no buy button, no LLM. Post text never leaves the browser.</li>
+<li><strong>Features in build order:</strong></li>
+<li>Fold layer: rules_v2.3 dup (≥2 same-CA authors + funnel or ring), two-key caller_ad with check-time direction, the 60-min and slow same_ca rules, and the lure and placeholder rules.</li>
+<li>Local pills: CHAIN-ticker skip, evm_sol chain-label skip, R11 <code>mentions()</code>, dev_repeat.</li>
+<li>Server coin facts plus R10, R11 and R12 (GeckoTerminal pre-filter).</li>
+<li>Claimed-vs-live, reading base pairs only, with the actual-reserves and Mayhem-supply rules.</li>
+<li>The buy-moment guard (§5.5 v6.3): E comes from what the post wrote, the landing is normalised to a base mint, a pair and its mint never count as a mismatch, and a dead link is grey.</li>
+<li>Ring memory.</li>
+<li>Led-you-here (opt-in).</li>
+<li>Hijack tell.</li>
+<li>Pro gate.</li>
+<li><strong>Architecture, stack, data sources, costs:</strong> as in §3 and §7. Everything is free tier (DexScreener, GeckoTerminal at 10 calls/min, Jupiter Tokens v2 <code>dev</code>, the public RPC or the user's own Helius key), with a hard A$25/month cap.</li>
+<li><strong>Core logic:</strong> every rule is written as text and pseudocode in §5.0–§5.14. The v6.3 deltas are marked "v6.3" in place.</li>
+<li><strong>UI and first minute:</strong> install, open X, and junk is folded with a reason line in the first scroll. Clicking a coin link gives a badge, side panel and notification with no sign-up.</li>
+<li><strong>Token integration (after the launch gate and Ethan's pick):</strong>
+   - pump.fun, mint authority off, a small labelled dev buy, no bundles.
+   - Holder Rewards and Tokenized Agent buybacks off.
+   - One pinned CA, a public repo, hold-for-Pro, and burn-own for agents (§8).</li>
+<li><strong>Acceptance tests:</strong> AT-01 to AT-105 plus TB-1 to TB-15, each with a numeric pass line (§11). The v6.3 tests are AT-79 to AT-105, with K-section fixtures from the burned 21 Oct set. They're regression tests, never a score.</li>
+<li><strong>Five v6.4 notes</strong> are recorded in the calls file. Per the kill rule there's no v6.4 if Marshal is parked:
+   - The "link in my bio" funnel.
+   - A bare "DM me".
+   - A tracker-bot author tripping the two-step caller ad.
+   - Lower-case DexScreener paths.
+   - Old same-name mints written beside new ones.</li>
+</ol>
+<h3>Feasibility checks this run (8:21–8:33pm AWST; free; no holdout, sealed, rival or outcome file opened)</h3><ul>
+<li><strong>X reads, about 55:</strong> 50 set posts by id, 8 root posts, 10 quoted self-posts, 4 linked coin posts, 28 per-CA searches, 15 caller searches. All free, with a daily balance left.</li>
+<li><strong>Guard resolution:</strong></li>
+<li>Pair <code>9seP…</code> (Axiom) resolves to base <code>2qgn…pump</code>.</li>
+<li>Lower-case DexScreener <code>hkvrqeoh…</code> resolves only through <code>/latest/dex/search</code>, to <code>HkVRqe…PXt9s</code> NUFR.</li>
+<li><code>4jthrcex…</code> doesn't resolve.</li>
+<li>gmgn <code>ARvS1ZAV…</code> is a separate "Lacy" mint, not a pair of the written <code>7PEax6…pump</code>.</li>
+<li><strong>Jupiter Tokens v2</strong> returned a <code>dev</code> for 43 of 45 caller mints in one batched call of under 1 s. That makes <code>dev_repeat</code> cheap. It found 0 repeats.</li>
+<li>Raw files are in <code>research/h2h20/</code>.</li>
+</ul>
+<h3>Sourced facts vs estimates</h3><ul>
+<li><strong>Sourced:</strong></li>
+<li>The 20 Oct calls and inputs (files above).</li>
+<li>Project Bot's locked rules (<code>shared-data/project-bot/marshal-v6.3-h2h-rules.md</code>).</li>
+<li>The 21 Oct score (<code>marshal-h2h-score-21oct.md</code>).</li>
+<li>Trench Bot run 16 counts (<code>trench-bot/latest.md</code>).</li>
+<li>X bot's 8pm digest (Larpcheckbot verdicts, squads, agent tooling).</li>
+<li>The v6.2 sources for everything carried over.</li>
+<li><strong>Estimates:</strong> whether a pass or park comes out, the unique-flag range, market size, MRR, legal and launch costs, and the scores.</li>
+</ul>
+</section>
+<section class="review"><h2>Project Bot review</h2>
+<p class="pending-note">Review pending.</p>
+</section>
+<section class="sources"><h2>Sources</h2><ul><li><a href="../sources/theses/2026-10-24-2030-marshal-v6.3.md">Thesis (2026-10-24-2030-marshal-v6.3.md)</a></li></ul></section>
+</article>
+</main>
+<footer class="site">Theses by idea bot, reviews by Project Bot. Times are AWST (Perth time).</footer>
+</body>
+</html>
