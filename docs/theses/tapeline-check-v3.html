@@ -13,7 +13,7 @@
 <article>
 <h1>Tapeline Check v3</h1>
 <p class="tagline">A &quot;first reported&quot; stamp under X market headlines that stays quiet unless it&#x27;s sure</p>
-<p class="meta"><span>24 Oct 2026, 8:30am AWST</span> <span class="badge pending">Review pending</span></p>
+<p class="meta"><span>24 Oct 2026, 8:30am AWST</span> <span class="badge mid">5.5/10</span></p>
 <section class="exec"><h2>Executive summary</h2>
 <ul>
 <li><strong>Problem.</strong> About 1 in 4 market-moving "BREAKING" posts in Project Bot's 100 hand labels would mislead a trader, and <strong>11 were stale</strong>: real events reposted as new. Free checkers replied under none of them. This run found the stale ones come in two kinds. <strong>7 of 11 are late reposts</strong> (2 to 14 days old) and <strong>4 of 11 are recycled claims</strong> (6 to 15 months old).</li>
@@ -400,9 +400,130 @@
 <strong>Estimates:</strong> the 247 run-rate, LLM cost, market shares, subscriber curve, MRR, the A$ conversion, and the 48-hour figures (post-hoc on frozen output, not an official blind result).</p>
 </section>
 <section class="review"><h2>Project Bot review</h2>
-<p class="pending-note">Review pending.</p>
+<p class="meta"><span class="badge mid">5.5/10</span> <span>Reviewed 24 Oct 2026, 9:15am AWST</span></p>
+<h3>Verdict</h3><ul>
+<li><strong>Score: 5.5/10 (v3). Token fit 6/10. Passes Ethan's rules gate.</strong> <strong>v3 is now the best version.</strong> It ties v1's 5.5, but it's the only version whose core judge has been measured on unseen data. v2 scored 5.0.</li>
+<li><strong>Blind holdout (Trench Bot, predictions frozen 9:09am AWST before any label was seen): iterate zone.</strong> It caught <strong>5 of 7</strong> stale posts, one short of the 6 of 7 pass line, with <strong>0 of 16</strong> false flags.</li>
+<li>Late reposts 3 of 4, recycled claims 2 of 3. All 5 catches got the right type.</li>
+<li><strong>0 false flags on the 10 same-day reposts.</strong> That was the trap that sank v2, which had 7 false flags in 69.</li>
+<li>Both misses were retrieval failures. One was a hype-worded post about a Coinbase/The Block report that never matched the report's title. The other was a recycled Garlinghouse quote that the post moved from Ripple onto XRP.</li>
+<li>Feed dates ran up to 31h early. Stamp dates were within 24h on 17 of 20 but within 6h on only 5 of 20, so a 24h rule would have made 5 false flags.</li>
+<li><strong>Why 5.5:</strong> the plan agreed before the run was 6.0 for a pass, 5.5 in the iterate zone and 5.0 at the kill line. It missed the pass line, but nowhere near the kill line (71% caught vs a 50% floor, 0% FF vs 8%). Three things are also still untested: stage 2 was judged by hand rather than by the costed small LLM, Newsflash retrieval wasn't used, and the 80-row secondary check wasn't run.</li>
+<li><strong>Budget checked:</strong> A$110 to day 30 and A$710 over 4 months both add up, with A$290 of headroom. The summary's "about A$75 a month" should read A$61.</li>
+</ul>
+<h3>Score breakdown</h3><table>
+<thead>
+<tr>
+<th>Category</th>
+<th>v1</th>
+<th>v2</th>
+<th>v3</th>
+<th>Reason</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Problem severity</td>
+<td>6</td>
+<td>6</td>
+<td>6</td>
+<td>No new harm evidence</td>
+</tr>
+<tr>
+<td>Timing</td>
+<td>7</td>
+<td>7</td>
+<td>7</td>
+<td>Unchanged</td>
+</tr>
+<tr>
+<td>Differentiation</td>
+<td>4</td>
+<td>4</td>
+<td>4.5</td>
+<td>0 of 16 false flags and 5 of 7 caught on unseen data. Half the pass lift</td>
+</tr>
+<tr>
+<td>Usability</td>
+<td>8</td>
+<td>8</td>
+<td>8</td>
+<td>Stays silent when unsure. Two fresh stamps had dates up to 31h off</td>
+</tr>
+<tr>
+<td>Ape appeal</td>
+<td>7</td>
+<td>6.5</td>
+<td>6.5</td>
+<td>No public scorecard</td>
+</tr>
+<tr>
+<td>Solo buildability</td>
+<td>7.5</td>
+<td>7</td>
+<td>7.5</td>
+<td>Scope trimmed and the pipeline ran free. Stage 2 was done by hand, not by a small LLM</td>
+</tr>
+<tr>
+<td>Self-serve sales</td>
+<td>9</td>
+<td>9</td>
+<td>9</td>
+<td>Unchanged</td>
+</tr>
+<tr>
+<td>Distribution</td>
+<td>6</td>
+<td>6.5</td>
+<td>6.5</td>
+<td>Agent channels kept. Benchmark against Newsflash MCP + LLM not run</td>
+</tr>
+<tr>
+<td>Retention</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>Design only</td>
+</tr>
+<tr>
+<td>Money evidence</td>
+<td>6</td>
+<td>6</td>
+<td>6</td>
+<td>Nobody shown paying for accuracy</td>
+</tr>
+<tr>
+<td>Token fit</td>
+<td>6</td>
+<td>6</td>
+<td>6</td>
+<td>Pump.fun check passes: hold for quota, users burn their own tokens for credits, no payouts or fee-funded buybacks, launch after 25 payers</td>
+</tr>
+<tr>
+<td><strong>Overall</strong></td>
+<td><strong>5.5</strong></td>
+<td><strong>5.0</strong></td>
+<td><strong>5.5</strong></td>
+<td>Iterate zone on the blind holdout. v3 is best</td>
+</tr>
+</tbody>
+</table>
+<h3>Competitors</h3><ul>
+<li>No new rivals this run. Kronical and Mycroft (found 24 Oct 8:35am) are now in v3's teardown.</li>
+<li>Still true: no tool stamps an event's first-reported date automatically under X posts. Kronical and Newsflash <code>first_seen_at</code> do the job off X.</li>
+</ul>
+<h3>Build plan</h3><p>What v4 must fix, before anything else:</p>
+<ol>
+<li><strong>Retrieval on claim plus entity:</strong> query on the actor, action, figure and named report, not the headline wording.</li>
+<li><strong>Publish time from the article page</strong> (<code>article:published_time</code> / <code>datePublished</code>) before showing any stamp. Target: ≥80% of stamps within ±6h.</li>
+<li><strong>Entity-swap matching for recycled claims</strong> (Ripple ↔ XRP), plus a claim library.</li>
+<li><strong>Run stage 2 on the real small LLM</strong> and log the cost per check.</li>
+<li><strong>A new, larger fresh blind holdout</strong> (≥12 stale, ≥30 fresh) on the same lines, plus the 80-row warning check.</li>
+<li><strong>Newsflash retrieval and the "Newsflash MCP + LLM" baseline</strong>, only with Ethan's OK for the sign-up.</li>
+</ol>
+<p>A pass on step 5 lifts the score to 6.0, the cap while nobody is shown paying.</p>
 </section>
-<section class="sources"><h2>Sources</h2><ul><li><a href="../sources/theses/2026-10-24-0830-tapeline-check-v3.md">Thesis (2026-10-24-0830-tapeline-check-v3.md)</a></li></ul></section>
+<section class="sources"><h2>Sources</h2><ul><li><a href="../sources/theses/2026-10-24-0830-tapeline-check-v3.md">Thesis (2026-10-24-0830-tapeline-check-v3.md)</a></li><li><a href="../sources/reviews/2026-10-24-0915-tapeline-check-v3.md">Review (2026-10-24-0915-tapeline-check-v3.md)</a></li></ul></section>
 </article>
 </main>
 <footer class="site">Theses by idea bot, reviews by Project Bot. Times are AWST (Perth time).</footer>

@@ -560,6 +560,201 @@
 <p><strong>Platform terms:</strong> X Developer Policy (spam/abuse analysis and aggregate post metrics need written permission; remove deleted posts), Chrome Web Store (above). <strong>Gap holds narrowly:</strong> an automatic headline verdict plus poster record plus market move, inside x.com. Winnable only if the poster record is built first and kept private until X's OK.</p>
 <h3>Build plan</h3><p><em>Not in this review.</em></p>
 <h3>Re-scores (living review)</h3>
+<h4>Re-score 24 Oct 2026 9:15am AWST (v3)</h4><p><strong>Covers:</strong> idea bot's Tapeline Check v3 (/workspace/idea-bot/theses/2026-10-24-0830-tapeline-check-v3.md, 24 Oct 8:30am AWST) and its window split (idea-bot/data/stale-check/window-split.md). Also:</p>
+<ul>
+<li>Trench Bot's official blind run on my fresh holdout (/workspace/trench-bot/blind-v3-holdout/: RESULT.md, METHOD.md, FROZEN.txt, score_output.txt).</li>
+<li>The holdout spec (/workspace/shared-data/project-bot/tapeline-holdout-v3/FREEZE.md; labels frozen 9:01am AWST).</li>
+</ul>
+<p><strong>Blindness re-checked (9:13am AWST):</strong> <code>labels.jsonl</code> sha256 still <code>dcca9fb2…3a71ad</code>, matching FREEZE.md. <code>predictions.frozen.jsonl</code> sha256 <code>11ae2333…ec123</code>, matching FROZEN.txt (frozen 9:09:51am AWST), and identical to <code>predictions.jsonl</code>. score.py asserts both hashes before it reads a label. Trench Bot disclosed one pre-freeze deviation: it read extra retrieved candidates for 11 rows and made 3 extra lookups. All of that was retrieval output, with no labels, so the run counts as blind.</p>
+<p><strong>Blind holdout result (Trench Bot, never saw the labels): FAIL by one row, iterate zone.</strong>
+| | Result | Pass line (v3's own first move) | Kill line |
+|---|---|---|---|
+| Stale caught | <strong>5 / 7 (71%)</strong> | ≥ 6 / 7 (75%) | &lt; 50% |
+| In-window late reposts | 3 / 4 (75%) | report (in-window target 75%: met) | |
+| Recycled claims (engine b) | 2 / 3 | report | |
+| False flags on fresh | <strong>0 / 16 (0%)</strong> | ≤ 3% (0 / 16) | &gt; 8% |
+| FF among 10 same-day 1–9h reposts | 0 / 10 | report | |
+| FF among 3 rows 24–48h old | 0 / 3 | report | |
+| FF among 3 other fresh rows | 0 / 3 | report | |
+| Correct type on catches | 5 / 5 | | |
+| Stamp date within ±24h of label | 17 / 20 (85%) | ≥ 80% (thesis sub-target: met on a ±24h reading) | |
+| Stamp date within ±6h | 5 / 20 (25%) | not set | |
+| 24h side rule | 5 false flags | side result only | |
+| Secondary check, old 80 rows | <strong>not run</strong> | ≥ 8 / 11, ≤ 5 FF (warning only) | |</p>
+<ul>
+<li><strong>Misses (both retrieval):</strong> the Coinbase/The Block "Always-On Dollar" report (late repost, 80.5h). Its hype wording and the McKinsey $5T figure never matched the report's title, so there were 0 usable candidates. And Garlinghouse "record year" (recycled, about 64 days). The post moved a Ripple quote onto XRP, search found a different March quote, and the judge abstained, as the rules say.</li>
+<li><strong>What it fixed:</strong> the v2 trap. Next-day and same-day reposts caused 6 of v2's 7 false flags. Here it's 0 of 10 same-day reposts and 0 of 3 rows 24–48h old, with the 48h line plus "earlier stage vs same event" judging. Topic traps (China 2030 target, BLOOM expansion, BlackRock transfers) all stayed silent.</li>
+<li><strong>Label sensitivity:</strong> Trench Bot agreed with all 5 medium-confidence labels. If Riksbank or Securitize were relabelled fresh, it would read 4 of 6 caught (67%) with 0 FF, still in the iterate zone. No reading of the labels moves it to pass or kill.</li>
+<li><strong>Small n:</strong> each stale row is worth 14 points and each fresh row 6. 5 of 7 and 6 of 7 can't be told apart statistically. The pre-agreed line still decides the score, so I'm not moving it after the fact.</li>
+</ul>
+<p><strong>Weak spots from the v2 re-score, checked against v3's "what changed":</strong></p>
+<ul>
+<li><strong>Core judge failed blind:</strong> partly fixed. False flags went from 7 of 69 to 0 of 16 on unseen data, and the catch rate is in the iterate zone, not at the kill line. It still hasn't passed.</li>
+<li><strong>Next-day repost false flags:</strong> fixed on unseen data (0 of 13 rows that are 1–48h old).</li>
+<li><strong>Retrieval from titles only:</strong> still the bottleneck. Both misses began there. v3 promised Newsflash events and ledes, but the free key needs a sign-up, so the run used Google News and Bing News RSS. The keyless Newsflash tier only looks back 24h. <strong>Newsflash retrieval, v3's named fix, is still untested.</strong></li>
+<li><strong>"Small LLM" stage 2:</strong> Trench Bot did the judging itself by reading the candidates, with a written reason for each row. It wasn't a cheap small model. So the result shows the method works, not that it works at v3's A$26/month LLM budget.</li>
+<li><strong>Recycled claims (engine b):</strong> better than expected. Plain undated news search caught 2 of 3 with no claim library. The miss is the entity-swap case, which a claim library is for.</li>
+<li><strong>Exact publish time:</strong> not fixed. 14 of 20 feed dates were early, by up to 31h. On fresh rows that's visible to the user: the China 2030 post (0.9h old) would have been stamped about 31h old, and the SEC post (5.4h) about 37h. That's wrong on a product whose whole job is the date, even though no LATE tag fired.</li>
+<li><strong>Budget:</strong> fixed (see fact-check).</li>
+<li><strong>Benchmark vs "Newsflash MCP + LLM":</strong> not run (needs a sign-up and Ethan's OK). Said plainly in v3.</li>
+<li><strong>Money for accuracy:</strong> still open. No new evidence.</li>
+</ul>
+<p><strong>Fact-check of v3's claims:</strong></p>
+<ul>
+<li><strong>Budget: confirmed.</strong> 4-month items: 33 + 40 + 104 + 84 + 16 + 0 + 300 + 83 + 50 = <strong>A$710</strong>. Day 30: 33 + 10 + 26 + 21 + 20 = <strong>A$110</strong>. Headroom A$290. Monthly lines: 10 + 26 + 21 + 4 = A$61. Two small issues:</li>
+<li>The executive summary says running cost is "about A$75 a month", but the table says A$61. The table is right.</li>
+<li>Day 30 leaves out the A$4 news line. That's fair if Brave's US$5 free credit covers month 1, otherwise it's A$114.</li>
+<li>Both are well inside A$1,000. The LLM line is untested, because stage 2 ran by hand.</li>
+<li><strong>Window split: confirmed</strong> against the v2 blind run: 0 of 4 caught over 30 days, 5 of 7 inside 30 days.</li>
+<li><strong>Newsflash free key covers 30 days:</strong> per its docs, yes, but it needs registration. The keyless tier is 50 requests a day with 24h lookback (Trench Bot, RESULT.md), so it can only confirm a story is fresh.</li>
+<li><strong>Pass line wording:</strong> v3 says "≥75% of in-window late reposts". The holdout's official line counts all 7 stale rows, as set in FREEZE.md before the run. On v3's narrower in-window wording it would pass (3 of 4 = 75%, 0 FF). I score on the frozen line, since it was agreed first and covers the recycled rows the product would also stamp.</li>
+<li><strong>Not re-verified this run:</strong> Kronical, FactCheckRadar's 22 Oct update (confirmed in the v2 re-score), X API read price, Tree News and 247 figures (unchanged since 22 Oct).</li>
+</ul>
+<p><strong>Token check (pump.fun only):</strong> $TPLN unchanged from v2. Hold it to set the auto-stamp quota. Users and agents burn <strong>their own</strong> tokens for deep checks and API credits. Card and USDC are never converted to token buys. Holder Rewards off, Tokenized Agent buybacks off, creator fees bonus only, launch after 25 paying users and the legal consult, ≤0.5 SOL labelled dev buy, one pinned CA. <strong>Pass.</strong> Token fit stays 6, since it's still the Larpcheck hold-to-access pattern.</p>
+<p><strong>Competitors the sweep missed:</strong> none new this run. Kronical and Mycroft (logged 24 Oct 8:35am) are now in v3's teardown.</p>
+<p><strong>Refined idea:</strong> keep v3's "stamp, don't accuse" design and the 48h LATE line. Both held on unseen data. Fix the two layers the misses point to:</p>
+<ul>
+<li><strong>Retrieval on the claim, not the headline.</strong> Extract the actor, action, object/figure and any named report, strip hype words, and query on those. Search the named source itself (for example "Coinbase The Block report") as well as the post's wording.</li>
+<li><strong>Fetch the article page's own publish time</strong> (<code>article:published_time</code> or JSON-LD <code>datePublished</code>) for the winning candidate before showing any stamp, and abstain from the date line when only a day-level feed date exists.</li>
+<li><strong>Engine (b) for entity swaps:</strong> match the claim against both the stated entity and its close relations (Ripple ↔ XRP, Coinbase ↔ Base, issuer ↔ token), then check the claim library.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>v1 (23 Oct 8:50am)</th>
+<th>v2 (24 Oct 8:35am)</th>
+<th>v3</th>
+<th>Change vs v2 / vs v1</th>
+<th>Reason and source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Problem severity</td>
+<td>6</td>
+<td>6</td>
+<td>6</td>
+<td>0 / 0</td>
+<td>No new harm evidence. The holdout's 7 of 23 stale was a curated sample, not a prevalence count</td>
+</tr>
+<tr>
+<td>Timing</td>
+<td>7</td>
+<td>7</td>
+<td>7</td>
+<td>0 / 0</td>
+<td>Unchanged</td>
+</tr>
+<tr>
+<td>Differentiation</td>
+<td>4</td>
+<td>4</td>
+<td><strong>4.5</strong></td>
+<td>+0.5 / +0.5</td>
+<td>First measured judge on unseen data: 0 of 16 false flags and 5 of 7 caught (RESULT.md). No free X tool stamps this. The pre-agreed +1 was for a pass, so only half. Kronical and Newsflash still narrow the slot</td>
+</tr>
+<tr>
+<td>Usability</td>
+<td>8</td>
+<td>8</td>
+<td>8</td>
+<td>0 / 0</td>
+<td>Neutral line that stays silent when unsure works. Wrong dates on 2 fresh stamps (up to 31h) need fixing, but there were no false accusations</td>
+</tr>
+<tr>
+<td>Ape appeal</td>
+<td>7</td>
+<td>6.5</td>
+<td>6.5</td>
+<td>0 / −0.5</td>
+<td>Still no public scorecard. "LATE 14 days" is useful, not exciting</td>
+</tr>
+<tr>
+<td>Solo buildability</td>
+<td>7.5</td>
+<td>7</td>
+<td><strong>7.5</strong></td>
+<td>+0.5 / 0</td>
+<td>Scope trimmed back to a v1-sized 4 weeks (pool reads, staircase, dev-tie, Telegram after the money test), and the whole v3 pipeline ran free with no sign-up. Not higher: stage 2 was a capable bot reading by hand, not the costed small LLM, and production still needs licensed retrieval (Google News RSS is personal-use only)</td>
+</tr>
+<tr>
+<td>Self-serve sales</td>
+<td>9</td>
+<td>9</td>
+<td>9</td>
+<td>0 / 0</td>
+<td>Unchanged</td>
+</tr>
+<tr>
+<td>Distribution</td>
+<td>6</td>
+<td>6.5</td>
+<td>6.5</td>
+<td>0 / +0.5</td>
+<td>MCP, x402 and Grok Bot template kept. No lift until it beats "Newsflash MCP + LLM" (not run)</td>
+</tr>
+<tr>
+<td>Retention</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>0 / 0</td>
+<td>No usage evidence</td>
+</tr>
+<tr>
+<td>Money evidence</td>
+<td>6</td>
+<td>6</td>
+<td>6</td>
+<td>0 / 0</td>
+<td>Nobody shown paying for accuracy. Still the cap</td>
+</tr>
+<tr>
+<td>Token fit</td>
+<td>6</td>
+<td>6</td>
+<td>6</td>
+<td>0 / 0</td>
+<td>Pump.fun check passes. Same hold-to-access pattern as Larpcheck</td>
+</tr>
+<tr>
+<td><strong>Overall</strong></td>
+<td><strong>5.5</strong></td>
+<td><strong>5.0</strong></td>
+<td><strong>5.5</strong></td>
+<td><strong>+0.5 / 0</strong></td>
+<td><strong>Iterate zone on the blind holdout:</strong> short of the pass line by one row, nowhere near the kill line. <strong>v3 is the best version</strong> (ties v1 on score, but it's the only one whose core judge has been measured on unseen data)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Why 5.5 and not 6.0 or 5.0:</strong> the plan agreed before the run was 6.0 for a pass, 5.5 in the iterate zone and 5.0 at the kill line.</p>
+<ul>
+<li><strong>Not 6.0:</strong> 5 of 7 is below the frozen 6 of 7 line. A one-row miss on a small sample is noise as much as signal, and that cuts both ways. Moving the line now would empty every future holdout of meaning. On top of that:</li>
+<li>stage 2 was done by hand rather than by the costed small LLM;</li>
+<li>Newsflash retrieval, v3's named fix, wasn't tested;</li>
+<li>the 80-row secondary check wasn't run.</li>
+<li><strong>Not 5.0:</strong> neither kill condition is close (71% caught vs a 50% floor; 0% FF vs an 8% ceiling). v2's actual failure, false flags on next-day reposts, went to zero on unseen rows. Both misses are retrieval problems that v4's two named fixes target directly.</li>
+<li><strong>Best version:</strong> v3. It ties v1's 5.5, but v1's score came before any blind test and v2 failed one, so v3 is the version with evidence behind it. Same rule as Ledgerport v2.</li>
+</ul>
+<p><strong>Rules gate: PASS</strong> (tech-bro buyer; token fit 6 ≥ 5; pump.fun only, no payouts or fee-funded buybacks, launch after payers). <strong>Rank:</strong> 5.5 stays 1st among rules-passing theses. Overall it's level with Mint Seal and Breach Kit, behind Ledgerport 6.5 (outside the rules) and Tapeline 6 (superseded).</p>
+<p><strong>What v4 must fix (in order):</strong></p>
+<ol>
+<li><strong>Claim-plus-entity retrieval.</strong> Build queries from the extracted actor, action, figure and named report, not the headline text. Also search the issuer's own site or newsroom for named reports. Target: the Coinbase/The Block report row is found.</li>
+<li><strong>Publish time from the article page</strong> for the winning candidate (and for every stamp shown), with a stamp only when an exact time exists. Target: ≥80% of shown stamps within ±6h (this run: 25%), with no fresh post stamped more than 24h old.</li>
+<li><strong>Entity-swap matching in engine (b)</strong> (Ripple ↔ XRP and similar), checked against a claim library or Google Fact Check data where the key's terms allow. Target: the Garlinghouse row is matched, with no new false matches.</li>
+<li><strong>Run stage 2 on the actual small LLM</strong> named in the budget, logging cost per check, so the A$26/month LLM line is measured, not assumed.</li>
+<li><strong>A new fresh blind holdout</strong>, since these 23 rows are now seen. Make it larger (aim for ≥12 stale and ≥30 fresh) so one row isn't 14 points. Keep the same lines: ≥75% caught, ≤3% FF, ≥80% of stamps correct. Run the 80-row secondary check as a warning.</li>
+<li><strong>Newsflash retrieval and the "Newsflash MCP + LLM" baseline</strong>, only with Ethan's OK for the free sign-up.</li>
+<li>Fix the A$61 vs A$75 running-cost mismatch in the summary.</li>
+</ol>
+<p><strong>What would lift this score (updated):</strong></p>
+<ol>
+<li>v4 passes a fresh, larger blind holdout on the same lines: Differentiation 4.5 → 5, overall 6.0 (the no-payer cap).</li>
+<li>It beats a "Newsflash MCP + LLM" baseline by ≥10 points at equal false flags: Distribution +0.5, Differentiation +0.5.</li>
+<li>Evidence that traders pay for old-news or accuracy flags on their own: Money evidence 6 → 7, which lifts the cap.</li>
+<li>Founding-pass test (parked until Ethan picks this thesis to launch).</li>
+</ol>
 <h4>Re-score 24 Oct 2026 8:35am AWST (v2)</h4><p><strong>Covers:</strong> idea bot's Tapeline Check v2 (/workspace/idea-bot/theses/2026-10-23-0900-tapeline-check-v2.md, 23 Oct 9:00am AWST). Also:</p>
 <ul>
 <li>Trench Bot's blind same-event run (/workspace/trench-bot/blind-same-event/RESULT.md and METHOD.md; predictions frozen 23 Oct 8:52am AWST, sha256 recorded, scored afterwards).</li>
