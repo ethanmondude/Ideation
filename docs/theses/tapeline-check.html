@@ -560,6 +560,165 @@
 <p><strong>Platform terms:</strong> X Developer Policy (spam/abuse analysis and aggregate post metrics need written permission; remove deleted posts), Chrome Web Store (above). <strong>Gap holds narrowly:</strong> an automatic headline verdict plus poster record plus market move, inside x.com. Winnable only if the poster record is built first and kept private until X's OK.</p>
 <h3>Build plan</h3><p><em>Not in this review.</em></p>
 <h3>Re-scores (living review)</h3>
+<h4>Re-score 24 Oct 2026 10:45pm AWST (v4)</h4><p><strong>Covers:</strong> idea bot's Tapeline Check v4 (/workspace/idea-bot/theses/2026-10-24-2230-tapeline-check-v4.md, 24 Oct 10:30pm AWST) and its free publish-time check (idea-bot/data/pubtime-check/2026-10-24-2235.md). Also X bot's 22:00 digest (Larpcheck's NARRATIVE stamp), Trench Bot run 17, Git bot's refinements file (nothing new for Tapeline since 23 Oct) and Growth Bot's lessons. <strong>Under Ethan's 11:28am rule, no holdout was run or asked for;</strong> this re-score rests on quick feasibility checks only.</p>
+<p><strong>My quick checks this run (10:35–10:42pm AWST):</strong></p>
+<ul>
+<li><strong>Exact publish times are real and keyless: confirmed.</strong> RSS from CoinDesk (25 items), Decrypt (40), Cointelegraph (30) and The Block (19) all carry second-level <code>pubDate</code> in UTC. On 3 article pages the page time matched the RSS time to the second (Decrypt <code>article:published_time</code> 2026-10-23T21:16:03, Cointelegraph JSON-LD 21:32:16, CoinDesk JSON-LD 2026-10-24T14:06:24). The Block's page returned HTTP 403 to curl, as idea bot found, so RSS stays primary. <strong>Gotcha for the build:</strong> Decrypt's page time has no timezone suffix; it only lines up with RSS when read as UTC, so the resolver must reconcile page times against RSS, not parse them blind.</li>
+<li><strong>Earliest-across-cluster is needed, confirmed live:</strong> the Netanyahu sanctions-plan story was in The Block's feed at 23 Oct 18:15 UTC and Decrypt's at 21:16 UTC (3h later). The Wells Fargo/OKX-ICE objection story was in Cointelegraph's feed at 23 Oct 21:32 UTC and CoinDesk's at 24 Oct 14:06 UTC, <strong>16.5h later</strong>. A stamp taken from one outlet would have been badly wrong.</li>
+<li><strong>Larpcheck gives no dates: confirmed.</strong> Its last 15 replies (14:06–14:33 UTC, 10:06–10:33pm AWST) all carry NARRATIVE (plus COIN on most), and none gives a first-reported date or calls anything old news. All 15 are about small coins or apps, not market headlines.</li>
+<li><strong>But Larpcheck already does the figure check.</strong> Its reply at 10:25pm AWST (<a href="https://x.com/Larpcheckbot/status/2114000239371727246">post</a>) says "the buyer received 22.46 USDG, not the 23.64 posted". That is word for word v4's own example of its figure line ("source says 22.46, post says 23.64"). So the figure line is not ours; it's Larpcheck's, on tag.</li>
+<li><strong>Meta check (Ethan's abandon rule): not abandoned.</strong> A search of recent X posts for "old news"/"first reported" tools found nothing new, and no rival stamps an event's first-report time on the post. The kill trigger stands: if Larpcheck or Grok adds a date line, shelve Tapeline rather than refine it.</li>
+<li><strong>Budget: confirmed.</strong> 4 months 33 + 40 + 104 + 84 + 0 + 0 + 300 + 83 + 50 = <strong>A$694</strong>; day 30 33 + 10 + 26 + 21 + 16 = <strong>A$106</strong>; running A$57 a month. The v3 summary mismatch is fixed.</li>
+<li><strong>Not re-checked this run:</strong> pump.fun fee terms (unchanged since the 23 Oct check), Tree News and 247 figures, the Custom Timestamps for X review quote, X API read price.</li>
+</ul>
+<p><strong>Weak spots from my v3 re-score, against v4's "what changed":</strong></p>
+<ol>
+<li><strong>Claim-plus-entity retrieval:</strong> fixed in design (structured claim queries, named-report search, pseudocode in the brief). Not measured; it becomes Claude Code's acceptance test AT-T1, using the two v3 misses as fixtures.</li>
+<li><strong>Exact publish time:</strong> <strong>fixed, with evidence</strong> (idea bot 11/11 and 8/8; my 3/3 plus the 16.5h cluster lag). This was v3's most visible usability flaw (fresh posts stamped up to 31h old).</li>
+<li><strong>Entity swaps:</strong> fixed in design (alias table, claim library as <code>{speaker, claim_core, first_date, source}</code>). Not measured.</li>
+<li><strong>Real small LLM at stage 2:</strong> specified (prompt contract, cost log, US$0.002 cap, abstain over cap). Not run. Fine under Ethan's rule; it's AT-T6.</li>
+<li><strong>Larger fresh holdout:</strong> <strong>no longer needed.</strong> Ethan's 11:28am rule ends holdouts. AT-T1/T2 move into the build as acceptance tests on the existing 23-row and 100-row labelled sets. X bot has claimed a ≥45-post raw pull for a v4 holdout (claims.md, due ~9:30am 25 Oct); that's outside Ethan's rule and shouldn't gate this thesis.</li>
+<li><strong>Newsflash dependency:</strong> removed; own RSS archive is primary. Also removes v3's "Google News RSS is personal-use only" production problem.</li>
+<li><strong>A$61 vs A$75 mismatch:</strong> fixed.</li>
+<li><strong>Money for accuracy:</strong> still open. The one new signal is a single review on a free 77-user extension. Still the cap.</li>
+</ol>
+<p><strong>Competitors the sweep missed:</strong> none new for Tapeline. The figure-check overlap is Larpcheck, already in v4's teardown, but v4 doesn't say Larpcheck does figures. (Separately, for Marshal I logged Antares, X bot's 22:00 find, in missed-competitors.jsonl this run.)</p>
+<p><strong>Token check (pump.fun only):</strong> $TPLN unchanged: hold for the auto-stamp watchlist size, users and agents burn their own tokens for deep checks and API credits, card and USDC never converted to buys, Holder Rewards and agent buybacks off, creator fees bonus only, launch after 25 payers and the legal consult, ≤0.5 SOL labelled dev buy, one pinned CA. <strong>Pass. Token fit stays 6</strong> (still the Larpcheck hold-to-access pattern).</p>
+<p><strong>Refined idea:</strong> <strong>a date stamp and nothing else.</strong> Cut the figure line from v1 (Larpcheck already does it on tag, and it widens the judge's error surface), so the whole product is one grey line: <code>first reported &lt;earliest exact time&gt; · &lt;outlet&gt; · &lt;age&gt;</code>, with LATE at 48h+. Retrieval and the same-event judge are the only hard parts; the time layer is now proven cheap. Keep the figure check as a v1.1 option only if users ask.</p>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>v3 (24 Oct 9:15am)</th>
+<th>v4</th>
+<th>Change</th>
+<th>Reason and source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Problem severity</td>
+<td>6</td>
+<td>6</td>
+<td>0</td>
+<td>No new harm evidence; the 16.5h outlet lag shows the problem is real for anyone reading one outlet, but not that traders lose money</td>
+</tr>
+<tr>
+<td>Timing</td>
+<td>7</td>
+<td>7</td>
+<td>0</td>
+<td>Larpcheck's growth went into coin verdicts, leaving dates open; equally it could add one fast</td>
+</tr>
+<tr>
+<td>Differentiation</td>
+<td>4.5</td>
+<td>4.5</td>
+<td>0</td>
+<td>The verdict overlap is gone, but the figure line now overlaps Larpcheck, and the retrieval fix isn't measured</td>
+</tr>
+<tr>
+<td><strong>Innovation</strong> (first scored)</td>
+<td>n/a</td>
+<td><strong>6</strong></td>
+<td>new</td>
+<td>Event age on the post, built from exact cross-outlet times, is new; clustering itself is Kronical's and Newsflash's</td>
+</tr>
+<tr>
+<td>Usability</td>
+<td>8</td>
+<td><strong>8.5</strong></td>
+<td>+0.5</td>
+<td>Exact times fix the wrong-date stamps (v3: up to 31h off on fresh posts); verified cheap this run. One grey line, no setup, first stamp on one click in under 30s</td>
+</tr>
+<tr>
+<td><strong>Uniqueness</strong> (first scored)</td>
+<td>n/a</td>
+<td><strong>5.5</strong></td>
+<td>new</td>
+<td>Closest rival <strong>Larpcheck</strong> (verdict and figure check on tag, 0 of 15 give dates); Kronical (first report vs repeats, off X, enterprise); Custom Timestamps for X (post age, not event age). The date on the post is ours; the figure line isn't</td>
+</tr>
+<tr>
+<td>Ape appeal</td>
+<td>6.5</td>
+<td>6.5</td>
+<td>0</td>
+<td>A grey date line is useful, not exciting</td>
+</tr>
+<tr>
+<td>Solo buildability</td>
+<td>7.5</td>
+<td><strong>8</strong></td>
+<td>+0.5</td>
+<td>Keyless RSS plus page times verified; Newsflash and Google News dependencies gone. Not higher: stage 2 still unrun</td>
+</tr>
+<tr>
+<td>Self-serve sales</td>
+<td>9</td>
+<td>9</td>
+<td>0</td>
+<td>Unchanged</td>
+</tr>
+<tr>
+<td>Distribution</td>
+<td>6.5</td>
+<td>6.5</td>
+<td>0</td>
+<td>MCP, x402, Grok Bot template kept; no benchmark vs "Newsflash MCP + LLM"</td>
+</tr>
+<tr>
+<td>Retention</td>
+<td>5</td>
+<td>5</td>
+<td>0</td>
+<td>Design only</td>
+</tr>
+<tr>
+<td>Money evidence</td>
+<td>6</td>
+<td>6</td>
+<td>0</td>
+<td>One free-tool review; nobody shown paying for accuracy</td>
+</tr>
+<tr>
+<td>Token fit</td>
+<td>6</td>
+<td>6</td>
+<td>0</td>
+<td>Unchanged</td>
+</tr>
+<tr>
+<td><strong>Overall</strong></td>
+<td><strong>5.5</strong></td>
+<td><strong>5.5</strong></td>
+<td><strong>0</strong></td>
+<td><strong>v4 is the best version</strong> (same score, more build-ready)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Why 5.5 and not 6.0:</strong> two rows rose on real evidence (exact times, keyless sources), but the core claim, that claim-based retrieval finds the stale story, is still unmeasured, and the figure line turned out to be Larpcheck's. 6.0 is also the no-payer cap; reaching it needs either a measured retrieval result from Claude Code's first build week or a paying-demand signal.</p>
+<p><strong>Rules gate: PASS</strong> (tech-bro buyer; token fit 6 ≥ 5; pump.fun only, no payouts or fee-funded buybacks). <strong>Rank:</strong> 2nd among rules-passing theses, behind Marshal v6.3 at 7.0.</p>
+<p><strong>What @idea bot should change in v5:</strong></p>
+<ol>
+<li>Cut the figure line from v1 (or credit Larpcheck in the teardown and move it to v1.1).</li>
+<li>Add the page-time reconciliation rule: timezone-less page times (Decrypt) must be matched against RSS UTC, never parsed as local.</li>
+<li>Find a payer: the price of the plan that unlocks ArcaneNews's old-news flag, or PVP Terminal's tier with Old News Threshold. That's the cheapest route past the 6.0 cap.</li>
+<li>Drop the larger holdout from the plan (Ethan's 11:28am rule); keep AT-T1/AT-T2 as build acceptance tests on the existing labelled sets.</li>
+</ol>
+<p><strong>What would lift this score (updated):</strong></p>
+<ol>
+<li>Proof someone pays for an old-news flag on its own, or in a priced terminal tier (ArcaneNews, PVP): Money evidence 6 → 7, lifts the 6.0 cap (+0.5 to +1).</li>
+<li>Claude Code's v1 passing AT-T1 and AT-T2 on the existing labelled sets (≥75% stale caught incl. the Coinbase/The Block and Garlinghouse rows, ≤3% false LATE): Differentiation 4.5 → 5.5 (+0.5 overall).</li>
+<li>Beating "Newsflash MCP + LLM" by ≥10 points at equal false flags: Distribution and Differentiation +0.5 each (only with Ethan's OK for the sign-up).</li>
+</ol>
+<p><strong>Claude Code build brief (v4, updated):</strong> use the "Build brief for Claude Code" section of /workspace/idea-bot/theses/2026-10-24-2230-tapeline-check-v4.md (reproduced on the v4 version page) with these changes, which override it:</p>
+<ul>
+<li><strong>Remove</strong> feature "figure mismatch line", the <code>source_figure</code> branch of the pseudocode, AT-T8, and the Hyperliquid/GeckoTerminal row from the data sources. Out of scope for v1.</li>
+<li><strong>Time resolver rule:</strong> RSS <code>pubDate</code> (UTC) is primary. Page <code>datePublished</code>/<code>article:published_time</code> is a cross-check only: if the page time has no offset, accept it only if it equals the RSS time read as UTC (±60s); otherwise keep RSS. If neither gives a time to the second, abstain from the stamp. Treat HTTP 403 pages (The Block) as RSS-only.</li>
+<li><strong>Cluster rule:</strong> stamp time = earliest source-backed time across every archive item the judge labels same_event; show the outlet of that earliest item. Fixture: Wells Fargo/OKX-ICE (Cointelegraph 23 Oct 21:32:16 UTC beats CoinDesk 24 Oct 14:06:24 UTC).</li>
+<li><strong>Acceptance tests:</strong> AT-T1/AT-T2 run on the existing labelled sets (shared-data/project-bot/tapeline-holdout-v3/labels.jsonl and the 100-row set in shared-data/project-bot/tapeline-labels.jsonl), not a new holdout; AT-T1 must include the Coinbase/The Block "Always-On Dollar" row and AT-T5 the Garlinghouse row.</li>
+<li>Unverified in the brief: LLM cost per check (AT-T6), X API read price, Google Fact Check API commercial terms.</li>
+</ul>
 <h4>Re-score 24 Oct 2026 9:15am AWST (v3)</h4><p><strong>Covers:</strong> idea bot's Tapeline Check v3 (/workspace/idea-bot/theses/2026-10-24-0830-tapeline-check-v3.md, 24 Oct 8:30am AWST) and its window split (idea-bot/data/stale-check/window-split.md). Also:</p>
 <ul>
 <li>Trench Bot's official blind run on my fresh holdout (/workspace/trench-bot/blind-v3-holdout/: RESULT.md, METHOD.md, FROZEN.txt, score_output.txt).</li>
