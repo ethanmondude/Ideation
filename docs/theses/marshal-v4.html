@@ -1,0 +1,1271 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Marshal v4 ($MRSHL)</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="site"><a href="../index.html">Startup theses</a></header>
+<main>
+<p class="back"><a href="../index.html">&larr; All theses</a></p>
+<article>
+<h1>Marshal v4 ($MRSHL)</h1>
+<p class="tagline">The X-native trench guard that remembers which post sent you, warns on the coin page when it&#x27;s the wrong mint, and shows on device what each account has really cost you</p>
+<p class="meta"><span>24 Oct 2026, 4:30pm AWST</span> <span class="badge mid">6.5/10</span> <span class="status">Status: Awaiting Project Bot re score vs v3 6.0</span></p>
+<section class="exec"><h2>Executive summary</h2>
+<ul>
+<li><strong>Problem:</strong> in the trenches the scam sits on the path from post to buy. 648 of 658 coins that crossed US$500k rugged (Trench Bot run 14, ~98.5%), ~357 of them brand/copy name-bait. Today alone: copy mints launched the same second as the real one (<a href="https://x.com/Pawnshoponsol/status/2113890694980837791">@Pawnshoponsol</a>), traders buying "the wrong CA" (<a href="https://x.com/Napoleonz_1/status/2113881214792966615">@Napoleonz_1</a>), hijacked accounts (<a href="https://x.com/kukasolana/status/2113828534384808231">@kukasolana</a>), and relayed fake milestones ("$MIL JUST HIT $10.6M MC" while live was ~US$427k). Traders have no record of which accounts actually cost <em>them</em> money.</li>
+<li><strong>Product:</strong> <strong>Marshal</strong>, a read-only Chrome extension for x.com and terminal pages. Leads: (1) the <strong>buy-moment guard</strong> ("⚠ not the mint in the post you came from", on GMGN, Jupiter and pump.fun; Axiom and Photon get a side panel only); (2) the <strong>"led you here" stamp</strong> (opt-in public wallet, on device: your own SOL result per account that sent you); (3) <strong>ring memory across coins and days</strong> (plus relay pairs and "linked to ring"). Supporting: claimed-vs-live MC, lure folding, the hijack tell (QR last), and deployer facts with no score.</li>
+<li><strong>Who pays, how much:</strong> desktop Solana traders who find coins on CT. Free: the guard, folding and 30 server stamps a day. <strong>Pro US$9/month or hold $MRSHL</strong> (paid comparables: CALIBER Pro US$19.99, X-Relay US$15–69, Frontrun US$75/180, Xanguard from US$100). v1.1 agent skill at <strong>US$0.01/call in USDC, or burn own $MRSHL</strong>. No payer shown yet.</li>
+<li><strong>Token job:</strong> hold for Pro (v1). Burn your own per agent call or deep trace (v1.1). No payouts, buybacks or revenue-funded burns; USDC is never swapped into $MRSHL. pump.fun launch only after ≥25 paying Pro or ≥30% of installs active 3+ days a week, the legal consult, and Ethan's pick.</li>
+<li><strong>Cost vs A$1,000:</strong> ~<strong>A$73 to day 30</strong>; <strong>A$449 lean / A$549 worst over 4 months</strong> (incl. A$300 legal est. and ~A$76 launch est.). Running ~A$0 with a hard A$25/month cap. Led-you-here costs us A$0 (user's own RPC, never our Worker).</li>
+<li><strong>Path to US$10k/month:</strong> ~1,112 cash Pro at US$9, or ~800 Pro + ~280k paid agent calls a month. <strong>Base case US$1–3k MRR at month 12 (estimate)</strong>, so US$10k is upside.</li>
+<li><strong>Why now / edge:</strong> the buy click moved off X onto terminals, and today's rugs ride that gap. Agents now buy safety checks per call (swap-gate US$0.008, pumpdata US$0.005–0.02). <strong>Edge:</strong> the only tool that carries the post you clicked to the coin page and then to your own wallet result. Of 11 rivals in Git bot's head-to-head plus 13 in the attribution check, none does it. Frontrun and Axiom hold both halves, but not your click history.</li>
+<li><strong>Main risk, first move, verdict:</strong> a funded rival copies the guard, and nobody pays for a free-able check. First move this week: Claude Code builds the fold layer + gated guard on GMGN/pump.fun (week 1), and Ethan reads the GMGN, Jupiter and pump.fun terms on overlays (~20 min). <strong>Verdict: build to test, about 45% confident</strong> (v3: 40%). My estimate is ~6.5 (Project Bot scores).</li>
+</ul>
+</section>
+<section class="thesis"><h2>Full thesis</h2>
+<div class="byline"><p><em>Idea bot thesis, Sat 24 Oct 2026, written 4:24–4:40pm AWST (Perth). Path: /workspace/idea-bot/theses/2026-10-24-1630-marshal-v4.md, copied to /workspace/idea-bot/latest-thesis.md. <strong>Version 4</strong> of thesis id <code>idea-bot:thesis:clean-feed</code> (v3: theses/2026-10-24-1430-marshal-v3.md; v2: 2026-10-24-1230-clean-feed-v2.md; v1: 2026-10-24-1021-clean-feed.md). <strong>Project Bot scored v3 6.0/10 at 2:50pm AWST</strong> (token fit 6, Innovation 6, Usability 8, Uniqueness 5; buildability 7; build-readiness 9/10). Its living review then added two pending notes: Uniqueness 5 → 6 (2:48pm, Git bot head-to-head) and Innovation 6 → 7 (2:54pm, "led you here" stamp). Ethan's target is 7. Under Ethan's 11:28am rule the bots design and Claude Code builds; this run did ~4 minutes of free checks only (<code>idea-bot/data/marshal-v4/feasibility-1628.md</code>). Inputs: Project Bot v3 review + living review notes, Git bot <code>marshal-head-to-head.md</code>, idea bot <code>research/2026-10-24-led-you-here-checks.md</code>, <code>missed-competitors.jsonl</code>, Growth Bot lessons (incl. X bot's and Trench Bot's 4:00–4:11pm lessons), X bot 4pm digest, Git bot radar run 14 (4:15pm), Trench Bot run 14 (4:05–4:20pm). Not opened, ever: <code>/workspace/trench-bot/*holdout*</code>, <code>/workspace/trench-bot/sealed-labels/</code>, any Project Bot holdout or blind folder.</em></p>
+<p><em>Name: <strong>Marshal ($MRSHL)</strong> is still the working pick; fallback Garm ($GARM); Ethan decides. Trademark not checked.</em></p></div>
+<h3>What changed in v4 (each weakness Project Bot named in the v3 review)</h3><ol>
+<li><strong>"Every lead is copyable, nothing compared head to head" → head-to-head done, plus one lead a rival can't copy.</strong> Git bot's desk head-to-head (<code>shared-data/git-bot/marshal-head-to-head.md</code>): EDGERUN A no / B partial / C no; Buddy no on all three; Verixy A no / B no / C partial. None does 2 of 3, so by Project Bot's rule Uniqueness 5 → 6 (its 2:48pm note). New lead on top: the <strong>"led you here" stamp</strong> (below). It's built on each user's own click history from the guard, which no rival has, even if Frontrun or Axiom join their X data to your PnL.</li>
+<li><strong>Innovation 6 ("clever plumbing") → new capability: personal post-to-trade attribution.</strong> Opt in with a public wallet address (no connect, no signing). Marshal matches your own buys to the X post you clicked and shows your own result per account in SOL: "led you here 3× · you're −1.4 SOL across 2 coins · 1 of 3 held 24h". It runs on the device only and nothing goes through our Worker. Rival check passed: Cielo, GMGN, Axiom and Frontrun are all <strong>No</strong>; KOLlateral, ATIBRAIN and (new this run) <strong>Merit</strong> are <strong>Partial</strong> (<code>idea-bot/research/2026-10-24-led-you-here-checks.md</code>). Project Bot's 2:54pm note: Innovation 6 → 7, pending.</li>
+<li><strong>Buildability 7 (v1 too big) → scope cut exactly as asked.</strong> The shared HyperLogLog burst layer, "earliest seen by Marshal users" and Hold mode move to <strong>v1.1</strong>. v1 sends only CAs to our server, never handles or wallets. QR decoding stays in v1 but is the <strong>last</strong> feature, with a written cut line (if week 3 slips, it moves to v1.1). Led-you-here adds no server work: it reuses the guard's click memory and the DexScreener call Marshal already makes. Target buildability 8.</li>
+<li><strong>False banners (brief change 2) → adopted, plus AT-45.</strong> The red banner fires only if a click on x.com was recorded ≤2 min before, it's the first route load in that tab since the click, and the referrer is t.co or x.com (if the referrer is empty, (a)+(b) only). The post's CA comes from the raw text, then the link text. Marshal never fetches t.co.</li>
+<li><strong>Missed rivals → all added, then re-swept by verdict.</strong> Xanguard Convergence Tracker, X-Relay, Trusty AI, Bags Alpha, Tweet Catcher and QRsafer are in the teardown. New this run: <strong>Merit</strong> (buy-on-tweet overlay that credits 0.5% of each swap to the poster; Partial on led-you-here), <strong>Caller Track</strong> (global caller hit rates, No), <strong>CALIBER Pro</strong> (US$19.99/mo, now a paid comparable), <strong>CryptoFilter</strong> (Base/Robinhood Telegram alerts with a "wrong-CA" block, No on X), <strong>Toll</strong> (Robinhood Chain terminal with a rug check by the buy button, No) and <strong>swap-gate</strong> (Base pre-swap check for agents at US$0.008/call, agent-channel comparable). Janitr link fixed (<a href="https://github.com/osolmaz/janitr">osolmaz/janitr</a>, Jan 2026, idle). X Reply Janitor dropped (404).</li>
+<li><strong>pumpdata note → current figures.</strong> From <a href="https://pumpdata.fun/llms.txt">llms.txt</a> and the <a href="https://pumpdata.fun/terms">terms</a> (Git bot): 300 calls a day per IP without a key (shared with all cloud agents), 2,000 a day with a free key, US$10 USDC for 30 days of 20,000 a day, x402 from US$0.005. API answers may be used in our product <strong>if pumpdata is credited on screen</strong>. Still optional and off by default.</li>
+<li><strong>B1Y2…pump → settled on-chain.</strong> It was <strong>not</strong> made by the Kimchi deployer: its creator wallet is <code>AZjvHz…</code>, Kimchi's is <code>FResVa…</code>. It's a "Project Kimchi" <strong>name-copy</strong> that rugged after peaking near US$0.53M. v4 calls it <strong>"a Kimchi name-copy whose supply sits in the Kimchi profile wallet"</strong> (<code>Gs5FHw…</code>, which also holds 90% of the copy <code>9EQbGT…</code> and round lots of 300+ tokens). Guard example: a famous holder wallet never makes a mint real. Real Kimchi: <code>CSocnz…pump</code> (US$7.98M at 4:09pm, Trench Bot run 14).</li>
+<li><strong>"Linked to ring" for one-CA co-posters → adopted with its own false-chip test (AT-47).</strong> Also adopted three zero-cost rules from today's lessons: <strong>relay pair</strong> (near-identical text from a 2nd account ≤30 min = one source, both linked in ring memory; X bot), <strong>unfilled template</strong> ("[Add launch MC]"-style placeholders; X bot, 1 example, so amber only), and <strong>borrowed endorsement R11</strong> ("linked post is 8 days older than this coin and doesn't name it", from the post id with no API call; Trench Bot).</li>
+<li><strong>Token fit 6 ("near its ceiling") → a clear per-use job added for v1.1.</strong> The agent version of the X-thread skill (ElizaOS plugin + MCP tool: "does this mint match the post link I've been given") has two ways to pay. (a) The agent <strong>burns its own $MRSHL</strong> per call (a per-use job). (b) It pays <strong>USDC over x402</strong> as plain income. <strong>That USDC is never converted into $MRSHL or burned</strong>, because a revenue-funded burn would break Ethan's no-buyback rule. Project Bot said a clearly stated per-use burn is worth up to +1 token fit.</li>
+<li><strong>Money evidence 5 → unchanged in kind.</strong> One more paid comparable (CALIBER Pro US$19.99/mo on its <a href="https://chromewebstore.google.com/detail/caliber/fkelefefncjbipiaoeanffmhjpgdkjdl">CWS listing</a>), and today's wrong-CA posts (<a href="https://x.com/Pawnshoponsol/status/2113890694980837791">@Pawnshoponsol</a>, <a href="https://x.com/Napoleonz_1/status/2113881214792966615">@Napoleonz_1</a>). Payer proof for <em>this</em> check still needs the 30-day test, run only once Ethan picks Marshal.</li>
+</ol>
+<h3>Problem and user</h3><ul>
+<li><strong>User:</strong> tech-bro desktop traders and builders (Chrome, Brave, Arc) who find coins on CT and in X Communities and buy on GMGN, Axiom, Photon, Jupiter or pump.fun. Secondary: Community mods and caller-group admins.</li>
+<li><strong>Pains (sourced):</strong></li>
+<li><strong>Wrong mint at the buy moment:</strong> see the summary; "Got drained $100 with a fake gmgn bot" (<a href="https://x.com/0xCalvary/status/2106105256933249432">@0xCalvary</a>); malicious "Axiom Enhancer" extensions (<a href="https://labs.sqrx.com/hidden-in-plain-sight-how-we-followed-one-malicious-extension-to-uncover-a-multi-extension-a6f3f0792b98">SQRX Labs</a>).</li>
+<li><strong>Rings and relays:</strong> 4 of 5 known ring accounts found across 3 coins, with 0 false rings on Kimchi and $shiit (Trench Bot <code>ring-check.md</code>). @AlphaPulsevw posted six $GTA 6 milestones in 6 min, then @Unlimited_sol0 relayed them 7 min later (<a href="https://x.com/AlphaPulsevw/status/2113882240585269684">1</a>, <a href="https://x.com/Unlimited_sol0/status/2113884074242687420">2</a>; snowflake times 14:36 and 14:43 AWST, this run). An unfilled "[Add launch MC]" template (<a href="https://x.com/Alpharadarp/status/2113881137256784245">@Alpharadarp</a>). "If 20 accounts post the same take word for word, ignore all 20" (<a href="https://x.com/rgznpro/status/2113875176660296153">@rgznpro</a>).</li>
+<li><strong>Borrowed endorsement:</strong> anondog linked a Bonk Guy post about another coin, made 8.5 days before the mint. The coin touched US$559k, then fell 77% in one 5-min candle (Trench Bot run 14).</li>
+<li><strong>No personal memory:</strong> caller boards score accounts for everyone (CALIBER, Caller Track, GMGN Callout, Kolscan). None tells you what an account cost <em>you</em>. A coin falling 80% says nothing when ~98.5% of US$500k coins rug, so the stamp measures from <strong>your</strong> buy and in <strong>your</strong> SOL.</li>
+<li><strong>Workarounds:</strong> paste into RugCheck/PastTokenBot, tag @Larpcheckbot, open Buddy on the coin page, keep notes or spreadsheets of "who burned me".</li>
+</ul>
+<h3>Evidence of money</h3><ul>
+<li><strong>Paid overlays and caller tools:</strong> Frontrun US$75/180 a month, self-reported profitable (<a href="https://www.frontrun.pro/pricing">pricing</a>); <strong>CALIBER Pro US$19.99/mo, US$189/yr, US$399 lifetime</strong> (<a href="https://chromewebstore.google.com/detail/caliber/fkelefefncjbipiaoeanffmhjpgdkjdl">CWS</a>); X-Relay US$15–69/mo (<a href="https://x-relay.com/pricing.html">pricing</a>); Xanguard Convergence Tracker from US$100/mo in SOL (<a href="https://xanguard.tech/pricing/">pricing</a>); Tweet Catcher Pro €300/mo (per X-Relay, unverified).</li>
+<li><strong>Money at the buy moment:</strong> Axiom US$31.85M of fees in 30 days (<a href="https://memefees.com/terminals/axiom">memefees</a>). Merit takes 1% per overlay swap, half to the poster (<a href="https://www.meritoverlay.com/">meritoverlay.com</a>).</li>
+<li><strong>Per-call agent checks:</strong> swap-gate US$0.008/call over x402 (README, no verified usage; <a href="https://github.com/rezearcher/plugin-swap-gate">repo</a>); pumpdata US$0.005/lookup, US$0.02 full pre-buy check.</li>
+<li><strong>Hold-to-unlock:</strong> Bubblemaps (premium gated by holding BMT).</li>
+<li><strong>Missing:</strong> nobody is shown paying for this exact check. Scam Sniffer's default-on fee was dropped after backlash. US$9 Pro is a hypothesis.</li>
+</ul>
+<h3>Bottom-up market sizing (estimates labelled)</h3><ul>
+<li>Reach (sourced): Frontrun 40k–80k CWS users; CALIBER tracks 850+ KOLs (its listing); Control Panel for Twitter 300k.</li>
+<li><strong>A (est.):</strong> 5,000–15,000 installs in year 1 × 2–4% Pro × US$9 = <strong>US$0.9–5.4k MRR</strong>; 30% of Pro by token hold (no cash) → cash ≈ 70%.</li>
+<li><strong>B (est.):</strong> agent skill 1,000–5,000 calls/day × US$0.01 = US$300–1,500/month gross, less a 20–30% facilitator cut. Burned-$MRSHL calls bring no cash, by design.</li>
+<li><strong>Base: US$1–3k MRR at month 12 (est.).</strong> US$10k needs ~1,112 cash Pro (~7.4% of 15k installs).</li>
+</ul>
+<h3>Competitive teardown</h3><p>Desk research 24 Oct (Project Bot 2:35–2:45pm, Git bot 2:46–3:00pm, idea bot 3:00pm and 4:25–4:30pm AWST). "No" = the source's scope rules it out; no rival was installed.</p>
+<table>
+<thead>
+<tr>
+<th>Rival</th>
+<th>Surface</th>
+<th>Guard: carries the clicked post's mint to the coin page</th>
+<th>Led you here: your trades credited to the post that sent you</th>
+<th>Ring across coins/days</th>
+<th>Claimed vs live MC</th>
+<th>Model</th>
+<th>Threat</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><a href="https://edgerun.pro/">EDGERUN</a></strong></td>
+<td>X + pump.fun/DexScreener/Solscan, MIT</td>
+<td>No</td>
+<td>No</td>
+<td>Partial (per-CA clusters, per-account history)</td>
+<td>No</td>
+<td>Free</td>
+<td><strong>High</strong>, closest; pushed today</td>
+</tr>
+<tr>
+<td><a href="https://buddycheck.xyz/">Buddy</a></td>
+<td>Coin pages</td>
+<td>No (vamp check, no post memory)</td>
+<td>No</td>
+<td>No (wallet memory)</td>
+<td>No</td>
+<td>Free; 80% fee buyback (barred)</td>
+<td>High</td>
+</tr>
+<tr>
+<td><a href="https://verixy.io/">Verixy</a></td>
+<td>X hover</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+<td>Partial</td>
+<td>Free</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td><a href="https://docs.frontrun.pro/">Frontrun</a></td>
+<td>X + Axiom/GMGN/pump.fun, wallet</td>
+<td>No (mention traces, not your click)</td>
+<td><strong>No</strong>, but has both halves</td>
+<td>Unknown</td>
+<td>Unknown</td>
+<td>US$75/180/mo</td>
+<td><strong>High on copy risk</strong></td>
+</tr>
+<tr>
+<td><a href="https://www.meritoverlay.com/">Merit</a> (new)</td>
+<td>X buy overlay, wallet</td>
+<td>No</td>
+<td><strong>Partial:</strong> fills via its overlay are labelled to the @handle; no your-PnL-per-account view</td>
+<td>No</td>
+<td>No</td>
+<td>1% swap fee, half to poster</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td><a href="https://www.kollateral.fun/docs">KOLlateral</a> / <a href="https://atibrain.com/">ATIBRAIN</a></td>
+<td>Vault / web</td>
+<td>No</td>
+<td>Partial (vault fills only / no join documented)</td>
+<td>No</td>
+<td>No</td>
+<td>Paid</td>
+<td>Low–medium</td>
+</tr>
+<tr>
+<td>Cielo, GMGN Callout, Axiom</td>
+<td>Web/terminal</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+<td>Various</td>
+<td>Medium (could join)</td>
+</tr>
+<tr>
+<td><a href="https://chromewebstore.google.com/detail/caliber/fkelefefncjbipiaoeanffmhjpgdkjdl">CALIBER</a>, <a href="https://callertrack.app/methodology">Caller Track</a> (new), Kolscan, RAFA, DeFade</td>
+<td>X badges / boards</td>
+<td>No</td>
+<td>No (global scores)</td>
+<td>No</td>
+<td>No</td>
+<td>CALIBER US$19.99/mo; others free</td>
+<td>Medium on receipts</td>
+</tr>
+<tr>
+<td><a href="https://xanguard.tech/tracker/">Xanguard CT</a></td>
+<td>Telegram</td>
+<td>No</td>
+<td>No</td>
+<td>Partial (Community joins, server, paid)</td>
+<td>No</td>
+<td>From US$100/mo</td>
+<td>Medium on rings</td>
+</tr>
+<tr>
+<td><a href="https://x-relay.com/best/contract-address-trackers">X-Relay</a></td>
+<td>Discord/TG alerts</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+<td>Partial</td>
+<td>US$15–69/mo</td>
+<td>Low–medium</td>
+</tr>
+<tr>
+<td><a href="https://trustyai.tech/">Trusty AI</a>, <a href="https://github.com/Zink0909/Bags-Alpha">Bags Alpha</a></td>
+<td>Web/TG, off-feed</td>
+<td>No</td>
+<td>No</td>
+<td>Partial (per-token coordination)</td>
+<td>No</td>
+<td>Free/paid</td>
+<td>Low–medium</td>
+</tr>
+<tr>
+<td>Tweet Catcher, <a href="https://www.qrsafer.com/twitter-x-qr-code-scam">QRsafer</a></td>
+<td>Alerts / manual</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+<td>€300/mo / free</td>
+<td>Low (QR/OCR prior art)</td>
+</tr>
+<tr>
+<td><a href="https://docs.cryptofilter.io/reading-an-alert">CryptoFilter</a> (new)</td>
+<td>Telegram, Base/Robinhood</td>
+<td>No ("wrong-CA" block in alerts)</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+<td>Unknown</td>
+<td>Low</td>
+</tr>
+<tr>
+<td>Toll (new, <a href="https://x.com/Tollxyz_/status/2113665214113857780">post</a>)</td>
+<td>Robinhood Chain terminal</td>
+<td>No (rug check by the buy button)</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+<td>Unknown</td>
+<td>Low</td>
+</tr>
+<tr>
+<td><a href="https://github.com/pumpdatafun/pumpdata-skills">pumpdata-skills</a>, <a href="https://github.com/rezearcher/plugin-swap-gate">swap-gate</a> (new)</td>
+<td>Agent skills / x402</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+<td>US$0.005–0.02 / US$0.008</td>
+<td>High on the agent channel</td>
+</tr>
+<tr>
+<td>Solified, monolab Sieve, <a href="https://github.com/osolmaz/janitr">Janitr</a>, Larpcheck, TokenChecker X Scan, Tetrascore, Knight Cat, Futurepost, fable, Raindrop</td>
+<td>Various</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+<td>No</td>
+<td>Free / token</td>
+<td>Low–medium</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Gate c on v4's lead:</strong> of 24+ tools, none carries the clicked post to the coin page, and none credits your own result to the post that sent you. Merit and KOLlateral come closest, and only for trades placed through them. Broad CA scanning stays crowded. The guard and rings can be copied in one release; the per-user click history can't.</p>
+<h3>Product and UX</h3><p><strong>First minute (AT-23: &lt;30 s, ≤5 steps, no sign-up, wallet or X login):</strong></p>
+<ol>
+<li>Add to Chrome. Toast: "Marshal is on · checks locally · only CAs leave your browser".</li>
+<li>On x.com, every CA, $ticker and token link gets a pill (grey fact, amber warning, red rule hit; never green). Lure replies fold: <code>Hidden · airdrop lure ("check memepage") · Show · Not spam</code>.</li>
+<li>A post brags "$MIL JUST HIT $10.6M MC" → <code>claimed $10.6M · live $427k (DexScreener, 14:29)</code>.</li>
+<li>Click a reply's chart link to GMGN → one-time site permission → if the mint differs: <code>⚠ Not the mint in the post you came from (@author, 1 min ago) · Why · Dismiss</code>. The buy panel is untouched.</li>
+<li>(Optional, later) Popup → "Led you here" → paste a public wallet address → "Tracking from today. Nothing leaves your browser." From the next buy on, accounts that sent you get a small stamp: <code>led you here 3× · −1.4 SOL · 1 of 3 held 24h</code>.</li>
+</ol>
+<p><strong>Led-you-here: how it reads.</strong> It's always <em>your</em> result, never a verdict on the account. Lines: "you're −1.4 SOL across 2 coins from this account" (realized + marked to market, labelled); "1 fell 80% within 1h of your buy"; "1 of 3 held 24h" (24h after your buy, price ≥50% of your entry). No number out of 10, no colour above amber, never uploaded, and the "Why" panel shows each buy with its post link and Solscan tx. A history button backfills only <strong>back to your install day</strong>, because Marshal has no clicks from before then. That removes the 20–60 min sync Git bot measured for a full 30-day pull.</p>
+<p><strong>Advanced tech:</strong> post → terminal provenance through <code>chrome.storage.session</code> (guard) and an IndexedDB click log (90 days, local); owner-based swap matching on the user's own RPC; X snowflake dating for R11; jsQR in an OffscreenCanvas worker (last in v1); gain-line ring graph with relay-pair edges.</p>
+<p><strong>What's hard:</strong> X DOM churn (fail open); terminal URL formats (Jupiter, Axiom, Photon unverified); referrer after the t.co hop; matching swaps through routers (match on token-balance owner, not signer; USDC-routed buys; non-SOL quotes → "unknown"); public RPC 429s (Git bot: 429s after a few calls at ~1 call per 3 s; idea bot: 0×429 on 51 calls), so offer a "use your own free Helius key" field.</p>
+<p><strong>Clonable:</strong> EDGERUN could add provenance and claimed-MC; Frontrun or Axiom could join X data to PnL. <strong>Not clonable:</strong> each user's own click history (it starts at their Marshal install), the ring rules tuned on Trench Bot's and X bot's labelled rings, and the read-only, no-wallet-connect trust story.</p>
+<p><strong>Scores (mine; Project Bot scores officially), with change from v3's official scores:</strong> <strong>Innovation 7 (+1)</strong>: personal post-to-trade attribution on device is new, and its pieces (owner-matched swap parsing, click provenance) became cheap only recently. <strong>Usability 8 (=)</strong>: first value &lt;30 s is unchanged; led-you-here is a one-paste opt-in later; no mobile. <strong>Uniqueness 6.5 (+1.5)</strong>: head-to-head passed (6) plus an unclaimed lead with only Partial rivals. Closest rival: EDGERUN for the feed, Frontrun for attribution. What we do that they can't: the guard's click memory.</p>
+<h3>Token design on pump.fun ($MRSHL)</h3><ul>
+<li><strong>v1 job: hold to unlock Pro.</strong> Website <code>signMessage</code> nonce (never a transaction, never in the extension) → server reads the SPL balance via Helius → 30-day Pro token, re-checked on renewal.</li>
+<li><strong>v1.1 job: burn your own per use.</strong> (a) <strong>Agents</strong> using the Marshal skill (ElizaOS plugin + MCP tool) prepay by signing an SPL <code>burn</code> of their own $MRSHL; the server checks mint, amount, owner and signature on-chain and credits N calls; a public ledger links every credit to its burn tx. (b) <strong>Humans</strong> burn for deep deployer-farm traces. x402 can't do this, because it transfers to <code>payTo</code>, so it's a separate flow.</li>
+<li><strong>USDC path:</strong> agents may instead pay US$0.01/call in USDC over x402. That's <strong>plain income for hosting and the business. It's never swapped into $MRSHL, never burned and never distributed.</strong> Card revenue is treated the same.</li>
+<li><strong>Never:</strong> holder payouts, revenue share, staking yield, revenue- or creator-fee-funded buybacks or burns, profit promises.</li>
+<li><strong>Launch rules:</strong> pump.fun only, <strong>after</strong> the first paying users (≥25 Pro or ≥30% of installs active 3+ days a week) plus the legal consult, and only once Ethan picks Marshal. <strong>Mint and freeze authority off</strong> (confirm on-chain). <strong>Small labelled dev buy ≤0.5 SOL</strong> from a published wallet, no-sell policy (est. 90 days). <strong>No bundles, snipers or paid callers.</strong> <strong>Holder Rewards OFF, Tokenized Agent buybacks OFF.</strong> <strong>Pin one official CA on day one</strong> (site, X, extension settings), and Marshal stamps $MRSHL copies "not the pinned CA" from minute one. Don't send supply to a famous wallet or link a famous post (Trench Bot run 14).</li>
+<li><strong>Fee flow and verification</strong> (<a href="https://pump.fun/docs/fees">pump.fun fees</a>, updated 17 Oct 2026): 0 create fee; 1.25% curve fee with 0.30% to the creator; 0.45% app Platform Fee; PumpSwap creator fee tiers by market cap. Creator fees go to a <strong>published operating wallet used for hosting only</strong>, verifiable on Solscan. <strong>Creator fees are a bonus, never the plan.</strong></li>
+<li><strong>Public repo:</strong> extension, Worker and burn-credit verifier are MIT, so anyone can confirm there's no wallet access, no post-text upload and no USDC→$MRSHL swap code.</li>
+<li><strong>Comparables:</strong> allowed: Bubblemaps (hold-to-unlock), Larpcheck's original hold-to-access. Barred: Buddy (80% fee buyback-burn), Raindrop (50% swap fees), fable (50% API revenue), Larpcheck's claimed 60% buyback, Merit's "trade to earn" tokenomics (coming soon, unspecified). Organic vs shilled attention is not measured for any of them.</li>
+<li><strong>Legal line (not legal advice; the A$300 consult signs off):</strong> ASIC <a href="https://www.asic.gov.au/regulatory-resources/digital-transformation/digital-assets-financial-products-and-services">INFO 225</a>: rights decide status, not labels. Say: "$MRSHL unlocks Pro access and pays for Marshal checks when you burn your own. It isn't an investment and gives no right to profits or revenue." Never say returns, price, "burns raise the price", "not a financial product" or "ASIC-compliant". No paid promoters (INFO 269). No token talk on the CWS listing.</li>
+<li><strong>Token fit (my est.): 6.5–7</strong> (v3: 6). Two plain use jobs (hold for access, burn own per use), with no cash ever flowing into the token.</li>
+</ul>
+<h3>Budget (A$; US$1 = A$1.424, Frankfurter/ECB 23 Oct via Project Bot)</h3><table>
+<thead>
+<tr>
+<th>Item</th>
+<th>One-off</th>
+<th>Monthly</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CWS developer fee US$5</td>
+<td>7.12</td>
+<td></td>
+</tr>
+<tr>
+<td>Domain .com</td>
+<td>15.91/yr</td>
+<td></td>
+</tr>
+<tr>
+<td>Workers Free, Upstash Free, Helius Free (1M credits; <a href="https://www.helius.dev/pricing">pricing</a> re-read 4:27pm), DexScreener, GeckoTerminal, Jupiter free key</td>
+<td></td>
+<td>0</td>
+</tr>
+<tr>
+<td>Led-you-here RPC</td>
+<td></td>
+<td>0 to us (user's own key or public RPC)</td>
+</tr>
+<tr>
+<td>Paid steps only from revenue (Workers Paid ~A$7.12, Upstash PAYG)</td>
+<td></td>
+<td><strong>hard cap A$25</strong></td>
+</tr>
+<tr>
+<td>Legal consult (token, ToS, privacy) (est.)</td>
+<td>300</td>
+<td></td>
+</tr>
+<tr>
+<td>Token launch: ≤0.5 SOL dev buy + 0.45% fee + rent (est.)</td>
+<td>~76.24</td>
+<td></td>
+</tr>
+<tr>
+<td>Contingency (est.)</td>
+<td>50</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>Day 30: ~A$73. 4 months: A$449 lean / A$549 worst</strong> (cap filled every month). Headroom ≥A$451.</li>
+<li><strong>Founder load (est.):</strong> Claude Code builds; Ethan reviews and ships, ~20 h/week for 3 weeks, then ~10 h/week.</li>
+</ul>
+<h3>Unit economics (estimates)</h3><ul>
+<li><strong>Free:</strong> fold layer, local pills, gated guard, led-you-here (it's local, so free is honest), 30 server stamps a day.</li>
+<li><strong>Pro US$9/mo or hold $MRSHL:</strong> unlimited stamps, ring alerts on coins you hold, Communities strict preset; in v1.1 also the shared burst layer, Hold mode and deep traces.</li>
+<li><strong>Agent skill (v1.1):</strong> US$0.01/call USDC (20 free/day) or burned $MRSHL credits. Marginal cost ~US$0 (oEmbed + DexScreener cached per mint) up to the cap.</li>
+<li><strong>Cost driver:</strong> distinct mints, not users (cached per mint). Acquisition cash ~US$0.</li>
+</ul>
+<h3>Go-to-market (solo; all outreach and posting only with Ethan&#x27;s OK)</h3><ol>
+<li><strong>Proof first:</strong> a public side-by-side vs EDGERUN, Buddy and Verixy on 20 threads + 10 terminal clicks (Project Bot's lift item 1).</li>
+<li><strong>The "receipts for yourself" hook:</strong> a local share card ("Accounts that cost me SOL this week", handles blurred by default). It's the most viral object and needs no server.</li>
+<li>CWS listing, single purpose "verify crypto content on X and the coin page you open from it".</li>
+<li><strong>Agent path:</strong> ElizaOS plugin + MCP tool + Claude Code/Cursor skill (where swap-gate and pumpdata already distribute).</li>
+<li>No paid callers, no referrals.</li>
+</ol>
+<h3>12-month snapshot (estimates)</h3><table>
+<thead>
+<tr>
+<th>Month</th>
+<th>Installs</th>
+<th>Pro</th>
+<th>MRR (US$)</th>
+<th>Cumulative out-of-pocket (A$)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>0–200 (unlisted)</td>
+<td>0–10</td>
+<td>0–90</td>
+<td>~73</td>
+</tr>
+<tr>
+<td>3</td>
+<td>1,500</td>
+<td>40</td>
+<td>~0.4k</td>
+<td>~450 (incl. legal + launch if picked)</td>
+</tr>
+<tr>
+<td>6</td>
+<td>5,000</td>
+<td>120</td>
+<td>~1.1k + skill ~0.1k</td>
+<td>~500</td>
+</tr>
+<tr>
+<td>12</td>
+<td>10–15k</td>
+<td>200–350</td>
+<td>~1.8–3.2k + skill 0.2–1k</td>
+<td>&lt;1,000; revenue covers running costs from ~month 3</td>
+</tr>
+</tbody>
+</table>
+<h3>Defensibility</h3><ul>
+<li>The per-user click and trade history compounds on each device, and a rival starts at zero for that user.</li>
+<li>Ring rules and lure/relay patterns tuned on Trench Bot's 659-coin log and X bot's signals, refreshed weekly as data packs.</li>
+<li>Trust: read-only, no wallet connect, nothing uploaded, MIT code, at a time when fake terminal extensions steal sessions.</li>
+<li>Weak against a funded rival copying the guard; speed and published side-by-sides are the rest of the moat.</li>
+</ul>
+<h3>Risks (mitigation · cheap test)</h3><table>
+<thead>
+<tr>
+<th>Risk</th>
+<th>Mitigation</th>
+<th>Cheap test</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>EDGERUN/Frontrun/Axiom copy guard or attribution</td>
+<td>Ship guard + led-you-here first; publish side-by-side</td>
+<td>Weekly changelog watch (Git bot, X bot)</td>
+</tr>
+<tr>
+<td>Terminal ToS bans overlays</td>
+<td>Axiom/Photon side panel only; banner on GMGN/Jupiter/pump.fun behind a flag until ToS read</td>
+<td>Ethan reads 3 ToS pages, ~20 min</td>
+</tr>
+<tr>
+<td>False banners</td>
+<td>Gating (≤2 min, first route load, referrer)</td>
+<td>AT-45</td>
+</tr>
+<tr>
+<td>Led-you-here misattributes a buy</td>
+<td>Owner-based match, ≤30 min after click, last click wins, "also seen from" line; "unknown" on odd quotes</td>
+<td>AT-46 on fixtures</td>
+</tr>
+<tr>
+<td>Stamp reads as defamation</td>
+<td>Own-result wording only, local only, no score, no colour above amber</td>
+<td>AT-46 wording checks; legal consult</td>
+</tr>
+<tr>
+<td>Public RPC 429s</td>
+<td>Forward-only, ~10 calls per clicked coin (est.), backoff, own-key field</td>
+<td>AT-46 rate test</td>
+</tr>
+<tr>
+<td>Linked-to-ring chips accuse bystanders</td>
+<td>Only with a known ring, 2+ shared windows on one CA, separate label "linked to ring", never member</td>
+<td>AT-47</td>
+</tr>
+<tr>
+<td>x402 USDC drifts into token buys</td>
+<td>No swap code in repo; ledger shows burns only from user wallets</td>
+<td>AT-50 code + ledger check</td>
+</tr>
+<tr>
+<td>oEmbed terms or availability change</td>
+<td>Agent skill accepts agent-supplied text; oEmbed optional</td>
+<td>Legal consult; AT-50 fallback</td>
+</tr>
+<tr>
+<td>Nobody pays</td>
+<td>Free core, Pro by hold, agent skill</td>
+<td>30-day test once Ethan picks it</td>
+</tr>
+</tbody>
+</table>
+<h3>Kill or confirm</h3><p><strong>Free and private first</strong> (each after Claude Code builds the piece):</p>
+<ol>
+<li><strong>Guard:</strong> 10 real X→terminal clicks (5 mismatches) → 5/5 bannered, 0/5 false, 0 requests to terminal hosts. Plus AT-45's 10 no-banner sessions.</li>
+<li><strong>Led-you-here dogfood:</strong> Ethan's own public wallet, 7 days forward-only → every buy that followed a Marshal click is matched (spot-check 10 against Solscan), and 0 buys without a click get attributed.</li>
+<li><strong>Rings:</strong> ≥4 of 5 known members across 3 CAs; 0 rings on Kimchi <code>CSocnz…pump</code> and $shiit; relay pair AlphaPulsevw→Unlimited_sol0 linked as one source.</li>
+<li><strong>Side-by-side vs EDGERUN/Buddy/Verixy:</strong> kill the uniqueness claim (back to 4) if a rival catches ≥70% of wrong-mint landings.</li>
+<li><strong>Cost log:</strong> 100 active users ≤A$25/month with pumpdata off.</li>
+</ol>
+<p><strong>Then a 30-day paid validation, only once Ethan picks Marshal (~A$73):</strong> unlisted CWS, US$9 founding Pro for 3 months. <strong>Pass:</strong> ≥25 paid <strong>and</strong> ≥30% of installs active 3+ days a week, or ≥10 distinct wallets paying or burning for the agent skill in 14 days (public on-chain). <strong>Kill:</strong> &lt;10 paid, or half of churn interviews say "EDGERUN/Buddy is enough".</p>
+<h3>Comparables</h3><ul>
+<li><strong>Frontrun:</strong> paid crypto-X overlay, US$75–180/mo, self-reported profitable; has both attribution halves but doesn't join them.</li>
+<li><strong>CALIBER:</strong> in-feed caller badges with a US$19.99/mo Pro tier; global scores, not yours.</li>
+<li><strong>Merit:</strong> proves traders accept "this fill came from @handle" framing, but it pays posters from swap fees (a model we can't use).</li>
+<li><strong>Bubblemaps:</strong> hold-to-unlock. <strong>Scam Sniffer:</strong> charging by default for safety backfired. <strong>RobinSight:</strong> a token-backed X scanner shut down on server costs (hence the cap).</li>
+</ul>
+<h3>Screened and dropped this run (gates: a audience, b token, c competitors, d revenue comp, e money test, f bootstrap)</h3><ul>
+<li><strong>Pre-swap safety check sold per call to trading agents (Solana):</strong> gate c (swap-gate on Base at US$0.008, pumpdata pre-buy check at US$0.02, Rempart, SolEnrich). Kept only as Marshal's <em>provenance</em> skill, a different verdict.</li>
+<li><strong>Stand-alone "borrowed endorsement" checker (linked post predates mint):</strong> gate c (CryptoFilter flags borrowed sites and repos; Buddy checks project sites) and gate d (no paid comp). Kept as Marshal rule R11.</li>
+<li><strong>Stand-alone template-residue / relay-pair shill flagger:</strong> gate d (no one pays for it alone; Bags Alpha and Trusty AI bundle coordination into wider tools). Kept as ring-memory rules.</li>
+<li><strong>Agent quota/account switcher (magpie trend):</strong> gate c (magpie, 20.3K stars, free) and gate b (no token job).</li>
+<li><strong>Count: 4 dropped (c ×3 incl. one with d and one with b, d ×1).</strong></li>
+</ul>
+<h3>Build brief for Claude Code</h3><p><em>Build Marshal v1 from this section. Detail that isn't repeated here comes from Project Bot's v3 brief (<code>project-bot/reviews/2026-10-24-1450-marshal-v3.md</code>, "Claude Code build brief") and idea bot's v3 §Build brief (data model, AT-01–AT-44, TB-1..15, legal wording). Where they differ, <strong>this section wins</strong>. Frozen artefact: <code>idea-bot/data/clean-feed/rules_v2.py</code> (combined sha256 <code>fb532d15…d596</code>). (est.) = estimate, [unverified] = not checked.</em></p>
+<h3>1. MVP scope</h3>
+<p><strong>v1 = features 1–9.</strong> <strong>v1.1:</strong> shared burst layer + "earliest seen by Marshal users", Hold mode, agent skill (ElizaOS + MCP + x402/burn credits), burn-for-deep-traces, <code>realCall</code> if AT-16 passes. <strong>Out:</strong> any server copy of handles, post text or wallet addresses; any LLM; X API; CoinGecko; buy/swap/wallet connect; public account scores; Telegram; mobile; the token until the gate and Ethan's pick.</p>
+<h3>2. Features in build order</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Feature</th>
+<th>Done when</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Fold layer + lure label (port <code>rules_v2.py</code> 1:1) + <strong>unfilled-template tell</strong> (<code>\[(Add|Insert|Your)[^\]]{0,30}\]</code> in coin posts → amber, never fold alone)</td>
+<td>AT-01–11, AT-25, AT-36, AT-48</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Local pills: thread CA mismatch, two CAs/one ticker, major ticker on <code>…pump</code>, EVM for SOL ticker, lookalike handle, <strong>R11 borrowed endorsement</strong> (linked post id's snowflake date &lt; mint creation and post text lacks ticker/CA)</td>
+<td>AT-08, AT-30, TB-1..15, AT-49</td>
+</tr>
+<tr>
+<td>3</td>
+<td>API + facts on Workers (<code>POST /v1/check/mint</code> ≤20; family line, deployer facts with no score, <code>live_mc</code>), cap counter A$25</td>
+<td>AT-19–22, AT-31, AT-43, AT-44</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Claimed-vs-live MC pill</td>
+<td>AT-39</td>
+</tr>
+<tr>
+<td>5</td>
+<td><strong>Gated buy-moment guard</strong> (GMGN, pump.fun, Jupiter [URL unverified]; Axiom/Photon side panel only) + <strong>click log</strong> (IndexedDB, 90 days)</td>
+<td>AT-32, AT-33, AT-45</td>
+</tr>
+<tr>
+<td>6</td>
+<td><strong>Led-you-here stamp</strong> (opt-in wallet, forward-only, own RPC)</td>
+<td>AT-46</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Ring memory (local) + <strong>relay-pair edges</strong> + <strong>"linked to ring"</strong> label</td>
+<td>AT-34, AT-35, AT-47, AT-48</td>
+</tr>
+<tr>
+<td>8</td>
+<td>"Why" panel, popup (Strictness, Raw view, Led you here, Pro), options, Pro via card link</td>
+<td>AT-23, AT-26–29</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Hijack tell (text) + <strong>QR decode (cut line: moves to v1.1 if week 3 slips)</strong></td>
+<td>AT-37, AT-38</td>
+</tr>
+</tbody>
+</table>
+<h3>3. Architecture and stack</h3>
+<pre><code>x.com tab: content script ─&gt; service worker ─HTTPS─&gt; Hono API on Cloudflare Workers (Free): CAs only
+  extract, local rules, ring graph, QR worker        storage.session (guard clicks ≤30 min)        ─&gt; Helius · DexScreener · Jupiter
+terminal tab (GMGN/Jupiter/pump.fun): location only  IndexedDB: verdicts, accounts, edges, rings,
+Axiom/Photon: side panel from tab URL                 clicks (90 d), wallets, buys, ledger
+led-you-here: service worker ─&gt; user's RPC (own Helius key, else public RPC) + DexScreener + GeckoTerminal, direct from the browser; never via our Worker
+</code></pre>
+<ul>
+<li>MV3 permissions: <code>storage</code>, <code>sidePanel</code>, <code>alarms</code>; host <code>https://x.com/*</code>, <code>https://api.&lt;domain&gt;/*</code>, <code>https://api.dexscreener.com/*</code>; optional hosts: gmgn.ai, jup.ag, pump.fun, axiom.trade, Photon [unverified], <code>https://api.mainnet-beta.solana.com/*</code>, <code>https://mainnet.helius-rpc.com/*</code>, <code>https://api.geckoterminal.com/*</code> (asked only when led-you-here is switched on).</li>
+<li>Stack: TypeScript, WXT, Hono, Wrangler, <code>@upstash/redis</code>, <code>@solana/kit</code>, bs58, tldts, fastest-levenshtein, jsQR (Apache-2.0).</li>
+</ul>
+<h3>4. Data sources, costs, terms</h3>
+<table>
+<thead>
+<tr>
+<th>Source</th>
+<th>Use</th>
+<th>Free limit</th>
+<th>Paid step</th>
+<th>Terms</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Helius</td>
+<td>Server facts; user's own key for led-you-here</td>
+<td>1M credits/mo, 10 RPS; RPC 1 credit; getTransactionsForAddress 10 per 100 txs (<a href="https://www.helius.dev/pricing">pricing</a>)</td>
+<td>Developer US$49 (revenue only)</td>
+<td>User key stays in local storage</td>
+</tr>
+<tr>
+<td>Solana public RPC</td>
+<td>Led-you-here slow default</td>
+<td>~100 req/10 s per IP documented; 429s seen after a few calls (Git bot)</td>
+<td>–</td>
+<td>Not for production; backoff</td>
+</tr>
+<tr>
+<td>DexScreener <code>tokens/v1/solana/{≤30}</code></td>
+<td>live MC/price (already called)</td>
+<td>per IP</td>
+<td>–</td>
+<td>Commercial OK, not for a DEX Screener competitor</td>
+</tr>
+<tr>
+<td>GeckoTerminal OHLCV</td>
+<td>1h low / 24h price after a buy</td>
+<td>Public API, rate limit [unverified]; 200 in 0.16 s this run</td>
+<td>–</td>
+<td>Never read liquidity on non-SOL pools</td>
+</tr>
+<tr>
+<td>Jupiter Tokens v2</td>
+<td>Family, symbol→mint</td>
+<td>1 RPS</td>
+<td>US$25</td>
+<td>Queue</td>
+</tr>
+<tr>
+<td>X oEmbed (<code>publish.x.com/oembed</code>)</td>
+<td>v1.1 skill: root post text + author</td>
+<td>Keyless; 200 in 0.11 s this run</td>
+<td>–</td>
+<td><strong>Terms for analysis use unchecked</strong>; root post only</td>
+</tr>
+<tr>
+<td>pumpdata</td>
+<td>Optional deployer facts</td>
+<td>300/day/IP keyless (shared with cloud agents), 2,000/day free key</td>
+<td>US$10/30 d or US$0.005/call</td>
+<td>Credit pumpdata on screen; off by default</td>
+</tr>
+</tbody>
+</table>
+<h3>5. Core logic</h3>
+<p><strong>Guard (gated):</strong></p>
+<pre><code>on x.com click(a) where a.href hosts in TERMINALS or post has CA:
+   m = mint_from_url(a.href) or post.raw_ca or link_text_ca      # never fetch t.co
+   session.clicks.push({m, postId, author, ts:now, tab}); idb.clicks.put(same)   # idb kept 90 d
+on terminal route load:
+   p = resolve(location.pathname); c = newest click for this tab
+   fire RED only if c &amp;&amp; now - c.ts &lt;= 120s &amp;&amp; first_route_since(c) &amp;&amp; (referrer in {t.co, x.com} || referrer == &quot;&quot;)
+      &amp;&amp; p != c.m            -&gt; &quot;⚠ Not the mint in the post you came from (@{c.author}, {age})&quot;
+   never touch page elements, cookies, storage, wallet or terminal APIs
+</code></pre>
+<p><strong>Led-you-here (on device):</strong></p>
+<pre><code>opt-in: wallets[] = user-pasted base58 pubkeys (≤3); start_slot = now; rpc = user_key ? helius : public
+after each recorded click c on mint m: schedule polls at +2, +10, +30 min (chrome.alarms)
+poll(w): sigs = getSignaturesForAddress(w, {until: w.last_sig, limit: 25}); w.last_sig = sigs[0]
+   for s in sigs: tx = getTransaction(s, {encoding:&quot;jsonParsed&quot;, maxSupportedTransactionVersion: 1})
+      d = post - pre token balance for (owner == w, mint == m)               # owner, never signer
+      if d &gt; 0 and 0 &lt;= tx.blockTime - c.ts &lt;= 1800:
+          spent = SOL out of w (minus fees), or USDC out → USD; other quote → entry = &quot;unknown&quot;
+          buy = {m, tokens:d, spent, entry: spent/d, t: blockTime, post: c.postId, author: c.author}
+          attribute to the most recent click on m before t; other clicks on m → &quot;also seen from&quot;
+outcomes per buy (cached, re-checked at +1h, +24h, then daily while held):
+   crash_1h = min(GeckoTerminal 5-min low in [t, t+1h]) &lt;= 0.2 * entry_usd
+   held_24h = price(t+24h) &gt;= 0.5 * entry_usd
+   sol_result = SOL in from w's sells of m − spent  (+ held tokens × DexScreener price, labelled &quot;marked&quot;)
+stamp(author) shown only if ≥1 buy: &quot;led you here N× · {±X.X SOL} · {k} of N held 24h&quot; ; &quot;{j} fell 80% within 1h of your buy&quot; in Why
+never: upload wallet/buys, score 0–10, colour above amber, show on accounts with 0 matched buys
+backfill button: same loop from install_day (clicks don't exist earlier), with an ETA and cancel
+</code></pre>
+<p><strong>Rings + new edges:</strong></p>
+<pre><code>gain_line ring rule from v3 (3+ accounts / 10 min / one CA = edge; ring = 3+ accts each with edges on 2+ CAs)
+relay pair: post q by b ~ post p by a (normalised text Jaccard ≥0.8 or same numbers sequence), 0 &lt; t_q − t_p ≤ 30 min, same CA
+      → treat as one source for burst counts; add edge(a,b) weight 1 per CA
+linked to ring: account x shares ≥2 windows with members of known ring R on ≥1 CA but fails the 2-CA rule
+      → grey &quot;linked to ring R (1 coin)&quot;, never member, never red; decays in 14 d
+</code></pre>
+<p><strong>R11 borrowed endorsement:</strong> <code>post_ms = (id &gt;&gt; 22) + 1288834974657</code>; if a coin's linked X post <code>post_ms &lt; mint_created_ms</code> and its text names neither the ticker nor the CA → amber "linked post is {d} days older than this coin and doesn't name it". Peekhole's 1-minute-older post names Peekhole, so it stays silent.</p>
+<p><strong>Agent skill (v1.1):</strong></p>
+<pre><code>POST /v1/skill/post-mint {post_url, mint, text?}
+  text = text ?? oEmbed(post_url).html → strip → extract CAs, tickers, claimed MC
+  return {match: mint in post CAs, post_cas, author, posted_at (snowflake), family_line, claimed_vs_live, r11}
+pay: header X-MRSHL-Credit (burn-backed credits) → decrement; else x402 402-offer US$0.01 USDC → verify → serve
+burn credits: verify tx: SPL Burn, mint == MRSHL, owner == caller wallet, amount ≥ price×N, sig unused → credit N
+USDC: lands in the operating wallet; NO code path swaps USDC (or SOL) into MRSHL
+</code></pre>
+<h3>6. UI</h3>
+<p>Pills are our own rounded style, never checkmarks or X blue/gold. Banner and side panel use Marshal styling, never browser warning styling. Led-you-here stamp: small grey chip after the @handle (amber only when the SOL result &lt; 0 and ≥2 buys), with a click-through to the "Why" list of buys. Fold bar <code>Hidden · &lt;reason&gt; · Show · Not spam</code>. Fail open with a "Marshal paused" badge.</p>
+<h3>7. Token integration (only after the launch gate and Ethan's pick)</h3>
+<ol>
+<li>Legal consult signs off on wording. 2. pump.fun launch: Holder Rewards OFF, Tokenized Agent OFF; mint/freeze authority off (verify); ≤0.5 SOL labelled dev buy; pin the CA everywhere and add it to Marshal's family map. 3. Hold check via website <code>signMessage</code> → Helius balance → 30-day Pro token. 4. v1.1 burn-credit verifier + public ledger. 5. USDC/card revenue never touches $MRSHL; creator fees → published operating wallet.</li>
+</ol>
+<h3>8. Acceptance tests (new or changed in v4; AT-01–AT-44 and TB-1..15 carry over; AT-40/41 move to v1.1)</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Test</th>
+<th>Pass line</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AT-45</td>
+<td>Guard gating: 10 sessions (land from X then navigate to another coin on purpose; open a terminal tab directly; click &gt;2 min ago; reload)</td>
+<td><strong>0 banners</strong> in all 10; AT-32's 5/5 mismatches still bannered ≤300 ms</td>
+</tr>
+<tr>
+<td>AT-46</td>
+<td>Led-you-here on 12 saved tx fixtures + click logs: 4 matched buys (incl. 1 router tx where signer ≠ owner, 1 USDC-routed), 2 buys with no click, 2 buys &gt;30 min after the click, 1 non-SOL-quote buy, <strong>1 slow fade</strong> (−85% over 6 h, never −80% inside 1 h), 1 quick crash (−80% inside 40 min), 1 holder (≥50% of entry at 24 h)</td>
+<td>4/4 matched to the right post and author; <strong>0</strong> attributions for the 4 no-click/late buys; non-SOL quote shows "unknown"; slow fade: <code>crash_1h=false</code>, <code>held_24h=false</code>, counted in the SOL result; quick crash: <code>crash_1h=true</code>; SOL result matches a hand sum to ±0.001 SOL; 0 wallet addresses or buys in any request to our domain; text never contains "scam", "rug", a score or green; forward-only sync for 1 wallet ≤15 RPC calls per clicked coin and 0 unhandled 429s on the public RPC fixture</td>
+</tr>
+<tr>
+<td>AT-47</td>
+<td>Linked-to-ring</td>
+<td>Trench Bot's missed 5th account gets "linked to ring" (not member); 0 "linked" chips on Kimchi <code>CSocnz…pump</code> and $shiit controls; OwlPaid (one shared window) gets nothing</td>
+</tr>
+<tr>
+<td>AT-48</td>
+<td>Relay pair + template</td>
+<td>AlphaPulsevw → Unlimited_sol0 $GTA 6 posts (<code>9549…pump</code>) counted as one source and linked; Alpharadarp "[Add launch MC]" post gets the amber template tell; 0 template tells on 50 organic coin posts</td>
+</tr>
+<tr>
+<td>AT-49</td>
+<td>R11 borrowed endorsement</td>
+<td>anondog <code>4xyFdD…pump</code> + @theunipcs post <code>2110793400450781592</code> → amber, "8 days older" (snowflake 16 Oct 02:02 AWST vs mint 24 Oct 14:42); Peekhole + @GTAWikiOfficial post → silent (names the coin)</td>
+</tr>
+<tr>
+<td>AT-50 (v1.1)</td>
+<td>Agent skill + pay paths</td>
+<td>Same JSON as the extension for 20 post fixtures; works with <code>text</code> supplied and oEmbed off; burn credit accepted only for a valid SPL burn by the caller (forged, reused, wrong-mint and wrong-owner sigs rejected: 4/4); x402 offer → pay → retry works on devnet; <strong>repo grep finds 0 swap/route calls that take USDC or SOL into $MRSHL</strong></td>
+</tr>
+</tbody>
+</table>
+<h3>9. Edge in one sentence</h3>
+<p>Marshal remembers which X post sent you, warns on the coin page when it's the wrong mint, and over time shows, on your device only, what each account that sent you has actually cost or made you in SOL. No rival has that click history.</p>
+<h3>10. Open questions (quick check that settles each)</h3>
+<ul>
+<li>GMGN, Jupiter and pump.fun overlay terms (Ethan, ~20 min); referrer after t.co per terminal (week 1); Jupiter/Axiom/Photon URL formats (week 1).</li>
+<li>GeckoTerminal public rate limit and X oEmbed terms for an analysis API (Git bot quick read; legal consult).</li>
+<li>Does the led-you-here stamp on a named handle need extra wording? (Legal consult; default: local only, own-result wording.)</li>
+</ul>
+<h3>Feasibility checks this run (4:25–4:29pm AWST; free; no holdout opened)</h3><ul>
+<li><strong>X oEmbed</strong> returned @AlphaPulsevw's mil post (CA and "$10.6M MC" text) in 0.11 s with no key, so the v1.1 skill can read a root post without the X API (terms unchecked).</li>
+<li><strong>Snowflake dating:</strong> @theunipcs's post → 16 Oct 02:02 AWST, 8.5 days before anondog's mint; the AlphaPulsevw → Unlimited_sol0 relay was 7 min apart.</li>
+<li><strong>GeckoTerminal 5-min OHLCV</strong> for mil returned 12 USD candles in 0.16 s, consistent with Trench Bot's ~US$291k, so the 1h-after-buy low is one free call.</li>
+<li><strong>Helius pricing re-read:</strong> Free 1M credits, 10 RPS. Files: <code>idea-bot/data/marshal-v4/</code>.</li>
+</ul>
+<h3>Sourced facts vs estimates</h3><ul>
+<li><strong>Sourced:</strong> teammate files in the byline; rival pages linked above; this run's oEmbed, GeckoTerminal, snowflake and Helius reads.</li>
+<li><strong>Estimates:</strong> installs, conversion, MRR, 12-month table, legal/launch costs, burn price, RPC call counts per click, my I/U/Uq and token scores, overall ~6.5.</li>
+</ul>
+</section>
+<section class="review"><h2>Project Bot review</h2>
+<p class="meta"><span class="badge mid">6.5/10</span> <span>Reviewed 24 Oct 2026, 4:40pm AWST</span></p>
+<h3>Verdict</h3><ul>
+<li><strong>Score: 6.5/10 (v4), up from 6.0 (v3). Token fit 7/10. Innovation 7, Usability 8, Uniqueness 6. Thesis (narrow), build-ready; passes Ethan's rules. Top score among theses that pass Ethan's rules (Ledgerport's 6.5 fails the rules gate); 0.5 short of Ethan's 7.</strong></li>
+<li>Closest rival: EDGERUN (feed); Frontrun for "led you here". Paid comparables: Frontrun (US$75/180 a month), Xanguard (from US$100/month), X-Relay (US$15–69/month), CALIBER Pro (US$19.99/month).</li>
+<li>Self-contained Claude Code build brief at the end of this page (replaces all earlier briefs).</li>
+</ul>
+<p><strong>Covers:</strong> idea bot's <strong>Marshal v4 ($MRSHL)</strong> (<code>/workspace/idea-bot/theses/2026-10-24-1630-marshal-v4.md</code>, written 4:24–4:40pm AWST, 307 lines, last saved 4:31pm, sha256 92b40e06…). Same thesis id (<code>idea-bot:thesis:clean-feed</code>), so this is a re-score, not a new review. The v4 version page is <code>2026-10-24-1640-marshal-v4.md</code>. Inputs read: Growth Bot's refine protocol and lessons (to the 4:40pm "one-file build brief" and "settle open questions" lessons), Git bot's <code>marshal-head-to-head.md</code> (2:46–3:00pm) and 4:15pm refinement (swap-gate), Git bot gaps (no retired gap revived), Trench Bot's run 14 thesis input (4:11pm, latest line counts) and <code>clean-feed-build-rules.md</code> changelog (R11, R12), idea bot's <code>research/2026-10-24-led-you-here-checks.md</code> and <code>data/marshal-v4/feasibility-1628.md</code>, X bot's 4:00pm lessons (relay pair, unfilled template). Quick checks only (Ethan's 11:28am rule); no holdout, sealed label or blind set opened.</p>
+<p><strong>New overall: 6.5/10 (v4). Up from 6.0 (v3). Top score among theses that pass Ethan's rules (Ledgerport's 6.5 fails the rules gate); 0.5 short of Ethan's 7.</strong> Token fit 7. Innovation 7, Usability 8, Uniqueness 6. <strong>Closest rival: still EDGERUN for the feed</strong> (MIT, pushed 2:13pm AWST today); <strong>Frontrun for "led you here"</strong> (it now sits in the trade path on every terminal, so it holds both halves). The thing neither can copy: each user's own record of which post they clicked before each buy.</p>
+<p><strong>Rules gate: PASS.</strong> Paying buyer is a tech-bro desktop trader; token fit 7 (≥5); about A$73 to day 30 and A$449–549 over 4 months (idea bot's figures, unchanged); pump.fun only; no payouts, buybacks, revenue share or revenue-funded burns (v4 says in writing that USDC is never swapped into $MRSHL). Cap stays 7 on paid comparables. Nobody is shown paying for <em>this</em> check yet.</p>
+<p><strong>Reasons in one line:</strong></p>
+<ul>
+<li><strong>Up:</strong> Git bot's source-level head-to-head shows none of EDGERUN, Buddy or Verixy does two of guard / cross-coin ring / claimed-vs-live MC (Uniqueness 5 → 6, my own rule), and the on-device "led you here" stamp is a genuinely new capability that no rival documents (Innovation 6 → 7), with a clean burn-your-own per-use job for agents (token fit 6 → 7).</li>
+<li><strong>Held back:</strong> the scope cut I asked for was spent again on led-you-here, so buildability stays 7; Frontrun (now 90,000+ users and in the trade path) could join its two halves in one release; and my terms read this run found pump.fun's and Jupiter's terms both bar modifying their interface, which puts v4's in-page banner at risk (fixed by refinement 1 below).</li>
+</ul>
+<p><strong>Refined idea (one sentence):</strong> Marshal is the read-only extension that remembers which X post you clicked and, the moment the coin page you land on is a different mint, turns its toolbar icon red and pops a notification ("not the mint in the post you came from") without touching the terminal page; on X it folds lure replies, remembers shill rings across coins, shows claimed-vs-live market cap, and (opt-in, on your device) stamps each account with what the coins it sent you to have actually done to <em>your</em> wallet.</p>
+<h3>Scores</h3>
+<table>
+<thead>
+<tr>
+<th>Criterion</th>
+<th>v3 (2:50pm)</th>
+<th>v4 now</th>
+<th>Why it moved (source)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Problem severity</td>
+<td>7</td>
+<td>7</td>
+<td>Unchanged. Run 14's anondog (borrowed @theunipcs post 8.5 days older than the mint, −77% in one 5-min candle; Trench Bot 4:11pm) and the relayed $GTA 6 milestones (X bot 4:00pm) add examples to pain already counted</td>
+</tr>
+<tr>
+<td>Timing</td>
+<td>6</td>
+<td>6</td>
+<td>Unchanged. The slot keeps filling: Frontrun now claims 90,000+ users and 90% fee cashback on trades on every terminal (frontrun.pro, read 4:40pm); swap-gate shipped today (created 9:53am AWST, GitHub API)</td>
+</tr>
+<tr>
+<td>Differentiation</td>
+<td>5</td>
+<td><strong>6</strong></td>
+<td>Up. Git bot read EDGERUN's source (manifest, <code>graph.js</code>, <code>memory.js</code>, <code>verdict.js</code>): no click or referrer tracking, no GMGN/Jupiter content scripts, per-CA clusters only, no claimed-MC parsing. Buddy and Verixy have at most one Partial each. Led-you-here adds a second lead no rival documents. Not 7: desk research only, nothing installed or run on real threads</td>
+</tr>
+<tr>
+<td>Usability</td>
+<td>8</td>
+<td>8</td>
+<td>Unchanged. First value on X still &lt;30 s, ≤5 steps. Led-you-here is a later one-paste opt-in. My refinement 1 swaps the in-page banner for badge + notification: a little less loud, but it asks for one permission at the same moment v4 already asks for terminal access, so no net change</td>
+</tr>
+<tr>
+<td>Ape appeal</td>
+<td>7</td>
+<td>7</td>
+<td>Unchanged. "Accounts that cost me SOL this week" is the most shareable object yet, but there's no evidence traders want it; design, not proof</td>
+</tr>
+<tr>
+<td>Solo buildability</td>
+<td>7</td>
+<td>7</td>
+<td>Held. v4 did the cut I asked for (shared HLL layer, "earliest seen" and Hold mode → v1.1; QR last with a cut line), which was worth +1. But it added feature 6 (owner-matched swap parsing on the user's RPC, USDC-routed buys, non-SOL quotes, alarms, backfill) plus R11, relay pairs, template tell and linked-to-ring, with 5 new tests. Net zero. Goes to 8 if QR moves to v1.1 outright</td>
+</tr>
+<tr>
+<td>Self-serve sales</td>
+<td>8</td>
+<td>8</td>
+<td>Unchanged</td>
+</tr>
+<tr>
+<td>Distribution</td>
+<td>6</td>
+<td>6</td>
+<td>Unchanged. The agent path (ElizaOS plugin + MCP) is v1.1 and swap-gate, its model, has 0 stars and no shown usage (GitHub API, 4:40pm)</td>
+</tr>
+<tr>
+<td>Retention</td>
+<td>6</td>
+<td>6</td>
+<td>Unchanged. Led-you-here's history grows each day the user keeps it installed, which is a real retention design, but there's no usage evidence yet</td>
+</tr>
+<tr>
+<td>Money evidence</td>
+<td>5</td>
+<td>5</td>
+<td>Unchanged. New prices, not revenue: CALIBER Pro US$19.99/mo, US$189/yr, US$399 lifetime (its CWS listing, read 4:40pm; v1.0.8, last updated 19 Mar 2026, <strong>no ratings</strong>, so a weak payer signal); SolTracks Pro US$12/mo for wallet PnL (its site); Merit takes 1% per overlay swap (its site)</td>
+</tr>
+<tr>
+<td>Token fit</td>
+<td>6</td>
+<td><strong>7</strong></td>
+<td>Up, as I said a clearly stated per-use burn would earn. v1.1 agents burn their own $MRSHL per call (server checks an SPL burn by the caller's wallet, public ledger), humans burn for deep traces; v1 keeps hold-to-unlock Pro. USDC from x402 is plain income, never swapped into $MRSHL or burned, with AT-50 grepping the repo for any swap path. Not 8: the burn job is v1.1 and agent demand is unproven</td>
+</tr>
+<tr>
+<td><strong>Innovation (tech bros)</strong></td>
+<td>6</td>
+<td><strong>7</strong></td>
+<td>Up (my 2:54pm note, now confirmed). Personal post-to-trade attribution on the device is new: idea bot parsed 17 real buys over the free public RPC by token owner (pump.fun curve and PumpSwap), and the free GeckoTerminal OHLCV gives the 1-hour low. No rival documents it (Cielo, GMGN, Axiom, Frontrun: No; Merit, KOLlateral, ATIBRAIN: Partial)</td>
+</tr>
+<tr>
+<td><strong>Usability (tech bros)</strong></td>
+<td>8</td>
+<td><strong>8</strong></td>
+<td>See above</td>
+</tr>
+<tr>
+<td><strong>Uniqueness (tech bros)</strong></td>
+<td>5</td>
+<td><strong>6</strong></td>
+<td>Up (my 2:48pm rule). <strong>Closest rival EDGERUN</strong> (feed); <strong>Frontrun</strong> for attribution. Not 7: the rule for 7 was a run on real threads where no rival catches more than 1 of 5, and that hasn't happened. Merit already labels overlay fills to the @handle and lets you tip "after you filled on one of their posts", so the "your fills per poster" idea has a partial live precedent</td>
+</tr>
+<tr>
+<td>Build-readiness (info only)</td>
+<td>9/10</td>
+<td><strong>8/10</strong></td>
+<td>Down. v4's brief points to two older briefs for AT-01–AT-44, TB-1..15, data model and legal wording ("this section wins"), so Claude Code would merge three documents (Growth Bot's 4:40pm lesson). The brief below is self-contained, so the review page itself is 9/10</td>
+</tr>
+<tr>
+<td><strong>Overall</strong></td>
+<td><strong>6.0</strong></td>
+<td><strong>6.5</strong></td>
+<td>13 scored rows average 6.6 (86/13), under the cap of 7. Cut 0.1 for the hostile terminal terms (pump.fun, Jupiter) and Frontrun's copy risk</td>
+</tr>
+</tbody>
+</table>
+<h3>Score history</h3>
+<table>
+<thead>
+<tr>
+<th>When (AWST)</th>
+<th>Version</th>
+<th>Score</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>24 Oct, 10:45am</td>
+<td>v1</td>
+<td>5.5 provisional</td>
+<td>First desk score</td>
+</tr>
+<tr>
+<td>24 Oct, 10:46am</td>
+<td>v1</td>
+<td>5.0 provisional</td>
+<td>Blind Set A failed; real mint named 0 of 4</td>
+</tr>
+<tr>
+<td>24 Oct, 12:45pm</td>
+<td>v2</td>
+<td>5.5</td>
+<td>"Real" call switched off; thread evidence; free stack verified; closest rival EDGERUN</td>
+</tr>
+<tr>
+<td>24 Oct, 2:50pm</td>
+<td>v3 (Marshal)</td>
+<td>6.0</td>
+<td>Buy-moment guard, ring memory, QR/hijack tell; cap lifted to 7 on paid comparables</td>
+</tr>
+<tr>
+<td><strong>24 Oct, 4:40pm</strong></td>
+<td><strong>v4</strong></td>
+<td><strong>6.5</strong></td>
+<td>Desk head-to-head passed (Uniqueness 6, Differentiation 6); on-device "led you here" stamp (Innovation 7); burn-own per agent call, USDC never converted (token fit 7)</td>
+</tr>
+</tbody>
+</table>
+<h3>Weak spots from the v3 review, against v4</h3>
+<table>
+<thead>
+<tr>
+<th>Weak spot (2:50pm)</th>
+<th>v4's answer</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Move shared burst layer and Hold mode to v1.1</td>
+<td>Done; v1 sends only CAs to the server; QR last with a cut line</td>
+<td><strong>Fixed</strong>, but led-you-here took the room back, so buildability holds at 7</td>
+</tr>
+<tr>
+<td>Gate the guard (≤2 min click, first route load, t.co/x.com referrer)</td>
+<td>Adopted with AT-45; CA from raw text then link text; never fetch t.co</td>
+<td><strong>Fixed in design.</strong> Referrer after the t.co hop is still unverified per terminal (week 1)</td>
+</tr>
+<tr>
+<td>Head-to-head vs EDGERUN/Buddy/Verixy</td>
+<td>Git bot's source-level desk comparison; none does 2 of 3</td>
+<td><strong>Partly fixed</strong> (Uniqueness 5 → 6). Real-thread run still open (lift item 1)</td>
+</tr>
+<tr>
+<td>Missed rivals (Xanguard, X-Relay, Trusty AI, Bags Alpha, Tweet Catcher, QRsafer)</td>
+<td>All in the teardown, plus Merit, Caller Track, CALIBER, CryptoFilter, Toll, swap-gate</td>
+<td><strong>Fixed</strong>; this run found 3 more (below)</td>
+</tr>
+<tr>
+<td>Janitr link, X Reply Janitor 404</td>
+<td>Janitr relinked, X Reply Janitor dropped</td>
+<td><strong>Fixed</strong></td>
+</tr>
+<tr>
+<td>pumpdata "limits conflict"</td>
+<td>Current llms.txt figures, credit-on-screen term</td>
+<td><strong>Fixed</strong></td>
+</tr>
+<tr>
+<td><code>B1Y2…pump</code> creator vs deployer</td>
+<td>Creator wallet <code>AZjvHz…</code> ≠ Kimchi's <code>FResVa…</code>; a name-copy whose supply sits in holder wallet <code>Gs5FHw…</code></td>
+<td><strong>Fixed</strong> (matches idea bot's 2:37pm lesson)</td>
+</tr>
+<tr>
+<td>"Linked to ring" for one-CA co-posters</td>
+<td>Grey chip, never member, AT-47</td>
+<td><strong>Fixed in design</strong></td>
+</tr>
+<tr>
+<td>Every lead copyable</td>
+<td>Led-you-here rests on each user's own click history</td>
+<td><strong>Partly fixed.</strong> Frontrun now trades on every terminal and reads X, so it could ship a lookalike from its own data; it still wouldn't have <em>your</em> clicks from Marshal</td>
+</tr>
+<tr>
+<td>Overlay terms for GMGN, Jupiter, pump.fun (open since v3)</td>
+<td>Still listed for Ethan (~20 min)</td>
+<td><strong>Partly answered this run</strong> (below): pump.fun and Jupiter terms bar modifying their interface; GMGN's terms page wasn't found. Refinement 1 removes the need</td>
+</tr>
+<tr>
+<td>Build brief layers on older files (new, Growth Bot 4:40pm)</td>
+<td>–</td>
+<td><strong>Open in v4</strong>; fixed in this review's brief</td>
+</tr>
+</tbody>
+</table>
+<h3>Fact-check of v4's new claims (4:33–4:40pm AWST)</h3>
+<ul>
+<li><strong>Merit:</strong> ✓ <a href="https://www.meritoverlay.com/">meritoverlay.com</a>: X overlay, Buy/Sell under cashtags and CAs, "1% on the swap, half of it credited to the author", live on CWS, "Tokenomics: Trade to earn. Coming soon." It also lets you tip a caller "after you filled on one of their posts", so it remembers which of your overlay fills came from which poster. v4's "Partial" is right; call it the closest partial.</li>
+<li><strong>CALIBER Pro:</strong> ✓ US$19.99/mo, US$189/yr, US$399 lifetime on its <a href="https://chromewebstore.google.com/detail/caliber/fkelefefncjbipiaoeanffmhjpgdkjdl">CWS listing</a>. The listing shows no ratings and was last updated 19 Mar 2026, so treat it as a price, not proof of payers.</li>
+<li><strong>Caller Track:</strong> ✓ <a href="https://callertrack.app/methodology">methodology page</a>: global call accuracy with an AI classifier, entry at the 1-minute low at post time. Global, not yours. "No" is right.</li>
+<li><strong>CryptoFilter:</strong> ✓ docs exist (<a href="https://docs.cryptofilter.io/reading-an-alert">reading an alert</a>, Telegram alerts). I didn't confirm the "wrong-CA" block wording.</li>
+<li><strong>swap-gate:</strong> ✓ <a href="https://github.com/rezearcher/plugin-swap-gate">repo</a> created 24 Oct 9:53am AWST, 0 stars, no licence set on GitHub, Base only, x402 USDC. A price point, not demand.</li>
+<li><strong>EDGERUN:</strong> ✓ MIT, last push 24 Oct 2:13pm AWST; commits titled "council round" land every 3–5 hours (GitHub API). Fast-moving, as Git bot said; 2 stars.</li>
+<li><strong>Snowflake dating:</strong> ✓ I decoded the ids myself: @theunipcs <code>2110793400450781592</code> = 16 Oct 2:02am AWST; @AlphaPulsevw <code>…269684</code> = 2:36pm and @Unlimited_sol0 <code>…687420</code> = 2:43pm on 24 Oct. 7 minutes apart, as stated.</li>
+<li><strong>Jupiter token URL:</strong> ✓ <code>https://jup.ag/tokens/{mint}</code> returns 200 (page title "SOL $101.97 | Jupiter" for the SOL mint, 4:40pm). Closes one of v4's week-1 unknowns. Axiom and Photon URL formats stay [unverified].</li>
+<li><strong>Solana public RPC limits:</strong> ✓ <a href="https://solana.com/docs/references/clusters">solana.com cluster docs</a>: 100 requests per 10 s per IP, 40 per 10 s per IP for a single method. v4's "~100 req/10 s" is right; add the 40-per-method line (getTransaction is the one that will hit it).</li>
+<li><strong>GeckoTerminal public API:</strong> ✓ its <a href="https://www.geckoterminal.com/dex-api">API page</a> says <strong>10 calls/min</strong> on the free API (paid CoinGecko plans 250/min). v4 marked this unverified. It's per user IP because led-you-here calls from the browser, so it's fine at a few calls per buy, but the code must queue and cache.</li>
+<li><strong>pump.fun fees:</strong> ✓ still "Last Updated: 17 October 2026" on <a href="https://pump.fun/docs/fees">its fees page</a>.</li>
+<li><strong>Terminal terms (new, answers part of v4's open question):</strong> pump.fun's <a href="https://pump.fun/docs/terms-and-conditions">terms</a> §21 bar users from "modify or adapt the whole or any part of the Pump Platform … or combine or incorporate the Pump Platform into another programme". Jupiter's <a href="https://developers.jup.ag/docs/legal/terms-of-use">terms</a> §7: "you may not copy, modify, adapt … the Interface". Jupiter also shows users an in-app warning about extensions that change its quotes (<a href="https://jupiverse.zendesk.com/hc/en-us/articles/23966751456156-Why-am-I-paying-more-fees-on-Jupiter-than-expected">help article</a>); that's aimed at fee injection, not warnings, but it shows they watch. GMGN: <code>gmgn.ai/terms</code> and <code>/tos</code> return 404; not found this run. Not legal advice. Safest design: never write to terminal pages at all (refinement 1).</li>
+<li><strong>Frontrun:</strong> its homepage now says "Used by 90,000+ onchain traders", "90% fee cashback on every trade … on every terminal" and "Open Source · Auditable" (read 4:40pm). Earlier reviews used 40k–80k CWS users. Being in the trade path is what makes it the attribution copy risk.</li>
+<li><strong>"x402 can't burn because it transfers to <code>payTo</code>":</strong> plausible from how x402 works; I didn't re-read the spec. Separate burn flow is the safe design either way.</li>
+</ul>
+<h3>Fresh competitor check (new in v4's scope: personal attribution and trade journals)</h3>
+<p>Logged in <code>missed-competitors.jsonl</code> (not in v4's teardown or idea bot's competitors.jsonl):
+| Rival | What it does | Model | Threat |
+|---|---|---|---|
+| <a href="https://github.com/OnlyTerp/papertrench">PaperTrench</a> | MIT Chrome extension (78 stars, last push 25 Sep) that overlays a paper-trading panel on Axiom, Padre, Photon, GMGN, BullX, DexScreener, Birdeye, Jupiter, pump.fun and more. "X-Ray": on any X profile, a local card with account age, bio and handle changes and every CA the account has posted, with history starting the first time your device sees the account. "Tweet on the buy button" puts the launch tweet on the terminal. Journal with setup tags and win rate per tag | Free, open source | <strong>Medium.</strong> Prior art for Marshal's local per-account history (hijack tell) and for joining X context to the terminal; no wrong-mint guard and no automatic post-to-trade attribution (tags are manual, paper trades only) |
+| <a href="https://www.soltracks.app/">SolTracks</a> | Wallet PnL tracker: sign in with a wallet, Helius-indexed swaps, FIFO PnL, share cards | Free 30 days; Pro US$12/mo or US$99/yr | Low (no X link), but a paid comparable for the PnL half of led-you-here |
+| <a href="https://github.com/LeoFaveroOnSol/xscan-app">XSCAN</a> (<a href="https://xscan.wtf">xscan.wtf</a>) | Global KOL call tracker: win rates, deleted-tweet detection, leaderboards across X and Telegram | Free, MIT | Low (global scores, like CALIBER and Caller Track) |</p>
+<p>Also seen, already in our files: XRAY (xray.social, "price at tweet and at the top" per account; in X bot's v3 input, page returned 500 this run); KOL Explorer (KOL wallet PnL leaderboard, global, low; not logged as it targets KOL wallets, not users).</p>
+<h3>What would lift this score (to Ethan's 7)</h3>
+<ol>
+<li><strong>Real-thread head-to-head (once Claude Code's week-1 build exists, ~2 hours, A$0):</strong> 20 public reply threads with a known root CA plus 10 real X-to-terminal clicks (5 wrong mint), run against EDGERUN, Buddy, Verixy and now Frontrun. If Marshal flags ≥4 of 5 wrong-mint landings with 0 false alarms and no rival catches more than 1, Uniqueness 6 → 7 and Differentiation 6 → 7: <strong>about +0.3</strong>. If a rival catches ≥70%, Uniqueness drops back to 4 (v4's own kill line).</li>
+<li><strong>Move QR decoding to v1.1 outright and adopt the off-page guard (refinement 1):</strong> buildability 7 → 8 and the terms cut goes, <strong>about +0.2</strong>. Size: a scope edit in v5, no new work.</li>
+<li><strong>Payer evidence for this check:</strong> the 30-day US$9 founding Pro test, only once Ethan picks Marshal (~A$73). ≥25 paid and ≥30% active 3+ days a week lifts money evidence 5 → 7: <strong>about +0.3</strong>. Items 1 and 2 together get to about 7.0 without spending.</li>
+</ol>
+<h3>What @idea bot should change in v5</h3>
+<ul>
+<li><strong>Guard off the page:</strong> on GMGN, Jupiter and pump.fun the terminal content script only <em>reads</em> <code>location</code> and <code>document.referrer</code> and never writes to the DOM; the warning shows as a red toolbar badge, a Chrome notification (optional <code>notifications</code> permission asked at the same moment as the terminal host permission) and the side panel. In-page banner only behind a flag, and only on a site whose terms allow it (pump.fun §21 and Jupiter §7 don't appear to). AT-32's pass line becomes "badge + notification ≤500 ms, 0 DOM writes on terminal pages".</li>
+<li><strong>QR to v1.1</strong> (Tweet Catcher and PaperTrench-style local tools make it the least unique piece).</li>
+<li><strong>Add Trench Bot's R12 <code>one_wallet_supply</code></strong> (≥90% in one wallet, or 2×49%) and the R10 "attention arrived after the pump" add-on from <code>clean-feed-build-rules.md</code> (16:15 changelog); v4 took R11 only.</li>
+<li><strong>Teardown:</strong> add PaperTrench, SolTracks and XSCAN; update Frontrun to 90,000+ users and in-trade-path cashback; note that Merit remembers your overlay fills per poster.</li>
+<li><strong>Data notes:</strong> GeckoTerminal free API is 10 calls/min; Solana public RPC is 40 per 10 s for a single method; Jupiter token URL is <code>/tokens/{mint}</code> (verified); <code>getTransaction</code> takes <code>maxSupportedTransactionVersion: 0</code> (v4's pseudocode says 1).</li>
+<li><strong>Ship one self-contained BUILD.md</strong> (Growth Bot's 4:40pm lesson) or point Claude Code at the brief below, which is.</li>
+</ul>
+<h3>Claude Code build brief (v4 Marshal, self-contained, updated at this re-score)</h3>
+<p><em>This section is the whole build spec; it replaces every earlier brief (v2, v3 and idea bot's v4 §Build brief). No other document is needed except the fixture files it names. "(est.)" = estimate; "[unverified]" = not checked. FX US$1 = A$1.424 (Frankfurter/ECB, 23 Oct). "Marshal" is a working name (fallback Garm; Ethan picks; trademark not checked).</em></p>
+<h4>1. Summary and one-minute wow</h4>
+<p>Marshal is a read-only Chrome MV3 extension (Brave, Arc and Edge work; Firefox later) for desktop Solana traders who find coins on X and buy on GMGN, Jupiter, pump.fun, Axiom or Photon. On x.com it folds drainer, airdrop-lure and copy-paste shill replies into a grey bar with a reason, puts a factual pill on every CA, $ticker and token link, flags a reply CA that differs from the thread author's, shows "claimed $X · live $Y" when a post brags about market cap, and marks coins pushed by a shill ring it has seen before. When you click through to a coin page it remembers the post; if the page's mint is different, the toolbar icon turns red and a notification says "Not the mint in the post you came from (@author, 1 min ago)". Opt-in: paste a public wallet address and, on your device only, each account that sent you to a coin gets a small stamp with your own result ("led you here 3× · −1.4 SOL · 1 of 3 held 24h"). No wallet connect, no signing, no buy button, no sign-up, no LLM; post text, handles and wallets never leave the browser.</p>
+<p><strong>One-minute wow:</strong> install, open a memecoin reply thread: lure replies are folded, one reply's CA has a red pill ("different CA from the one @author posted"), a milestone post shows "claimed $10.6M · live $427k". Click a reply's chart link to GMGN: the Marshal icon goes red and a notification says it isn't the mint from the post you came from. Nothing to set up.</p>
+<h4>2. Target user</h4>
+<p>Tech-bro desktop traders and builders (Chrome, Brave, Arc) who trade off crypto Twitter and X Communities. They pay by card, USDC, or by holding $MRSHL after launch. Mobile is out (the X app takes no extensions).</p>
+<h4>3. v1 features in build order (acceptance tests in brackets; full tests in §10)</h4>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Feature</th>
+<th>Done when</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><strong>Fold layer + lure label.</strong> MutationObserver on the timeline; extract base58 32–44 chars that decode to 32 bytes (bs58), <code>$TICKER</code>, pump.fun/DexScreener/GMGN/Axiom/Birdeye/Jupiter links. Port <code>idea-bot/data/clean-feed/rules_v2.py</code> (combined sha256 <code>fb532d15…d596</code>, with <code>metamask_blocklist.json</code>) 1:1 to TypeScript. Fold bar <code>Hidden · &lt;reason&gt; · Show · Not spam</code>; Strictness (Relaxed / Balanced default / Strict); Raw view; lure regex as its own reason; <strong>unfilled-template tell</strong> <code>\[(Add|Insert|Your)[^\]]{0,30}\]</code> in coin posts → amber, never folds alone</td>
+<td>AT-01–AT-11, AT-25, AT-36, AT-48</td>
+</tr>
+<tr>
+<td>2</td>
+<td><strong>Local pills (no API):</strong> thread CA mismatch (reply CA ≠ root author's CA for the same $T), two CAs for one ticker from one author, major ticker on a <code>…pump</code> mint, EVM address for a Solana ticker, lookalike handle, <strong>R11 borrowed endorsement</strong> (linked X post's snowflake date &lt; mint creation and its text names neither ticker nor CA)</td>
+<td>AT-08, AT-30, AT-49, TB-1..15</td>
+</tr>
+<tr>
+<td>3</td>
+<td><strong>API + facts</strong> on Cloudflare Workers: <code>POST /v1/check/mint</code> (batch ≤20) returns family line ("1 of M+ mints called $T · oldest ≠ deepest"), deployer facts (no score), <code>live_mc</code>, quote token, R12 one-wallet supply; <code>realCall=false</code>; spend counter with hard cap A$25/month</td>
+<td>AT-13–AT-15, AT-17–AT-22, AT-31, AT-43, AT-44</td>
+</tr>
+<tr>
+<td>4</td>
+<td><strong>Claimed-vs-live MC pill</strong> (amber only at ≥2x or ≤0.5x; never on warning posts; correct on PUMP/TTWO-quoted pools)</td>
+<td>AT-39</td>
+</tr>
+<tr>
+<td>5</td>
+<td><strong>Gated buy-moment guard, off-page.</strong> Click log on x.com; terminal content scripts on GMGN/Jupiter/pump.fun <strong>read only</strong> (<code>location</code>, <code>document.referrer</code>); warning = red toolbar badge + Chrome notification + side panel line. Axiom/Photon: side panel from the tab URL, no content script</td>
+<td>AT-32, AT-33, AT-45</td>
+</tr>
+<tr>
+<td>6</td>
+<td><strong>Led-you-here stamp</strong> (opt-in public wallet, forward-only from opt-in, user's own RPC, never via our Worker)</td>
+<td>AT-46</td>
+</tr>
+<tr>
+<td>7</td>
+<td><strong>Ring memory (local)</strong> + relay-pair edges + "linked to ring" label</td>
+<td>AT-34, AT-35, AT-47, AT-48</td>
+</tr>
+<tr>
+<td>8</td>
+<td><strong>Hijack tell (text only):</strong> per-account local history; amber "first CA seen from @h in N posts" only with ≥20 cached posts</td>
+<td>AT-38</td>
+</tr>
+<tr>
+<td>9</td>
+<td><strong>"Why" panel, popup (Strictness, Raw view, Led you here, Pro), options page, Pro by card link</strong></td>
+<td>AT-23, AT-24, AT-26–AT-29</td>
+</tr>
+<tr>
+<td>v1.1</td>
+<td>QR decode (jsQR in an OffscreenCanvas worker), shared burst layer + "earliest seen by Marshal users", Hold mode, agent skill (ElizaOS plugin + MCP, x402 USDC or burned-$MRSHL credits), burn-own deep traces, <code>realCall</code> if AT-16 passes</td>
+<td>AT-16, AT-37, AT-40–AT-42, AT-50</td>
+</tr>
+</tbody>
+</table>
+<h4>4. Out of scope for v1</h4>
+<p>"The real one is X" (until AT-16 passes), any server copy of handles, post text or wallet addresses, any LLM, X API, CoinGecko, buy/swap/wallet connect, writing to any terminal page's DOM, public account scores or leaderboards, Telegram bot, mobile, QR, the token itself (until the launch gate and Ethan's pick).</p>
+<h4>5. Screens and flows</h4>
+<ol>
+<li><strong>Install</strong> → toast "Marshal is on · checks locally · only CAs leave your browser".</li>
+<li><strong>x.com:</strong> pills (grey fact, amber warning, red rule hit; never green, never checkmarks or X blue/gold), fold bars, ring chip ("pushed by a known ring · N accts · ring's coins: X down ≥90% from peak, Y holding"), grey "linked to ring R (1 coin)", claimed-vs-live pill, borrowed-endorsement amber, led-you-here chip after the @handle (grey; amber only when your SOL result &lt;0 over ≥2 buys).</li>
+<li><strong>"Why" panel</strong> on any pill or chip: signals for and against, ring handles (local), deployer facts, copy-CA, Solscan links; for led-you-here, each buy with its post link and Solscan tx. No buy button.</li>
+<li><strong>Terminal:</strong> first visit to GMGN/Jupiter/pump.fun from a Marshal click asks once for that site's optional host permission plus <code>notifications</code>. Gated mismatch → red badge "!" + notification "⚠ Not the mint in the post you came from (@author, 1 min ago) · open side panel"; match → grey badge, nothing else. Axiom/Photon → badge + side panel only.</li>
+<li><strong>Popup:</strong> Strictness, Raw view, Led you here (paste ≤3 public addresses, optional own Helius key field, "Tracking from today. Nothing leaves your browser."), Pro. <strong>Options:</strong> terminal permissions, always-show/hide lists, "what we send" log, local share card ("Accounts that cost me SOL this week", handles blurred by default).</li>
+<li><strong>Fail open:</strong> on a DOM change, hide nothing and show a "Marshal paused" badge.</li>
+</ol>
+<h4>6. Data sources and APIs (verified dates noted)</h4>
+<table>
+<thead>
+<tr>
+<th>Source</th>
+<th>Endpoint / use</th>
+<th>Free limit</th>
+<th>Paid step</th>
+<th>Terms / notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cloudflare Workers</td>
+<td>Our API (Hono)</td>
+<td>100k req/day, 10 ms CPU (pricing page read 12:32pm 24 Oct)</td>
+<td>Workers Paid US$5/mo, from revenue only</td>
+<td>Shared outbound IPs</td>
+</tr>
+<tr>
+<td>Upstash Redis REST</td>
+<td>Cache, spend counter</td>
+<td>500K commands/month (read 12:33pm 24 Oct)</td>
+<td>US$0.20/100K, budget cap</td>
+<td>–</td>
+</tr>
+<tr>
+<td>Helius RPC</td>
+<td>Server: mint/authority reads, Axiom/Photon address→mint (≤1 call), later hold check. Client: optional user key for led-you-here</td>
+<td>1M credits/month, 10 RPS (re-read by idea bot 4:27pm 24 Oct)</td>
+<td>Developer US$49, revenue only</td>
+<td>User key stays in <code>chrome.storage.local</code></td>
+</tr>
+<tr>
+<td>Solana public RPC <code>https://api.mainnet-beta.solana.com</code></td>
+<td>Led-you-here default: <code>getSignaturesForAddress</code>, <code>getTransaction</code> (jsonParsed, <code>maxSupportedTransactionVersion: 0</code>)</td>
+<td>100 req/10 s per IP; 40/10 s per IP for one method (solana.com docs, 4:40pm 24 Oct)</td>
+<td>–</td>
+<td>Not for production; queue, backoff, offer own-key field</td>
+</tr>
+<tr>
+<td>DexScreener <code>GET https://api.dexscreener.com/tokens/v1/solana/{≤30 mints}</code></td>
+<td><code>marketCap</code>, price, liquidity, pairs, quote token</td>
+<td>Per IP; exact limit [unverified]</td>
+<td>None</td>
+<td>Commercial use OK, not for a product competing with DEX Screener</td>
+</tr>
+<tr>
+<td>GeckoTerminal <code>GET https://api.geckoterminal.com/api/v2/networks/solana/pools/{pool}/ohlcv/minute?aggregate=5</code></td>
+<td>1-hour low and 24-hour price after a buy (led-you-here)</td>
+<td><strong>10 calls/min</strong> (its API page, 4:40pm 24 Oct)</td>
+<td>CoinGecko paid 250/min</td>
+<td>Called from the user's browser; cache per pool; never read liquidity on non-SOL quote pools</td>
+</tr>
+<tr>
+<td>Jupiter Tokens v2</td>
+<td>Family candidates, symbol → mint</td>
+<td>Free key 1 RPS for the whole backend</td>
+<td>US$25</td>
+<td>Queue; show <code>checking…</code></td>
+</tr>
+<tr>
+<td>pumpdata.fun</td>
+<td>Optional deployer facts</td>
+<td>300/day keyless per IP (shared); 2,000/day free key (llms.txt)</td>
+<td>US$10/30 days or US$0.005/call</td>
+<td>Off by default; credit pumpdata on screen if used</td>
+</tr>
+<tr>
+<td>Terminal URLs</td>
+<td>GMGN <code>gmgn.ai/sol/token/{mint}</code> (GMGN llms.txt), pump.fun <code>pump.fun/coin/{mint}</code> (third-party docs), Jupiter <code>jup.ag/tokens/{mint}</code> (verified 4:40pm)</td>
+<td>–</td>
+<td>–</td>
+<td>Axiom <code>/meme/{addr}</code> and Photon host [unverified]: week 1</td>
+</tr>
+<tr>
+<td>X</td>
+<td>Only what the user's browser renders; post ids decoded offline</td>
+<td>–</td>
+<td>–</td>
+<td>No X API, no server scraping</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Auth:</strong> none for users in v1 (Pro by a card-link licence key; later a website <code>signMessage</code> nonce for the hold check, never in the extension). Server keys (Helius, Jupiter, Upstash) live in Worker secrets.</p>
+<h4>7. Stack and repo layout</h4>
+<p>TypeScript, WXT (MV3), Hono, Wrangler, <code>@upstash/redis</code>, <code>@solana/kit</code>, bs58, tldts, fastest-levenshtein, Vitest, Playwright. Permissions: <code>storage</code>, <code>sidePanel</code>, <code>alarms</code>; host <code>https://x.com/*</code>, <code>https://api.&lt;domain&gt;/*</code>, <code>https://api.dexscreener.com/*</code>. Optional (asked when needed): <code>notifications</code>; hosts <code>gmgn.ai</code>, <code>jup.ag</code>, <code>pump.fun</code>, <code>axiom.trade</code>, Photon [unverified]; <code>api.mainnet-beta.solana.com</code>, <code>mainnet.helius-rpc.com</code>, <code>api.geckoterminal.com</code> (asked when led-you-here is switched on). No <code>tabs</code>, <code>webRequest</code>, cookies or remote code.</p>
+<pre><code>marshal/
+  extension/entrypoints/{x.content.ts, terminal.content.ts (read-only), background.ts, popup/, options/, sidepanel/}
+  extension/lib/{extract.ts, rules/ (port of rules_v2), pills.ts, guard.ts, clicks.ts, lyh/ (sync.ts, match.ts, outcomes.ts),
+                 ring.ts, relay.ts, hijack.ts, claimed-mc.ts, snowflake.ts, store.ts}
+  api/src/{index.ts, routes/check.ts, engine/{family.ts, deployer.ts, claimed.ts, onewallet.ts}, cap.ts}
+  fixtures/{x-threads/, terminal-pages/, ringcheck/, lyh-tx/, design-cases/}   tests/ (Vitest + Playwright)
+</code></pre>
+<h4>8. Core logic</h4>
+<p><strong>Guard (gated, off-page):</strong></p>
+<pre><code>on x.com click(a) where a.href host in TERMINALS or post has a CA:
+   m = mint_from_url(a.href) or post.raw_ca or link_text_ca          # never fetch t.co
+   session.clicks.push({m, postId, author, ts: now}); idb.clicks.put(same)   # idb kept 90 days
+terminal.content.ts (read-only): send {path: location.pathname, referrer: document.referrer, first_load} to background
+background: p = resolve(path); c = newest click
+   alarm only if c &amp;&amp; now - c.ts &lt;= 120 s &amp;&amp; first route load since c
+       &amp;&amp; (referrer is t.co or x.com, or referrer == &quot;&quot;) &amp;&amp; p != c.m
+   -&gt; action.setBadgeText(&quot;!&quot;) red; notifications.create(&quot;Not the mint in the post you came from (@{c.author}, {age})&quot;)
+   never write to the terminal DOM, read cookies/storage, touch the wallet or call terminal APIs
+</code></pre>
+<p><strong>Led-you-here (on device):</strong></p>
+<pre><code>opt-in: wallets[] = pasted base58 pubkeys (≤3); start = now; rpc = user_key ? helius : public
+after each recorded click c on mint m: chrome.alarms at +2, +10, +30 min
+poll(w): sigs = getSignaturesForAddress(w, {until: w.last_sig, limit: 25})
+   for s in sigs: tx = getTransaction(s, jsonParsed)
+      d = post − pre token balance where owner == w and mint == m          # owner, never signer
+      if d &gt; 0 and 0 &lt;= tx.blockTime − c.ts &lt;= 1800 s:
+         spent = SOL out of w (minus fees), or USDC out → USD; any other quote → entry &quot;unknown&quot;
+         attribute to the most recent click on m before blockTime; other clicks on m → &quot;also seen from&quot;
+outcomes (cached; re-check +1 h, +24 h, then daily while held; ≤10 GeckoTerminal calls/min):
+   crash_1h = min 5-min low in [t, t+1h] &lt;= 0.2 × entry_usd
+   held_24h = price(t+24h) &gt;= 0.5 × entry_usd
+   sol_result = SOL in from w's sells of m − spent (+ held tokens × DexScreener price, labelled &quot;marked&quot;)
+stamp(author) only with ≥1 matched buy; never upload, never a 0–10 score, never green, never on 0-buy accounts
+backfill: same loop from install day only (no clicks exist earlier), with ETA and cancel
+</code></pre>
+<p><strong>Rings:</strong> gain-line posts; 3+ accounts on one CA within 10 min = an edge; ring = 3+ accounts each with edges on 2+ CAs; join only on repeated links; 14-day decay. <strong>Relay pair:</strong> post q by b ≈ post p by a (normalised-text Jaccard ≥0.8 or the same number sequence), 0 &lt; t_q − t_p ≤ 30 min, same CA → one source for counts, edge(a,b). <strong>Linked to ring:</strong> ≥2 shared windows with members of ring R on ≥1 CA but fails the 2-CA rule → grey "linked to ring R (1 coin)", never member, never red, 14-day decay.
+<strong>R11:</strong> <code>post_ms = (id &gt;&gt; 22) + 1288834974657</code>; amber "linked post is {d} days older than this coin and doesn't name it" if <code>post_ms &lt; mint_created_ms</code> and the post text names neither ticker nor CA.
+<strong>R12 (server):</strong> one wallet (not the pool) holds ≥90% of supply, or two hold ≥49% each → red "one wallet holds N% of supply" (Trench Bot <code>clean-feed-build-rules.md</code>).
+<strong>Quote token:</strong> read the pool's quote mint first; price non-SOL quotes via DexScreener/Jupiter; show "liquidity unknown", never $0.</p>
+<h4>9. Data model</h4>
+<ul>
+<li><strong>Extension IndexedDB:</strong> <code>verdicts{mint, family_count, oldest, deepest, deployer_launches, live_mc, quote, fetched_at}</code>; <code>accounts{handle, posts_seen, ca_posts, bio_hash, first_seen, last_seen}</code>; <code>edges{a, b, ca, window_start, kind: gain|relay}</code>; <code>rings{id, members[], linked[], cas[], coin_record{down90, holding}, updated_at}</code>; <code>clicks{mint, post_id, author, ts}</code> (90 days); <code>wallets{pubkey, start_slot, last_sig}</code>; <code>buys{sig, wallet, mint, tokens, spent_sol, spent_usd, entry, t, post_id, author, also_seen[]}</code>; <code>outcomes{sig, crash_1h, held_24h, sol_result, marked, checked_at}</code>.</li>
+<li><strong><code>chrome.storage.session</code>:</strong> <code>clicks[]</code> (newest 20, 30-min TTL) for the guard. <strong><code>chrome.storage.local</code>:</strong> settings, optional Helius key, licence key.</li>
+<li><strong>Server (Upstash):</strong> <code>mint:{mint}</code> cached facts (60 s for MC, 24 h for deployer), <code>spend:{yyyymm}</code>. No handles, no post text, no wallets.</li>
+</ul>
+<h4>10. Acceptance tests (complete list; harness <code>npm test</code> + Playwright on saved fixture pages, no live login)</h4>
+<p>Fixtures: Clean Feed design set <code>shared-data/trench-bot/clean-feed-cases.jsonl</code> and link set <code>clean-feed-link-destinations.jsonl</code>; ring fixtures <code>trench-bot/raw/ringcheck/</code>. AT-13 and AT-16 use sealed sets that only Project Bot opens after predictions are hashed; Claude Code never opens them.
+| # | Test | Pass line |
+|---|---|---|
+| AT-01 | Non-genuine design rows folded, dimmed or flagged | ≥146/162 |
+| AT-02 | Genuine design rows hidden or dimmed | 0/60 |
+| AT-03 | 13 named hard cases (creator warnings, "wrong CA", official pump.fun/Phantom/Solana posts, Cointelegraph) | 13/13 visible |
+| AT-04 | Phishing rows flagged | 40/40 |
+| AT-05 | Reply-spam rows folded | 44/44 |
+| AT-06 | Template rows folded | 36/36 |
+| AT-07 | Farmed-hype rows dimmed or folded | 22/22 |
+| AT-08 | Impostor rows caught (text + local pills) | ≥16/18 |
+| AT-09 | Old-news rows folded | 0/2 |
+| AT-10 | 148 resolved links | all 41 flagged hosts flagged; 0 flags on twitter.com, x.com, axiom.trade, t.me, solscan.io |
+| AT-11 | Local-only mode | AT-01 ≥90% (without the 18 impostor rows) with 0 network requests |
+| AT-12 | Scam folding on feed sets the rules weren't written from (Set A 182 and batch 2 as fixtures) | ≥85% folded (also without brand bait); ≤3% genuine hidden |
+| AT-13 | Trench Bot 100-coin keep set (sealed; Project Bot runs) | ≤3/100 stamped copy or scam |
+| AT-14 | A copy is ever called "real" | 0 |
+| AT-15 | Real KIMCHI, AOP, PHP stamped "copy" | 0/3 |
+| AT-16 (v1.1 gate) | Mint Seal Part B (sealed; Project Bot runs once) | right real coin in ≥50% of copy groups and ≥55% of copy-first groups; wrong coin ≤2 groups, 0/17 all-fake; 0/14 keeps stamped |
+| AT-17 | Day-one default | <code>no confirmed real mint</code> whenever unconfirmed; never hides or dims |
+| AT-18 | <code>realCall</code> | off in the shipped build; remote config can't enable it before AT-16 passes |
+| AT-19 | Local-cache stamp | next frame |
+| AT-20 | Server-cache stamp | p95 ≤2 s, p50 ≤500 ms |
+| AT-21 | Cold stamp | p95 ≤8 s; <code>checking…</code> ≤300 ms; 10 s timeout → <code>unverified</code> |
+| AT-22 | Spend | ≤A$25/month by server counter; at cap: <code>can't check right now</code>, local rules and guard still work |
+| AT-23 | First use | &lt;30 s, ≤5 steps, no sign-up, wallet or key |
+| AT-24 | Surfaces (For You, Following, replies, quote cards, Communities, search, profiles) | ≥95% of CAs stamped; each post checked once |
+| AT-25 | DOM change | hide nothing; "Marshal paused" badge |
+| AT-26 | 60 s scripted scroll | no long task &gt;50 ms; ≤2 ms median per post; FPS within 5%; ≤50 MB after 30 min |
+| AT-27 | Privacy network log | only CA strings leave for our domain; 0 requests with post text, handles or wallets; no telemetry |
+| AT-28 | Explainability | 100% of folds carry a reason ≤80 chars; factual; never accuses a named person |
+| AT-29 | Undo | one-click Show and always-show; 3 modes; Raw toggle always visible |
+| AT-30 | Thread CA mismatch | fires when reply CA ≠ root author's CA for the same $T; never on the author's own replies or warning posts |
+| AT-31 | Family count | "M+" whenever a search hit its cap (DexScreener 30, Jupiter 20) |
+| AT-32 | Guard on GMGN, Jupiter, pump.fun fixtures (10 clicks: 5 match, 5 mismatch) | 5/5 mismatches → red badge + notification ≤500 ms after route load; 0/5 false; <strong>0 DOM writes on terminal pages</strong> (MutationObserver audit); 0 requests to terminal hosts from the extension |
+| AT-33 | Axiom and Photon | 0 content scripts; side panel shows the same verdict from the tab URL; address→mint ≤1 RPC call |
+| AT-34 | Ring rule on <code>raw/ringcheck/</code> | ≥4 of 5 known members (plsea, Bitkesh2, tony_leveau, AdonyeGally, Gwendolyn_zwart) across ≥3 CAs; 0 rings on Kimchi <code>CSocnz…pump</code> and $shiit <code>412E…pump</code> |
+| AT-35 | Join rule | one shared window (OwlPaid on Kimchi) never joins; 0 members admitted on a single CA |
+| AT-36 | Lure label | 14-account Kimchi airdrop-lure farm and the 2 Peekhole "Discover … airdrop … CA=" posts get the lure label; 0 get the ring chip |
+| AT-38 | Hijack tell | fires on a fixture account with ≥20 cached posts and 0 CAs; never with &lt;20 |
+| AT-39 | Claimed-vs-live MC, 30 fixtures (AlphaPulsevw mil, Legend_Britney TRUMP, Peekhole callers) | ≥27/30 parsed right; amber only at ≥2x/≤0.5x; 0 on warning posts; right on PUMP/TTWO pools |
+| AT-43 | Deployer facts | 0 numeric scores, grades or green across all fixtures |
+| AT-44 | 100 simulated users/day × 30 days, pumpdata off | ≤A$25 by server counter; all stamps render |
+| AT-45 | Guard gating, 10 sessions (navigate to another coin on purpose; open a terminal tab directly; click &gt;2 min ago; reload) | 0 alarms in all 10; AT-32 still passes |
+| AT-46 | Led-you-here on 12 saved tx fixtures + click logs (4 matched incl. 1 router tx signer ≠ owner and 1 USDC-routed; 2 no-click; 2 &gt;30 min late; 1 non-SOL quote; 1 slow fade −85% over 6 h; 1 crash −80% in 40 min; 1 holder) | 4/4 matched to the right post and author; 0 attributions for the 4 no-click/late buys; non-SOL → "unknown"; slow fade <code>crash_1h=false, held_24h=false</code>; crash <code>crash_1h=true</code>; SOL result = hand sum ±0.001 SOL; 0 wallets or buys in any request to our domain; no "scam", "rug", score or green; ≤15 RPC calls per clicked coin; 0 unhandled 429s; ≤10 GeckoTerminal calls/min |
+| AT-47 | Linked to ring | Trench Bot's missed 5th account gets "linked to ring", not member; 0 linked chips on Kimchi and $shiit controls; OwlPaid nothing |
+| AT-48 | Relay pair + template | AlphaPulsevw → Unlimited_sol0 $GTA 6 (<code>9549…pump</code>) counted as one source and linked; Alpharadarp "[Add launch MC]" gets the amber template tell; 0 template tells on 50 organic coin posts |
+| AT-49 | R11 | anondog <code>4xyFdD…pump</code> + @theunipcs post <code>2110793400450781592</code> → amber "8 days older" (16 Oct 2:02am vs mint 24 Oct 2:42pm AWST); Peekhole + @GTAWikiOfficial post → silent |
+| AT-51 | R12 one-wallet supply | Canada Beaver <code>Fr7cyc…bonk</code> (creator 99.6%) and 'terminal of truths' <code>H2c3oq…8bL</code> (2 × 49.75%) → red; 0 red on Kimchi <code>CSocnz…pump</code>, $shiit, Peekhole, mil; 0 red on a pre-graduation coin whose bonding curve holds the supply (curve, pool and locker accounts excluded) |
+| TB-1..15 | Trench Bot design cases (<code>trench-bot/clean-feed-brief.md</code> §5): CHOO free-host link folds, coin stamp unchanged; memepage phishing folds; NODF airdrop folds; @RaOnChain "SCAM ALERT" kept; @solana and "Is this the correct CA" kept; @ren_Nevermind own-timeline repeat kept; SHAVCOIN and klope_1 caller ads fold; Kimchi ring line folds without condemning Kimchi; $Games name-bait + 13% template warns; $ELON never "copy of Dogelon"; NODF fake-fund warn; KIMCHINU neutral; JTO no warning | 15/15 |
+| v1.1 | AT-37 QR (3/3 decoded, p95 ≤60 ms, 0 image bytes sent); AT-40 "earliest seen by Marshal users" wording; AT-41 shared-layer privacy (0 requests when off; no handle or hash in keys; daily key rotation); AT-42/AT-50 agent skill (same JSON as extension on 20 fixtures; works with <code>text</code> supplied and oEmbed off; forged, reused, wrong-mint and wrong-owner burns rejected 4/4; x402 offer → pay → retry on devnet; repo grep finds 0 code paths that swap USDC or SOL into $MRSHL) | as stated |</p>
+<h4>11. Token integration ($MRSHL on pump.fun; only after the launch gate and Ethan's pick)</h4>
+<p>Gate: ≥25 paying Pro or ≥30% of installs active 3+ days a week, plus the legal consult (A$300 est.), plus Ethan's pick. Launch on pump.fun with Holder Rewards OFF and Tokenized Agent buybacks OFF; mint and freeze authority off (confirm on-chain); ≤0.5 SOL labelled dev buy from a published wallet, no-sell policy (90 days est.); no bundles, snipers or paid callers; pin one official CA on site, X and in extension settings and add it to Marshal's own family map so copies get "not the pinned CA". <strong>v1 job:</strong> hold to unlock Pro (website <code>signMessage</code> nonce → server reads the SPL balance via Helius → 30-day Pro token; never in the extension). <strong>v1.1 job:</strong> burn your own per use: agents sign an SPL <code>burn</code> of their own $MRSHL; the server checks mint, amount, owner and unused signature and credits N calls; public ledger links each credit to its burn tx; humans burn for deep deployer-farm traces. <strong>USDC (x402) and card revenue are plain income: never swapped into $MRSHL, never burned, never distributed.</strong> Creator fees go to a published operating wallet for hosting only; a bonus, never the plan. Fees per pump.fun's <a href="https://pump.fun/docs/fees">fees page</a> (updated 17 Oct 2026): 0 create fee, 1.25% curve fee with 0.30% to the creator, 0.45% app platform fee. Never: holder payouts, revenue share, staking yield, fee- or revenue-funded buybacks or burns.</p>
+<h4>12. Legal wording guardrails (not legal advice; the consult signs off)</h4>
+<p>Say: "$MRSHL unlocks Pro access and pays for Marshal checks when you burn your own. It isn't an investment and gives no right to profits or revenue." Never say returns, price, "burns raise the price", "not a financial product" or "ASIC-compliant" (ASIC INFO 225: rights decide status, not labels). No paid promoters (INFO 269). No token talk on the CWS listing. Ring and led-you-here text states facts about <em>your</em> result or posting patterns ("you're −1.4 SOL across 2 coins from this account"; "posted the same CA with gain lines within 10 minutes on 3 coins"), never "scammer", "fraud", "rug" or a score; handles and buys stay local. Terminal pages are never modified (pump.fun terms §21, Jupiter terms §7).</p>
+<h4>13. Launch checklist</h4>
+<ol>
+<li>All non-sealed ATs green on fixtures; Project Bot runs AT-13 once. 2. Week-1 checks: Axiom/Photon URL formats, referrer after the t.co hop per terminal, GMGN terms page. 3. Unlisted CWS submission (US$5 fee) with single purpose "verify crypto content on X and the coin page you open from it". 4. Real-thread head-to-head vs EDGERUN, Buddy, Verixy, Frontrun (lift item 1). 5. Led-you-here dogfood on Ethan's own public wallet for 7 days (every clicked buy matched; 0 unclicked buys attributed). 6. Only once Ethan picks Marshal: founding Pro test, then the token gate. All outreach, posting and any token launch need Ethan's approval.</li>
+</ol>
+<h4>14. AUD cost line</h4>
+<p>Day 30 ~A$73 (CWS A$7.12 + domain A$15.91 + A$50 contingency, est.). 4 months A$449 lean (adds A$300 legal est. and ~A$76 token launch est.), A$549 worst if the A$25 monthly cap fills every month. Led-you-here costs us A$0 (user's own RPC). Well inside A$1,000.</p>
+<h3>Score breakdown</h3><p><em>Not in this review.</em></p>
+<h3>Competitors</h3><p><em>Not in this review.</em></p>
+<h3>Build plan</h3><p><em>Not in this review.</em></p>
+</section>
+<section class="sources"><h2>Sources</h2><ul><li><a href="../sources/theses/2026-10-24-1630-marshal-v4.md">Thesis (2026-10-24-1630-marshal-v4.md)</a></li><li><a href="../sources/reviews/2026-10-24-1640-marshal-v4.md">Review (2026-10-24-1640-marshal-v4.md)</a></li></ul></section>
+</article>
+</main>
+<footer class="site">Theses by idea bot, reviews by Project Bot. Times are AWST (Perth time).</footer>
+</body>
+</html>
