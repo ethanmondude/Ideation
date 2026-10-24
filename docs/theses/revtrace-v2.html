@@ -1,0 +1,710 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Revtrace v2</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="site"><a href="../index.html">Startup theses</a></header>
+<main>
+<p class="back"><a href="../index.html">&larr; All theses</a></p>
+<article>
+<h1>Revtrace v2</h1>
+<p class="tagline">&quot;Receipts&quot;, a source-of-funds label for buyback and revenue claims on pump.fun coins (best shipped inside Clean Feed)</p>
+<p class="meta"><span>24 Oct 2026, 10:30am AWST</span> <span class="badge low">4/10</span></p>
+<section class="exec"><h2>Executive summary</h2>
+<ul>
+<li><strong>Problem:</strong> pump.fun product coins sell "buybacks" and "agent revenue", and traders can't tell outside revenue from their own recycled trading fees or a dev top-up. In this run's test, <strong>0% of the money behind the 7 most-funded Tokenized Agents came from payers shown to be independent</strong>: 51% was recycled creator fees, 44% the agent's own authority wallet, ≤5% unattributed. Traders keep asking "where are the buybacks?" (84 explicit posts in 7 days).</li>
+<li><strong>Product:</strong> "Receipts", a one-line label on any pump.fun coin's buyback or revenue claim: <code>buybacks 30d 19.1 SOL · outside payers 0% · recycled creator fees ~100% · team top-ups 0%</code>, every figure linked to Solscan. It shows as a chip in Clean Feed on X, <code>/rev &lt;CA&gt;</code> in Telegram, and an x402/MCP endpoint for agents.</li>
+<li><strong>Who pays and how much:</strong> traders, through Clean Feed Pro (US$9 a month or hold $CFEED, Clean Feed's plan); agents at <strong>US$0.01 per receipt</strong> over x402 (between botsrated's US$0.001 and Token Verdict's US$0.02). No team verification fees.</li>
+<li><strong>Token job:</strong> recommended: no separate coin. Deep traces (5-hop funder graph plus evidence pack) <strong>burn the user's own $CFEED</strong>. Standalone fallback: Project Bot's $TRACE plan on pump.fun as is (hold for Pro, burn own on deep traces, Holder Rewards and Tokenized Agent off, no flag bond).</li>
+<li><strong>Total cost vs A$1,000:</strong> about <strong>A$0-75 a month extra</strong> inside Clean Feed (Helius only past the free tier), sharing its A$300 legal consult. Standalone: ~A$335 to day 30, ~A$695 over 4 months (review and v1).</li>
+<li><strong>Path to first US$10k a month:</strong> not credible standalone (bear ~US$0.3k, base ~US$1.2k MRR by month 12, estimates). It contributes to Clean Feed's route: Receipts as a Pro reason to upgrade, plus x402 (1M receipts a month at US$0.01 = US$10k; that needs agent demand nobody has shown yet).</li>
+<li><strong>Why now, edge, main risk:</strong> pump.fun's fee sharing and Tokenized Agents (2026) made fee-funded "buybacks" automatic and common, and both are readable on-chain in seconds. Edge: the only label that classifies the <strong>source</strong> of the money (CFO shows where fees go, not who funded a buyback). Main risk: copyable in weeks by CFO, SolEnrich or pumpdata.fun, and multi-hop attribution is often "unattributed" ($CLAWD).</li>
+<li><strong>First move this week (free, private):</strong> hand-label the payer class on 40 receipts (the 8 agents plus 32 self-posted buyback accounts from X bot's data); a second bot blind-labels 30; pass at 85% agreement. Then a head-to-head against CFO's check and SolEnrich on the same coins.</li>
+<li><strong>Verdict: pass as a standalone product and coin (about 70% confident); test as Clean Feed's "Receipts" feature (about 30% it earns a permanent place).</strong></li>
+</ul>
+</section>
+<section class="thesis"><h2>Full thesis</h2>
+<div class="byline"><p><em>Idea bot thesis, Sat 24 Oct 2026, written 10:30-11:10am AWST (Perth). Path: /workspace/idea-bot/theses/2026-10-24-1030-revtrace-v2.md. <strong>Version 2 of Revtrace</strong> (v1: theses/2026-10-22-1815-revtrace.md, Project Bot 5/10, token fit 5/10, "lead, not thesis"). Same thesis id: <code>idea-bot:thesis:revtrace</code>. Built from Project Bot's v1 review (project-bot/reviews/2026-10-22-1845-revtrace.md), Git bot's records <code>git-bot:refine:revtrace:20261023-0840</code> and <code>:20261024-0905</code>, Trench Bot's <code>trench-bot:thesis-input:revtrace:wash-volume-and-launchpad</code> and <code>:wash-volume-supporting</code>, Project Bot's missed-competitor records (SolEnrich, terminal-wars), X bot's 10am digest (Squads, self-posted buyback receipts), Git bot's radar run 11, Growth Bot's lessons, and a free private on-chain test run this morning (data/revtrace-payer-test/RESULT.md). Clean Feed v1 (theses/2026-10-24-1021-clean-feed.md) is untouched and stays at its own path. "Revtrace" and "Receipts" are working names.</em></p>
+<blockquote>
+<p><strong>Headline finding of this run:</strong> across the 7 most-funded pump.fun Tokenized Agents with measurable deposits (123.75 SOL), <strong>0% of the money came from payers shown to be independent customers</strong>. 51% was the coin's own creator fees routed back by pump.fun's fee sharing, 44% came from the agent's own authority wallet, and 5% came from unattributed single wallets (the most outside revenue could be). All Tokenized Agent buybacks together were <strong>about 30 SOL (~US$3.1k) in ~37 days</strong>, so v1's Tokenized-Agent beachhead fails v1's own kill line (US$50k per 30 days). What survives is one label traders can act on in a second: <strong>where the money behind a "buyback" or "revenue" claim actually came from.</strong> That's a feature, and it fits Clean Feed better than a standalone coin.</p>
+</blockquote></div>
+<h3>What changed in v2</h3><p>Each line answers a weakness in Project Bot's v1 review, a teammate record, or Ethan's rules.</p>
+<ol>
+<li><strong>Differentiation vs Dewash, x402watch, x402stats, ChainWard (review: "same engine exists", differentiation 4): narrowed to what none of them covers.</strong> They split organic vs self-paid revenue for <strong>x402 sellers on Base/Solana</strong> (Dewash, x402watch, x402stats) or publish one-off decodes on Base/BNB (ChainWard). None classifies the <strong>source of funds behind pump.fun coin buybacks and Tokenized Agent deposits</strong> into four plain classes: outside customers, recycled creator fees, team wallet, unattributed. Dewash is still at <strong>1 settlement, US$4.99, all time</strong> (x402gle, re-checked 24 Oct), so v2 doesn't sell a standalone payer check to teams.</li>
+<li><strong>Birdeye wash-trading detection (review; Trench Bot's 9:10am record): volume is now a supporting signal only.</strong> Birdeye's <a href="https://data.birdeye.so/docs/use-cases/risk-and-integrity/wash-trading-detector">Wash Trading Detector</a> is a five-signal recipe on its paid API for <strong>volume</strong>. v2 shows Trench Bot's tells (staircase wash, frozen feed over an empty pool, paid-crew holds) as a small "volume looks wash" footnote on the card, never the headline, exactly as Trench Bot agreed.</li>
+<li><strong>Missed competitors (review + Git bot run 11 + this run's sweep): all named in the teardown.</strong> SolEnrich (x402 per-call Solana verdicts incl. PAYING/STALE/NEVER for StonkFun reward coins), terminal-wars (free daily Solana revenue leaderboard via a GitHub Action), Token Verdict tools (US$0.02/call) and swap-gate (US$0.008/call) on Base, pumpdata.fun, CrawlHive, botsrated (US$0.001/check after 100 free a day). <strong>New this run:</strong> <a href="https://usecfo.fun/check">CFO's Buyback check</a> (free, any pump.fun coin: where the creator fee goes and whether it can change), <a href="https://app.strata-terminal.com/buybacks">Strata Terminal</a> (free, 5 big programs: HYPE, LIT, UNI, AAVE, PUMP, "measured from primary sources, never announcements"), pump.fun's own <a href="https://pump.fun/pump-token">PUMP burn table</a>, <a href="https://github.com/bybakfi/bybak">bybak</a> ("Solana Verifiable Buyback Standard", 0 stars), and <a href="https://tapline.sh/docs/pumpfun">Tapline</a> (paid pump.fun API proxy that lists competition and squad-member endpoints).</li>
+<li><strong>Headline number (Git bot 24 Oct): the independent-payer ratio, computed for real.</strong> v1 had no measured number. v2's free private step computed it on the most-funded agents: <strong>0% independent, ≤5% unattributed</strong> (RESULT.md). That number is the card's headline. "Buyback claimed vs done" is a secondary field, and the plain revenue leaderboard is dropped (terminal-wars proves it's a weekend clone).</li>
+<li><strong>Narrowing to "claimed buyback vs on-chain" (X bot's 10am suggestion): adopted as the trigger, not the product.</strong> Self-posted receipts ($CLAWD, $goldcoin; $AMLIL is on Robinhood Chain, out of scope) are where the check gets triggered. The $CLAWD test showed why "claimed vs done" alone is thin: its buybacks match the post. The useful line was the source of funds (2 hops, one outside wallet, not the creator: "unattributed").</li>
+<li><strong>Market and demand evidence (review: money evidence 3; X demand thin): measured, and it cut the scope.</strong> On-chain: 233,878 Tokenized Agent accounts exist but only 73 had SOL bought back in ~37 days, ~US$3.1k total. On X: 84 explicit "fake buyback / fake revenue / where are the buybacks" posts in 7 days (X counts, 17-24 Oct UTC), small accounts. Real but behavioural pain, not a market of paying teams. <strong>Team verification fees (v1's main revenue) are cut.</strong></li>
+<li><strong>Token score 5 (referee holds its own coin): two paths.</strong> Standalone, v2 uses <strong>Project Bot's pump.fun plan from section 5 of the review as is</strong> (below). The recommended path removes the conflict: no separate Revtrace coin; Receipts runs inside Clean Feed, and deep traces burn the user's own Clean Feed tokens.</li>
+<li><strong>Budget (review: ~A$335 to day 30, under A$1,000 only if Helius stays free): smaller.</strong> As a Clean Feed module it adds about <strong>A$0-75 a month</strong> (Helius Developer US$49 ≈ A$75 only past the free tier) and shares Clean Feed's A$300 legal consult. Standalone stays the review's ~A$335 to day 30 (A$410 with Helius).</li>
+<li><strong>Squads PnL competition (X bot + Trench Bot + Growth Bot): screened as a 2-week launch hook, not a product.</strong> pump.fun's own <a href="https://pump.fun/docs/app-competition-terms">competition terms</a> already disqualify wash trades and trades between squad members "in our sole discretion", and the event ends 9 Nov, so it fails repeat use standalone. As a hook it's good: the same funder-clustering engine labels whether a squad's PnL came from its own launches or shared-funder wallets. <strong>Public posting only with Ethan's OK.</strong></li>
+<li><strong>Fit with Clean Feed (asked by the run plan): evidence says fold it in.</strong> The pain shows up as replies under coin posts on X ("where are the buybacks?"), the user is the same desktop trader, the funder graph is the same one Clean Feed's copycat and caller-ring checks need, and the standalone money is too small. Recommendation below.</li>
+<li><strong>Legal wording (review section 6): kept and tightened.</strong> Bitquery's "say what you measured" and ponsfiles' "not shown to be…" wording; aggregate-only until the legal check; right of reply; CEX and multi-hop funders shown as "unattributed", never "team".</li>
+</ol>
+<h3>Innovation, usability, uniqueness</h3><ul>
+<li><strong>Innovation: 5/10.</strong> Why it's new now: pump.fun's creator-fee sharing (one-time <code>sharing_config</code>, up to 10 wallets) and Tokenized Agents (2026) route trading fees into "buybacks" automatically, through <code>DistributeCreatorFees</code> transactions anyone can read. A year ago there was no standard fee-routing to classify, and "agent revenue" didn't exist on pump.fun. The tracing itself (funder graphs) is old.</li>
+<li><strong>Usability: first use in under 30 seconds, 5 steps, inside X (Clean Feed) or Telegram:</strong>
+  1. Install Clean Feed (or open the Telegram bot). No wallet, no X login.
+  2. Scroll to any coin post that says "buyback", "burn" or "revenue".
+  3. The chip under it already reads <code>Receipts: 0% outside payers · ~100% recycled creator fees</code>.
+  4. Tap it: 3 lines with Solscan links (claimed vs done, source split, last buyback).
+  5. Optional: tap "deep trace" (burns your own tokens) for the 5-hop evidence pack.</li>
+<li>Honest limit: coins already indexed answer instantly; a cold coin needs a background trace of about 30-60 seconds on a paid RPC (this run's public-RPC test took minutes).</li>
+<li><strong>Uniqueness: 5/10.</strong> Closest rival: <strong>CFO's Buyback check</strong> (free, any pump.fun coin; shows where the creator fee goes and whether anyone can change it). <strong>The one thing we do that it doesn't:</strong> classify who actually funded each buyback or deposit (outside customer, recycled creator fees, team wallet, unattributed), including buybacks done by hand, which CFO says "aren't something it can see". Not higher: CFO, SolEnrich or pumpdata.fun hold the data and could add it in weeks.</li>
+<li><strong>Trench Bot's 10-second real-or-fake test:</strong> paste a CA, get "is this buyback outside money or recycled fees?" with no wallet connected. Passes for indexed coins (~1 second, cached); fails today for cold coins (30-60 s). Scored on indexed coins only until a paid RPC is in.</li>
+</ul>
+<h3>Problem and user</h3><p><strong>The user:</strong> a Solana memecoin and product-coin trader (Ethan's tech bro) who reads CT on desktop and buys coins whose pitch is "revenue", "buybacks" or "agent income". They want one fact before sizing in: is outside money coming in, or is the coin recycling its own traders' fees?</p>
+<p><strong>What they see today:</strong> self-posted receipts. $CLAWD's bot posts every buyback ("Buyback #544 · Bought 10,455.33 CLAWD for 0.0142 SOL · Holding 5,825,932.96 CLAWD", <a href="https://x.com/clawddevs/status/2113807820269486486">post</a>). $goldcoin posts a daily "Token Improvement Report" ("100% Pumpfun rewards reinvested: 50% buyback/burns 50% marketing", <a href="https://x.com/goldcoin__sol/status/2113617577221980664">post</a>). pump.fun's own disclaimer says it "does not verify the legitimacy of Token Agents" or who deposits (<a href="https://pump.fun/docs/tokenized-agent-disclaimer">pump.fun</a>), and that buybacks "may occur irregularly or cease entirely".</p>
+<p><strong>What traders say (real quotes, small accounts):</strong></p>
+<ul>
+<li>"where are the buybacks ? where are the verifications you promised ?" (<a href="https://x.com/oldhawksol/status/2107016869039448457">@oldhawksol</a>, to a fomo-launched coin).</li>
+<li>"where are the buybacks though" (<a href="https://x.com/saku_trades/status/2104548119933534290">@saku_trades</a>, 377 views).</li>
+<li>"Where are the buybacks they promised every single week? The chart tells the real story." (<a href="https://x.com/MILLLLLES156701/status/2112512015050961181">@MILLLLLES156701</a>).</li>
+<li>Demand size: <strong>84 explicit posts in 7 days</strong> for "fake buyback / fake revenue / where are the buybacks…" (X recent counts, 17-24 Oct UTC). A broad "buyback + proof/verify/on-chain" query returns 8,091 but mixes in stocks. Behavioural pain, low volume, as with Tapeline Check.</li>
+</ul>
+<p><strong>What it costs (measured this run, RESULT.md):</strong></p>
+<ul>
+<li>Of 233,878 Tokenized Agent accounts, only <strong>73 had SOL bought back in ~37 days (17 Sep-24 Oct AWST), 30.03 SOL + 10.75 USDC, about US$3.1k</strong>. Three agents took 82%.</li>
+<li>The 7 most-funded agents with measurable deposits: <strong>0% independent, 51% recycled creator fees, 44% team wallet, 5% unattributed</strong> (123.75 SOL).</li>
+<li>Older evidence (v1, verified by Project Bot): TermiX 99.11% of fees from wallets hiring each other (<a href="https://chainward.ai/decodes/termix-on-chain">ChainWard</a>); StonkFun buyback cited at US$2.09M vs US$1.23M on-chain (<a href="https://bitquery.io/investigations/is-stonkfun-dumping-on-holders">Bitquery</a>).</li>
+</ul>
+<h3>Evidence of money</h3><ul>
+<li><strong>Agents and traders pay per check, in cents.</strong> botsrated charges US$0.001 a check after 100 free a day; Token Verdict tools US$0.02 a call; swap-gate US$0.008 a call (Git bot radar run 11, <a href="https://github.com/botsrated/botsrated">botsrated</a>, <a href="https://github.com/QuincyGB/token-verdict-tools">Token Verdict</a>, <a href="https://github.com/rezearcher/plugin-swap-gate">swap-gate</a>). SolEnrich's x402 payments are visible on x402scan (Git bot, 24 Oct). pumpdata.fun runs a free daily allowance plus per-call x402.</li>
+<li><strong>The closest paid payer check has almost no buyers:</strong> Dewash, US$4.99 a check, <strong>1 settlement all time</strong> (<a href="https://x402gle.com/resources/75f5b522-b774-4d21-9d75-27e38eb4fd49">x402gle</a>, re-checked 24 Oct).</li>
+<li><strong>Verification itself is free elsewhere:</strong> TrustMRR verifies for free and sells sponsor spots from US$399 for 7 days (<a href="https://trustmrr.com/faq">FAQ</a>, per review). CFO, Strata, ChainWard and x402stats are free.</li>
+<li><strong>Trader subscriptions are small:</strong> TraderSpy US$355 MRR from ~5,700 users (<a href="https://trustmrr.com/startup/traderspy">TrustMRR</a>, v1).</li>
+<li><strong>Honest read:</strong> there's no verified revenue comp for this exact label. That's why v2 rides on Clean Feed's Pro and on x402 cents rather than claiming its own market (Growth Bot lesson <code>money-evidence-wins</code>).</li>
+</ul>
+<h3>Market sizing (bottom-up; assumptions labelled)</h3><ul>
+<li><strong>Agent deposits are too small to referee alone (measured):</strong> ~US$3.1k of buybacks in ~37 days across all Tokenized Agents.</li>
+<li><strong>Self-posted buyback/revenue coins (assumption):</strong> 50-200 pump.fun coins at any time post buyback or revenue receipts (X bot found 4 on one morning). This needs X bot's 7-day backfill to count.</li>
+<li><strong>Trader side via Clean Feed (assumption):</strong> if Clean Feed reaches 2,000 weekly actives and Receipts lifts Pro conversion by 1 point, that's ~20 extra Pro users × US$9 = <strong>~US$180 a month</strong> (estimate).</li>
+<li><strong>x402 (assumption):</strong> 20k-50k receipts a month from trading agents × US$0.01 = <strong>US$200-500 a month</strong>.</li>
+<li><strong>Sponsor slots: none.</strong> A referee shouldn't sell placement.</li>
+<li><strong>Ceiling (estimate): ~US$0.5-1.5k MRR of its own.</strong> It's a feature-sized market. A bootstrapper should build it only where the engine is already paid for (Clean Feed's funder graph).</li>
+</ul>
+<h3>Competitive teardown</h3><table>
+<thead>
+<tr>
+<th>Competitor</th>
+<th>What it does</th>
+<th>Pricing</th>
+<th>Traction</th>
+<th>Gap left</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://usecfo.fun/check">CFO Buyback check</a></td>
+<td>Any pump.fun coin: where the creator fee goes, can it change; full ledger for its own coins</td>
+<td>Free (+ $CFO launchpad)</td>
+<td>Live since 12 Oct audit</td>
+<td>"Buybacks someone does by hand from a wallet aren't something it can see"; no funder classes</td>
+</tr>
+<tr>
+<td><a href="https://app.strata-terminal.com/buybacks">Strata Terminal</a></td>
+<td>Buybacks measured on-chain, reconciled with supply</td>
+<td>Free</td>
+<td>5 programs</td>
+<td>Big programs only (HYPE, LIT, UNI, AAVE, PUMP)</td>
+</tr>
+<tr>
+<td><a href="https://pump.fun/pump-token">pump.fun PUMP table</a></td>
+<td>Daily PUMP burns with % of revenue</td>
+<td>Free</td>
+<td>Official</td>
+<td>Own token only</td>
+</tr>
+<tr>
+<td><a href="https://github.com/0xSardius/solenrich">SolEnrich</a></td>
+<td>50 x402 Solana endpoints incl. StonkFun PAYING/STALE/NEVER, serial-launcher check, MCP</td>
+<td>Per call (x402)</td>
+<td>Payments on x402scan (Git bot)</td>
+<td>Rewards paid vs claimed, not who funded them</td>
+</tr>
+<tr>
+<td><a href="https://x402gle.com/resources/75f5b522-b774-4d21-9d75-27e38eb4fd49">Dewash</a> / <a href="https://github.com/solana-foundation/pay-skills/pull/36">x402watch</a> / <a href="https://x402stats.io/methodology">x402stats</a></td>
+<td>Organic vs self-paid x402 revenue</td>
+<td>US$4.99 / micro / free</td>
+<td>Dewash 1 sale</td>
+<td>x402 sellers only</td>
+</tr>
+<tr>
+<td><a href="https://chainward.ai/decodes/termix-on-chain">ChainWard</a></td>
+<td>Free on-chain decodes (TermiX 99% circular)</td>
+<td>Free</td>
+<td>Viral decodes</td>
+<td>Base/BNB, one-off</td>
+</tr>
+<tr>
+<td><a href="https://data.birdeye.so/docs/use-cases/risk-and-integrity/wash-trading-detector">Birdeye wash detector</a></td>
+<td>5-signal wash-volume score recipe</td>
+<td>Birdeye API plans</td>
+<td>Big data vendor</td>
+<td>Volume, not funders of buybacks</td>
+</tr>
+<tr>
+<td><a href="https://github.com/OwlChainLabs/terminal-wars">terminal-wars</a></td>
+<td>Daily Solana terminal revenue leaderboard (DefiLlama, GitHub Action)</td>
+<td>Free</td>
+<td>0 stars</td>
+<td>Takes revenue as reported</td>
+</tr>
+<tr>
+<td>Gem Screener, ICM Analytics, DefiLlama</td>
+<td>Revenue and P/S rankings</td>
+<td>Free</td>
+<td>Gem: 243 visitors/30d (review)</td>
+<td>Revenue as reported</td>
+</tr>
+<tr>
+<td><a href="https://pump.studio/blog/tokenized-agents-pump-studio">Pump Studio</a></td>
+<td>Tokenized Agent console, "verified payments"</td>
+<td>Free</td>
+<td>—</td>
+<td>"Verified" = valid invoice, not independent payer</td>
+</tr>
+<tr>
+<td>pumpdata.fun, CrawlHive, RugCheck, Bubblemaps</td>
+<td>Deployer history, wallet dumps, holder maps</td>
+<td>Free to per-call</td>
+<td>pumpdata: Grok Bot template</td>
+<td>Not about revenue; pumpdata holds the trade data and could copy (Git bot)</td>
+</tr>
+<tr>
+<td>Token Verdict tools, swap-gate, botsrated</td>
+<td>Buy checks / seller ratings for agents</td>
+<td>US$0.02 / 0.008 / 0.001</td>
+<td>New (23-24 Oct)</td>
+<td>Base; safety, not revenue</td>
+</tr>
+<tr>
+<td><a href="https://github.com/bybakfi/bybak">bybak</a></td>
+<td>"Solana Verifiable Buyback Standard"</td>
+<td>Open source</td>
+<td>0 stars</td>
+<td>A standard for willing teams, not a check on unwilling ones</td>
+</tr>
+<tr>
+<td><a href="https://tapline.sh/docs/pumpfun">Tapline</a></td>
+<td>Paid proxy for 139 pump.fun endpoints incl. competitions, squad members and PnL</td>
+<td>Credits</td>
+<td>—</td>
+<td>Data source, not a verdict (possible Squads input)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>What survived:</strong> a per-coin label of <strong>who funded the buyback</strong> (outside / recycled fees / team / unattributed), shown where traders read claims. <strong>Why incumbents might not:</strong> CFO sells its own buyback launchpad; SolEnrich and pumpdata sell raw verdicts to agents; Strata covers majors. <strong>Why they could anyway:</strong> all of them could add it in weeks.</p>
+<h3>Product and UX</h3><p><strong>First minute:</strong> see the 5-step flow above. The card:
+<code>$RKC · Receipts (30d): buybacks 19.1 SOL · outside payers 0% · recycled creator fees ~100% (pump.fun fee sharing) · team top-ups 0% · claimed vs done: no claim found · volume: no wash flags</code> → each part links to transactions.</p>
+<p><strong>MVP stack:</strong> a TypeScript indexer on Clean Feed's existing VPS; Helius (free tier, then Developer US$49) or public RPC with caching; Postgres (Supabase free); the Clean Feed extension renders the chip; grammY Telegram bot; x402 endpoint (Solana USDC) plus an MCP listing.</p>
+<p><strong>Week-by-week (solo, ~10-12 h a week on top of Clean Feed):</strong></p>
+<ul>
+<li><strong>Week 1:</strong> index all Tokenized Agent accounts (getProgramAccounts, done in this run), the buyback crank's history and pump.fun fee-sharing distributions (<code>DistributeCreatorFees</code>, <code>TransferCreatorFeesToPump</code>). Classify inflows: fee distributor → recycled; agent authority or creator → team; else → trace 2 hops.</li>
+<li><strong>Week 2:</strong> hand-built claim parser for self-posted receipts ("Buyback #N … for X SOL", "% reinvested") on X, using X bot's backfill; claimed vs done.</li>
+<li><strong>Week 3:</strong> chip in Clean Feed, <code>/rev</code> in Telegram, x402 endpoint; open methodology page with versioned rules (copy x402stats' style).</li>
+<li><strong>Week 4:</strong> Squads integrity page as a private dashboard first; public only with Ethan's OK and after the legal check.</li>
+</ul>
+<p><strong>Advanced tech under the hood:</strong> decoding the agent program from the published IDL; a funder graph shared with Clean Feed (copycat deployers, caller-ring wallets); wSOL/USDC flow reconciliation per crank cycle; CEX hot-wallet list so CEX funders show as "unattributed".</p>
+<p><strong>What's hard:</strong> attribution beyond 2 hops ($CLAWD's funder chain ends at an unknown wallet); keeping false "team" labels near zero; claim parsing from free-text posts; public RPC rate limits (this run's fetches ran ~2-8 transactions a second).</p>
+<p><strong>What's clonable:</strong> everything except the labelled funder archive and the record of correct calls. CFO, SolEnrich or pumpdata.fun could ship the basic split in weeks.</p>
+<p><strong>Agent distribution:</strong> x402 endpoint <code>GET /receipts/&lt;mint&gt;</code> at US$0.01, MCP server listed on Glama and the MCP Registry, and a Grok Bot template.</p>
+<h3>Token design on pump.fun</h3><p><strong>Recommended: no separate coin.</strong> Receipts lives inside Clean Feed. Its token job there: <strong>deep traces burn the user's own $CFEED</strong> (hold for Pro already covers the chip). One coin, one CA, no referee-holds-its-own-coin conflict on a second ticker.</p>
+<p><strong>Standalone fallback, Project Bot's plan from section 5 of the review, as is:</strong></p>
+<ul>
+<li><strong>Job:</strong> (1) hold $TRACE for Pro alerts instead of US$19 a month; (2) spend $TRACE on deep traces (5-hop graph plus evidence pack), burned on use; (3) teams can pay verification in $TRACE. <strong>No flag bond.</strong> All USDC income goes to a public wallet, and Revtrace lists itself on its own leaderboard.</li>
+<li><strong>Launch route: pump.fun.</strong> No platform fee to create; bonding curve 1.25% per trade, of which 0.30% is the creator fee; PumpSwap creator fee tiered by market cap (0.30% under 420 SOL, 0.95% at 420-1,470 SOL, then stepping down); traders pay pump.fun's 0.45% Platform Fee on app trades, none to the creator (<a href="https://pump.fun/docs/fees">fees</a>). Settings: SOL pair, <strong>Holder Rewards off</strong>, mint and freeze authority confirmed revoked on-chain, no bundled wallets, <strong>Tokenized Agent off</strong> (it's a revenue-funded buyback, and this run shows such buybacks are mostly recycled creator fees). CA posted from the official X account at launch, the X link in socials, mint and creator wallet shown on the site, and the creator-fee wallet listed on its own leaderboard. Open scoring repo and self-listing are must-haves.</li>
+<li><strong>Creator fees: plan on zero.</strong> At US$5k a day of volume the creator fee would be ~US$15 a day under 420 SOL market cap (review estimate).</li>
+<li><strong>When:</strong> on the day a census report goes out, only after the legal review and at least 10 paying users.</li>
+<li><strong>Ethan's rules applied on top:</strong> small labelled dev buy, no bundles, pin one official CA on day one, no revenue share, no revenue- or creator-fee-funded buybacks or burns, no profit language.</li>
+</ul>
+<p><strong>Token fit (my estimate): standalone 5/10 (unchanged from the review). Merged: inherits Clean Feed's (its v1 estimate 6/10).</strong></p>
+<h3>Budget and founder load (A$, estimates unless linked)</h3><table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Inside Clean Feed</th>
+<th>Standalone (review)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Domain</td>
+<td>0 (shared)</td>
+<td>25</td>
+</tr>
+<tr>
+<td>VPS for indexer and bot</td>
+<td>0 (shared)</td>
+<td>10/month</td>
+</tr>
+<tr>
+<td>Helius: free tier, then Developer US$49 ≈ A$75/month (<a href="https://www.helius.dev/pricing">pricing</a>, via review)</td>
+<td>0-75/month</td>
+<td>0-75/month</td>
+</tr>
+<tr>
+<td>Legal: factual-information and defamation check before naming coins</td>
+<td>shared with Clean Feed's A$300</td>
+<td>300</td>
+</tr>
+<tr>
+<td>Token launch (dev buy + rent)</td>
+<td>0 (no second coin)</td>
+<td>~30 (after 10 paying users)</td>
+</tr>
+<tr>
+<td><strong>To day 30</strong></td>
+<td><strong>≈ A$0-75</strong></td>
+<td><strong>≈ A$335 (A$410 with Helius)</strong></td>
+</tr>
+<tr>
+<td><strong>Over 4 months</strong></td>
+<td><strong>≈ A$0-300</strong></td>
+<td><strong>≈ A$695</strong> (v1)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Founder load:</strong> inside Clean Feed, ~10-12 h a week for 4 weeks, then 2-3 h a week (label disputes, claim-parser fixes). Standalone: 25-30 h a week for 4 weeks (v1).</p>
+<h3>Business model and unit economics</h3><ul>
+<li><strong>Pricing:</strong> included in Clean Feed Pro (US$9 a month or hold $CFEED); deep trace = burn own $CFEED (amount set at launch, fixed in US$ terms); x402 <strong>US$0.01 per receipt</strong>, <strong>US$0.05 per deep trace</strong> (estimate, about 5-10x the cost to serve).</li>
+<li><strong>Cost to serve (estimate):</strong> a cached receipt is one DB read; a cold receipt ~50-300 RPC calls (agent accounts + 2-hop funders), well inside Helius' 10M monthly credits for thousands of coins (review's credit maths, unchecked).</li>
+<li><strong>Gross margin (estimate):</strong> above 90% once past the free RPC tier.</li>
+<li><strong>CAC:</strong> A$0 cash. Distribution is the Clean Feed install base plus MCP listings.</li>
+</ul>
+<h3>Go-to-market for a solo founder</h3><ul>
+<li><strong>First 10 paying users:</strong> Clean Feed Pro users who tap Receipts chips; trading-agent builders on x402 (list beside SolEnrich on x402scan, as Git bot suggested); traders who reply "where are the buybacks?" (Ethan approves every reply).</li>
+<li><strong>Launch hook (26 Oct-9 Nov): the Squads integrity page.</strong> Private first: for the top squads on pump.fun's leaderboard, the share of PnL from coins a member deployed or from wallets with a shared funder. Public only with Ethan's OK and after the legal check, using "not shown to be independent" wording. pump.fun's own terms already bar wash trades and trades between members, so the page frames itself as "receipts", not accusations.</li>
+<li><strong>Census report (one-off, Ethan approves):</strong> "Who funds pump.fun agent buybacks?" with this run's numbers, aggregate-only (no coin names) until the legal check.</li>
+</ul>
+<h3>12-month financial snapshot (all estimates; US$ revenue attributable to Receipts)</h3><table>
+<thead>
+<tr>
+<th>Month</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+<th>7</th>
+<th>8</th>
+<th>9</th>
+<th>10</th>
+<th>11</th>
+<th>12</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Extra Pro users from Receipts (#)</td>
+<td>0</td>
+<td>3</td>
+<td>6</td>
+<td>10</td>
+<td>14</td>
+<td>18</td>
+<td>22</td>
+<td>26</td>
+<td>30</td>
+<td>34</td>
+<td>38</td>
+<td>42</td>
+</tr>
+<tr>
+<td>x402 receipts (k)</td>
+<td>0</td>
+<td>2</td>
+<td>5</td>
+<td>10</td>
+<td>15</td>
+<td>20</td>
+<td>30</td>
+<td>40</td>
+<td>50</td>
+<td>60</td>
+<td>70</td>
+<td>80</td>
+</tr>
+<tr>
+<td>Revenue (US$)</td>
+<td>0</td>
+<td>47</td>
+<td>104</td>
+<td>190</td>
+<td>276</td>
+<td>362</td>
+<td>498</td>
+<td>634</td>
+<td>770</td>
+<td>906</td>
+<td>1,042</td>
+<td>1,178</td>
+</tr>
+<tr>
+<td>Extra cost (A$)</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>75</td>
+<td>75</td>
+<td>75</td>
+<td>75</td>
+<td>75</td>
+<td>75</td>
+<td>75</td>
+<td>75</td>
+<td>75</td>
+</tr>
+</tbody>
+</table>
+<p>Revenue = extra Pro × US$9 + receipts × US$0.01 (deep traces and token burns excluded). <strong>Bear case month 12:</strong> ~US$0.3k (x402 demand doesn't show). <strong>Bull case:</strong> ~US$3k (agents adopt receipts as a pre-buy check). None of this reaches US$10k a month alone.</p>
+<h3>Defensibility</h3><ul>
+<li>A labelled funder archive (fee distributors, agent authorities, CEX hot wallets, caller-ring and copycat deployers) shared with Clean Feed. It compounds with every coin checked.</li>
+<li>An open methodology and a public record of labels that held up.</li>
+<li>Thin overall: the moat is data plus trust, built over months, and the feature lives or dies with Clean Feed's install base.</li>
+</ul>
+<h3>Risks</h3><table>
+<thead>
+<tr>
+<th>Risk</th>
+<th>Type</th>
+<th>Mitigation</th>
+<th>Cheap test</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CFO, SolEnrich or pumpdata.fun adds a funder split</td>
+<td>Competition</td>
+<td>Ship inside Clean Feed where they aren't; share the funder archive</td>
+<td>Watch their changelogs weekly</td>
+</tr>
+<tr>
+<td>False "team" label leads to a defamation claim (WA)</td>
+<td>Legal</td>
+<td>"Not shown to be outside revenue"; CEX/multi-hop = unattributed; evidence links; right of reply; A$300 check before naming coins</td>
+<td>Hand-label 40; error rate under 5%</td>
+</tr>
+<tr>
+<td>Too few coins make buyback claims to matter</td>
+<td>Market</td>
+<td>Cover any pump.fun coin's fee routing, not just agents</td>
+<td>X bot 7-day count of self-posted receipts (target 50+ distinct coins)</td>
+</tr>
+<tr>
+<td>Traders don't act on the label</td>
+<td>Market</td>
+<td>Put it where the claim is (chip under the post), one line</td>
+<td>Clean Feed beta: share of chip taps per shown chip (target 10%+)</td>
+</tr>
+<tr>
+<td>A ranking of coins reads as advice (ASIC INFO 225)</td>
+<td>Regulatory</td>
+<td>Facts only, no "undervalued", no ranking by value</td>
+<td>Lawyer's check, shared with Clean Feed</td>
+</tr>
+<tr>
+<td>Public RPC limits make cold checks slow</td>
+<td>Technical</td>
+<td>Precompute agents and fee-sharing coins; Helius past free tier</td>
+<td>Time 100 cold receipts on free tier</td>
+</tr>
+<tr>
+<td>A second coin dilutes Clean Feed</td>
+<td>Token</td>
+<td>No separate coin; burn $CFEED for deep traces</td>
+<td>n/a</td>
+</tr>
+</tbody>
+</table>
+<h3>Kill or confirm</h3><p><strong>Free private playbook steps first (no money, nothing public):</strong></p>
+<ol>
+<li><strong>DONE today:</strong> census + independent-payer split on the most-funded agents (RESULT.md): 0% independent, 51% recycled fees, 44% team, 5% unattributed.</li>
+<li><strong>Backfill (X bot):</strong> 7 days of posts with "buyback"/"burn"/"revenue" plus a pump.fun CA. <strong>Kill the trigger</strong> if fewer than 30 distinct coins self-post receipts in 7 days.</li>
+<li><strong>Label (idea bot, claimed in claims.md) and blind check (a second bot):</strong> payer class on 40 receipts; second bot blind-labels 30. <strong>Pass</strong> at 85%+ agreement (kappa 0.7+); <strong>rework</strong> below.</li>
+<li><strong>Head-to-head (Git bot):</strong> on the same coins, what CFO's check, SolEnrich and pumpdata.fun return. <strong>Kill</strong> if any of them already gives the source split on 50%+ of coins.</li>
+<li><strong>Verdict (Project Bot):</strong> score; lesson appended.</li>
+</ol>
+<p><strong>30-day paid validation, only once Ethan picks Clean Feed (or this) to launch:</strong></p>
+<ul>
+<li>Inside Clean Feed beta: <strong>confirm</strong> if 10%+ of shown Receipts chips get tapped, 5+ Pro upgrades cite Receipts, and 10+ distinct x402 payers or US$50+ of x402 receipts in 30 days. <strong>Kill</strong> if under 3% of chips are tapped and x402 brings under US$10.</li>
+<li>Standalone (not recommended): the review's line, 15+ paying users including 3+ teams; kill under 5 or 0 teams. This run's census makes 3 paying teams unlikely.</li>
+</ul>
+<h3>Comparables</h3><p>CFO (usecfo.fun: free on-chain buyback check plus a buyback launchpad), Strata Terminal (free buyback tracker for majors), x402stats and Dewash (organic vs self-paid x402 revenue; Dewash 1 sale), ChainWard (free viral decodes), Bitquery and ponsfiles (forensic wording), SolEnrich and pumpdata.fun (per-call Solana verdicts), botsrated (cents-per-check ratings), TrustMRR (free verification, paid placement).</p>
+<h3>Candidates screened this run (all dropped as standalone)</h3><ul>
+<li><strong>Squads PnL integrity page:</strong> gate f (2-week event, no repeat use) and partly gate c (pump.fun's terms already police wash and intra-squad trades; GMGN's GGC leaderboard). Kept as Revtrace's launch hook.</li>
+<li><strong>Standalone "claimed buyback vs on-chain" checker:</strong> gate c (CFO Buyback check, Strata, SolEnrich PAYING/STALE/NEVER, pump.fun's PUMP table, bybak). Kept as a secondary field.</li>
+<li><strong>Tokenized Agent revenue census or leaderboard:</strong> gate e (no verified revenue comp) and market size (~US$3.1k of agent buybacks in ~37 days).</li>
+<li><strong>Address-poisoning dust alerts on Solana:</strong> gate c (wallet-side security tools already target address poisoning; not re-verified this run, so check before reopening); evidence goes to Clean Feed.</li>
+</ul>
+</section>
+<section class="review"><h2>Project Bot review</h2>
+<p class="meta"><span class="badge low">4/10</span> <span>Reviewed 24 Oct 2026, 10:30am AWST</span></p>
+<h3>Verdict</h3><ul>
+<li><strong>Score: 4/10 (v2 standalone, $TRACE on pump.fun). Down from v1's 5/10. Token fit 5/10. Measured accuracy 3/10. Innovation 5, Usability 7, Uniqueness 5.</strong> Passes Ethan's rules (no buybacks or payouts; users burn their own $TRACE), but idea bot's own census fails v1's own kill line by about 16x: all Tokenized Agent buybacks came to ~US$3.1k in ~37 days against a US$50k per 30 days line. The niche is real, but it's too small to be a product.</li>
+<li><strong>Receipts as a Clean Feed Pro add-on (separate line): 5/10. Token fit 6/10 (inherits $CFEED, burn own for deep traces). Measured accuracy 3/10. Innovation 5, Usability 7, Uniqueness 5.</strong> <strong>Parked.</strong> It's a later Pro add-on, gated on Clean Feed's copy engine passing Mint Seal Part B. <strong>Clean Feed stays at 5.0 provisional; this review doesn't touch its score or history.</strong> Marginal effect if built today: +0. If it later passes its own blind payer-label test and the head-to-head below, it could support at most +0.5 on Clean Feed's Uniqueness row. That's for Clean Feed's own re-score to decide.</li>
+<li><strong>Closest rival: <a href="https://usecfo.fun/check">CFO's Buyback check</a></strong> (free, any pump.fun coin). Opened 11:12am AWST. It answers "where does the creator fee go, and can anyone change that?" and says "buybacks someone does by hand from a wallet aren't something it can see". It doesn't classify who funded a buyback, so the thesis's gap claim holds. CFO, pumpdata.fun (every wallet's history, US$0.005 to 0.01 a call) or SolEnrich could add it in weeks.</li>
+<li><strong>Biggest corrections:</strong></li>
+<li><strong>The "0% independent" figure is partly built into the method.</strong> The classifier has no rule that can ever mark a payer "independent". Any wallet that isn't the fee distributor, creator or authority falls into "unattributed". So 0% is a ceiling claim ("≤5% could be outside money"), not a measurement. The card has to say "not shown to be outside revenue", never "0% outside".</li>
+<li><strong>The 123.75 SOL sample is really 2 agents.</strong> KNIGHT's team wallet (53.99 SOL) and Solana AI (34.92 SOL) make up 72%. RKC, the agent that took 64% of all buyback spend, contributes only its 0.78 SOL unattributed transfer, because its fee inflows were never summed. Deposit windows run from March to October, while the US$3.1k buyback figure covers a ~37-day window. Not blind, one bot, no hand labels.</li>
+<li><strong>The free test plan has idea bot labelling</strong> ("Label (idea bot, claimed in claims.md)"). Our blind rules say idea bot never labels or judges. Trench Bot labels, Git bot second-labels, Project Bot judges.</li>
+</ul>
+<h3>Score breakdown</h3><div class="sub">From “Score history”</div><table>
+<thead>
+<tr>
+<th>When (AWST)</th>
+<th>Version</th>
+<th>Score</th>
+<th>Token fit</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>22 Oct, 6:45pm</td>
+<td>v1</td>
+<td>5/10 (lead)</td>
+<td>5</td>
+<td>Real problem, but payer checks already exist for x402/Base (Dewash, x402watch, x402stats, ChainWard); closest paid one has 1 sale</td>
+</tr>
+<tr>
+<td>24 Oct, 11:15am</td>
+<td>v2 standalone</td>
+<td><strong>4/10</strong></td>
+<td>5</td>
+<td>Narrowed honestly to a real gap (source of funds behind pump.fun buybacks; CFO verified not to do it), but measured demand fails v1's own kill line by ~16x (~US$3.1k of agent buybacks in ~37 days vs US$50k/30d), team fees cut, and the headline 0%/51%/44%/5% split is non-blind, 2-agent-heavy and can't show "independent" by construction</td>
+</tr>
+<tr>
+<td>24 Oct, 11:15am</td>
+<td>v2 as Clean Feed add-on ("Receipts")</td>
+<td><strong>5/10 (separate line, parked)</strong></td>
+<td>6</td>
+<td>Costs ~A$0-75/month on Clean Feed's engine and fixes the referee-coin conflict, but its revenue is small (~US$180/month estimate) and it waits for Clean Feed's copy engine to pass Mint Seal Part B. Clean Feed's own 5.0 unchanged</td>
+</tr>
+</tbody>
+</table>
+<h3>Competitors</h3><div class="sub">From “Competitor check”</div><table>
+<thead>
+<tr>
+<th>Rival</th>
+<th>Opened (AWST)</th>
+<th>What it does</th>
+<th>Funder attribution?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://usecfo.fun/check">CFO Buyback check</a></td>
+<td>11:12am</td>
+<td>Where the creator fee goes, whether it can change, ledger for CFO's own coins</td>
+<td><strong>No.</strong> "Buybacks someone does by hand from a wallet aren't something it can see"</td>
+</tr>
+<tr>
+<td><a href="https://app.strata-terminal.com/buybacks">Strata Terminal</a></td>
+<td>11:13am</td>
+<td>"Measured from primary sources, never announcements"; PUMP page reconciles burns to supply</td>
+<td>No, and covers big programs only (PUMP: US$28.9M bought in 30 days)</td>
+</tr>
+<tr>
+<td><a href="https://pumpdata.fun">pumpdata.fun</a></td>
+<td>11:14am</td>
+<td>Every pump.fun trade and wallet record; wallet classes (winner, bot, supply seller); 300 free lookups a day, then US$0.005-0.01</td>
+<td>No, but it holds the raw data to build it fast. Biggest copy risk</td>
+</tr>
+<tr>
+<td><a href="https://github.com/0xSardius/solenrich">SolEnrich</a></td>
+<td>11:13am</td>
+<td>50 x402 Solana endpoints incl. StonkFun yield; 0 stars</td>
+<td>No: paid vs claimed, not who funded</td>
+</tr>
+<tr>
+<td><a href="https://github.com/bybakfi/bybak">bybak</a></td>
+<td>11:14am</td>
+<td>"Solana Verifiable Buyback Standard", 0 stars</td>
+<td>No: opt-in standard for willing teams</td>
+</tr>
+<tr>
+<td><a href="https://zippfeed.com/learn/ai-agent-launchpad-red-flags-checklist">Zippfeed checklist</a></td>
+<td>search, 11:14am</td>
+<td>Free guide: click through to the agent wallet, look for circular payers</td>
+<td>Manual how-to, not a product</td>
+</tr>
+<tr>
+<td>Dewash / x402watch / x402stats / ChainWard</td>
+<td>v1</td>
+<td>Organic vs self-paid revenue for x402 sellers on Base/Solana</td>
+<td>Yes, but not for pump.fun coin buybacks</td>
+</tr>
+</tbody>
+</table>
+<h3>Build plan</h3><div class="sub">From “Build plan (recommended path: Receipts as a parked Clean Feed Pro add-on)”</div><p><strong>Gate 0 (no Receipts work before this):</strong> Clean Feed's copy engine passes Mint Seal Part B on the locked pass line. If it fails, Receipts stays parked.</p>
+<ol>
+<li><strong>Free private test (A$0, nothing public). Roles:</strong> Trench Bot labels, Git bot second-labels blind, Project Bot judges. Idea bot neither labels nor judges.
+   - Before labelling, freeze a rule that can mark a payer "outside customer". For example: at least 3 distinct payers, none sharing a funder within 2 hops with the creator, authority or each other, wallet older than 30 days, not a CEX hot wallet. Without it, 0% is guaranteed.
+   - Trench Bot hand-labels the payer class (outside customer, recycled creator fees, team wallet, unattributed) on 40 receipts: the 8 agents plus 32 self-posted buyback coins from X bot's data, excluding $CLAWD and the 7 test agents from scoring, since they've been seen.
+   - Git bot blind-labels 30 of them. Labels go in a sealed folder.
+   - Hash the frozen classifier's predictions before any label is opened.
+   - <strong>Pass:</strong> 85%+ label agreement between the two bots (kappa 0.7+), the classifier matches the agreed labels on 85%+, and the false "team wallet" rate is under 5%.</li>
+<li><strong>Head-to-head (Git bot):</strong> on the same 40 coins, record what CFO's check, SolEnrich and pumpdata.fun return.</li>
+<li><strong>Count check (X bot, read-only):</strong> a 7-day count of distinct pump.fun coins that self-post buyback or revenue receipts.</li>
+<li><strong>If all pass:</strong> a 2-week build on Clean Feed's VPS. Week 1: indexer for agent deposits, fee-sharing distributions and 2-hop funders, plus CEX list. Week 2: chip in the extension, <code>/rev &lt;CA&gt;</code> in Telegram, an open method page, and an x402 endpoint at US$0.01. Cost ~A$0-75 a month (Helius only past the free tier); share Clean Feed's A$300 legal check. Aggregate-only until that check; right of reply.</li>
+<li><strong>Token:</strong> none new. Deep traces burn the user's own $CFEED. No buybacks, no payouts.</li>
+</ol>
+<details><summary>Rest of the review (fact-check and notes)</summary>
+<h3>Score breakdown</h3><table>
+<thead>
+<tr>
+<th>Row</th>
+<th>v1</th>
+<th>v2 standalone</th>
+<th>Receipts add-on</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Problem severity</td>
+<td>7</td>
+<td>6</td>
+<td>6</td>
+<td>Pain is real ("where are the buybacks", 84 posts in 7 days, small accounts) but agent money is tiny: 73 agents, ~US$3.1k in ~37 days</td>
+</tr>
+<tr>
+<td>Timing</td>
+<td>7</td>
+<td>6</td>
+<td>6</td>
+<td>Fee sharing and Tokenized Agents make it readable now; but the agent buyback crank runs 18-41 txs a day</td>
+</tr>
+<tr>
+<td>Differentiation</td>
+<td>4</td>
+<td>5</td>
+<td>5</td>
+<td>CFO, Strata (5 majors), SolEnrich, pumpdata and bybak checked: none classifies funders. Free how-to guides exist (Zippfeed's "click through to the wallet" checklist)</td>
+</tr>
+<tr>
+<td>Usability for tech bros</td>
+<td>8</td>
+<td>7</td>
+<td>7</td>
+<td>Paste a CA or see a chip. Cold coins take 30-60s on a paid RPC, minutes on public RPC</td>
+</tr>
+<tr>
+<td>Ape appeal</td>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>A "don't buy" fact; most fee-funded buybacks are disclosed by design</td>
+</tr>
+<tr>
+<td>Solo buildability</td>
+<td>7</td>
+<td>7</td>
+<td>8</td>
+<td>Indexer done in the private test; on Clean Feed's VPS and funder graph</td>
+</tr>
+<tr>
+<td>Self-serve sales</td>
+<td>7</td>
+<td>5</td>
+<td>6</td>
+<td>No team fees left; standalone relies on trader subs plus x402 cents</td>
+</tr>
+<tr>
+<td>Distribution</td>
+<td>7</td>
+<td>5</td>
+<td>6</td>
+<td>Rides Clean Feed's install base; standalone has none</td>
+</tr>
+<tr>
+<td>Retention</td>
+<td>5</td>
+<td>4</td>
+<td>5</td>
+<td>Used only before buying a "revenue" coin</td>
+</tr>
+<tr>
+<td>Money evidence</td>
+<td>3</td>
+<td>2</td>
+<td>3</td>
+<td>Fails own kill line; Dewash re-checked at 1 settlement, US$4.99, all time; nobody shown to pay for this label</td>
+</tr>
+<tr>
+<td>Token fit</td>
+<td>5</td>
+<td>5</td>
+<td>6</td>
+<td>$TRACE: hold for Pro, burn own on deep traces, no buybacks. Still a referee holding its own coin. Add-on: burn own $CFEED, no second coin</td>
+</tr>
+<tr>
+<td>Measured accuracy / evidence</td>
+<td>n/a</td>
+<td>3</td>
+<td>3</td>
+<td>One non-blind run on 7 agents; no hand labels; no positive "independent" rule</td>
+</tr>
+<tr>
+<td><strong>Innovation</strong></td>
+<td>n/a</td>
+<td><strong>5</strong></td>
+<td><strong>5</strong></td>
+<td>Newly possible: pump.fun fee sharing (<code>DistributeCreatorFees</code>) and Tokenized Agents (2026) create a standard fee flow to classify. Funder tracing itself is old</td>
+</tr>
+<tr>
+<td><strong>Usability (first use)</strong></td>
+<td>n/a</td>
+<td><strong>7</strong></td>
+<td><strong>7</strong></td>
+<td>5 steps, under 30s on indexed coins only; works in X (Clean Feed chip) and Telegram; no wallet or login. Cold coins fail the 30s line</td>
+</tr>
+<tr>
+<td><strong>Uniqueness</strong></td>
+<td>n/a</td>
+<td><strong>5</strong></td>
+<td><strong>5</strong></td>
+<td>Closest rival CFO's Buyback check, which can't see buybacks done by hand and doesn't classify funders. Not higher: every rival holding the data could add it in weeks</td>
+</tr>
+<tr>
+<td><strong>Overall</strong></td>
+<td><strong>5</strong></td>
+<td><strong>4</strong></td>
+<td><strong>5</strong></td>
+<td>Standalone: product rows average ~5.3, capped at 4 for failing its own kill line with no payer evidence. Add-on: cheap on a shared engine, but small revenue, parked behind Clean Feed's gate</td>
+</tr>
+</tbody>
+</table>
+<h3>Fact-check (opened 11:11-11:15am AWST)</h3><ul>
+<li><strong>CFO doesn't attribute funders:</strong> correct (quoted above).</li>
+<li><strong>Dewash 1 sale:</strong> correct. x402gle shows "all-time $4.99 / 1 settlements", 0 in the last 24h.</li>
+<li><strong>233,878 Tokenized Agent accounts / 73 with buybacks / ~US$3.1k in ~37 days:</strong> consistent with idea bot's own files. <code>agents.json</code> has 233,878 entries and <code>buyback_spend.json</code> has 73. 30.03 SOL × US$102.51 + 10.75 USDC ≈ US$3,089. I didn't re-run the on-chain pull. The 73 comes from the crank's latest 1,200 transactions, so it's a ~37-day window, not a 30-day one.</li>
+<li><strong>pump.fun competition terms ban wash trades:</strong> correct, and stronger than stated. The <a href="https://pump.fun/docs/app-competition-terms">terms</a> (last updated 23 Oct 2026) define a Wash Trade as including "trades executed between wallets controlled by the same person or coordinated persons (including between the wallets of members of the same Squad)". s 4A.6 makes trades between squad members Manipulative Trading. The "ends 9 Nov" date sits on the in-app Competition Page, which I didn't verify.</li>
+<li><strong>Split arithmetic (RESULT.md):</strong> adds up. Recycled 8.63 + 2.68 + 29.20 + 14.13 + 8.62 = 63.26 SOL (51.1%); team 53.99 (43.6%); unattributed 5.72 + 0.78 = 6.50 (5.3%); total 123.75. Caveats are listed in the Verdict.</li>
+<li><strong>Wording risk:</strong> "recycled creator fees" is the coin's own traders' fees, routed in by a disclosed pump.fun setting. That's real money from traders, just not product revenue. The label must say "funded by this coin's trading fees", not imply fraud.</li>
+</ul>
+<h3>Kill line</h3><ul>
+<li><strong>Kill Receipts</strong> if any one of these happens:</li>
+<li>Clean Feed's copy engine fails Mint Seal Part B (stays parked).</li>
+<li>Bot agreement stays under 85% after one rework.</li>
+<li>The false "team" rate is 5% or more.</li>
+<li>Fewer than 30 distinct coins self-post receipts in 7 days.</li>
+<li>Any rival already gives a source split on 50%+ of the 40 coins.</li>
+<li><strong>In Clean Feed beta (only once Ethan picks Clean Feed):</strong> kill if under 3% of shown chips get tapped and x402 brings under US$10 in 30 days. Confirm at 10%+ taps, 5+ Pro upgrades citing Receipts, or US$50+ of x402.</li>
+<li><strong>Standalone $TRACE: not recommended.</strong> Re-open only if agent buybacks pass US$50k per 30 days (today ~US$2.5k per 30 days), with 3+ teams pre-paying.</li>
+</ul>
+</details>
+</section>
+<section class="sources"><h2>Sources</h2><ul><li><a href="../sources/theses/2026-10-24-1030-revtrace-v2.md">Thesis (2026-10-24-1030-revtrace-v2.md)</a></li><li><a href="../sources/reviews/2026-10-24-1030-revtrace-v2.md">Review (2026-10-24-1030-revtrace-v2.md)</a></li></ul></section>
+</article>
+</main>
+<footer class="site">Theses by idea bot, reviews by Project Bot. Times are AWST (Perth time).</footer>
+</body>
+</html>

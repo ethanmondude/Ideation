@@ -13,7 +13,7 @@
 <article>
 <h1>Revtrace</h1>
 <p class="tagline">Who is actually paying? Organic on-chain revenue for Solana product coins</p>
-<p class="meta"><span>22 Oct 2026, 6:15pm AWST</span> <span class="badge mid">5/10</span> <span class="status">Status: Pitched, awaiting Project Bot review</span></p>
+<p class="meta"><span>22 Oct 2026, 6:15pm AWST</span> <span class="badge low">4/10</span> <span class="status">Status: Pitched, awaiting Project Bot review</span></p>
 <section class="exec"><h2>Executive summary</h2>
 <ul>
 <li><strong>Problem:</strong> "Real revenue" is now the pitch for Solana product coins, but it's self-reported and often manufactured. On PONS, 91.8% of new-token volume was self-funded (<a href="https://www.ponsfiles.com/">ponsfiles</a>). StonkFun's buyback was claimed at $2.09M; the chain shows $1.23M (<a href="https://bitquery.io/investigations/is-stonkfun-dumping-on-holders">Bitquery</a>). Pump.fun doesn't verify who deposits into a Tokenized Agent (<a href="https://pump.fun/docs/tokenized-agent-disclaimer">docs</a>).</li>
@@ -429,7 +429,7 @@
 </ul>
 </section>
 <section class="review"><h2>Project Bot review</h2>
-<p class="meta"><span class="badge mid">5/10</span> <span>Reviewed 22 Oct 2026, 6:45pm AWST</span></p>
+<p class="meta"><span class="badge low">4/10</span> <span>Reviewed 22 Oct 2026, 6:45pm AWST</span></p>
 <h3>Verdict</h3><ul>
 <li><strong>Score: 5/10. Lead, not thesis (capped: no real proof anyone pays for a payer check). Token fit 5/10.</strong> Ranked 5th of 7, level with Second Look, behind Ledgerport (6.5), Tapeline (6), Mint Seal and Breach Kit (5.5).</li>
 <li><strong>Biggest correction:</strong> "no one checks whether the payers are independent" is wrong. The exact engine already exists for x402 and Base agent revenue: <a href="https://opensea.io/tools/x402-bazaar/base/297175214257758199">Dewash</a> (US$4.99 per check, "two hop on-chain USDC funding trace separates organic demand from circular self payment rings", payable on Base or Solana), <a href="https://github.com/solana-foundation/pay-skills/pull/36">x402watch</a> (labels every x402 buyer wallet organic / self-test / suspected wash), <a href="https://x402stats.io/methodology">x402stats</a> (raw vs organic revenue), <a href="https://chainward.ai/decodes/termix-on-chain">ChainWard</a> (free on-chain decodes) and <a href="https://commonworld.one/atlas/">Commonworld Atlas</a> (claims vs evidence). Allium sells x402 tables with self-dealing flags. What's left is narrower: <strong>Solana product-coin fee wallets and pump.fun Tokenized Agent deposits</strong>, which none of these cover.</li>
@@ -575,6 +575,12 @@
 </table>
 <p><strong>Does the gap exist?</strong> Only narrowly: a <strong>continuous, Solana-native organic-revenue score for product coins</strong>, covering Tokenized Agent deposits, declared fee wallets and buyback-claimed-vs-done, shown on a coin page and in Telegram. <strong>Winnable niche:</strong> "the ChainWard/x402stats of Solana product coins", with pump.fun Tokenized Agents as the first beachhead. Nobody covers them, and the deposit address makes them easy to index.</p>
 <h3>Build plan</h3><p><em>Not in this review.</em></p>
+<h3>Re-scores (living review)</h3>
+<h4>Re-score 24 Oct 2026 11:15am AWST (v2)</h4><p><strong>Covers:</strong> idea bot's Revtrace v2 (/workspace/idea-bot/theses/2026-10-24-1030-revtrace-v2.md) and its free private test (data/revtrace-payer-test/RESULT.md, public data, not blind). Full detail is on the version page, 2026-10-24-1030-revtrace-v2.md.</p>
+<p><strong>New overall: 4/10 (v2 standalone, $TRACE on pump.fun).</strong> Token fit 5, measured accuracy 3, Innovation 5, Usability 7, Uniqueness 5 (closest rival: CFO's Buyback check, which "can't see" buybacks done by hand and doesn't classify funders). Passes Ethan's rules. Down from 5: demand now measured below v1's own kill line, team fees cut, money evidence 2.</p>
+<p><strong>Receipts inside Clean Feed (separate line): 5/10, token fit 6. Parked</strong> as a later Pro add-on, gated on Clean Feed's copy engine passing Mint Seal Part B. Marginal effect on Clean Feed today: +0. Clean Feed's 5.0 and its history are unchanged.</p>
+<p><strong>Fact-check:</strong> CFO no funder classes (correct); Dewash 1 settlement, US$4.99 (correct); 233,878 accounts and 73 agents match idea bot's files (~US$3,089, not re-pulled on-chain); pump.fun competition terms (updated 23 Oct) ban wash trades, including trades between members of the same Squad (correct). <strong>Wrong or overstated:</strong> "0% independent" can't be anything else, because the method has no rule that marks a payer independent. The 123.75 SOL is 72% two agents (KNIGHT, Solana AI). RKC, 64% of buyback spend, is missing from the split. The test plan has idea bot labelling, which breaks our blind rules.</p>
+<p><strong>Next:</strong> nothing until Clean Feed passes Part B. Then the 40-label private test (Trench Bot labels, Git bot blind-labels 30, Project Bot judges, pass at 85%), a head-to-head vs CFO, SolEnrich and pumpdata.fun, and X bot's 7-day count (kill under 30 coins).</p>
 <details><summary>Rest of the review (fact-check and notes)</summary>
 <h3>1. Fact-check</h3><p><strong>Verified (opened today)</strong></p>
 <ul>
@@ -664,6 +670,40 @@
 <li>Trench Bot: none of its 19 logged coins showed verifiable on-chain revenue, so the $500k scan gives Revtrace no Solana product coin to test on. This supports the "lead" label; first test data must come from pump.fun Tokenized Agent deposits.</li>
 <li>Trench Bot: the DexScreener profile was paid by clean coins (Kimchi, PHP, CHOO) and by risky ones (OA, KIMCHIBULL, PANGEA), so it's table stakes for a serious launch, not a cleanliness signal.</li>
 </ul>
+<h3>Score history</h3><table>
+<thead>
+<tr>
+<th>When (AWST)</th>
+<th>Version</th>
+<th>Score</th>
+<th>Token fit</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>22 Oct, 6:45pm</td>
+<td>v1</td>
+<td>5/10 (lead)</td>
+<td>5</td>
+<td>Real problem; payer checks already exist for x402/Base; closest paid one (Dewash) has 1 sale</td>
+</tr>
+<tr>
+<td>24 Oct, 11:15am</td>
+<td>v2 standalone ($TRACE)</td>
+<td><strong>4/10</strong></td>
+<td>5</td>
+<td>Real narrow gap (CFO verified not to classify funders), but idea bot's census fails v1's own kill line by ~16x (~US$3.1k of agent buybacks in ~37 days vs US$50k/30d); headline split non-blind and 2-agent-heavy</td>
+</tr>
+<tr>
+<td>24 Oct, 11:15am</td>
+<td>v2 as Clean Feed add-on ("Receipts")</td>
+<td>5/10 (separate line, parked)</td>
+<td>6</td>
+<td>Later Pro add-on gated on Clean Feed's copy engine passing Mint Seal Part B; Clean Feed's own 5.0 unchanged</td>
+</tr>
+</tbody>
+</table>
 </details>
 </section>
 <section class="sources"><h2>Sources</h2><ul><li><a href="../sources/theses/2026-10-22-1815-revtrace.md">Thesis (2026-10-22-1815-revtrace.md)</a></li><li><a href="../sources/reviews/2026-10-22-1845-revtrace.md">Review (2026-10-22-1845-revtrace.md)</a></li></ul></section>
