@@ -148,3 +148,86 @@ DexScreener profile (~A$428) only from revenue.
 1. Same-event judge hits the pass line (8+ of 11 stale caught, 5 or fewer false flags on the 80 rows): Differentiation 4 → 5.5, overall about +0.5. Free, private.
 2. v2 builds in the date stamp, dev-tie flag, exact-mint resolution, on-chain pool reads and an x402/MCP endpoint, with a licensed news source named and costed: Distribution +0.5, overall about +0.25.
 3. Any evidence that traders pay for accuracy (for example a Whop or on-chain product selling verification rather than speed): Money evidence 6 → 7, overall about +0.5. The founding-pass test stays parked until Ethan picks this thesis.
+
+## Re-score 24 Oct 2026 8:35am AWST (v2)
+**Covers:** idea bot's Tapeline Check v2 (/workspace/idea-bot/theses/2026-10-23-0900-tapeline-check-v2.md, 23 Oct 9:00am AWST). Also:
+- Trench Bot's blind same-event run (/workspace/trench-bot/blind-same-event/RESULT.md and METHOD.md; predictions frozen 23 Oct 8:52am AWST, sha256 recorded, scored afterwards).
+- Trench Bot's poster-track-record.jsonl (79 handles).
+- X bot's three thesis-refine notes (x-bot:signal:2026-10-23-0845-001/002/003).
+- Fresh web checks of the new rivals, Newsflash and Brave pricing.
+- Prep draft: /workspace/project-bot/drafts/draft-rescore-tapeline-check-v2.md (23 Oct 8:48am AWST).
+
+**Blind same-event check (Trench Bot, never saw the labels): FAIL, kill line.**
+- **Result:** caught **5 of 11** stale headlines (pass is 8 or more) with **7 false flags out of 69** (pass is 5 or fewer). That's under 6 caught, so it's past idea bot's kill line for the stamp as the lead feature.
+- **False flags:** all 7 matched a real earlier article about the same event. Six were reposts 1 to 2.5 days after the first report, and the labels don't count a next-day repost as stale. The seventh was OpenAI "in talks" versus the actual raise 21 days later.
+- **Misses:** 5 of the 6 were retrieval or paraphrase failures, where title-only search never found or matched the earlier story. One was the judge being too strict: Kraken/VARA scored a cosine of 0.65 against a 0.75 bar.
+- **Post-hoc 48h cutoff:** 4 caught, 2 false flags. That's not official, and catches never reach 8 at any cutoff.
+- **Caveat:** the rules were tuned about 4 times on Trench Bot's own reading of the same 100 posts, so the result is slightly optimistic. The run was free: Google News RSS (personal use only), MiniLM on CPU, no LLM.
+- **Reading:** the judge separates "same event" from "same topic" much better than keywords did (7 false flags vs 23–38). The bottleneck is **retrieval from titles only**, plus where the stale line sits.
+
+**Weak spots from the last review, checked against v2's "what changed":**
+- **Differentiation (verdicts already free):** pivoted to a "first happened" stamp. Still not proven buildable at the pass line.
+- **Nobody pays for accuracy:** still open. ArcaneNews and PVP ship old-news flags inside paid terminals, but nobody shows payment for the flag itself.
+- **X policy (paid-promo label, public scorecard):** cut. Fixed.
+- **Exact mint, dev-tie flag, on-chain pool reads:** fixed (in design).
+- **Agent channel (MCP, x402, Grok Bot template):** fixed (in design).
+- **Licensed news source:** named and costed, but there's a new problem. Brave's FAQ says storing results needs "a plan that includes storage rights", which clashes with the own-archive moat. Newsflash's free tier only reaches back 30 days, and at least 3 of v2's own stale examples (Warsh in April, the January wallet, the 2025 Trump quote) are older than that.
+- **Retention:** design only (Telegram alerts). No usage evidence.
+
+**Fact-check of new claims:**
+- **Confirmed:**
+  - ArcaneNews "Old news detection" and "Same news detection" ([arcane.news](https://arcane.news/)).
+  - PVP's "Old News Threshold", which is delivery latency, not event age ([docs](https://docs.pvpterminal.com/desktop/desktop/settings/news)).
+  - Tweet Fact Checker: "DEMO ONLY", no ratings.
+  - Stale News Warning: 0 stars.
+  - Custom Timestamps for X: 1 rating, post age only.
+  - Newsflash: free key 1,000 a day with 30-day history; US$29/month for the 5-year archive; events carry `first_seen_at`, semantic match and an MCP server ([docs](https://newsflash.sh/docs)).
+  - Brave Search: US$5 per 1,000 calls with US$5 of free credit a month, which needs attribution ([Brave](https://brave.com/search/api/), [Brave blog](https://brave.com/blog/most-powerful-search-api-for-ai/)).
+- **Corrections:**
+  - FactCheckRadar's store page shows "Updated October 22, 2026" (not 19 Oct). It also dates images ("when it first surfaced") ([store](https://chromewebstore.google.com/detail/factcheckradar/obepkghlneckiemaclcigahjnbkonhnf)).
+  - The budget items add to A$710. It's ~A$694 only if the A$16 news line comes out of contingency.
+  - The day-30 items add to A$110, not A$104. Both are still well inside A$1,000.
+- **Not re-verified:** X API read price, the 17 complaints in 7 days, Larpcheck's user count.
+- **Poster track record:** all 79 handles are rated low confidence and 65 appear on only one coin. It records who posts about coins, not who posts headlines, so it doesn't move the score.
+
+**Token check (ASIC):**
+- Holding sets the auto-stamp quota, and agents burn **their own** $TPLN for API credits.
+- Card and USDC payments are never converted into token buys. Creator fees are bonus income only, never buybacks or burns. Holder Rewards and Tokenized Agent buybacks are off. pump.fun only, and launch only after 25 payers.
+- **Pass.** Token fit stays 6, since it's still the Larpcheck hold-to-access pattern.
+
+**Competitors the sweep missed:**
+- [Kronical](https://kronical.ai): it "separate[s] the first report of a story from the repeat coverage that follows it" across news, filings and X, for finance teams and agents. Its co-founder pitches it under crypto posts. It's not an on-X stamp and has no public price, but it's the closest rival to the v2 core.
+- [Mycroft Media Narrative Tracker](https://github.com/Humanitariansai/Mycroft/tree/main/n8n_Workflows/Media_Narrative_Tracker): an open-source n8n workflow that gives financial news an "information age" score with Groq, and has no labelled ground truth.
+- Also: Newsflash's `first_seen_at` over MCP is now a substitute for our agent channel, not just a supplier.
+- Both rows are logged in missed-competitors.jsonl.
+
+**Refined idea:** Tapeline Check becomes a **"first reported" line on every market post, with a staleness flag the user sets**, rather than a stale/not-stale verdict.
+- **Retrieval is the fix:** match on Newsflash first-seen events plus the **article ledes** and exact publish times (not titles), stored as our own derived records (post ID → event, first date, source URL) so we stay within Brave's terms. Brave News is used transiently for stories older than 30 days.
+- **Two-stage judge:** first the cheap figure/name/action rules (they cut false flags from 23–38 to 7), then a small LLM on the top 3 candidates asking "same event, later development, or same topic?". That handles "in talks" turning into "raised" and paraphrases like Kraken.
+- **Staleness flag:** user-set, for example "first reported 2+ days ago and nothing new", because next-day reposts aren't misleading to the labeller. Abstain rather than false-flag.
+- **Coin card:** trimmed to exact mint plus the pumpdata dev check for the 4-week build.
+- **Agent channel:** has to beat "Newsflash MCP + any LLM" on measured accuracy.
+- **Re-test:** the same 80 rows on a fresh blind run before anything else.
+
+| Category | v1 (23 Oct 8:50am) | v2 | Reason and source |
+|---|---|---|---|
+| Problem severity | 6 | 6 | No new harm evidence |
+| Timing | 7 | 7 | Unchanged |
+| Differentiation | 4 | 4 | The stamp is uncovered on X, but the blind run caught only 5 of 11 (RESULT.md). Kronical, ArcaneNews and Newsflash `first_seen_at` narrow the slot |
+| Usability | 8 | 8 | Automatic stamp, no tagging |
+| Ape appeal | 7 | **6.5** | Public "who called it first" scorecard cut for X policy. "This happened 14 days ago" is useful but less exciting |
+| Solo buildability | 7.5 | **7** | The core judge failed on free retrieval. It needs licensed ledes and an LLM stage, and v2's 4-week scope grew (coin card, MCP, x402, Telegram) |
+| Self-serve sales | 9 | 9 | Unchanged |
+| Distribution | 6 | **6.5** | MCP, x402 and Grok Bot template now in the plan and costed (+0.5 pre-committed on 23 Oct). Newsflash MCP is a substitute, so no more than that |
+| Retention | 5 | 5 | Telegram alerts are design only |
+| Money evidence | 6 | 6 | Old-news flags exist inside paid terminals, but nobody pays for accuracy. Still capped |
+| Token fit | 6 | 6 | ASIC check passes |
+| **Overall** | **5.5** | **5.0** | **Kill line on the blind check.** The lead feature isn't proven, and the gains (agent channel, X-policy cut) are offset by lower ape appeal and buildability. **v1 at 5.5 stays the best version.** |
+
+**Rules gate: PASS** (tech-bro buyer; token fit 6 ≥ 5). **Rank:** v1's 5.5 still counts, so Tapeline Check stays 1st among rules-passing theses. Overall it's level with Mint Seal and Breach Kit, behind Ledgerport 6.5 (outside the rules) and Tapeline 6 (superseded). v2 on its own would sit with Second Look, Revtrace and Askwatch at 5.
+
+**What would lift this score (updated):**
+1. A fresh blind run with lede-based retrieval (Newsflash events plus ledes) and the small-LLM second stage passes on the same 80 rows (8+ of 11 caught, 5 or fewer false flags), with the stale line set at 2+ days. That takes Differentiation 4 → 5 and overall to 6.0 (the no-payer cap). Use a fresh blind bot, or held-out rows, because this set has now been tuned on.
+2. Evidence that traders pay for old-news or accuracy flags specifically: Money evidence 6 → 7, which lifts the cap.
+3. Judge accuracy measured above a "Newsflash MCP + LLM" baseline on the same rows: Differentiation +0.5, Distribution +0.5.
+4. Founding-pass test (parked until Ethan picks this thesis to launch).

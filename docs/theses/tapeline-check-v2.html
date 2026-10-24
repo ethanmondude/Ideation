@@ -1,0 +1,538 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tapeline Check v2</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="site"><a href="../index.html">Startup theses</a></header>
+<main>
+<p class="back"><a href="../index.html">&larr; All theses</a></p>
+<article>
+<h1>Tapeline Check v2</h1>
+<p class="tagline">When did this headline actually happen, and what does the fine print get wrong?</p>
+<p class="meta"><span>23 Oct 2026, 9:00am AWST</span> <span class="badge mid">5/10</span> <span class="status">Status: Pitched v2, awaiting Project Bot re review</span></p>
+<section class="exec"><h2>Executive summary</h2>
+<ul>
+<li><strong>Problem.</strong> A lot of the crypto and macro "BREAKING" posts that move perps are real events that already happened: a 2025 Trump quote, Warsh's April remarks, an 8 Oct government wallet move reposted on 22 Oct. Others get the fine print wrong (last month's figure shown as the forecast, BlackRock "dumping" when its clients redeemed). In Project Bot's 100 hand-labelled headlines, <strong>about 1 in 4 would mislead a trader</strong> and <strong>11 were stale</strong>. Free checkers replied under only 15 of the 100 posts, and <strong>none of the stale or contradicted ones</strong>.</li>
+<li><strong>Product.</strong> A Chrome extension on x.com that automatically stamps market headlines: <strong>"first happened 8 Oct (14 days ago) · CoinDesk"</strong>, or "new today · confirmed by BLS 2 min after", plus a fine-print flag ("figure is last month's", "actor is clients, not BlackRock") and live prices of what it names (Hyperliquid incl. HIP-3/trade.xyz, Solana tokens). Coin posts get a factual card showing the pair's age when it was posted and a dev-wallet check. Free for on-click stamps. Pro US$29/month for automatic stamps across the feed, watchlist alerts in Telegram, and long-memory checks. Desk/API US$99/month, with x402 per call for agents.</li>
+<li><strong>Who pays and the token's job.</strong> Crypto-native perps and memecoin traders who already pay for headline speed (Tree News burned US$61.3k in 30 days, DefiLlama; 247 Terminal has 181 members at US$99, WhopScope). <strong>$TPLN on pump.fun:</strong> hold for Pro and bigger watchlists, burn your own tokens for long-memory deep checks or prepaid API credits. Card and USDC payments are never converted into token buys. No holder payouts, no fee-funded buybacks.</li>
+<li><strong>Cost against A$1,000.</strong> About <strong>A$104 to day 30</strong> and <strong>A$694 over 4 months</strong>, including a A$300 legal consult and a A$83 token launch, all before revenue. That leaves about A$306 of headroom. Running cost is about A$75 a month.</li>
+<li><strong>Path to US$10k/month.</strong> 345 Pro subscribers. The base case is US$3-6k MRR at month 12 (estimate), from on-X replies (with Ethan's OK), Telegram trader groups, agent channels and a free "stale repost" alert channel.</li>
+<li><strong>Why now and the edge.</strong> Verdict bots just became normal on crypto X, but they all work on demand and answer "did it happen?", not "when?". Our labelled set shows the "when" is where traders get hurt. The edge is a long-memory headline archive plus a same-event judge measured on labelled data, and it sits right on the post with no tagging.</li>
+<li><strong>Main risk and first move.</strong> Free on-demand checkers (FactCheckRadar, Basis Desk, Larpcheck) could add a date line in weeks, and nobody is shown paying for accuracy. First move this week (free, private): run a same-event judge over this morning's 80 candidate lists. <strong>Pass at 8 or more of 11 stale caught with 5 or fewer false flags.</strong></li>
+<li><strong>Verdict: test, about 40% (unchanged).</strong> The wedge is sharper and measured, and the public X-policy risk is gone. Demand for accuracy is still unproven.</li>
+</ul>
+</section>
+<section class="thesis"><h2>Full thesis</h2>
+<div class="byline"><p><em>Idea bot thesis, Fri 23 Oct 2026, 9:00am AWST (Perth). Path: /workspace/idea-bot/theses/2026-10-23-0900-tapeline-check-v2.md. <strong>Version 2 of Tapeline Check</strong> (v1: theses/2026-10-22-2230-tapeline-check.md, Project Bot 5.5/10, token fit 6/10, 1st of the theses that pass Ethan's rules). Same thesis id: idea-bot:thesis:tapeline-check. Built from Project Bot's v1 review, its 100 hand labels, X bot's backfill and checker-reply pull, Git bot's pumpdata.fun refinement, Growth Bot's refine protocol and a new free private test run this morning (data/stale-check/README.md).</em></p></div>
+<h3>What changed in v2</h3><p>Each line answers a weakness in Project Bot's v1 review (reviews/2026-10-22-2245-tapeline-check.md).</p>
+<ol>
+<li><strong>Differentiation (scored 4): pivoted.</strong> v1 sold a true/false verdict under market headlines. Free tools already do that on demand (Larpcheck, Basis Desk Verify, SpyGlass, and FactCheckRadar, found this run). Our own labels show the real gap is elsewhere. 90% of market-moving originals were true; the damage came from <strong>old news posted as new</strong> (11 of 23 misleading headlines) and <strong>fine-print errors</strong> (wrong figure, wrong actor, overstated scope). Not one of the 11 stale or contradicted posts that free checkers could have caught got a Grok or Larpcheck reply (0 of 15 replies landed on them). v2 leads with an automatic <strong>freshness stamp</strong>: "first happened 8 Oct, 14 days ago, at [CoinDesk]", plus a fine-print flag. Partly fixed. The plain verdict stays as a secondary line, because it isn't ours to win.</li>
+<li><strong>Missed competitors: swept the channels that missed them, and found more.</strong> Added FactCheckRadar (Chrome Web Store, an X fact-check button that checks dates, updated 19 Oct 2026, in-app purchases), ArcaneNews (a crypto news-trading terminal with "old news detection" and "same news detection"), Tree/PVP Terminal's "Old News Threshold" (which measures delivery lag, not event age), Tweet Fact Checker, Stale News Warning and Custom Timestamps for X. All of them are on-demand, in a separate terminal, or only measure the post's own timestamp. None stamps the event's first date automatically under X posts. The gap narrows but holds.</li>
+<li><strong>X Developer Policy risk: cut.</strong> The public scorecard, the "paid promo" label and "who boosted it" detection come out of the public product. The last of those is contested anyway (devs_hunter, bitecong, WhodlBot). The stamp is a fact about the <em>event</em>, taken from off-X sources ("this claim first appeared at [outlet] on [date]"). It isn't a measurement of X accounts. Poster records stay private research until X agrees in writing.</li>
+<li><strong>Token score (6): small change, honestly still about 6.</strong> Holding now sets watchlist size (how many accounts get stamped automatically), and agents can prepay API credits by burning their own $TPLN. x402 USDC per call is the other agent rail. It's still close to Larpcheck's hold-to-access model, so I don't expect a big jump.</li>
+<li><strong>Demand evidence: still the weak spot, not fixed.</strong> Explicit "this is old news" complaints under crypto BREAKING posts are rare: 17 in 7 days (X counts, 16-23 Oct UTC). The evidence is behavioural. 1 in 4 headlines mislead once timing and fine print count, and the free checkers miss those. Only the founding-pass money test can fix this, and it runs once Ethan picks this thesis to launch as a coin.</li>
+<li><strong>Budget: re-costed at about A$694 over 4 months.</strong> The extension reads the post the user is already viewing, so X API reads are needed only for watchlist alerts. Google News RSS can't be used in production: its feed licence says "personal, non-commercial use". So production uses our own RSS/announcement archive plus a licensed search API.</li>
+<li><strong>New: free private test run this morning.</strong> An automated "posted before?" check, with no LLM and no paid API, found the earlier story for about 6 of 11 stale headlines. But keyword rules can't separate "same event" from "same topic" (38 false flags in 69 fresh posts). So a same-event judge is the core build, and the next free test has a numeric pass line.</li>
+<li><strong>Growth Bot's triggers and Project Bot's 8:50am re-score list: added.</strong> Project Bot re-scored v1 at 8:50am and left it at 5.5. It listed what would lift the score, and v2 now covers each item:
+   - A coin-post card that first resolves <strong>which exact mint</strong> the post means (the Project Kimchi vs Kimchi mix-up).
+   - A <strong>dev-tie flag</strong> when the poster has promoted the same dev's earlier mints. That's the BTC/@slingoorio case. It shows as links to the earlier posts and mints, not as a score.
+   - A dev-wallet history from pumpdata.fun's free tier (300 lookups a day).
+   - Market cap and liquidity <strong>read from the pool on-chain</strong> (FORK's frozen DexScreener feed).
+   - A flat-volume, buy-equals-sell <strong>staircase tell</strong> (MrBeast EsUyx7).
+   - A named and costed licensed news source: Newsflash (free key, 1,000 calls a day; US$29/month premium with five-year history) plus Brave News Search (US$5 per 1,000 calls, with US$5 of free credit a month).
+   - A new Agent distribution section: an MCP server, an x402 endpoint and a one-tap Grok Bot template (pumpdata.fun's model).</li>
+<li><strong>Retention (5): small fix.</strong> Telegram alerts fire when a watched headline turns out to be a stale repost, or gets confirmed or contradicted. That gives people a reason to come back between news bursts.</li>
+</ol>
+<h3>Problem and user</h3><ul>
+<li><strong>The user:</strong> crypto-native traders who trade headlines on Hyperliquid (including trade.xyz pre-IPO and stock perps), Solana terminals and CEX perps, plus small callers and desks who repost news. They live on x.com, so the check has to sit on the post.</li>
+<li><strong>What goes wrong (sourced from our private labelled set; don't publish per-account results):</strong></li>
+<li>100 headlines from 40 high-volume accounts (X bot backfill, 4,134 posts, 22 Sep-22 Oct). Project Bot labelled 71 confirmed, 8 contradicted, 1 single-source and 20 paid promo. idea bot's blind 30 agreed on 90% (kappa 0.79).</li>
+<li>Misleading types: 11 stale, 4 wrong figure, 4 overstated, 3 wrong actor, 1 early.</li>
+<li>Examples: the "Warsh just killed the CBDC" post on 14 Oct repeated April remarks. The "2,000 BTC Satoshi-era wallet" post on 17 Oct recycled a January move, and its $180M figure only fits January's price. A 22 Oct "US government wallet just moved $1B from the Bitfinex hack" was an 8 Oct event (CoinDesk, Decrypt and CryptoSlate all ran it on 8 Oct, per the Google News results in data/stale-check/).</li>
+<li><strong>Today's workaround:</strong> type "@grok is this true". Explicit asks with market words run 15-40 a day (X counts, v1). Under the 100 labelled posts, Grok replied 14 times and Larpcheck once, all under big accounts. Grok caught 2 of 6 true-but-misleading framings (X bot checker-reply pull; 25 of 36 reply matches are inferred).</li>
+<li><strong>Trader quotes (from v1, not re-checked today):</strong> <a href="https://x.com/Benne1818_/status/2103475842009440627">Benne1818_</a>: "Got liquidated on my AMD because of … fake news about Hormuz opening". <a href="https://x.com/student_charts/status/2108538716100972788">student_charts</a>: "fake news … caused havoc in #AI trade".</li>
+<li><strong>Academic backing that stale news moves prices:</strong> Fedyk and Hodson, <a href="https://ai.updf.com/paper-detail/when-can-the-market-identify-old-news-fedyk-hodson-b7a99832989a09cd8f98c11759ab401a366031e6">"When Can the Market Identify Old News?"</a>, Bloomberg terminal data. Recombined stale stories still move prices and later reverse.</li>
+</ul>
+<h3>Evidence of money</h3><ul>
+<li><strong>Tree News:</strong> US$61,347 in 30 days, US$1.05M in a year, US$3.54M all-time in TREE burns (<a href="https://api.llama.fi/summary/fees/tree-news">DefiLlama</a>). Caveat from Project Bot: the adapter also counts USDC buy-and-burns, so only part of that is the copyable "users burn their own tokens" pattern. Traders pay for <strong>speed</strong> here.</li>
+<li><strong>247 Terminal:</strong> 181 members at US$99/month, 4.93 stars from 14 reviews (<a href="https://whopscope.com/w/247terminal">WhopScope</a>). That's about US$18k/month (estimate).</li>
+<li><strong>ArcaneNews and Tree/PVP Terminal</strong> ship "old news" flags inside paid terminals (<a href="https://arcane.news/">ArcaneNews</a>: "Automatic detection to flag potential old news and option to remove it from your feed". <a href="https://docs.pvpterminal.com/desktop/desktop/settings/news">PVP Terminal docs</a>: "Old News Threshold … to be labeled 'OLD NEWS' (and possibly more risky to trade)"). <strong>This is the best new money signal.</strong> Paying news traders already value an "old news" label enough that terminals build it. Theirs measures delivery lag or duplicates inside their own feed, not when the event first happened, and only inside their app.</li>
+<li><strong>FactCheckRadar</strong> sells in-app purchases on an X fact-check button (<a href="https://chromewebstore.google.com/detail/factcheckradar/obepkghlneckiemaclcigahjnbkonhnf">Chrome Web Store</a>). It's general-purpose, its prices aren't public and its revenue is unknown.</li>
+<li><strong>What's missing:</strong> no product is shown earning money from headline <em>accuracy</em> for crypto traders. Larpcheck and Basis Desk give it away.</li>
+</ul>
+<h3>Bottom-up market sizing (assumptions labelled)</h3><ul>
+<li><strong>Spend pool (sourced plus estimate):</strong> Tree (US$61k/month) plus 247 (about US$18k/month, estimate) is about US$80k/month that crypto traders already pay for headline tools.</li>
+<li><strong>Reachable traders (sourced, v1):</strong> Hyperliquid frontends reached 125.4K users in 30 days (OpenChainBench, 22 Oct).</li>
+<li><strong>Assumption A:</strong> 0.25-0.5% of those pay US$29. That's 310-630 payers, or <strong>US$9.0k-18.3k MRR</strong>.</li>
+<li><strong>Assumption B:</strong> Desk/API at US$99 for 10-20 desks and bot builders adds <strong>US$1-2k</strong>. Agent x402 calls at US$0.01 add US$0.3k at 1,000 calls a day (estimate).</li>
+<li><strong>Sense-check:</strong> 10-20% of Tree's monthly spend is US$6-12k. <strong>The base case is US$3-6k MRR at month 12</strong> (estimate), because the free on-demand checkers cap what people will pay.</li>
+</ul>
+<h3>Competitive teardown</h3><table>
+<thead>
+<tr>
+<th>Competitor</th>
+<th>What it does</th>
+<th>Pricing</th>
+<th>Revenue / traction</th>
+<th>Gap it leaves</th>
+<th>Why they won't build our slice soon</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Grok (@grok "is this true")</td>
+<td>On-demand answer when tagged</td>
+<td>Free</td>
+<td>Built into X; 14 of 100 labelled posts got a reply</td>
+<td>Manual; caught 2 of 6 misleading framings; no event-date stamp</td>
+<td>X won't label its own big accounts' posts as stale at scale</td>
+</tr>
+<tr>
+<td><a href="https://larpcheck.app/how">Larpcheck</a></td>
+<td>Tag under any post: claim checked against sources, 0-100 score</td>
+<td>Free replies; Pro by holding $LARPCHECK</td>
+<td>Self-reported ~1,000 users/day</td>
+<td>Tag-only; 1 of 100 labelled posts got a reply</td>
+<td>Could add a date line fast. <strong>Biggest copy risk</strong></td>
+</tr>
+<tr>
+<td><a href="https://chromewebstore.google.com/detail/factcheckradar/obepkghlneckiemaclcigahjnbkonhnf">FactCheckRadar</a> (new)</td>
+<td>Fact-check button inside X posts; checks dates and sources; scheduled re-checks</td>
+<td>In-app purchases (prices not public)</td>
+<td>Updated 19 Oct 2026</td>
+<td>On click only; general (journalists, students); no market mapping or prices</td>
+<td>Built for general misinformation, not trading speed</td>
+</tr>
+<tr>
+<td><a href="https://basisdesk.news/news/basis-desk-verify-fact-check-crypto-news-chrome-extension">Basis Desk Verify</a></td>
+<td>Side panel: claims vs primary docs, live prices, token scam check</td>
+<td>Free</td>
+<td>Launched 7 Oct 2026</td>
+<td>Click-to-run, articles first, "never calls a page false", no automatic stamp on X</td>
+<td>A media brand; automatic labels on others' posts conflict with its editorial stance</td>
+</tr>
+<tr>
+<td><a href="https://devpost.com/software/spyglass">SpyGlass</a></td>
+<td>Inline verdict pill on every tweet (hackathon)</td>
+<td>n/a</td>
+<td>Demo</td>
+<td>Proves the UI is a weekend clone</td>
+<td>Not a business</td>
+</tr>
+<tr>
+<td><a href="https://arcane.news/">ArcaneNews</a> (new)</td>
+<td>News-trading terminal; old-news and same-news detection; execution</td>
+<td>1/6/12-month plans (price not public)</td>
+<td>Unknown</td>
+<td>Separate app; old = its own feed lag or duplicates</td>
+<td>Sells speed and execution; stamping posts on X would send users away from the terminal</td>
+</tr>
+<tr>
+<td>Tree News / <a href="https://docs.pvpterminal.com/desktop/desktop/settings/news">PVP Terminal</a></td>
+<td>Fastest feed; "Old News Threshold" on delivery lag</td>
+<td>Credits (TREE)</td>
+<td>US$61k/30d</td>
+<td>Lag, not event age; not on X</td>
+<td>Same as Arcane</td>
+</tr>
+<tr>
+<td><a href="https://chromewebstore.google.com/detail/tweet-fact-checker/oindinllpggjmeiofcchlpkjpjhhhgko">Tweet Fact Checker</a>, <a href="https://github.com/denny/Stale-News-Warning-chrome">Stale News Warning</a>, <a href="https://chromewebstore.google.com/detail/custom-timestamps-for-x/ajdpfnakibpakgacmijifjndjojcejpj">Custom Timestamps for X</a> (new)</td>
+<td>OpenAI fact-check button; old-article warning on 13 news sites; colours post age</td>
+<td>Free</td>
+<td>No ratings / 69 users / 1 rating</td>
+<td>Abandoned or post-timestamp only</td>
+<td>Hobby projects</td>
+</tr>
+<tr>
+<td>fable, UNMSK, Ethos, OnlyKOLs</td>
+<td>Coin, KOL and account labels on X</td>
+<td>Free / US$16</td>
+<td>Small</td>
+<td>Coins and accounts, not headlines</td>
+<td>Different data model</td>
+</tr>
+<tr>
+<td><a href="https://pumpdata.fun">pumpdata.fun</a></td>
+<td>pump.fun trade history, dev checks, Grok Bot template</td>
+<td>300 free/day, then US$0.005/call</td>
+<td>0-star repo, new</td>
+<td>Not headlines. <strong>A supplier for our coin card</strong></td>
+<td>n/a</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Gate c check on the v2 core job</strong> (automatic event-date stamp under X market posts): none of the working tools above does it. Three or more do on-demand verdicts, so the plain verdict is crowded and is no longer the lead. Sweep channels: Chrome Web Store, Devpost, rivals' own how-it-works pages, Git bot's gaps.jsonl and GitHub, X bot verdicts, missed-competitors.jsonl, X Developer Policy.</p>
+<h3>Product and UX</h3><p><strong>First minute.</strong> Install the extension and open x.com. Under "🚨 BREAKING: A US government wallet just moved $1B in Bitcoin from the Bitfinex hack" a grey line appears (illustrative, built from this morning's test): <code>FIRST HAPPENED 8 Oct · 14 days ago · CoinDesk, Decrypt · BTC −0.4% 1h</code>. Tap it for the Backstory card: the earliest matching sources with dates, the fine-print check, and what the post's figure matches. A new, real headline shows <code>NEW · confirmed by BLS 2 min after release</code>. A coin post shows <code>pair created 3h before this post · dev wallet: 4 prior launches, 3 below $5k (pumpdata)</code>. No sign-up for the free on-click stamp. Wallet or email login for Pro.</p>
+<p><strong>MVP stack.</strong></p>
+<ul>
+<li>Chrome MV3 extension (TypeScript). It reads only the visible post (text, ID, timestamp) and sends text plus ID to the API. No remote code. Narrow permissions under Chrome's Limited Use rules.</li>
+<li>API on a A$10/month VPS (Hono/Node) plus Supabase:</li>
+<li>(1) claim extractor (small LLM, cached per post ID);</li>
+<li>(2) <strong>retrieval</strong> from our own archive (RSS from about 60 crypto, macro and exchange sources; Binance/Coinbase/OKX/Upbit announcement endpoints; SEC EDGAR; BLS/BEA release calendars), plus <a href="https://newsflash.sh/docs">Newsflash</a> events (free key 1,000/day with 30 days of history; US$29/month premium with five-year history) and <a href="https://brave.com/search/api/">Brave News Search</a> (US$5 per 1,000 calls, US$5 free credit a month) for older stories;</li>
+<li>(3) <strong>same-event judge</strong>: small LLM over the top 15 candidates, checking event, actor and figure, and returning the earliest matching date. Embeddings pre-filter;</li>
+<li>(4) market mapper (Hyperliquid info API incl. HIP-3, DexScreener, GeckoTerminal candles);</li>
+<li>(5) coin card: exact-mint resolution (the CA in the post, else ticker plus the pinned official CA, never "first search hit"); dev-wallet history from pumpdata.fun's free tier; pool reserves read on-chain through a free Solana RPC tier; flat-volume and buy/sell-symmetry tell from recent candles; dev-tie links when our archive holds this account's posts about the same dev's earlier mints.</li>
+<li>Telegram bot (grammY) for watchlist alerts. Payments: Solana Pay USDC to a public wallet, Lemon Squeezy card, and $TPLN burn/hold verified on-chain with <code>@pump-fun/pump-sdk</code>.</li>
+</ul>
+<p><strong>Week by week (about 20-25 h/week).</strong></p>
+<ol>
+<li>Archive ingest plus the same-event judge, scored against the 80 labelled rows (the pass line below).</li>
+<li>Fine-print checks (figure vs consensus/prior release, actor) and the market mapper. Verdict API with cache.</li>
+<li>Extension stamp, Backstory card, Pro gating, payments, Telegram alerts.</li>
+<li>Agent channels (MCP, x402, paste-in prompt), coin card, unlisted Chrome listing.</li>
+</ol>
+<p><strong>Advanced parts.</strong> Event-level dedup across languages (Yonhap-first stories). Figure normalisation ($180M for 2,000 BTC implies a price, which dates the story). A point-in-time archive so "first happened" is reproducible.</p>
+<p><strong>What's hard.</strong> Same-event judging on weekly recurring topics (ETF flows, yields, CPI). Today's keyword rules false-flagged about half of fresh posts. Also coverage of hoaxes older than news search reaches.</p>
+<p><strong>What a copycat could clone.</strong> The stamp UI in a weekend. Not easily: the archive built over months, the labelled benchmark, and judge accuracy shown on it.</p>
+<h3>Agent distribution</h3><ul>
+<li><strong>MCP server</strong> (<code>freshness_check(text|post_url)</code> returns first-seen date, sources, fine-print flags, mapped markets). About 1 day to build. Free tier 50 checks/day.</li>
+<li><strong>x402 endpoint on Solana:</strong> US$0.01 per check in USDC, or burned $TPLN credits. About 2 days, using the solana-x402-microtools pattern (Git bot).</li>
+<li><strong>One-tap Grok Bot template plus a paste-in prompt</strong> for ChatGPT/Claude that calls the public API ("paste a headline or a post link, get when it first happened and what the fine print gets wrong"). That's the model of <a href="https://github.com/pumpdatafun/grokbot-pumpfun-template">pumpdata.fun's template</a> ("paste it once, send a contract address, get the dev check in seconds. Free, no key"). A Runsheet founder reported 9 of 12 weekly signups coming from AI assistants (self-reported, via X bot). About half a day.</li>
+<li>Build cost: about A$0 beyond the VPS. These channels reach bot builders and desks without ads.</li>
+</ul>
+<h3>Token design (pump.fun)</h3><ul>
+<li><strong>Jobs (all product use):</strong></li>
+<li>(1) <strong>Hold</strong> a set amount for Pro, and more for bigger watchlists (25 / 100 / 300 auto-stamped accounts). Verified by wallet signature.</li>
+<li>(2) <strong>Burn your own $TPLN</strong> per long-memory deep check (archive and licensed search beyond 90 days, about US$0.25, re-pegged monthly) or for a Pro month worth US$29.</li>
+<li>(3) <strong>Agents prepay API credits</strong> by burning their own $TPLN (an x402 alternative).</li>
+<li>Card and USDC are never used to buy the token.</li>
+<li><strong>Launch:</strong> pump.fun only. No meta shift: X bot's 4am lesson shows the rival-pad spike was Robinhood Chain DeFi news, and other launchpads ran 0-6 posts an hour. Launch after the first 25 paying users and the legal consult, on a product-reveal day with a live extension link.</li>
+<li>SOL pair. Mint and freeze authority revoked and confirmed on-chain before announcing.</li>
+<li><strong>Small labelled dev buy</strong> (≤0.5 SOL, wallet published). No bundles, snipers or paid callers.</li>
+<li><strong>Holder Rewards off. Tokenized Agent buybacks off.</strong></li>
+<li><strong>Pin one official CA</strong> from the official X account and site from day one, and match on contract only (copycat mints happen in the same second, as with $PAPZ).</li>
+<li><strong>On-chain fee flow and verification:</strong> every burn is the user's own SPL burn with a memo carrying the check ID. A public page lists burns from our indexer with Solscan links. Creator fees (0.30% on the curve, tiered on PumpSwap, <a href="https://pump.fun/docs/fees">pump.fun fees</a>) go to a published wallet as <strong>bonus income only</strong>, never to buybacks or burns. Public repo for the extension, judge rules and burn verifier.</li>
+<li><strong>Comparable tokenised products (organic vs shilled):</strong> Tree News TREE (verified burns, part USDC buy-and-burn). Larpcheck $LARPCHECK (hold-to-access; "61% bots" allegations). KOLscan $KOLS (hold-to-access). The Codex (burn per question, no burn seen, paid callers). Paparazzi $PAPA (Robinhood Chain, burns for fact-check credits, but its payouts are revenue-funded, which our rules bar). Lesson: don't project token income.</li>
+<li><strong>Legal line:</strong> a usage and access credit only. No profit, yield or "number go up" language. Stamps are factual ("first reported 8 Oct at [source]"), which sits inside ASIC's factual-information line (<a href="https://download.asic.gov.au/media/tkqi11il/rg244-published-13-december-2012-20211208.pdf">RG 244.24-25</a>), with no long/short wording. My reading, not legal advice; the A$300 consult covers it.</li>
+</ul>
+<h3>Budget and founder load (A$; US$1 ≈ A$1.43; estimates unless sourced)</h3><table>
+<thead>
+<tr>
+<th>Item</th>
+<th>One-off</th>
+<th>Monthly</th>
+<th>4-month total</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Domain plus Chrome Web Store fee</td>
+<td>33</td>
+<td></td>
+<td>33</td>
+</tr>
+<tr>
+<td>VPS (API, ingest, Telegram)</td>
+<td></td>
+<td>10</td>
+<td>40</td>
+</tr>
+<tr>
+<td>LLM: extractor plus same-event judge (~300 unique checks/day × ~US$0.002)</td>
+<td></td>
+<td>26</td>
+<td>104</td>
+</tr>
+<tr>
+<td>X API pay-per-use for watchlist alerts only (US$0.005/post read)</td>
+<td></td>
+<td>21</td>
+<td>84</td>
+</tr>
+<tr>
+<td>News sources: Newsflash free key (1,000/day) now, premium US$29/month only from revenue; Brave News Search beyond its US$5 free credit (~1,500 deep checks/month ≈ US$2.50)</td>
+<td></td>
+<td>~4</td>
+<td>16 (from contingency)</td>
+</tr>
+<tr>
+<td>pumpdata.fun (300 free lookups/day; US$10/month for 20,000/day only if needed) and free Solana RPC tier</td>
+<td></td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>Legal consult (defamation, factual-info line, token as credit)</td>
+<td>300</td>
+<td></td>
+<td>300</td>
+</tr>
+<tr>
+<td>Token launch (rent plus ≤0.5 SOL labelled dev buy)</td>
+<td>83</td>
+<td></td>
+<td>83</td>
+</tr>
+<tr>
+<td>Contingency</td>
+<td>50</td>
+<td></td>
+<td>50</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td></td>
+<td><strong>~A$57-72</strong></td>
+<td><strong>~A$694</strong></td>
+</tr>
+</tbody>
+</table>
+<p>To day 30: about A$104 (domain, Chrome fee, VPS, LLM, X reads, A$20 contingency). DexScreener profile (~A$428) and Newsflash (US$29/month) only from revenue. <strong>Founder load:</strong> 20-25 h/week for 4 weeks, then about 10 h/week, including 2-3 h of verdict disputes (a "dispute with source" button feeds the labelled set).</p>
+<h3>Business model and unit economics (estimates)</h3><ul>
+<li><strong>Price:</strong> Free (on-click stamps, 20/day). Pro US$29/month (automatic stamps, 25-account watchlist, Telegram alerts, deep checks). Desk/API US$99/month (300-account watchlist, webhook, 3 seats). Agents pay US$0.01 per call.</li>
+<li><strong>Cost to serve:</strong> a stamp is computed once per post and shared, so the cost is about US$0.30-0.80 per Pro user per month. Gross margin about 90% (estimate). Card fees about 5% + US$0.50. USDC and token payments about US$0.001.</li>
+<li><strong>Cash CAC about US$0.</strong> Time is the constraint.</li>
+</ul>
+<h3>Solo GTM</h3><ol>
+<li><strong>Private benchmark first</strong> (free): publish nothing, but once the judge passes, use the measured catch rate (for example "caught N of 11 stale headlines that Grok and Larpcheck never replied to") as the pitch line, with no account names.</li>
+<li><strong>First 10 users</strong> (needs Ethan's OK for any outreach): traders who reply "old news" or "@grok is this true" under market headlines, Hyperliquid and Solana Telegram groups, and small desks that repost news.</li>
+<li><strong>Free Telegram channel:</strong> "stale repost" alerts naming the <em>event and its first date</em>, not the poster.</li>
+<li><strong>Agent channels</strong> (MCP, x402, paste-in prompt) and Hyperliquid/Solana tool directories.</li>
+<li>A 25% referral share for subscriptions (cash, not token).</li>
+</ol>
+<h3>12-month financial snapshot (estimates)</h3><table>
+<thead>
+<tr>
+<th>Month</th>
+<th>Pro</th>
+<th>Desk</th>
+<th>MRR (US$)</th>
+<th>Cumulative cost (A$)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>0 (test)</td>
+<td>0</td>
+<td>0</td>
+<td>~104</td>
+</tr>
+<tr>
+<td>3</td>
+<td>40</td>
+<td>2</td>
+<td>~1.4k</td>
+<td>~550 (incl. legal and token)</td>
+</tr>
+<tr>
+<td>6</td>
+<td>90</td>
+<td>5</td>
+<td>~3.1k</td>
+<td>~770</td>
+</tr>
+<tr>
+<td>12</td>
+<td>150-250</td>
+<td>10-15</td>
+<td>~5.3-8.7k</td>
+<td>~1,200 gross; out-of-pocket stays under A$1,000 because running costs are covered by revenue from about month 4</td>
+</tr>
+<tr>
+<td>US$10k MRR needs about 345 Pro, or Pro plus Desk mixes. That's plausible but not the base case.</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3>Defensibility</h3><ul>
+<li>A point-in-time headline archive and a labelled benchmark that grows with every dispute.</li>
+<li>Same-event judge accuracy that we measure and can show.</li>
+<li>Distribution inside X plus agent channels. Weak against Larpcheck adding a date line, so speed of shipping and the archive's depth are the moat.</li>
+</ul>
+<h3>Risks (mitigation and cheap test)</h3><table>
+<thead>
+<tr>
+<th>Risk</th>
+<th>Mitigation</th>
+<th>Cheap test</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Same-event judge too noisy (recurring topics)</td>
+<td>Figure-and-actor match; abstain when unsure ("no earlier match found")</td>
+<td>Next free step: 8+ of 11 stale, ≤5 false flags on the 80 rows</td>
+</tr>
+<tr>
+<td>Free checkers add a date line</td>
+<td>Ship automatic and fast; the archive is the edge</td>
+<td>Watch Larpcheck and FactCheckRadar weekly (X bot)</td>
+</tr>
+<tr>
+<td>Nobody pays for accuracy</td>
+<td>Lead with alerts and watchlists (speed-adjacent)</td>
+<td>Founding pass, once Ethan picks this thesis to launch as a coin</td>
+</tr>
+<tr>
+<td>X Developer Policy</td>
+<td>No public account scores, promo labels or aggregate X metrics; event facts only</td>
+<td>Ask X for written OK before any public poster record</td>
+</tr>
+<tr>
+<td>News-source licensing</td>
+<td>Own RSS archive plus a licensed search API; no Google News RSS in production</td>
+<td>Price two search APIs at build week 1</td>
+</tr>
+<tr>
+<td>Defamation</td>
+<td>Factual wording with sources; the label is about the event, not the person</td>
+<td>Legal consult before public launch</td>
+</tr>
+<tr>
+<td>Token seen as investment</td>
+<td>Usage credit only; Holder Rewards and buybacks off</td>
+<td>Legal consult</td>
+</tr>
+</tbody>
+</table>
+<h3>Kill or confirm</h3><p><strong>Free private steps first:</strong></p>
+<ol>
+<li><strong>Same-event judge on this morning's 80 candidate lists.</strong> Pass at 8 or more of 11 stale caught with 5 or fewer false flags. Kill the freshness stamp as the lead feature below 6 caught or above 10 false flags. Best run blind by a teammate bot (claim it in claims.md).</li>
+<li><strong>Batch 2 backfill</strong> (X bot, free reads): WatcherGuru, Cointelegraph, BitcoinArchive, BSCNews, coinbureau, 30 days. Does the stale rate hold for big outlets? Pass at ≥5% stale or fine-print among market-moving posts.</li>
+<li><strong>Fine-print check prototype</strong> on the 16 confirmed-but-misleading rows. Pass at 8 or more flagged correctly.</li>
+</ol>
+<p><strong>Then the 30-day paid validation, once Ethan picks this thesis to launch as a coin (about A$104):</strong> an unlisted Chrome listing and a US$29 founding pass for 3 months. <strong>Pass: ≥25 passes and ≥25% of installs seeing a stamp on 3+ days a week. Iterate once: 10-24 passes. Kill: &lt;10 passes, &lt;10% weekly use, or ≥50% saying "I just ask Grok/Larpcheck".</strong> No token, legal spend or DexScreener profile before it passes.</p>
+<h3>Comparables</h3><ul>
+<li>Tree News (burn-to-use headlines, US$61k/30d). 247 Terminal (181 × US$99).</li>
+<li>ArcaneNews and PVP Terminal (paid terminals that ship old-news flags).</li>
+<li>FactCheckRadar (X fact-check button with in-app purchases).</li>
+<li>Larpcheck (hold-to-access verdict bot). pumpdata.fun (free tier plus x402 plus a Grok template, the distribution model we copy).</li>
+</ul>
+<h3>Dropped this run</h3><ul>
+<li><strong>Wrong-coin creator-reward claims</strong> (helloluis claimed rewards on a same-ticker $LUKE): fails gate c (ClaimScan, Prysm /unclaimed, pump.fun's native claim flow) and gate e (one anecdote, no payer). The evidence goes to Mint Seal (official-CA resolution).</li>
+<li><strong>Set-and-forget orders (TP/SL, cross-chain limit orders):</strong> fails gate c (<a href="https://docs.axiom.trade/axiom/swap/limit-orders">Axiom limit orders with TP/SL/auto-sell</a>, Jupiter Trigger, Photon, GMGN), and it's execution, not information.</li>
+<li><strong>Name-bait staircase-wash detector</strong> (Trench Bot's MrBeast EsUyx7 pattern): fails gate c (RugCheck, devs_hunter, WhodlBot, bitecong AI Signal, Larpcheck, Axiom/GMGN flags, Dexra, CrawlHive). The evidence goes to Revtrace, and to v2's coin card as the "read recent candles, not cached liquidity" rule.</li>
+<li><strong>Generic tweet fact-check button:</strong> fails gate c (FactCheckRadar, Larpcheck, Basis Desk Verify, SpyGlass, Tweet Fact Checker).</li>
+<li>Git bot's x402 pay-on-validation gap is retired, so it stays closed.</li>
+</ul>
+<h3>Sourced facts vs estimates</h3><p><strong>Sourced:</strong> DefiLlama Tree figures; WhopScope 247; Project Bot's 100 labels and blind check; X bot's checker-reply pull; this morning's stale-check run; X counts (17 in 7 days); competitor pages, including the Chrome Web Store, ArcaneNews, PVP docs and Basis Desk; the Google News feed licence text; pump.fun fees; ASIC RG 244; the Fedyk and Hodson paper.</p>
+<p><strong>Estimates:</strong> 247 run-rate, LLM per-check cost, market shares, subscriber curve, MRR figures, A$ conversion and the search-API cost.</p>
+</section>
+<section class="review"><h2>Project Bot review</h2>
+<p class="meta"><span class="badge mid">5/10</span> <span>Reviewed 24 Oct 2026, 8:35am AWST</span></p>
+<h3>Verdict</h3><ul>
+<li><strong>Score: 5.0/10 (v2). Token fit 6/10. Passes Ethan's rules gate.</strong> <strong>v1 stays the best version at 5.5</strong>, so it's still 1st among rules-passing theses.</li>
+<li><strong>Why it dropped:</strong> Trench Bot's blind same-event judge (it never saw the labels) failed at the kill line. It caught <strong>5 of 11</strong> stale headlines (pass is 8 or more) with <strong>7 of 69</strong> false flags (pass is 5 or fewer).</li>
+<li>5 of the 6 misses were retrieval failures: searching on titles alone never found the earlier story.</li>
+<li>6 of the 7 false flags were real reposts 1 to 2.5 days after the first report, which the labels don't count as stale.</li>
+<li>The judge itself cut false flags from 23–38 down to 7.</li>
+<li><strong>Kept:</strong> the X-policy cut (no public scorecard or paid-promo labels), the agent channels (MCP, x402, Grok Bot template), exact-mint resolution and the dev-tie flag.</li>
+<li><strong>Refined idea:</strong> a "first reported" line on every market post with a <strong>user-set staleness flag</strong>. Retrieval uses Newsflash first-seen events plus <strong>article ledes</strong> and exact publish times, and we store only our own derived records (Brave's storage terms). The judge has two stages: figure/name rules, then a small LLM. It abstains rather than false-flag. Re-test on a fresh blind run.</li>
+</ul>
+<h3>Score breakdown</h3><table>
+<thead>
+<tr>
+<th>Category</th>
+<th>v1</th>
+<th>v2</th>
+<th>Reason</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Problem severity</td>
+<td>6</td>
+<td>6</td>
+<td>No new harm evidence</td>
+</tr>
+<tr>
+<td>Timing</td>
+<td>7</td>
+<td>7</td>
+<td>Unchanged</td>
+</tr>
+<tr>
+<td>Differentiation</td>
+<td>4</td>
+<td>4</td>
+<td>The stamp failed the blind test (5 of 11). Kronical, ArcaneNews and Newsflash <code>first_seen_at</code> narrow the slot</td>
+</tr>
+<tr>
+<td>Usability</td>
+<td>8</td>
+<td>8</td>
+<td>Automatic, no tagging</td>
+</tr>
+<tr>
+<td>Ape appeal</td>
+<td>7</td>
+<td>6.5</td>
+<td>Public scorecard cut</td>
+</tr>
+<tr>
+<td>Solo buildability</td>
+<td>7.5</td>
+<td>7</td>
+<td>Needs licensed ledes plus an LLM stage, and the scope grew</td>
+</tr>
+<tr>
+<td>Self-serve sales</td>
+<td>9</td>
+<td>9</td>
+<td>Unchanged</td>
+</tr>
+<tr>
+<td>Distribution</td>
+<td>6</td>
+<td>6.5</td>
+<td>MCP, x402 and Grok Bot template costed. Newsflash MCP is a substitute</td>
+</tr>
+<tr>
+<td>Retention</td>
+<td>5</td>
+<td>5</td>
+<td>Design only</td>
+</tr>
+<tr>
+<td>Money evidence</td>
+<td>6</td>
+<td>6</td>
+<td>Nobody shown paying for accuracy</td>
+</tr>
+<tr>
+<td>Token fit</td>
+<td>6</td>
+<td>6</td>
+<td>ASIC check passes: hold for quota, burn own tokens for credits, no payouts or fee-funded buybacks</td>
+</tr>
+<tr>
+<td><strong>Overall</strong></td>
+<td><strong>5.5</strong></td>
+<td><strong>5.0</strong></td>
+<td>Kill line on the blind check. v1 stays best</td>
+</tr>
+</tbody>
+</table>
+<h3>Competitors</h3><ul>
+<li>New this run:</li>
+<li><a href="https://kronical.ai">Kronical</a> separates first reports from repeat coverage, for finance teams and agents.</li>
+<li><a href="https://github.com/Humanitariansai/Mycroft/tree/main/n8n_Workflows/Media_Narrative_Tracker">Mycroft Media Narrative Tracker</a> is an open-source information-age scorer.</li>
+<li>Confirmed:</li>
+<li><a href="https://arcane.news/">ArcaneNews</a> has old-news and same-news detection inside its paid terminal.</li>
+<li><a href="https://docs.pvpterminal.com/desktop/desktop/settings/news">PVP Terminal</a>'s Old News Threshold measures delivery lag.</li>
+<li><a href="https://chromewebstore.google.com/detail/factcheckradar/obepkghlneckiemaclcigahjnbkonhnf">FactCheckRadar</a> is click-only and was updated 22 Oct 2026.</li>
+<li>Tweet Fact Checker (demo only), Stale News Warning (0 stars) and Custom Timestamps for X (post age only).</li>
+<li>None stamps the event's first date automatically under X posts.</li>
+</ul>
+<h3>Build plan</h3><p>Next free private step:</p>
+<ol>
+<li>Re-run the blind same-event check on the 80 rows with lede-based retrieval: Newsflash events (the free key covers 30 days) plus transient Brave News for older stories.</li>
+<li>Add a small-LLM "same event / later development / same topic" stage on the top 3 candidates.</li>
+<li>Set the stale line at 2 or more days.</li>
+</ol>
+<p>Use a fresh blind bot or held-out rows, because this set has now been tuned on. Everything else in v2's 4-week plan stays, with the coin card trimmed to exact mint plus the pumpdata dev check. A pass lifts the score to 6.0, the cap while nobody is shown paying.</p>
+</section>
+<section class="sources"><h2>Sources</h2><ul><li><a href="../sources/theses/2026-10-23-0900-tapeline-check-v2.md">Thesis (2026-10-23-0900-tapeline-check-v2.md)</a></li><li><a href="../sources/reviews/2026-10-24-0835-tapeline-check-v2.md">Review (2026-10-24-0835-tapeline-check-v2.md)</a></li></ul></section>
+</article>
+</main>
+<footer class="site">Theses by idea bot, reviews by Project Bot. Times are AWST (Perth time).</footer>
+</body>
+</html>
