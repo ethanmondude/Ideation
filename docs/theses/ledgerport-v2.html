@@ -1,0 +1,622 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ledgerport v2</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="site"><a href="../index.html">Startup theses</a></header>
+<main>
+<p class="back"><a href="../index.html">&larr; All theses</a></p>
+<article>
+<h1>Ledgerport v2</h1>
+<p class="tagline">The Sage 50 US MCP server and API for AI bookkeeping agents, with a backup-file fallback</p>
+<p class="meta"><span>24 Oct 2026, 9:00am AWST</span> <span class="badge mid">6.5/10</span> <span class="status">Status: Pitched, awaiting Project Bot re score</span></p>
+<section class="exec"><h2>Executive summary</h2>
+<ul>
+<li><strong>Problem.</strong> Desktop Sage 50 US (formerly Peachtree, US$737 to US$2,130 a year) has <strong>no web API</strong>. The only way in is a 32-bit .NET SDK on the Windows PC that holds the books (<a href="https://www.apideck.com/blog/how-to-integrate-with-the-sage-50-us-api">Apideck guide</a>). AI bookkeeping and AP agents that work on QuickBooks Online and Xero can't reach these books. <strong>Nobody offers a Sage 50 US MCP server</strong> (GitHub and vendor checks above).</li>
+<li><strong>Product.</strong> "The Sage 50 US MCP server": a signed Windows connector the bookkeeper installs once, plus an MCP server and REST API with typed TypeScript and Python SDKs, plain-English errors and a hosted "connect your Sage 50" link. Sage-hosted customers get a read-only fallback: upload a <code>.ptb</code> backup and query it.</li>
+<li><strong>Who pays and how much.</strong> Small SaaS and AI-bookkeeping teams with fewer than about 25 Sage 50 US customers, by card. Free sandbox, then <strong>US$49 per connected company file per month with a US$99 monthly minimum (2 files included)</strong>. That matches <a href="https://conductor.is/">Conductor</a>'s price and sits under Apideck's US$599 floor (<a href="https://www.apideck.com/pricing">pricing</a>). An x402 USDC price per backup read goes to agents that need a one-off read.</li>
+<li><strong>Token's job.</strong> <strong>None that's real.</strong> These buyers won't pay for their integration in a memecoin, and gating the free sandbox would choke the funnel. <strong>Token fit is about 2/10, so this fails Ethan's token gate</strong>, as well as the audience gate.</li>
+<li><strong>Total cost vs A$1,000.</strong> About <strong>A$490 before the first revenue</strong> (VM, domain, hosting, code signing) and about <strong>A$860 over 4 months</strong> including a A$300 legal consult (estimates). If Sage requires its paid developer programme, the pre-revenue figure rises to about A$985, right at the cap.</li>
+<li><strong>Path to US$10k/month.</strong> About 205 files, or about 35 teams at about 6 files each. The base case is <strong>about US$6.0k MRR at month 12</strong> (123 files, 34 teams; estimate). Reaching US$10k takes about 16 to 20 months, or one AP or payments customer with 40+ Sage 50 US users.</li>
+<li><strong>Why now, edge and main risk.</strong> Conductor proves the model: US$44,359 MRR, Stripe-verified. Apideck is still "In development", and nobody owns "Sage 50 US MCP". The edge is being the first self-serve, agent-first specialist. <strong>Main risk:</strong> Apideck ships into the same searches with an MCP and lower prices at scale, while Sage moves desktop customers to a hosted edition where connectors can't run.</li>
+<li><strong>First move this week, and verdict.</strong> Nothing external. If Ethan keeps it as a benchmark, the first step is a private 3-day spike on the sample company: read customers and invoices through a local MCP tool, then create an invoice. <strong>Verdict: PASS as a coin thesis, because it's outside Ethan's rules. Keep it as a non-coin benchmark if Ethan wants one. As a plain bootstrapped business it's TEST, at about 45% confidence (unchanged).</strong></li>
+</ul>
+</section>
+<section class="thesis"><h2>Full thesis</h2>
+<div class="byline"><p><em>Idea bot thesis, Sat 24 Oct 2026, 9:00am AWST (Perth). Path: /workspace/idea-bot/theses/2026-10-24-0900-ledgerport-v2.md. <strong>Version 2 of Ledgerport</strong> (v1: theses/2026-10-22-1430-ledgerport.md, Project Bot 6.5/10, top v1 overall but labelled outside Ethan's rules). Same thesis id: idea-bot:thesis:ledgerport. Built from Project Bot's v1 review (reviews/2026-10-22-1445-ledgerport.md), its money-test draft (project-bot/tests/ledgerport-money-test.md), Git bot's record <code>git-bot:refine:ledgerport:20261024-0845</code>, Trench Bot's records <code>trench-bot:thesis-input:ledgerport:launch-plan</code> and <code>trench-bot:thesis-input:ledgerport:token-fit-brand-risk</code>, Growth Bot's refine protocol and lessons, and fresh checks run this morning. "Ledgerport" is still a working name; any final name and any coin keep "Sage", "Sage 50", "Peachtree" and "QuickBooks" out of the name, ticker and logo.</em></p>
+<blockquote>
+<p><strong>Gate status, up front: still OUTSIDE Ethan's rules.</strong> I tested every buyer and token-job change I could find (section "Gate re-test" below). None makes the paying buyer a tech bro or gives a pump.fun token a real job. This version makes the product stronger and cheaper to start, but it can't make it pass. <strong>Recommendation: Ethan decides whether to keep Ledgerport as a non-coin benchmark only.</strong> It shouldn't outrank rule-passing theses.</p>
+</blockquote></div>
+<h3>What changed in v2</h3><p>Each line answers a weakness in Project Bot's v1 review, a teammate record, or Ethan's gates.</p>
+<ol>
+<li><strong>Ethan's audience and token gates (Git bot's caveat; Growth Bot lessons <code>ethan-rules-are-gates</code>, <code>lesson-rotate-rules-passing-only</code>): re-tested honestly, still fail. Not fixed.</strong> Moving AI-agent builders to x402 pay-per-call changes the payment rail, not the buyer: they are still SaaS and AI-bookkeeping teams selling to small-business bookkeepers. Every token job I tried (burn per call, stake for sandbox, hold for limits, build-in-public coin) is either something those buyers won't do or not a job at all. Full workings below. My estimate of token fit is <strong>about 2/10</strong>, below the 5 the gate needs.</li>
+<li><strong>Timing (scored 6; Apideck guide 17 Oct): re-checked, wedge narrowed.</strong> Apideck's Sage 50 US connector still says <strong>"In development"</strong> on 24 Oct, and its guide was updated 18 Oct (<a href="https://www.apideck.com/accounting-software/sage-50-us">status</a>, <a href="https://www.apideck.com/blog/how-to-integrate-with-the-sage-50-us-api">guide</a>). v1's "far below Apideck" line is <strong>cut</strong>. Apideck's volume table reaches about $11 to $13 per customer at 100 to 200 customers (review). v2 targets only teams with fewer than about 25 Sage 50 US customers, for whom Apideck's $599 floor and Rutter's enterprise contract are too much.</li>
+<li><strong>Differentiation (scored 5): pivoted to lead with "the Sage 50 US MCP server" (Git bot's change 1). Verified.</strong> I searched GitHub this morning: "sage 50 mcp" returns 1 repo, and it's CData's read-only <strong>Sage 50 UK</strong> server. "sage50 mcp" returns 0. The other Sage MCP servers cover Sage Business Cloud Accounting, a different product (<a href="https://github.com/chrisjohnleah/sage-business-cloud-accounting-mcp">chrisjohnleah</a>, <a href="https://github.com/CDataSoftware/sage-cloud-accounting-mcp-server-by-cdata">CData</a>). Sage's only official MCP is for Intacct (<a href="https://www.sage.com/en-us/sage-business-cloud/intacct/product-capabilities/platform/ai-gateway/">Sage</a>). Zynk says "we know of no official Sage MCP server for Sage 50 or Sage 200" (<a href="https://zynk.com/articles/sage-ai-tools-compared">Zynk</a>). Conductor's wall of love shows that agent-led buyers are real on the sister platform: <em>"I had one state-of-the-art agent migrate to Conductor in one afternoon"</em> (<a href="https://conductor.is/">conductor.is</a>). <strong>New rivals to watch, found this run:</strong> Zynk's Insights AI MCP lists "Sage 50" at £49 a month, read-only (<a href="https://zynk.com/solutions/requirement/sage-mcp-server">Zynk</a>). Its edition isn't stated, and Zynk's own Sage 50 US page lists the US connector for "Workflow" only (<a href="https://zynk.com/integrations/sage-50-us">Zynk US</a>), so I treat it as UK for now and flag it for Project Bot. StackOne lists "Sage 50: Planned", but it lists almost every app that way (<a href="https://www.stackone.com/connectors/?category=accounting">StackOne</a>).</li>
+<li><strong>Rutter (review: enterprise connector since 2023): now known to be actively maintained.</strong> <a href="https://github.com/cyrieu/Sage50Connector">cyrieu/Sage50Connector</a> ("Sage 50 US connector for RUTTER") was last pushed 14 Oct 2026, 8:20am AWST (verified via the GitHub API). That's still enterprise-only, so it isn't a self-serve rival, but it means Rutter won't drop it.</li>
+<li><strong>Market small and shrinking, plus Sage 50 Cloud blocks connectors (review's biggest money gap): part-fixed with a fallback; the ceiling is not fixed.</strong>
+   - <strong>Canada dropped</strong> (Git bot's change 2; review's Conexio find). Canada has <a href="https://sage-api.ariv.ca/">ARIV</a>, <a href="https://conexio.dev/solutions/api/">Conexio</a> and a solo-built <a href="https://github.com/HypedMo0n/SageBridge-API">SageBridge</a>. SageBridge is a Windows connector plus a Cloudflare Workers API, created 11 Sep 2026, last pushed 17 Sep, with 0 stars, so it's a hobby-scale rival. Two paid rivals is already enough to drop it.
+   - <strong>Backup-file import added</strong> (Git bot's change 3). Sage-hosted Cloud users can't install software, but Sage's own help pages show they can make <code>.ptb</code> backups, copy them out of the G:\ "Sage 50 US Backups" folder to their own PC, and connect OneDrive (<a href="https://us-kb.sage.com/portal/app/portlets/results/viewsolution.jsp?solutionid=250709190039003">Sage KB: export</a>, <a href="https://communityhub.sage.com/us/sage50_us/sage50us-welcome-center/w/hosted-customers/4264/resources-and-faqs">Sage hosted FAQ</a>). <a href="https://github.com/frozenhadez-tech/sage50-backup-viewer">frozenhadez-tech/sage50-backup-viewer</a> reads <code>.ptb</code> files read-only (chart of accounts, customers, vendors, every transaction). <strong>Caveat:</strong> the repo holds only a README and a closed installer (v1.0.0, 29 Jul 2026, 11 downloads), so it proves the files can be read but gives us no code. The parser is a build risk. The data is a snapshot, read-only and only as fresh as the last upload.
+   - <strong>Still a $5k to $10k MRR niche.</strong> Nothing here adds US buyers. The fallback only slows the loss of customers who move to the hosted edition.</li>
+<li><strong>Solo buildability (scored 5.5; C# Windows service): scope cut.</strong> MVP = MCP server plus REST for reads of all core lists and transactions, and only 3 writes (sales invoices, bills, payments). Webhooks come later. The backup parser comes only if 3 or more prospects name a hosted customer.</li>
+<li><strong>SDK access may not be free, and the Sage licence breaks the budget (review §1; money-test draft §5): re-costed.</strong> v1 put the startup cost at US$1,000 to 1,500, which is over A$1,000. Project Bot's draft priced the Sage 50 Pro licence at about A$1,050 on its own. v2 doesn't buy the licence:
+   - The week-1 spike uses Sage's sample company, which works with a blank application ID (<a href="https://communityhub.sage.com/cfs-file/__key/communityserver-discussions-components-files/136/Sage-50-.NET-API-_2D00_-Quick-Start-Guide.pdf">quick start PDF</a>).
+   - Real-data testing runs on a design partner's own Sage 50 install.
+   - If Sage insists on its NA Developer Partner Program, a search snippet of Sage's programme PDF (dated August 2023, not opened, as the link returned a web page) gives <strong>US$350 to sign up and US$250 a year per product line, including a non-resale development copy</strong>. That's about A$497, still cheaper than the licence.
+   - <strong>Base case: about A$490 spent before the first revenue, and about A$985 if the partner programme is required.</strong> That's right at the cap, so a required fee is a budget kill trigger (see Budget).</li>
+<li><strong>Conductor facts (review: 30-day revenue lower, four years, "for sale" unconfirmed): updated.</strong> TrustMRR now shows <strong>$44,359 MRR, 293 active subscriptions, $500,322 all-time, and $42,631 in the last 30 days</strong>, verified with Stripe and last updated "Oct 23, 2026, 08:24 PM" (no time zone given) (<a href="https://trustmrr.com/startup/conductor">TrustMRR</a>). The last-30-day gap the review flagged has mostly closed. "Listed for sale" is <strong>cut</strong>. "Four years to get here" stays in the comparables.</li>
+<li><strong>Slow time to revenue (review §3): Project Bot's fix adopted.</strong> There's a <strong>US$99 a month minimum per team in production (includes 2 files)</strong>, on top of the US$99 pilot deposit. This brings cash forward without hurting the comparison with Apideck.</li>
+<li><strong>Review's pivot (sell a US$29 MCP straight to Sage 50 bookkeepers): screened and kept only as a pivot signal.</strong> It fails gate a too (bookkeepers aren't tech bros). The UK version is already sold by Hyperext and possibly Zynk.</li>
+<li><strong>Trench Bot's records: folded in.</strong> There's no Sage or QuickBooks name or logo in any coin (brand name-bait was 25 of 30 new coins in its run 9, and traders now read it as a rug). The token never gates the API, because dev shops pay by card. Any coin is a "follow the build" coin with one contract address pinned on the site from minute one. Trench Bot also says this "does not raise the product score", and I agree. A build-in-public coin isn't a token job under Ethan's rules.</li>
+<li><strong>New section: Agent distribution</strong> (Growth Bot's <code>agent-distribution</code> lesson). It covers the MCP server first, an x402 endpoint for one-off backup reads, and a Grok Bot template for developers.</li>
+<li><strong>No playbook step this run.</strong> Growth Bot's private kill-test playbook is for theses that pass Ethan's rules, and Ledgerport doesn't. The paid money test stays parked in Project Bot's draft and runs only if Ethan picks it.</li>
+</ol>
+<h3>Gate re-test: can any buyer or token change make Ledgerport pass?</h3><table>
+<thead>
+<tr>
+<th>Change tried</th>
+<th>Audience gate (tech-bro payers)</th>
+<th>Token gate (real pump.fun job, fit ≥5)</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AI-agent builders pay per call via <strong>x402 USDC</strong></td>
+<td>Fail. The payer is still an AI-bookkeeping or SaaS team whose customers are small-business bookkeepers. x402 is a payment rail, not a new audience. The accounting APIs on Anchor Terminal's agent-readiness list don't take x402 (e.g. "x402 no" for Apideck, Xero and QuickBooks Online) (<a href="https://www.anchorterminal.com/best/accounting/">Anchor Terminal</a>)</td>
+<td>Fail. x402 settles in USDC. Forcing the pump.fun token into that path adds price risk for the buyer</td>
+<td>Distribution add-on only</td>
+</tr>
+<tr>
+<td>Holders <strong>burn their own tokens per call or for prepaid credits</strong> (the $CODEX pattern Growth Bot logged)</td>
+<td>Fail (same buyers)</td>
+<td>Fail in practice. A finance-software team paying an integration bill in a memecoin fails its own procurement and bookkeeping. I found no tokenised accounting API to copy: <a href="https://github.com/billiondollarapps/counterra">Counterra</a> says it "has no token", and Novadyne's <a href="https://ledger.novadyne.ai/guides/double-entry-bookkeeping-api-crypto-micropayments">Ledger</a> bills in USDC on Base</td>
+<td>Fail</td>
+</tr>
+<tr>
+<td><strong>Stake or hold for sandbox access or higher limits</strong></td>
+<td>Fail</td>
+<td>Fail. Conductor's funnel is "Free for unlimited testing until you ship to production" (<a href="https://conductor.is/">conductor.is</a>). Gating the sandbox with a coin taxes the only growth channel</td>
+<td>Fail</td>
+</tr>
+<tr>
+<td>Trench Bot's <strong>build-in-public coin</strong> ("follow the build"; never gates the API)</td>
+<td>n/a</td>
+<td>Fail by Ethan's own rule: no job. Trench Bot says it "does not raise the product score"</td>
+<td>Lowers launch risk only</td>
+</tr>
+<tr>
+<td><strong>Pivot buyers to crypto-holding businesses</strong> (on-chain activity → Sage 50 journals)</td>
+<td>Fail. The buyer is a finance team or bookkeeper</td>
+<td>Weak</td>
+<td>Crowded (see dropped gaps): <a href="https://www.bitwave.io/blog/bitwave-alternatives">Cryptoworth</a> lists Sage integrations, and <a href="https://www.cryptacount.com/en/crypto-exchange-integrations/sage/">CryptaCount</a> exports journals for Sage 50 import</td>
+</tr>
+<tr>
+<td><strong>Pivot to selling the MCP to bookkeepers</strong> (review's pivot)</td>
+<td>Fail</td>
+<td>Weak</td>
+<td>UK done by Hyperext; Zynk is unclear</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Conclusion:</strong> no tested change passes either gate. The honest call is to say so and let Ethan decide. Ledgerport is still useful as a <strong>benchmark</strong>: it's the only thesis with a Stripe-verified twin selling the same product, which is the bar the rule-passing theses haven't met yet.</p>
+<h3>Problem and user</h3><ul>
+<li><strong>Buyer (pays):</strong> the founder or CTO of a 3 to 50-person AI-bookkeeping, AP-automation, expense or vertical SaaS company whose US customers run Sage 50 Pro, Premium or Quantum. They pay for developer infrastructure by card.</li>
+<li><strong>End user (installs):</strong> the small business's bookkeeper or office manager, on a Windows PC or a third-party host.</li>
+<li><strong>Today they:</strong> build a 32-bit .NET Framework 4.8 connector themselves (handling <code>CompanyLocked</code>, per-company approval prompts, yearly releases and conversions), use read-only ODBC (which "does not work with 64-bit programs"), use fragile CSV, refer customers to Commercient (US$299 a month on <a href="https://www.bigcommerce.com/apps/sage-50-us-by-commercient/">BigCommerce</a>) or Zynk Workflow, or say no (all from <a href="https://www.apideck.com/blog/how-to-integrate-with-the-sage-50-us-api">Apideck</a> unless linked). Apideck's own advice: "Ask every prospect whether they run Sage 50 on their own machines or on Sage 50 Cloud before you quote" (same guide).</li>
+<li><strong>Why agents make it sharper:</strong> an AI bookkeeping agent can't open a Windows desktop app. On the sister platform, Conductor's users describe an agent migrating their QuickBooks Desktop integration "in one afternoon", and others say "Your MCP is amazing" (<a href="https://conductor.is/">conductor.is</a>).</li>
+</ul>
+<h3>Evidence of money</h3><ul>
+<li><strong>Conductor</strong> (QuickBooks Desktop API, the same model): <strong>US$44,359 MRR, 293 subscriptions, US$500,322 all-time, US$42,631 in the last 30 days</strong>, Stripe-verified, founded July 2022. Founder: <em>"1. Completely runs itself 2. $350K ARR today, growing 7% month-over-month… 5. Virtually no churn"</em> (<a href="https://trustmrr.com/startup/conductor">TrustMRR</a>). Pricing is US$49 per company file per month, and it is "SYNCING 1,700+ BUSINESSES" (<a href="https://conductor.is/">conductor.is</a>).</li>
+<li><strong>Daybook</strong> (UK Sage 50 API): £39 per connected company, early access, <em>"It isn't live yet"</em>, and <em>"Sage 50 in the US and Canada is a different product and isn't supported"</em> (<a href="https://daybookapi.com/">daybookapi.com</a>, re-checked today). It proves the idea is being copied, not that anyone pays.</li>
+<li><strong>Sage 50 MCP prices people already pay in the UK:</strong> Zynk Insights AI from £49 a month, read-only (<a href="https://zynk.com/pricing?product=insights">Zynk pricing</a>). Hyperext's UK MCP sits on an API priced at £900 setup plus £600 a year (v1, from snippets).</li>
+<li><strong>End users pay for Sage 50 US sync:</strong> Commercient US$299 a month (verified in v1). Apideck's unified API starts at US$599 a month.</li>
+<li><strong>Still missing:</strong> proof that anyone pays for a Sage 50 US developer API or MCP specifically. Only the parked money test can supply it.</li>
+</ul>
+<h3>Market sizing (bottom-up, assumptions labelled)</h3><table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Number</th>
+<th>Source / assumption</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>US organisations on Sage 50</td>
+<td>25k to 54k</td>
+<td>ELP Data 54,103 (third party); HG 2,284 tracked; <strong>assumption range</strong> (v1)</td>
+</tr>
+<tr>
+<td>Less Sage-hosted Cloud</td>
+<td>−20 to 40% and rising</td>
+<td><strong>Assumption</strong> (review)</td>
+</tr>
+<tr>
+<td>Share using a SaaS or agent that would sync via API in 2 years</td>
+<td>10 to 20%</td>
+<td><strong>Assumption</strong></td>
+</tr>
+<tr>
+<td>Reachable live files</td>
+<td>about 1,500 to 8,600</td>
+<td>Arithmetic (review)</td>
+</tr>
+<tr>
+<td>Plus hosted customers reachable read-only via backups</td>
+<td>unknown; not counted</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Revenue pool at about US$45 per file</td>
+<td>about US$0.8M to 4.6M a year</td>
+<td>Arithmetic</td>
+</tr>
+<tr>
+<td>Cross-check</td>
+<td>Sage 50 at 2% of US small businesses vs 15% on QuickBooks Desktop (Codat survey via <a href="https://www.businessdasher.com/research/accounting-statistics/">BusinessDasher</a>, secondary) → about 1/7 of Conductor ≈ US$6k MRR at Conductor-level execution</td>
+<td>Estimate</td>
+</tr>
+</tbody>
+</table>
+<h3>Competitive teardown</h3><table>
+<thead>
+<tr>
+<th>Product</th>
+<th>Sage 50 US?</th>
+<th>Self-serve?</th>
+<th>MCP?</th>
+<th>Price</th>
+<th>Gap it leaves</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://conductor.is/">Conductor</a></td>
+<td>No (QuickBooks Desktop)</td>
+<td>Yes</td>
+<td>Yes (QuickBooks Desktop)</td>
+<td>US$49 per file</td>
+<td>The model to copy; could expand ("legacy integrations, starting with QuickBooks Desktop")</td>
+</tr>
+<tr>
+<td><a href="https://www.apideck.com/accounting-software/sage-50-us">Apideck</a></td>
+<td>"In development" (24 Oct)</td>
+<td>Yes</td>
+<td>Yes (unified)</td>
+<td>US$599 floor; about US$11 to 13 per customer at scale</td>
+<td><strong>Highest threat.</strong> Too expensive below about 25 customers</td>
+</tr>
+<tr>
+<td><a href="https://docs.rutter.com/platforms/accounting/sage50">Rutter</a></td>
+<td>Yes; connector repo pushed 14 Oct</td>
+<td>No (enterprise)</td>
+<td>—</td>
+<td>Sales</td>
+<td>Not available to small teams</td>
+</tr>
+<tr>
+<td><a href="https://zynk.com/integrations/sage-50-us">Zynk</a> Workflow / <a href="https://zynk.com/solutions/requirement/sage-mcp-server">Insights AI</a></td>
+<td>Workflow yes; Insights edition unclear</td>
+<td>Workflow by quote; Insights £49/mo</td>
+<td>Insights: read-only</td>
+<td>Quote / £49</td>
+<td>Not a developer API; Insights is read-only and edition unclear → <strong>watch</strong></td>
+</tr>
+<tr>
+<td>Commercient, eBridge, DBSync</td>
+<td>Yes</td>
+<td>Partly</td>
+<td>No</td>
+<td>US$299+/mo or quote</td>
+<td>End-user sync, not an API</td>
+</tr>
+<tr>
+<td><a href="https://mcp.hyperext.com/">Hyperext</a>, <a href="https://daybookapi.com/">Daybook</a>, CData UK MCP</td>
+<td>No (UK)</td>
+<td>Partly</td>
+<td>Hyperext and CData yes</td>
+<td>£39 to £900 setup</td>
+<td>Could expand to the US</td>
+</tr>
+<tr>
+<td><a href="https://sage-api.ariv.ca/">ARIV</a>, <a href="https://conexio.dev/solutions/api/">Conexio</a>, <a href="https://github.com/HypedMo0n/SageBridge-API">SageBridge</a></td>
+<td>No (Canada)</td>
+<td>Partly</td>
+<td>—</td>
+<td>Setup fees / hobby</td>
+<td>Why Canada is dropped</td>
+</tr>
+<tr>
+<td><a href="https://www.stackone.com/connectors/?category=accounting">StackOne</a></td>
+<td>"Planned"</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>Generic wishlist; low threat</td>
+</tr>
+<tr>
+<td>Open-source wrappers (Masleap, sage50-restful), <a href="https://github.com/frozenhadez-tech/sage50-backup-viewer">sage50-backup-viewer</a></td>
+<td>Yes / backups</td>
+<td>DIY</td>
+<td>No</td>
+<td>Free</td>
+<td>No hosting, MCP or support; the viewer is closed-source</td>
+</tr>
+<tr>
+<td>Sage itself</td>
+<td>No web API; official MCP is Intacct only (<a href="https://www.sage.com/en-us/sage-business-cloud/intacct/product-capabilities/platform/ai-gateway/">Sage</a>)</td>
+<td>—</td>
+<td>No</td>
+<td>—</td>
+<td>Pushing customers to hosted Cloud instead</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Sweep notes:</strong> GitHub (last-30-day and since-July queries, run 24 Oct), vendor pages, Sage KB and Marketplace links, Devpost and Product Hunt (search found no Sage 50 US MCP project), missed-competitors.jsonl (no Ledgerport rows), and Git bot's retired gaps (none touch this). Chrome Web Store and taggable X bots aren't relevant to a desktop-ledger API. My "sage 50 pushed since 1 Jul" GitHub query returned 44 repos against Git bot's 40 (a different query). Either way, none is a Sage 50 US MCP.</p>
+<h3>Product and UX</h3><ul>
+<li><strong>First minute (developer):</strong> sign up → copy a sandbox key → <code>npx</code> the MCP server, or paste the hosted MCP URL into Claude, ChatGPT or Cursor → ask "list overdue invoices in the sample company" → the answer comes back from Sage's sample data. No sales call.</li>
+<li><strong>First minute (bookkeeper):</strong> open the auth link → download the signed connector → approve the access prompt in Sage 50 (on-screen guide) → see "connected".</li>
+<li><strong>MVP stack:</strong></li>
+<li>Connector: C# .NET Framework 4.8 x86 Windows service, outbound WebSocket only, retries on <code>CompanyLocked</code>, writes queued while the PC is off.</li>
+<li>Cloud: TypeScript (Hono), Postgres (Neon), Postgres job queue, Fly.io.</li>
+<li>Interfaces: OpenAPI with generated SDKs, an MCP server on the same endpoints, and Stripe Billing on active files.</li>
+<li>Backup path (phase 2): upload a <code>.ptb</code> → a parser in an isolated worker → read-only snapshot tables → the same MCP tools with <code>freshness: &lt;backup date&gt;</code>.</li>
+<li><strong>Week by week:</strong>
+  1. Spike on the sample company: reads, plus create and read back one invoice.
+  2. Relay and queue, API keys, auth link, read endpoints, MCP tools.
+  3. 3 writes (invoice, bill, payment), error catalogue v1, TypeScript SDK, signed installer.
+  4. Billing with the US$99 minimum, Python SDK, docs, 2 design partners.</li>
+<li>Webhooks and the backup parser come later, only on demand.</li>
+<li><strong>Advanced tech:</strong> MCP tool design that keeps agents safe on someone's books (read-only by default per company, write scopes per tool, dry-run previews of every write, and an audit log returning Sage's transaction IDs).</li>
+<li><strong>What's hard:</strong> the Windows service (sleep, locks, antivirus flags), Sage SDK quirks (cash-basis companies can't create invoices, audit-trail gaps, one company open at a time), yearly releases, the closed <code>.ptb</code> format, and US support hours, which are 9pm to 7am in Perth.</li>
+<li><strong>Cloneable:</strong> the REST wrapper. <strong>Not quickly cloneable:</strong> a signed connector proven in real offices, the error catalogue, release testing, and SDK lock-in.</li>
+</ul>
+<h3>Token design on pump.fun (written for completeness; I don&#x27;t recommend launching)</h3><ul>
+<li><strong>Job:</strong> none that passes. See the gate re-test. <strong>Token fit about 2/10 (estimate).</strong></li>
+<li><strong>If Ethan ever overrides:</strong> launch only after the first paying teams. Use a neutral name and ticker with <strong>no Sage, Sage 50, Peachtree or QuickBooks name or logo</strong> (Trench Bot). Mint authority off. A small dev buy, labelled. No bundles, no boosts, no paid callers or per-post bounties (Trench Bot's launch plan). <strong>Holder Rewards and Tokenized Agent buybacks off. No revenue- or fee-funded buybacks or burns. No holder payouts or profit promises.</strong> Pin one official contract address on the site and in the repo from minute one, because impostor mints appeared within hours for PHP and Kimchi (Trench Bot). The <strong>token never gates or pays for the API</strong>: card and USDC revenue never touches the token.</li>
+<li><strong>Fee flow and verification:</strong> creator fees, if any, are a bonus to the dev wallet, published, and not used for burns or buybacks. Public repo for the MCP server.</li>
+<li><strong>Comparable tokenised products:</strong> none in accounting. Counterra explicitly has no token, and Ledger (Novadyne) bills in USDC. $CODEX's burn-per-question model is self-reported and unproven (Growth Bot lesson). Larpcheck's hold-to-access works only because its users are traders.</li>
+<li><strong>Legal line:</strong> no holder returns of any kind (ASIC line, Growth Bot <code>au-legal-token</code>).</li>
+</ul>
+<h3>Budget and founder load (A$, estimates; US$1 ≈ A$1.42, the same rate as Project Bot&#x27;s draft)</h3><table>
+<thead>
+<tr>
+<th>Item</th>
+<th>When</th>
+<th>A$</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Windows VM for spike and tests (about US$40/mo)</td>
+<td>monthly from M1</td>
+<td>57/mo</td>
+</tr>
+<tr>
+<td>Domain, docs, landing page</td>
+<td>M1</td>
+<td>71</td>
+</tr>
+<tr>
+<td>Hosting (Fly plus Neon free tier)</td>
+<td>monthly from M2</td>
+<td>about 15/mo</td>
+</tr>
+<tr>
+<td>Code signing, OV certificate (about US$100 to 300/yr)</td>
+<td>when the first team goes to production (M3)</td>
+<td>about 215</td>
+</tr>
+<tr>
+<td>Legal: terms and DPA consult</td>
+<td>when the first team asks (M4)</td>
+<td>about 300</td>
+</tr>
+<tr>
+<td>Sage 50 Pro licence (US$737/yr)</td>
+<td><strong>not bought</strong>; sample company plus a partner's install</td>
+<td>0</td>
+</tr>
+<tr>
+<td><em>Only if Sage requires it:</em> NA Developer Partner Program (US$350, snippet from an Aug 2023 PDF)</td>
+<td>M2</td>
+<td><em>about 497</em></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>Spent before first revenue (M1 to M3):</strong> about <strong>A$490</strong>. About <strong>A$985</strong> if the partner fee is needed, so <strong>kill or pause if Sage demands more than that</strong>.</li>
+<li><strong>4-month total:</strong> about <strong>A$860</strong> (about A$1,360 with the partner fee). The month-4 consult is paid from month-3/4 revenue in the base case.</li>
+<li><strong>Hours:</strong> about 35 to 45 a week for the 4 build weeks, then about 10 to 15 a week. Support is about 30 to 60 minutes per new connection at first (review estimate).</li>
+</ul>
+<h3>Business model and unit economics</h3><ul>
+<li><strong>Tiers:</strong> Sandbox free. Production US$49 per file per month with a US$99 per team minimum (2 files included). Volume US$39 from 50 files and US$29 from 200. Founding: 30% off for 12 months for the first 10 teams. x402: about US$0.50 per backup-file read for agents (my placeholder, untested).</li>
+<li><strong>Cost to serve:</strong> about US$1 to 1.50 per file per month in infrastructure at 100 files, plus about 3% for Stripe. <strong>Gross margin about 94%</strong> (estimate). The real cost is support time.</li>
+<li><strong>CAC:</strong> US$0 cash (developer SEO and AI search, MCP registries, the Conductor-style docs). There's a 30 to 90-day lag from signup to the first paid file (estimate).</li>
+</ul>
+<h3>Go-to-market (solo)</h3><p>All outreach, public posts, guides and registry listings need Ethan's OK and go out from his accounts.</p>
+<ol>
+<li><strong>MCP-first discovery:</strong> list the MCP server in public MCP registries and write two guides ("Sage 50 US MCP", "Sage 50 US API in 2026").</li>
+<li><strong>AI bookkeeping and AP-agent startups</strong> that support QuickBooks Online and Xero but not desktop ledgers.</li>
+<li><strong>Teams on Conductor's logo wall</strong> with Sage 50 prospects.</li>
+<li><strong>Vertical SaaS teams that maintain their own Sage 50 connector</strong> (ServiceBox, OrderEase).</li>
+<li><strong>Developers on Sage's SDK forum.</strong></li>
+</ol>
+<h3>12-month financial snapshot (all estimates)</h3><p>Assumptions:</p>
+<ul>
+<li>New teams: 3 a month in M3 to M6, 4 in M7 to M11, 5 in M12.</li>
+<li>Each team ramps 1 → 6 files over about 6 months.</li>
+<li>2% monthly churn, US$45 blended per file, US$99 minimum per team.</li>
+<li>Costs as in Budget. Ethan's time isn't costed.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Month</th>
+<th>Teams</th>
+<th>Files</th>
+<th>MRR (US$)</th>
+<th>Costs (A$)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>128</td>
+</tr>
+<tr>
+<td>2</td>
+<td>0 (pilot deposits only if Ethan runs the test)</td>
+<td>0</td>
+<td>0</td>
+<td>72</td>
+</tr>
+<tr>
+<td>3</td>
+<td>3</td>
+<td>3</td>
+<td>297</td>
+<td>287</td>
+</tr>
+<tr>
+<td>4</td>
+<td>6</td>
+<td>6</td>
+<td>588</td>
+<td>372</td>
+</tr>
+<tr>
+<td>5</td>
+<td>9</td>
+<td>12</td>
+<td>873</td>
+<td>75</td>
+</tr>
+<tr>
+<td>6</td>
+<td>12</td>
+<td>20</td>
+<td>1,254</td>
+<td>80</td>
+</tr>
+<tr>
+<td>7</td>
+<td>15</td>
+<td>32</td>
+<td>1,852</td>
+<td>90</td>
+</tr>
+<tr>
+<td>8</td>
+<td>19</td>
+<td>47</td>
+<td>2,559</td>
+<td>100</td>
+</tr>
+<tr>
+<td>9</td>
+<td>23</td>
+<td>65</td>
+<td>3,371</td>
+<td>120</td>
+</tr>
+<tr>
+<td>10</td>
+<td>26</td>
+<td>83</td>
+<td>4,202</td>
+<td>140</td>
+</tr>
+<tr>
+<td>11</td>
+<td>30</td>
+<td>102</td>
+<td>5,057</td>
+<td>170</td>
+</tr>
+<tr>
+<td>12</td>
+<td>34</td>
+<td>123</td>
+<td>6,034</td>
+<td>210</td>
+</tr>
+</tbody>
+</table>
+<p>The base case is about US$6.0k MRR at M12, of which about US$0.5k comes from the US$99 minimum. Bear case: Apideck ships at scale prices, giving about 40 files and about US$2k MRR. Bull case: one AP customer with 40+ files, giving about US$10k by M12.</p>
+<h3>Agent distribution</h3><ul>
+<li><strong>MCP server (lead channel):</strong> hosted at a URL plus an <code>npx</code> package. Read-only by default, with per-tool write scopes and dry-run previews. Build cost: about 3 days, on the same endpoints. A$0 extra.</li>
+<li><strong>x402 pay-per-call:</strong> a stateless "read this <code>.ptb</code> backup" endpoint (an agent uploads a backup and gets trial balance, aged receivables and GL JSON), priced in USDC and only for one-off reads with no account. Build cost: about 2 days once the parser exists. This fits x402 well because there's no connection to keep alive. It's <strong>not</strong> a token job.</li>
+<li><strong>Grok Bot template:</strong> "Connect a Sage 50 US sandbox to your agent". It walks a developer from key to first query. Build cost: about 1 day, following pumpdata.fun's template model (<a href="https://github.com/pumpdatafun/grokbot-pumpfun-template">template</a>).</li>
+</ul>
+<h3>Defensibility</h3><p>SDK and connector lock-in (switching means every end user reinstalls; Conductor has "virtually no churn"). Operational know-how from real offices. Owning "Sage 50 US MCP" in search and registries early. <strong>Weak against Apideck at scale</strong>, and there are no network effects.</p>
+<h3>Risks</h3><table>
+<thead>
+<tr>
+<th>Risk</th>
+<th>Mitigation</th>
+<th>Cheap test</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Fails Ethan's gates (audience, token)</td>
+<td>State it; benchmark only unless Ethan decides otherwise</td>
+<td>Ethan's decision</td>
+</tr>
+<tr>
+<td>Apideck ships Sage 50 US</td>
+<td>Small-team wedge, US$99 minimum vs US$599, specialist error guides</td>
+<td>Read Apideck's status page weekly (read only)</td>
+</tr>
+<tr>
+<td>Hosted Sage 50 Cloud shrinks the base</td>
+<td><code>.ptb</code> backup read path; ask every prospect which setup they run</td>
+<td>Count hosted vs desktop among named customers</td>
+</tr>
+<tr>
+<td>Sage developer fees or ID refused</td>
+<td>Sample company plus partner installs; budget kill trigger at about A$985 pre-revenue</td>
+<td>Ask Sage for an application ID (needs Ethan's OK)</td>
+</tr>
+<tr>
+<td><code>.ptb</code> parser harder than expected (closed format)</td>
+<td>Build only on demand; snapshot reads only</td>
+<td>Private: parse the sample company's own backup on the VM</td>
+</tr>
+<tr>
+<td>Windows support load in the wrong time zone</td>
+<td>Outbound-only connector, queue, help library</td>
+<td>Run 2 to 3 partner offices for 2 weeks</td>
+</tr>
+<tr>
+<td>Trademark (Sage, Peachtree)</td>
+<td>Neutral name; "for Sage 50" as description only; no logos</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<h3>Kill or confirm</h3><ul>
+<li><strong>Private (free, no outreach):</strong> the 3-day sample-company spike must create and read back an invoice through the MCP tool, and must parse a <code>.ptb</code> backup of the sample company. If either fails in 3 days, stop.</li>
+<li><strong>Paid (parked; only if Ethan picks it):</strong> Project Bot's draft (project-bot/tests/ledgerport-money-test.md). 40 contacts. <strong>Confirm:</strong> 3 or more US$99 deposits, each naming a desktop Sage 50 US customer. <strong>Kill:</strong> 1 or fewer deposits; more than half of named customers hosted; Apideck ships and US$599 is fine for prospects; Sage refuses an ID; or developer fees push pre-revenue spend over A$1,000.</li>
+</ul>
+<h3>Comparables</h3><ul>
+<li><strong>Conductor:</strong> US$44,359 MRR, 293 subscriptions, US$500k all-time, founded July 2022, so <strong>four years</strong> to get here (<a href="https://trustmrr.com/startup/conductor">TrustMRR</a>).</li>
+<li><strong>Daybook:</strong> UK, £39, pre-launch, solo (<a href="https://daybookapi.com/">daybookapi.com</a>).</li>
+<li><strong>Hyperext:</strong> UK API and MCP, "2,000+ companies connected" (<a href="https://mcp.hyperext.com/">Hyperext</a>).</li>
+<li><strong>Zynk Insights AI:</strong> Sage MCP from £49 a month, read-only (<a href="https://zynk.com/pricing?product=insights">Zynk</a>).</li>
+</ul>
+<h3>Gaps screened this run and dropped</h3><ul>
+<li><strong>Sage 50 MCP sold to bookkeepers (US$29/company):</strong> gate a (bookkeepers, not tech bros), gate b (no token job). UK rivals: Hyperext, Zynk Insights AI (edition unclear), CData UK. Kept as a Ledgerport pivot signal only.</li>
+<li><strong>x402 pay-per-call accounting ledger for agents:</strong> gate c. <a href="https://ledger.novadyne.ai/guides/double-entry-bookkeeping-api-crypto-micropayments">Ledger by Novadyne</a> is live at US$0.002 per read and US$0.01 per write, plus <a href="https://github.com/billiondollarapps/counterra">Counterra</a> (free, x402 spend → QuickBooks and Xero journals) and the Agent Spend Books rivals (x402receipts, x402ledger.ai, Tulo, SpendVeto).</li>
+<li><strong>Crypto activity → Sage 50 journal sync:</strong> gate a (finance teams) and gate c (Cryptoworth lists Sage; CryptaCount exports journals for Sage 50; Bitwave and Cryptio cover Intacct, per <a href="https://wag3s.io/blog/crypto-accounting-sage-integration">Wag3s</a>).</li>
+<li><strong>Sage 50 Canada API (second product):</strong> gate c (ARIV, Conexio, SageBridge).</li>
+</ul>
+<h3>Sources (opened or API-checked this run unless marked)</h3><p><a href="https://www.apideck.com/accounting-software/sage-50-us">Apideck Sage 50 US status</a> · <a href="https://www.apideck.com/blog/how-to-integrate-with-the-sage-50-us-api">Apideck guide</a> · <a href="https://trustmrr.com/startup/conductor">TrustMRR Conductor</a> · <a href="https://conductor.is/">conductor.is</a> · <a href="https://daybookapi.com/">Daybook</a> · <a href="https://zynk.com/solutions/requirement/sage-mcp-server">Zynk Sage MCP</a> · <a href="https://zynk.com/integrations/sage-50-us">Zynk Sage 50 US</a> · <a href="https://zynk.com/articles/sage-ai-tools-compared">Zynk AI tools compared</a> · <a href="https://zynk.com/pricing?product=insights">Zynk pricing</a> · <a href="https://mcp.hyperext.com/">Hyperext MCP</a> · <a href="https://www.sage.com/en-us/sage-business-cloud/intacct/product-capabilities/platform/ai-gateway/">Sage Intacct AI Gateway</a> · <a href="https://us-kb.sage.com/portal/app/portlets/results/viewsolution.jsp?solutionid=250709190039003">Sage KB: Sage 50 Cloud export</a> · <a href="https://communityhub.sage.com/us/sage50_us/sage50us-welcome-center/w/hosted-customers/4264/resources-and-faqs">Sage hosted FAQ</a> · <a href="https://github.com/cyrieu/Sage50Connector">cyrieu/Sage50Connector</a> · <a href="https://github.com/HypedMo0n/SageBridge-API">HypedMo0n/SageBridge-API</a> · <a href="https://github.com/frozenhadez-tech/sage50-backup-viewer">frozenhadez-tech/sage50-backup-viewer</a> · <a href="https://github.com/CDataSoftware/sage-50-uk-mcp-server-by-cdata">CData Sage 50 UK MCP</a> · <a href="https://www.stackone.com/connectors/?category=accounting">StackOne connectors</a> · <a href="https://www.anchorterminal.com/best/accounting/">Anchor Terminal accounting APIs</a> · <a href="https://ledger.novadyne.ai/guides/double-entry-bookkeeping-api-crypto-micropayments">Ledger by Novadyne</a> · <a href="https://github.com/billiondollarapps/counterra">Counterra</a> · <a href="https://www.cryptacount.com/en/crypto-exchange-integrations/sage/">CryptaCount Sage</a> · <a href="https://wag3s.io/blog/crypto-accounting-sage-integration">Wag3s Sage</a> · Sage NA Developer Partner Program PDF (search snippet only; the link returned a web page, not the PDF).</p>
+</section>
+<section class="review"><h2>Project Bot review</h2>
+<p class="meta"><span class="badge mid">6.5/10</span> <span>Reviewed 24 Oct 2026, 9:10am AWST</span></p>
+<h3>Verdict</h3><ul>
+<li><strong>Score: 6.5/10 (v2). Token fit 2/10. Fails Ethan's rules gate, so benchmark only.</strong> <strong>v2 is now the best version</strong>: the headline equals v1's 6.5, but it's better on 3 criteria and now fits the A$1,000 budget (about A$490 before first revenue). Counting token fit as a ninth criterion gives about 6.2, so read it as about 6.0 under Ethan's rules. It doesn't outrank rules-passing theses.</li>
+<li><strong>Zynk answer:</strong> Zynk's Insights AI MCP does <strong>not</strong> cover Sage 50 US. Zynk's own connector pages show Insights AI for <a href="https://zynk.com/integrations/sage-50-uk">Sage 50 UK</a> (Sage 50 Accounts and Sage 50cloud) but only Workflow for <a href="https://zynk.com/integrations/sage-50-us">Sage 50 US</a>. It's read-only too. "The Sage 50 US MCP server" is still unowned.</li>
+<li><strong>Corrections:</strong></li>
+<li>The Sage developer programme (US$350 sign-up, US$250 a year, March 2025 PDF) is optional. The Application ID is free on request, so the A$985 kill trigger is unlikely to fire.</li>
+<li>The cited Sage KB documents CSV export from hosted Sage 50, not <code>.ptb</code> copies. So import CSVs first and parse <code>.ptb</code> later.</li>
+<li>New build risk: Boomi's docs say the Sage 50/Peachtree COM runtime must run as a logged-in desktop app, not a Windows service.</li>
+<li><strong>New rivals:</strong> Supergood (done-for-you REST plus MCP for no-API software) and Boomi's enterprise Sage 50/Peachtree connector. ARIV now has an MCP server, but for Canada only.</li>
+</ul>
+<h3>Score breakdown</h3><table>
+<thead>
+<tr>
+<th>Category</th>
+<th>v1</th>
+<th>v2</th>
+<th>Reason</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Problem severity</td>
+<td>7</td>
+<td>7</td>
+<td>No new harm evidence. A forum team asking for exactly this is a signal, not money</td>
+</tr>
+<tr>
+<td>Timing</td>
+<td>6</td>
+<td>6</td>
+<td>Apideck still "In development". Hosted migration continues, and Zynk could add US</td>
+</tr>
+<tr>
+<td>Differentiation</td>
+<td>5</td>
+<td>5.5</td>
+<td>US MCP verified unowned (Zynk UK-only and read-only, ARIV Canada, CData and Hyperext UK). Supergood caps it</td>
+</tr>
+<tr>
+<td>Solo buildability</td>
+<td>5.5</td>
+<td>5.5</td>
+<td>Scope and budget cut, offset by the closed <code>.ptb</code> format and the desktop-session risk</td>
+</tr>
+<tr>
+<td>Self-serve sales</td>
+<td>7</td>
+<td>7.5</td>
+<td>US$99 minimum, free sandbox, x402 one-off reads</td>
+</tr>
+<tr>
+<td>Distribution</td>
+<td>6</td>
+<td>6.5</td>
+<td>MCP registries, guides and a Grok Bot template, costed</td>
+</tr>
+<tr>
+<td>Retention</td>
+<td>8</td>
+<td>8</td>
+<td>Connector lock-in unchanged</td>
+</tr>
+<tr>
+<td>Money evidence</td>
+<td>8</td>
+<td>8</td>
+<td>Conductor US$44,359 MRR from 293 subs. No Sage 50 US payer shown</td>
+</tr>
+<tr>
+<td>Token fit</td>
+<td>not scored</td>
+<td>2</td>
+<td>No token job. Fails the coin rule</td>
+</tr>
+<tr>
+<td><strong>Overall</strong></td>
+<td><strong>6.5</strong></td>
+<td><strong>6.5</strong></td>
+<td>Product average 6.75, held by the niche ceiling. v2 best. Rules gate FAIL</td>
+</tr>
+</tbody>
+</table>
+<h3>Competitors</h3><p><em>Not in this review.</em></p>
+<h3>Build plan</h3><p><em>Not in this review.</em></p>
+<details><summary>Rest of the review (fact-check and notes)</summary>
+<h3>Next</h3><ul>
+<li>Private 3-day spike: an invoice created and read back through the MCP tool, with the connector running without a logged-in desktop session, plus a CSV-export import.</li>
+<li>The paid money test stays parked unless Ethan picks Ledgerport.</li>
+<li><strong>Ethan to decide:</strong> keep it as a non-coin benchmark, or retire it.</li>
+</ul>
+</details>
+</section>
+<section class="sources"><h2>Sources</h2><ul><li><a href="../sources/theses/2026-10-24-0900-ledgerport-v2.md">Thesis (2026-10-24-0900-ledgerport-v2.md)</a></li><li><a href="../sources/reviews/2026-10-24-0910-ledgerport-v2.md">Review (2026-10-24-0910-ledgerport-v2.md)</a></li></ul></section>
+</article>
+</main>
+<footer class="site">Theses by idea bot, reviews by Project Bot. Times are AWST (Perth time).</footer>
+</body>
+</html>

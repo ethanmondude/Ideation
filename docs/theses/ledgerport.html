@@ -599,6 +599,146 @@
 </table>
 <p><strong>The angle a solo founder can win:</strong> small SaaS teams and AI-bookkeeping startups with fewer than about 25 Sage 50 US customers, for whom Apideck's $599 floor and Rutter's contract are too much. Plus "Sage 50 US MCP" as a search term nobody owns yet. Ledgerport should lead with being the specialist (deep error guides and real Sage 50 behaviour) and accept that a team with 100+ customers will compare it with Apideck on price.</p>
 <h3>Build plan</h3><p><em>Not in this review.</em></p>
+<h3>Re-scores (living review)</h3>
+<h4>Re-score 24 Oct 2026 9:10am AWST (v2)</h4><p><strong>Covers:</strong> idea bot's Ledgerport v2 (/workspace/idea-bot/theses/2026-10-24-0900-ledgerport-v2.md, 24 Oct 9:00am AWST). Also:</p>
+<ul>
+<li>Git bot's record <code>git-bot:refine:ledgerport:20261024-0845</code> (lead with the US MCP server, drop Canada, add a backup-file fallback; score direction "unchanged").</li>
+<li>Trench Bot's records <code>trench-bot:thesis-input:ledgerport:launch-plan</code> and <code>trench-bot:thesis-input:ledgerport:token-fit-brand-risk</code> (no Sage/QuickBooks branding, the token never gates the API, "does not raise the product score").</li>
+<li>Fresh web and GitHub checks this morning (sources below).</li>
+</ul>
+<p><strong>Weak spots from the v1 review, checked against v2's "what changed":</strong></p>
+<ul>
+<li><strong>Apideck timing:</strong> still "In development" (page last updated 21 Oct). The wedge is narrowed honestly to teams with fewer than about 25 Sage 50 US customers, and the "far below Apideck" line is cut. Fixed as far as it can be.</li>
+<li><strong>Differentiation:</strong> "the Sage 50 US MCP server" is verified unowned (see Zynk answer and GitHub check). Improved.</li>
+<li><strong>Sage-hosted Cloud blocks connectors:</strong> part-fixed with an export fallback. The ceiling isn't fixed: still a US$5k to 10k MRR niche.</li>
+<li><strong>Budget over A$1,000:</strong> fixed. No Sage licence bought; about A$490 before first revenue.</li>
+<li><strong>Slow time to revenue:</strong> my US$99 minimum is adopted. Fixed (in design).</li>
+<li><strong>Canada as a second SKU:</strong> dropped. Correct call.</li>
+<li><strong>Ethan's audience and token gates:</strong> <strong>still fail.</strong> v2 says so itself (token fit about 2/10). Not fixable without changing the buyer.</li>
+</ul>
+<p><strong>Zynk question, settled: Insights AI does NOT cover Sage 50 US.</strong></p>
+<ul>
+<li>Zynk labels each connector with the products it's "Available for". <a href="https://zynk.com/integrations/sage-50-uk">Sage 50 UK</a> (Sage 50 Accounts, "including versions sold as Sage 50cloud Accounts") shows <strong>Workflow, Autopilot, Insights AI</strong>. <a href="https://zynk.com/integrations/sage-50-us">Sage 50 US</a> (Peachtree) shows <strong>Workflow only</strong>, and <a href="https://zynk.com/integrations/sage-50-ca">Sage 50 CA</a> also shows <strong>Workflow only</strong>.</li>
+<li>The <a href="https://zynk.com/solutions/requirement/sage-mcp-server">Sage MCP server page</a> only says "Sage 50, Sage 200", but Zynk's own <a href="https://zynk.com/integrations/sage-50">Sage 50 hub</a> says "Sage 50" means Sage 50 Accounts and that the US and Canadian editions are separate products with their own connectors.</li>
+<li>Insights AI is also <strong>read-only</strong> ("never posts, edits or deletes anything in Sage"), at £49/month for 2 sources, 1 user and 500 AI requests (<a href="https://zynk.com/pricing?product=insights">pricing</a>). So even if Zynk adds the US edition later, it doesn't do Ledgerport's writes.</li>
+<li><strong>Watch:</strong> Zynk already has a working Sage 50 US SDK connector (26 tasks, read and write; <a href="https://docs.zynk.com/workflow/documentation/sage-50-us/index.html">docs</a>), so adding Insights AI for US is a small step for them. Its MCP article (22 Oct) says more Sage products are coming "over the coming months".</li>
+</ul>
+<p><strong>Fact-check of v2's key claims:</strong></p>
+<ul>
+<li><strong>Confirmed:</strong></li>
+<li>GitHub: "sage 50 mcp" returns 1 repo, CData's read-only <strong>Sage 50 UK</strong> server (last pushed Oct 2025); "sage50 mcp" and "sage 50 us mcp" return 0. Of 17 "sage50" repos pushed since 1 Jul 2026, none is a US MCP server (several are Spanish-edition tools). Supergood's report card also says the Sage GitHub org has no MCP repos (<a href="https://supergood.ai/api-report-card/sage-50">Supergood</a>).</li>
+<li>Sage's own MCP is Intacct only: the Intacct MCP Server is part of the AI Gateway (<a href="https://www.sage.com/en-us/sage-business-cloud/intacct/product-capabilities/platform/ai-gateway/">Sage</a>), and Zynk (15 Oct, updated 22 Oct) "know[s] of no official Sage MCP server for Sage 50 or Sage 200" (<a href="https://zynk.com/articles/sage-ai-tools-compared">Zynk</a>).</li>
+<li>Apideck Sage 50 US: "Status: In development" (<a href="https://www.apideck.com/accounting-software/sage-50-us">Apideck</a>).</li>
+<li>Conductor on TrustMRR: exactly <strong>$44,359 MRR, 293 active subscriptions, $500,322 all-time</strong>, title "$42,631 last 30 days", last updated "Oct 23, 2026, 08:24 PM" (no time zone) (<a href="https://trustmrr.com/startup/conductor">TrustMRR</a>). Up from $44,163 / 291 on 22 Oct.</li>
+<li>Canada: <a href="https://sage-api.ariv.ca/">ARIV</a> is "Available for Sage 50 Canada (Canadian Edition) only" and says it won't work with US or UK. <a href="https://conexio.dev/solutions/api/">Conexio</a> lists Sage 50 in one REST hub (Canadian edition per its docs, checked 22 Oct). SageBridge's repo exists with 0 stars; I relied on Git bot's read of its Canada scope.</li>
+<li><strong>Corrections:</strong></li>
+<li><strong>Sage developer programme: real, but not required, so the A$985 kill trigger is unlikely to fire.</strong> Sage's live <a href="https://assets.devx.sage.com/assets/100-us/Sage-NA-Tech-Partner-Program.pdf">NA Tech Partner Program PDF</a> is dated <strong>March 2025</strong> (not Aug 2023). It confirms <strong>US$350 sign-up and US$250 a year per product line</strong> for Sage 50 US/Canada, with a not-for-resale development copy and 1 free support case. But Sage's KB says the SDK is free and an Application ID is requested separately (<a href="https://us-kb.sage.com/portal/app/portlets/results/viewsolution.jsp?solutionid=221924850014403">KB</a>), and a Sage SDK staffer told a developer "I can create a free .NET API ID for you" while support needs the paid programme (<a href="https://communityhub.sage.com/us/sage50_us/f/software-development-kit-sdk/132646/unable-to-access-open-sample-company-in-sage50">forum</a>). So the fee buys support and a dev licence. At about A$497 it's cheaper than the A$1,050 Pro licence, and it's a sensible buy once a design partner exists, not a kill trigger.</li>
+<li><strong>Backup fallback: the cited Sage KB is about CSV export, not <code>.ptb</code> backups.</strong> It shows File &gt; Import/Export to the G:\ "Sage 50 US Backups" folder, then copying the CSV to the local PC (<a href="https://us-kb.sage.com/portal/app/portlets/results/viewsolution.jsp?solutionid=250709190039003">KB</a>). The hosted FAQ confirms files in the "Sage 50 US Backup" folder can be reached in File Explorer and shared through OneDrive (<a href="https://communityhub.sage.com/us/sage50_us/sage50us-welcome-center/w/hosted-customers/4264/resources-and-faqs">FAQ</a>). Copying a <code>.ptb</code> out is implied, not stated. <strong>CSV exports are the safer fallback</strong>: Sage documents them, and they avoid the closed <code>.ptb</code> format risk.</li>
+<li><strong>New build risk:</strong> Boomi's <a href="https://help.boomi.com/md/docs/Atomsphere/Integration/Connectors/r-atm-Sage_50_Peachtree_Connector_74bfdcc0-c2ca-4056-a95b-bd7e55c42de3.md">Sage 50/Peachtree connector docs</a> say the 32-bit runtime must run <strong>as a desktop application, not a Windows service</strong>, with the Windows user always logged in. Supergood reports the same Session 0 failure for the UK SDO. If that holds for the US .NET API, v2's "Windows service" connector design needs a tray app, and support load goes up. Add it to the 3-day spike.</li>
+<li><strong>Not re-verified:</strong> Sage 50 US prices, the Codat 2% share, Rutter's repo push date (Git bot checked it), the backup-viewer download count.</li>
+<li><strong>Demand signal (not money):</strong> a team on Sage's SDK forum built AI bookkeeping on CSV exports from Sage 50 US and asked how to "connect Sage 50 directly to our tool" (<a href="https://communityhub.sage.com/us/sage50_us/f/software-development-kit-sdk/264978/exporting-importing-data-automatically-via-sdk">forum</a>, about 7 months ago). That's Ledgerport's exact buyer asking, but nobody is shown paying yet.</li>
+</ul>
+<p><strong>Token check (Ethan's rules):</strong></p>
+<ul>
+<li>Payers are SaaS and AI-bookkeeping dev teams paying by card. x402 changes the rail, not the buyer.</li>
+<li>No token job survives: burn-per-call and stake-for-sandbox are things these buyers won't do, and a build-in-public coin isn't a job. Trench Bot's rules (no Sage/QuickBooks name or logo, the token never gates the API, one pinned mint) cut launch risk but don't add a job.</li>
+<li>No holder payouts or fee-funded buybacks are proposed, so the ASIC line is clean. <strong>Token fit 2/10 (v2's own estimate, agreed). Rules gate: FAIL.</strong></li>
+</ul>
+<p><strong>Competitors the sweep missed:</strong></p>
+<ul>
+<li><a href="https://supergood.ai/api-report-card/sage-50">Supergood</a>: "turns hard-to-integrate enterprise software into clean REST APIs and MCP tools" with a "Get an API" button, and publishes a Sage 50 report card. It's sales-led and done-for-you, but it could hand a mid-size team a Sage 50 US API plus MCP on request.</li>
+<li><a href="https://help.boomi.com/md/docs/Atomsphere/Integration/Connectors/r-atm-Sage_50_Peachtree_Connector_74bfdcc0-c2ca-4056-a95b-bd7e55c42de3.md">Boomi Sage 50/Peachtree connector</a>: an enterprise iPaaS connector with query, add, modify and delete on Sage 50 US, through a local 32-bit runtime. It lists editions up to 2022 only, so the threat is low for small teams.</li>
+<li>Also worth knowing: ARIV now ships an optional MCP server for Sage 50 Canada (US$595/year plus US$1,195 setup), so the "Sage 50 MCP" pattern already exists on the sister edition. Zynk's Insights AI covers UK only (above).</li>
+<li>No self-serve Sage 50 US API or US MCP server was found (CData Connect AI covers Sage Cloud Accounting, Sage 200 and Intacct, not Sage 50 US).</li>
+<li>The two misses are logged in missed-competitors.jsonl.</li>
+</ul>
+<p><strong>Refined idea:</strong> keep v2's lead, "the Sage 50 US MCP server and API for AI bookkeeping agents", with these changes:</p>
+<ul>
+<li><strong>Fallback:</strong> CSV-export import first (Sage documents it), and <code>.ptb</code> parsing only if a prospect needs it.</li>
+<li><strong>Connector:</strong> the spike must prove the .NET API works when not run as a desktop session. If it doesn't, ship a tray app with auto-start.</li>
+<li><strong>Sage access:</strong> request the free Application ID by email in week 1 (needs Ethan's OK, as it goes out under his name). Buy the US$350 partner programme only after the first design partner signs.</li>
+<li><strong>Positioning against Zynk:</strong> Insights AI is UK-only and read-only. Ledgerport's three writes (invoices, bills, payments) for US are the edge.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Criterion</th>
+<th>v1 (22 Oct)</th>
+<th>v2</th>
+<th>Reason and source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Problem severity</td>
+<td>7</td>
+<td>7</td>
+<td>No new harm evidence. One forum team asking for exactly this is a demand signal, not a score change</td>
+</tr>
+<tr>
+<td>Timing</td>
+<td>6</td>
+<td>6</td>
+<td>Apideck still "In development", no US MCP anywhere; but Sage-hosted Cloud migration continues and Zynk could add US to Insights AI in "the coming months"</td>
+</tr>
+<tr>
+<td>Differentiation</td>
+<td>5</td>
+<td><strong>5.5</strong></td>
+<td>"Sage 50 US MCP" verified unowned: Zynk Insights AI is UK-only and read-only, ARIV is Canada-only, CData and Hyperext are UK. Supergood (done-for-you) caps the gain at +0.5</td>
+</tr>
+<tr>
+<td>Solo buildability</td>
+<td>5.5</td>
+<td>5.5</td>
+<td>Scope cut to reads plus 3 writes and budget now fits (about A$490 pre-revenue, partner fee optional). Offset by the closed <code>.ptb</code> format and the desktop-session risk from Boomi's docs</td>
+</tr>
+<tr>
+<td>Self-serve sales</td>
+<td>7</td>
+<td><strong>7.5</strong></td>
+<td>US$99 minimum brings cash forward; free sandbox; x402 one-off export reads need no account</td>
+</tr>
+<tr>
+<td>Distribution</td>
+<td>6</td>
+<td><strong>6.5</strong></td>
+<td>MCP-first registries, two guides and a Grok Bot template, costed. Apideck still ranks for the same terms</td>
+</tr>
+<tr>
+<td>Retention</td>
+<td>8</td>
+<td>8</td>
+<td>Connector lock-in unchanged; snapshot/CSV customers will churn more, but they're a fallback segment</td>
+</tr>
+<tr>
+<td>Money evidence</td>
+<td>8</td>
+<td>8</td>
+<td>Conductor up to $44,359 MRR / 293 subs (Stripe-verified). Still nobody shown paying for a Sage 50 US API</td>
+</tr>
+<tr>
+<td>Token fit</td>
+<td>not scored</td>
+<td><strong>2</strong></td>
+<td>No token job (v2's own estimate). Fails Ethan's coin rule. Not in the product average, see note</td>
+</tr>
+<tr>
+<td><strong>Overall</strong></td>
+<td><strong>6.5</strong></td>
+<td><strong>6.5</strong></td>
+<td>Product average 6.75 (v1 6.6), held at 6.5 by the US$5k to 10k MRR ceiling and no Sage 50 US payer. <strong>v2 is now the best version</strong>: equal headline, better on 3 criteria, and it fits the A$1,000 budget. <strong>Rules gate FAIL</strong> (token fit 2 &lt; 5): counting token fit as a ninth criterion gives about 6.2, so read it as about 6.0 under Ethan's rules</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Rules gate: FAIL</strong> (SaaS buyer, not tech bros; token fit 2 &lt; 5). <strong>Rank:</strong> highest product score in the series, but <strong>benchmark only</strong>. It doesn't outrank rules-passing theses, so Tapeline Check (v1 5.5) stays 1st among those. Ethan still needs to decide: keep Ledgerport as a non-coin benchmark, or retire it.</p>
+<p><strong>What would lift this score (updated):</strong></p>
+<ol>
+<li>The 3-day spike creates and reads back an invoice through the MCP tool, with the connector running unattended (no logged-in desktop): Solo buildability 5.5 → 6.</li>
+<li>Three or more US$99 deposits from teams naming desktop Sage 50 US customers (the parked money test, only if Ethan picks it): Money evidence 8 → 9, overall 7.0.</li>
+<li>A real token job for tech bros. None found after v2's full re-test, so the rules gate stays FAIL unless the buyer changes.</li>
+</ol>
+<p><strong>Sources opened for this re-score:</strong> <a href="https://zynk.com/solutions/requirement/sage-mcp-server">Zynk Sage MCP server</a> · <a href="https://zynk.com/integrations/sage-50">Zynk Sage 50 hub</a> · <a href="https://zynk.com/integrations/sage-50-uk">Zynk Sage 50 UK</a> · <a href="https://zynk.com/integrations/sage-50-us">Zynk Sage 50 US</a> · <a href="https://zynk.com/integrations/sage-50-ca">Zynk Sage 50 CA</a> · <a href="https://zynk.com/pricing?product=insights">Zynk pricing</a> · <a href="https://zynk.com/articles/sage-ai-tools-compared">Zynk AI tools compared</a> · <a href="https://docs.zynk.com/workflow/documentation/sage-50-us/index.html">Zynk Sage 50 US docs</a> · <a href="https://www.apideck.com/accounting-software/sage-50-us">Apideck Sage 50 US</a> · <a href="https://trustmrr.com/startup/conductor">TrustMRR Conductor</a> · <a href="https://assets.devx.sage.com/assets/100-us/Sage-NA-Tech-Partner-Program.pdf">Sage NA Tech Partner Program PDF</a> · <a href="https://us-kb.sage.com/portal/app/portlets/results/viewsolution.jsp?solutionid=221924850014403">Sage KB: SDK and third-party programs</a> · <a href="https://communityhub.sage.com/us/sage50_us/f/software-development-kit-sdk/132646/unable-to-access-open-sample-company-in-sage50">Sage forum: free .NET API ID</a> · <a href="https://us-kb.sage.com/portal/app/portlets/results/viewsolution.jsp?solutionid=250709190039003">Sage KB: Sage 50 Cloud export</a> · <a href="https://communityhub.sage.com/us/sage50_us/sage50us-welcome-center/w/hosted-customers/4264/resources-and-faqs">Sage hosted FAQ</a> · <a href="https://communityhub.sage.com/us/sage50_us/f/software-development-kit-sdk/264978/exporting-importing-data-automatically-via-sdk">Sage forum: AI bookkeeping tool wants direct connection</a> · <a href="https://sage-api.ariv.ca/">ARIV</a> · <a href="https://conexio.dev/solutions/api/">Conexio</a> · <a href="https://github.com/HypedMo0n/SageBridge-API">SageBridge</a> · <a href="https://supergood.ai/api-report-card/sage-50">Supergood Sage 50</a> · <a href="https://help.boomi.com/md/docs/Atomsphere/Integration/Connectors/r-atm-Sage_50_Peachtree_Connector_74bfdcc0-c2ca-4056-a95b-bd7e55c42de3.md">Boomi Sage 50/Peachtree connector</a> · <a href="https://github.com/CDataSoftware/sage-50-uk-mcp-server-by-cdata">CData Sage 50 UK MCP</a> · <a href="https://www.sage.com/en-us/sage-business-cloud/intacct/product-capabilities/platform/ai-gateway/">Sage Intacct AI Gateway</a></p>
 <details><summary>Rest of the review (fact-check and notes)</summary>
 <h3>1. Fact-check</h3><p><strong>Verified (opened today)</strong></p>
 <ul>
