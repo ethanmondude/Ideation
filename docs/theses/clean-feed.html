@@ -1,0 +1,1393 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Clean Feed v1</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="site"><a href="../index.html">Startup theses</a></header>
+<main>
+<p class="back"><a href="../index.html">&larr; All theses</a></p>
+<article>
+<h1>Clean Feed v1</h1>
+<p class="tagline">The real-or-copycat checker for Solana addresses, tickers and links in your X feed</p>
+<p class="meta"><span>24 Oct 2026, 10:21am AWST</span> <span class="badge mid">5/10</span></p>
+<section class="exec"><h2>Executive summary</h2>
+<ul>
+<li><strong>Lead job.</strong> On every Solana contract address (CA), $ticker or token link in the X feed, replies and Communities, Clean Feed <strong>automatically</strong> stamps one of four verdicts, with no paste and no click:</li>
+<li><strong>real $X</strong>;</li>
+<li><strong>copy #7 of 9 of $X → real: 25X5…pump</strong>;</li>
+<li><strong>no confirmed real mint</strong>;</li>
+<li><strong>new, unverified</strong>.</li>
+</ul>
+<p>It also <strong>collapses the shill and phishing replies around that CA</strong> with a one-line reason ("same text as 14 other replies in 3 min"). General scam and fluff filtering supports the lead but isn't the lead.
+- <strong>Problem.</strong>
+  - Copycat mints arrive by the dozen. Trench Bot logged <strong>215 brand name-bait mints among 314 new $500k coins in about 25 hours</strong> (SpaceX 17, IShowSpeed 11, YouTube 11, Gemini 11, MrBeast 10).
+  - Caller rings and "airdrop page / 10% supply / allocation scan" phishing ride every hot coin. In X bot's 119 shill checks, <strong>44 of the 48 shilled or mixed coins carried a pattern the extension could collapse in the page</strong> (this run's free test).
+  - Traders can't tell which CA in a reply is the real one.
+- <strong>Headline feature: the automatic copycat-mint stamp.</strong> The collapse bar only supports it. <a href="https://botblind.app/">BotBlind</a> (free, launched 21 Oct) already ships a reason bar with Show and Not-a-bot buttons and 3 strictness modes, so the bar alone caps uniqueness at 4 (Project Bot).
+- <strong>Rivals to beat: <a href="https://raindropext.com/docs">Raindrop</a>, <a href="https://fable.market/">fable</a> and BotBlind.</strong>
+  - fable is free and open source on x.com only. It puts a scam/caution/trusted line under crypto posts, adds SCAM/RUG/SHILL stamps, CA and $ticker underlines, and a profile backstory panel. It has 57 Chrome users, is Robinhood-Chain-first, pays $FABLE stakers from revenue, and uploads scrolled posts by default.
+  - Raindrop already detects every CA, pump.fun mint and ticker in the X timeline, with price, RugCheck data and one-tap buy.
+  - <a href="https://pasttokenbot.fun/">PastTokenBot</a> already lists older same-ticker tokens, but only when you paste a CA on its website.
+  - BotBlind collapses spam, scam and AI-bot replies, but by its own description it has no contract or crypto-template checks (untested).
+  - <strong>Nobody stamps "real or copy #N of $X" automatically on every CA in the feed.</strong>
+- <strong>Who pays and the token's job.</strong> Desktop memecoin and perps traders. The core is free. Pro is US$9/month <strong>or held $CFEED</strong>, and unlocks unlimited automatic verdicts, Communities safe mode and copycat alerts on coins you hold. Agents pay x402 at US$0.005 per check. <strong>Token = hold to unlock access, and burn your own for deep checks and credits. That's all.</strong> No holder payouts, no revenue buybacks, and no paying anyone from slashed stakes.
+- <strong>Cost against A$1,000.</strong> About <strong>A$72 to day 30 and A$545 over 4 months</strong> (estimates), including the A$300 legal consult and the A$83 launch. Server, RPC and LLM spend has a <strong>hard cap of A$25 a month</strong>; above it the extension falls back to local-only folding. RobinSight, a token-backed X scanner, shut down because of server costs.
+- <strong>Main risks.</strong>
+  - fable and Raindrop are one release away from a copycat badge, and BotBlind could add crypto rules.
+  - Nobody has been shown paying a subscription for an X scam filter. Security extensions earn from swap fees (Scam Sniffer 0.25%; Pocket Universe and Kerberus 0.8-0.95%), and that's execution, which our rules avoid.
+  - X's ToS (effective 9 Oct 2026) bans scraping.
+  - X DOM changes will break things.
+  - There's no mobile app support.
+  - A single wrong "real" call that drains someone would sink trust.
+- <strong>Proof plan.</strong> v1 only counts as beating fable if it passes <strong>all three blind sets</strong>: Mint Seal's frozen holdout, Trench Bot's 182 held-back cases, and Project Bot's 60-post feed set. The pass lines are below. The hard cases get their own line in the report.
+- <strong>Verdict: test, about 30%.</strong> The lead is the right shape for tech bros: instant, automatic, inside X, read-only. But it's a narrow edge with three fast rivals next to it, and no payer shown yet. Gate c (crowded) and gate e (money) are shaky.</p>
+</section>
+<section class="thesis"><h2>Full thesis</h2>
+<div class="byline"><p>*Idea bot thesis, Sat 24 Oct 2026, written 10:21-10:35am AWST (Perth). Path: /workspace/idea-bot/theses/2026-10-24-1021-clean-feed.md. <strong>New thesis, v1</strong>, id <code>idea-bot:thesis:clean-feed</code>. It comes straight from Ethan in the Ideation generation group (24 Oct, 10:21am AWST): "a tool for traders that filters out all the scam links and fluff on their twitter feed, replies, in communities etc as a chrome extension… all bots can have their input and develop this into a very functional tool with lots of user friendly features." Mint Seal (copycat check), Tapeline Check (first-reported stamp) and Decoy (link sandbox) become features inside Clean Feed. <strong>v1 is written on the inputs available at 10:21-10:35am:</strong></p>
+<ul>
+<li>X bot's 22-24 Oct signals and patterns (from public X search, not Ethan's feed; reading his home timeline needs his OK);</li>
+<li>Trench Bot's design cases (<code>shared-data/trench-bot/clean-feed-cases.jsonl</code>, 398 cases; the promised 60-100 extra non-scam cases weren't in the file yet at 10:33am) and run-11 notes;</li>
+<li>X bot's design set (<code>shared-data/x-bot/clean-feed/</code>, 173 labelled public posts from 17-24 Oct, plus demand.jsonl);</li>
+<li>Git bot's gap record and rival update;</li>
+<li>Project Bot's rival report (<code>project-bot/drafts/x-feed-filter-competitors.md</code>).</li>
+</ul>
+<p>v2 folds in Trench Bot's extra non-scam cases, the blind results and anything Project Bot's sweep adds. Holdouts I have not opened and will not open: <code>/workspace/trench-bot/clean-feed-holdout/</code>, <code>/workspace/trench-bot/mint-seal-holdout/</code>, Project Bot's 60-post feed set.*</p>
+<p><em>Name check: "Clean Feed" is a <strong>working name only</strong>. A Chrome extension called <a href="https://chromewebstore.google.com/detail/clean-feed/hlejhonddfacjgoobkanakghkeapkljc">Clean Feed</a> already exists: an LLM topic filter for X, last updated 5 Mar 2025. <a href="https://feedshield.app/">FeedShield</a> is also taken. The final brand is needed before any listing. Working ticker <strong>$CFEED</strong>: 0 DexScreener matches for CFEED or CLEANFEED (checked about 10:27am AWST, 24 Oct).</em></p></div>
+<h3>Innovation, usability, uniqueness</h3><ul>
+<li><strong>Demand you can see (X bot, public posts):</strong></li>
+<li><a href="https://x.com/alexrkonrad/status/2111884597315178562">@alexrkonrad</a> (91k followers) and <a href="https://x.com/AdamLowisz/status/2111901665800388919">@AdamLowisz</a> (55k) complain about the scam and spam layer on X.</li>
+<li><a href="https://x.com/kimiloo/status/2113311612534972456">@kimiloo</a>: "drainer links under literally every tweet".</li>
+<li>X bot's demand.jsonl has 20 posts: 16 trader complaints, workarounds, wishes or builders, and 3 projects warning "beware of fake tokens".</li>
+<li>This is demand for relief, not proof that anyone pays.</li>
+<li><strong>Innovation: 6/10.</strong> Why it's possible now:</li>
+<li>Same-ticker copies now arrive by the dozen within hours (Trench Bot run 10).</li>
+<li>pumpdata.fun gives free deployer history and launch-buyer counts with no key.</li>
+<li>Cheap Solana RPC reads give mint age, authorities, holders and pool reserves in about a second.</li>
+<li>Caller rings reuse the same accounts across coins: 25 of 26 named ring accounts recur in X bot's records.</li>
+</ul>
+<p>A year ago you couldn't build an automatic, per-CA "real or copy #N" answer inside the feed: the copycat volume and the free per-mint data weren't there. The collapse UI isn't new (BotBlind, fable).
+- <strong>Usability: 8/10</strong> (Git bot's score; first use under 30 seconds inside X):
+  1. Click "Add to Chrome".
+  2. Open x.com. No sign-up, wallet or X login needed.
+  3. <strong>Every CA in view already shows its stamp</strong>, e.g. "copy #3 of 5 of $AOP · real: 25X5…pump · deployer 41 launches, 0 graduated". Click it for the "why" panel.
+  4. Open that post's replies. The shill and phishing replies around the CA are already collapsed, e.g. "fake airdrop link · same text as 9 others".
+  5. Flip filtered/raw, or drag the strictness slider.</p>
+<p>Minus: mobile isn't supported, since there are no extensions in the X app.
+- <strong>Uniqueness: 5/10.</strong> Project Bot scores 3/10 for the broad filter, about 6/10 narrowed, and caps the collapse bar alone at 4 because BotBlind ships it. Git bot scores 5.
+  - <strong>Closest rivals:</strong>
+    - <a href="https://fable.market/">fable</a> gives a per-contract risk line in the feed.
+    - <a href="https://raindropext.com/docs">Raindrop</a> auto-detects every CA and ticker in the timeline, as a trading overlay.
+    - <a href="https://pasttokenbot.fun/">PastTokenBot</a> gives a same-ticker list on paste.
+  - <strong>The one thing we do that none of them ships:</strong> an <strong>automatic</strong> ticker-family verdict on every CA in the feed ("copy #N of $X, real is …"). We also collapse the shill and phishing replies around it <strong>without condemning a coin that's holding up</strong> (Kimchi, CHOO, ヤギ).
+  - Why not 6: PastTokenBot already does the comparison, and fable or Raindrop could ship the badge in a release.
+- <strong>Trench Bot's 10-second test</strong> (paste or hover a CA or link → clear real-or-fake answer in under 10s, no wallet): <strong>designed to pass, not yet measured.</strong> The target is under 2s for a cached mint and under 8s cold (estimate), timed in the blind runs.</p>
+<h3>Problem and user</h3><ul>
+<li><strong>User:</strong> tech-bro traders and builders who find coins on CT and in X Communities on desktop Chrome, Brave or Arc, next to Axiom, GMGN or Photon. Also caller-group admins and Community mods.</li>
+<li><strong>Design data (Trench Bot, 398 design cases; results on it are method checks only):</strong></li>
+<li><strong>Fake CAs:</strong> 87, including 15 where the real mint is known (Kimchi, AOP, PHP families).</li>
+<li><strong>Brand-name coins:</strong> 210. These are easy, with many near-duplicates (17 SpaceX mints).</li>
+<li><strong>Phishing accounts:</strong> 13 ("airdrop page" and "10% supply / check MemePage" templates).</li>
+<li><strong>Shill-ring accounts:</strong> 59, plus 9 paid-attention coins.</li>
+<li><strong>Non-scam cases:</strong> 20 (7 coins, 13 accounts).</li>
+<li><strong>Gaps:</strong> no confirmed drainer URLs (t.co links only), no Communities data, labels on 51 shill accounts are low confidence, and <strong>20 non-scams against roughly 370 scams can't show false-flag rates.</strong></li>
+<li><strong>Hard cases:</strong></li>
+<li>The "airdrop page" and "10% supply" spam also appears on coins that held up (Kimchi, CHOO, ヤギ, WRHND). Clean Feed must <strong>collapse the spam reply and leave the coin's stamp alone</strong>.</li>
+<li>Scam-warning accounts (@RaOnChain, @allenson5002, @StiffMem) must stay visible.</li>
+<li>A large KOL is labelled as paid promo. That label is private only.</li>
+<li><strong>Fake US fund-name coin farms</strong> (launched 21 Oct; Trench Bot run 11) show $2-282M caps with no wallet above about 0.6%, so they pass holder and concentration tests. Only an unpaid-poster / paid-attention check catches them.</li>
+<li><strong>Risky survivors with all-paid attention</strong>, e.g. $shiit (412ECWXN3jGbd1kn8ck7eeupWttkmrFkNm9JqfAzpump): every X mention is paid callers and reply spam. The stamp should say "risky · attention is paid callers only", not "fake".</li>
+<li>X bot's genuine hard cases:<ul>
+<li>an organic $KIMCHI "airdrop" post;</li>
+<li>a single reply carrying the real Kimchi CA;</li>
+<li>Phantom's "Refer friends, get paid";</li>
+<li>pump.fun's $2.5M competition post;</li>
+<li>Solana's "BREAKING: $AAPL is now live";</li>
+<li>Cointelegraph's Netanyahu story, posted while $NETANYAHU coins were being pushed.</li>
+</ul>
+</li>
+<li><strong>Patterns from X bot (public search):</strong></li>
+<li>AOP: the AlphaPulsevw, clebers1984 and Davide_Alp5y2 accounts posted identical "$61K → $56.4M 924X" text.</li>
+<li>$ODIE: one account posted 15+ identical CA replies in 3 minutes.</li>
+<li>1SHARE: about 12 aged accounts posted a paired "printing massively on my Alpha telegram" + "164.07x" template.</li>
+<li>WRHND and YMB: 0-follower accounts posted "10% of the supply is being distributed to holders… check your eligibility on MemePage" (<a href="https://x.com/brhimBayrak1/status/2113811245786964189">example</a>).</li>
+<li>Other templates: "allocation scan"; "Next 100x gem loading"; "913x"; "CA=" airdrop text.</li>
+<li>Farmed hype: $FRENS paid floods, AgentDojo's identical paragraphs.</li>
+<li>A copycat example from Trench Bot: posts about "Kimchi rugged" were about Project Kimchi (B1Y2…pump), not the main Kimchi.</li>
+<li><strong>Extension trust is low.</strong> <a href="https://www.coti.news/news/malicious-chrome-extension-skims-solana-swaps-with-hidden-transfers-from-x-traders">Crypto Copilot</a>, an "X swap" extension, secretly skimmed Solana swaps. So: read-only, no wallet permissions, open source.</li>
+<li><strong>Today's workaround:</strong> paste the CA into PastTokenBot, RugCheck or a terminal; tag @Larpcheckbot or @grok; mute words by hand. Wallets catch drainers only at signing.</li>
+</ul>
+<h3>Evidence of money</h3><ul>
+<li><strong>Security extensions earn from swap fees.</strong></li>
+<li>Scam Sniffer Premium is on by default with a 0.25% fee on selected DEX trades (<a href="https://chromewebstore.google.com/detail/scam-sniffer/mnkbccinkbalkmmnmbcicdobcmgggmfc">CWS</a>).</li>
+<li>Pocket Universe Pro charges about 0.76-0.8% (Project Bot). Kerberus Pro charges 0.8% on Uniswap/Pancake and 0.95% on Jupiter (<a href="https://docs.kerberus.com/kerberus/frequently-asked-questions/software-faq/is-there-a-cost-to-use-sentinel3">docs</a>).</li>
+<li>Kerberus bought Pocket Universe in a seven-figure deal (<a href="https://www.theblock.co/news/deals/2025-08-21-crypto-security-firm-kerberus-acquires-power-universe-anti-fraud-browser-extension-ethereum-solana-wallets-367826">The Block</a>).</li>
+<li>All of this is execution revenue, which is outside our rules.</li>
+<li><strong>Feed filters and in-feed crypto tools are small.</strong></li>
+<li>fable has 57 users and is free; it funds itself through $FABLE revenue staking, a model we can't use.</li>
+<li>Alphagate X has 6,000 users.</li>
+<li>PurifyX has 160 users. FeedShield's Pro is US$5/month. BotBlind is free.</li>
+<li><strong>Per-check verdicts:</strong> <a href="https://scan.rempart.app/">Rempart</a> charges US$0.05 per signed Solana verdict. pumpdata.fun charges US$0.005 after a free tier.</li>
+<li><strong>Hold-to-access precedent:</strong> Larpcheck ($LARPCHECK).</li>
+<li><strong>Missing:</strong> nobody is shown paying a subscription for an in-feed crypto scam or copycat check. This caps the score.</li>
+</ul>
+<h3>Bottom-up market sizing (assumptions labelled)</h3><ul>
+<li><strong>Reach (sourced, CWS counts via Project Bot):</strong> about 190k installs across Pocket Universe (100k), Scam Sniffer (40k), Kerberus (30k) and Web3 Antivirus (20k). Control Panel for Twitter has 300k users, which proves X-rewriting extensions can survive long term.</li>
+<li><strong>Assumption A:</strong> 5,000-15,000 installs in year 1 (estimate), with 2-4% on US$9 Pro. That's 100-600 payers, or US$0.9-5.4k MRR.</li>
+<li><strong>Assumption B:</strong> agents making 2,000 x402 checks a day add about US$0.3k/month.</li>
+<li><strong>Base case: US$1-3k MRR at month 12 (estimate).</strong> US$10k MRR needs about 1,100 Pro subscribers.</li>
+</ul>
+<h3>Competitive teardown</h3><p>User counts are CWS figures read by Project Bot on 24 Oct, unless noted.</p>
+<table>
+<thead>
+<tr>
+<th>Competitor</th>
+<th>What it does on X</th>
+<th>Pricing</th>
+<th>Users / traction</th>
+<th>Gap left</th>
+<th>Threat</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><a href="https://fable.market/">fable</a></strong> (<a href="https://github.com/FableDotMarket/fable">source</a>)</td>
+<td>Verdict line under crypto posts (scam/caution/trusted), SCAM/RUG/SHILL stamps, CA and $ticker underlines by risk, profile backstory panel, bundle and sniper detection; 17 new detections in Oct; API</td>
+<td>Free; $FABLE staking paid from revenue (barred for us)</td>
+<td>57 users, 751 X followers, v0.30.1 (5 Oct)</td>
+<td>Scores each contract alone, with no same-ticker family or "copy #N of X"; Robinhood-Chain-first (Solana covers dev dumps and snipes); uploads scrolled posts by default (X ToS risk)</td>
+<td><strong>Rival to beat #1.</strong> One release from a copycat badge</td>
+</tr>
+<tr>
+<td><strong><a href="https://raindropext.com/docs">Raindrop</a></strong> ($RAIN)</td>
+<td>Detects every CA, pump.fun mint and ticker in the timeline; price, mcap, liquidity, one-tap buy; RugCheck-filtered scanner</td>
+<td>Swap fees; $RAIN holders get 50% of swap fees (barred for us)</td>
+<td>Live in CWS</td>
+<td>Trading tool; no real-vs-copy verdict, no reply collapse</td>
+<td><strong>Rival to beat #2.</strong> Already detects every CA, so the badge is easy for them to add</td>
+</tr>
+<tr>
+<td><a href="https://pasttokenbot.fun/">PastTokenBot</a></td>
+<td>Paste a CA and it lists every older same-ticker token, oldest first</td>
+<td>Not checked</td>
+<td>Not checked</td>
+<td>Paste-in website, not in the feed; lists tokens but gives no verdict</td>
+<td>Proves the comparison; could ship an extension</td>
+</tr>
+<tr>
+<td><a href="https://rugsentry.pro/">RugSentry</a></td>
+<td>Axiom bookmarklet plus server-side X tracker; separate extension shows RugCheck/GoPlus on DexScreener, Birdeye and pump.fun</td>
+<td>Not checked</td>
+<td>Not checked</td>
+<td>Not on X posts</td>
+<td>Low</td>
+</tr>
+<tr>
+<td>WhiteOwl-Extension (GitHub, via Git bot)</td>
+<td>"Scan CA" button on X posts</td>
+<td>Free</td>
+<td>Small</td>
+<td>Click to scan, single-mint</td>
+<td>Low</td>
+</tr>
+<tr>
+<td><a href="https://docs.alphagate.io/browser-extension/on-x">Alphagate X</a></td>
+<td>Every CA an account has posted (deleted included), renames, key followers; needs sign-in</td>
+<td>Plans (not checked)</td>
+<td>6,000 users</td>
+<td>Account history, no copycat verdict</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Xwap (CWS)</td>
+<td>One-tap Solana swaps from $TICKER or CA; a "copycat filter" picks the posted CA, then verified or deepest-liquidity</td>
+<td>Free</td>
+<td>v0.1.0, 7 Oct</td>
+<td>Picks which token to trade; no verdict, no evidence</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td><a href="https://chromewebstore.google.com/detail/pocket-universe/gacgndbocaddlemdiaadajmlggabdeod">Pocket Universe</a> / <a href="https://chromewebstore.google.com/detail/kerberus-sentinel3/kglcipoddmbniebnibibkghfijekllbl">Kerberus Sentinel3</a></td>
+<td>"Social Shield" flags fake or impersonator accounts in the X feed; transaction simulation; US$30k coverage option</td>
+<td>Free + Pro swap fee</td>
+<td>100k / 30k</td>
+<td>Accounts only; no CA family, no reply rings</td>
+<td>Low for our slice</td>
+</tr>
+<tr>
+<td><a href="https://www.scamsniffer.io/extension/">Scam Sniffer</a></td>
+<td>"Twitter phishing warning" on fake-account comments and ads; blocklist used by Binance, Rabby, Phantom, Bybit</td>
+<td>Free limited / 0.25% DEX fee</td>
+<td>40k; last update 15 Feb 2025</td>
+<td>Links and accounts, mostly at click or sign; no CA verdict</td>
+<td>Low; also a <strong>supplier</strong> (<a href="https://github.com/scamsniffer/scam-database">open DB</a>)</td>
+</tr>
+<tr>
+<td><a href="https://chromewebstore.google.com/detail/web3-antivirus-protect-cr/inejiiekmjkmphgjjehhcmkpjncboodn">Web3 Antivirus</a></td>
+<td>"Twitter phishing posts blocker" (v0.17); auto Community Notes on 52k+ scam posts (<a href="https://indicator.media/p/the-top-community-notes-contributor-is-an-antivirus-startup-9354">Indicator</a>)</td>
+<td>Free; paid API</td>
+<td>20k; v0.18 (May 2025)</td>
+<td>EVM-first; no Solana family check</td>
+<td>Low</td>
+</tr>
+<tr>
+<td><a href="https://chromewebstore.google.com/detail/defillama/phgiabfbjodhgckcffppiboooeiecgeg">DefiLlama extension</a></td>
+<td>Red background on reply tweets likely to be scams</td>
+<td>Free</td>
+<td>23 ratings, Dec 2025</td>
+<td>Red mark only, no reason, no CA</td>
+<td>Low</td>
+</tr>
+<tr>
+<td>Phantom (with <strong>Blowfish</strong> inside; <a href="https://phantom.com/learn/blog/phantom-acquires-blowfish">acquired Nov 2024</a>)</td>
+<td>Simulation, scam-dApp warnings and spam-token hiding at signing. No evidence Phantom uses Blockaid; Blockaid's Solana partner is Backpack</td>
+<td>Free</td>
+<td>5M users</td>
+<td>Not in the feed</td>
+<td>Wallets absorbing security; we have to work before the click</td>
+</tr>
+<tr>
+<td>MetaMask (Wallet Guard inside); <a href="https://github.com/MetaMask/eth-phishing-detect">eth-phishing-detect</a></td>
+<td>Phishing list and blocking at click or sign</td>
+<td>Free</td>
+<td>12M</td>
+<td>Not in the feed; EVM</td>
+<td>Supplier (list)</td>
+</tr>
+<tr>
+<td>Dead</td>
+<td>Wallet Guard (<a href="https://www.walletguard.app/blog/wallet-guard-sunset-notice">sunset 31 Mar 2025</a>), Fire (Apr 2024), Harpie (<a href="https://www.theblock.co/post/348421/coinbase-web3-security-shop-harpie-announces-shutdown">Mar 2025</a>), Bot Sentinel extension (MV2, 2022), <strong>RobinSight</strong> (token-backed X scanner; shut down on server costs)</td>
+<td></td>
+<td></td>
+<td></td>
+<td>Lessons: cost cap, MV3</td>
+</tr>
+<tr>
+<td>Generic reply folders: <a href="https://botblind.app/">BotBlind</a> (<strong>rival to beat #3 on UX</strong>: free, one builder, launched 21 Oct; reason bar with Show and Not-a-bot buttons, 3 strictness modes; <a href="https://x.com/botblindapp/status/2112933153245397374">launch post</a>), Ownfeed and X-Posed (adjacent, not checked), <a href="https://chromewebstore.google.com/detail/purifyx-xtwitter-spam-fil/dblhngajkkliljhlnilajjifnilkbjnb">PurifyX</a>, <a href="https://feedshield.app/">FeedShield</a>, X Crypto Spam &amp; Bot Filter, Clean Feed (name), Guardia Feed Guard (10 users, EVM-first)</td>
+<td>Rule-based or AI hiding of spam, AI replies, crypto promos, airdrop bait; BotBlind shows reasons</td>
+<td>Free to US$5/mo</td>
+<td>PurifyX 160 users</td>
+<td>No CA layer, no ring memory</td>
+<td>UX benchmarks (BotBlind)</td>
+</tr>
+<tr>
+<td>OSS on GitHub: oh-my-x (34★), tweetguard (6★, keywords only), jev-x-spam-filter (1★), <a href="https://github.com/dutifuldev/janitr">Janitr</a>, <a href="https://github.com/force416/veil">Veil</a>, <a href="https://github.com/JagratSharma18/SafeCA">SafeCA</a> (RugCheck badges), Crypto Twitter Scam Shield (lookalike names)</td>
+<td>Keyword, local-model or LLM filters; single-mint badges</td>
+<td>Free</td>
+<td>0-34★</td>
+<td>Demos</td>
+<td>Low</td>
+</tr>
+<tr>
+<td>CA hover cards: <a href="https://qjump.vercel.app/index-en.html">QJump</a>, CoinLinker, <a href="https://chromewebstore.google.com/detail/token-truth/dpfaddbkkgeodmiejchgjiacdbooepch">Token Truth</a>, Xeet (80), ClipX (225), Merit, Trench Tools, TwitterScan (306 ratings)</td>
+<td>Price, mcap, dev info, "trust scores", buy buttons</td>
+<td>Free / swap</td>
+<td>Small</td>
+<td>Single-mint, no family verdict</td>
+<td>Could copy</td>
+</tr>
+<tr>
+<td>On-demand checkers: <a href="https://larpcheck.app/how">Larpcheck</a>, <a href="https://www.trenchee.fun/">Trenchee</a> (holder rewards, barred for us), Tetrascore (168 followers), <a href="https://vettedbots.com/scam-checker/">VettedBots</a>, pumpdata.fun, <a href="https://scan.rempart.app/">Rempart</a>, Token Verdict, swap-gate, SolEnrich, RugCheck, Toll (<a href="https://x.com/Tollxyz_/status/2113665214113857780">terminal</a>), Axiom/GMGN/Photon (no official X extensions)</td>
+<td>Tag-a-bot, paste or per-call verdicts; terminal checks beside the buy button</td>
+<td>Free to US$0.15/call</td>
+<td>Varies</td>
+<td>On demand or off X; single-mint</td>
+<td>Suppliers and substitutes</td>
+</tr>
+<tr>
+<td>X itself</td>
+<td>Spam filters, Community Notes, Hide reply (only on your own posts), mute</td>
+<td>Free</td>
+<td>Built in</td>
+<td>Word or account level</td>
+<td>X won't label coins real or fake</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Gate c on the lead job</strong> (an automatic ticker-family real-vs-copy stamp on every CA in the X feed, plus collapsing the replies around it): no tool found ships it. PastTokenBot does the comparison on paste, Raindrop does the detection for trading, and fable does per-contract risk in the feed. <strong>The edge is the combination, made automatic, and it's copyable.</strong> Broad scam and fluff filtering is crowded (3/10).</p>
+<h3>Product and UX</h3><p><strong>MVP wedge (2-3 weeks solo; Git bot's estimate): automatic copycat stamp + shill and phishing reply collapse.</strong></p>
+<ol>
+<li><strong>Copycat stamp (Mint Seal inside).</strong>
+   - Detects Solana mints (base58, <code>…pump</code>), $tickers and DexScreener, pump.fun or Axiom links in the feed, replies and Communities.
+   - Lists same-ticker and same-name siblings using pump.fun and DexScreener <em>search</em>, for the candidate list only.
+   - Decides the verdict from <strong>on-chain reads</strong> plus deployer history:<ul>
+<li>mint creation slot and age;</li>
+<li>mint and freeze authority;</li>
+<li>holder count;</li>
+<li>pool reserves read from the pool account (never DexScreener liquidity, which copycats fake into the billions);</li>
+<li>number of distinct launch buyers and deployer launch record (pumpdata.fun), not bundle share, since a 79.31% curve buyout is now normal;</li>
+<li>the CA pinned by the project's own X account, if any;</li>
+<li>Jupiter's verified tag.</li>
+<li><strong>Attention signal:</strong> what share of a mint's X posters are known template or caller accounts versus unpaid organic posters. It's computed locally from the posts in view plus the private ring memory, and adds a <strong>risky · paid attention only</strong> modifier. It's needed because fund-name farms pass every holder test.</li>
+<li><strong>Never shows green without two independent signals agreeing.</strong> Otherwise it shows "no confirmed real mint".</li>
+<li>Handles migrations (SLERF, MYRO: "moved to new mint"). No hardcoded tickers.</li>
+<li>Labels are text in our own style, never X-like checkmarks.</li>
+</ul>
+</li>
+<li><strong>Reply collapse around the CA.</strong>
+   - In-page duplicate detection: N+ accounts posting the same text within M minutes, one account posting the same CA reply 15+ times.
+   - Known templates (gain-multiple, "Alpha telegram", "airdrop page", "10% supply / check eligibility", "allocation scan").
+   - Link domains checked against MetaMask eth-phishing-detect, scamsniffer/scam-database and phantom/blocklist (licences to confirm), plus lookalike-domain rules.
+   - <strong>Reply-level, not coin-level:</strong> collapsing spam under Kimchi doesn't change Kimchi's stamp.
+   - Scam-warning replies ("this is a copycat, real CA is…") are kept and boosted, not hidden.</li>
+<li><strong>UX.</strong>
+   - Collapse, never delete. One-line reason. "Why" panel. Filtered/raw toggle.
+   - Strictness slider. Per-account always-show and always-hide, stored locally.
+   - Communities safe mode (strict preset).</li>
+</ol>
+<p><strong>Later, after the money test:</strong></p>
+<ul>
+<li>Tapeline "first reported Xh ago" stamp, off by default until v4 retrieval passes.</li>
+<li>Decoy link sandbox.</li>
+<li>Private paid-promo labels (never public).</li>
+<li>Telegram copycat alerts.</li>
+<li>Firefox.</li>
+</ul>
+<p><strong>Stack and data flow (designed for X's ToS).</strong></p>
+<ul>
+<li>Chrome MV3, host permission x.com only. <strong>No remotely fetched code</strong>: rules ship as data only.</li>
+<li><strong>Posts are checked locally.</strong> Only the CA, link domain or handle being checked is sent to our API. Never post text, never bulk uploads, no default "help improve" upload (unlike fable).</li>
+<li>API on a A$10/month VPS (Hono) with a Redis cache per mint, free-tier Solana RPC and pumpdata.fun free.</li>
+<li><strong>Hard spend cap of A$25/month</strong> across server, RPC and LLM. Checks only run when a CA scrolls into view, and are cached per mint across all users. At the cap, new uncached mints show "unverified" and folding stays local.</li>
+<li>Payments: Lemon Squeezy card, Solana Pay USDC, optional $CFEED hold check by wallet signature (sign-in only, no transaction permissions).</li>
+</ul>
+<p><strong>Week by week (20-25 h/week).</strong></p>
+<ol>
+<li>DOM layer, template and duplicate rules, reason line, raw toggle. Method-check on the 398 design cases, reported as method only.</li>
+<li>Copycat engine: candidate lookup, on-chain reads, verdict rules, cache, cost cap.</li>
+<li>Link checks, slider, Communities preset, Pro gating, MCP + x402.</li>
+<li>Unlisted CWS listing. Hand the build to the three blind runs.</li>
+</ol>
+<p><strong>What's hard.</strong></p>
+<ul>
+<li>X DOM churn.</li>
+<li>Telling a genuinely excited reply from a template.</li>
+<li>Finding "the real one" when the creator never pins a CA (the Kimchi dispute).</li>
+<li>Cross-chain impostors (EVM copies of Solana coins).</li>
+</ul>
+<h3>Agent distribution</h3><ul>
+<li><strong>MCP</strong> <code>check_ca(mint)</code> → {verdict, real_mint, copy_rank, reasons}, plus <code>check_link(url)</code>. Free for 50 checks a day. About 1 day to build.</li>
+<li><strong>x402 on Solana:</strong> US$0.005 per check, paid in USDC or with burned $CFEED credits. About 2 days.</li>
+<li><strong>Grok Bot template plus a paste-in prompt</strong> ("is this CA the real $X?"). About half a day.</li>
+<li><strong>Honest limit:</strong> Rempart, pumpdata.fun, SolEnrich and RugCheck already sell per-mint checks. Only the family verdict is new.</li>
+</ul>
+<h3>Token design (pump.fun)</h3><ul>
+<li><strong>Only two jobs:</strong></li>
+<li>(1) <strong>Hold</strong> $CFEED to unlock Pro: unlimited automatic stamps, Communities safe mode, copycat alerts. Checked by wallet signature. Card users never need the token.</li>
+<li>(2) <strong>Burn your own</strong> for deep checks (deployer funding graph, cross-chain impostors) and for API/x402 credits.</li>
+<li><strong>Disputes:</strong> a user can lock their own $CFEED to dispute a verdict. If upheld, they get it back and the verdict changes. If frivolous, their own stake is burned. <strong>Nobody is ever paid from slashed stakes or fees.</strong> Git bot's "stake-to-report" idea is cut back to this, because paying correct reporters would be a holder payout.</li>
+<li><strong>No holder payouts, no revenue buybacks, no creator-fee buy-and-burn.</strong> Card and USDC revenue is never used to buy the token. Creator fees go to a published wallet as a bonus only.</li>
+<li><strong>Launch:</strong> pump.fun, after the first 25 paying users and the legal consult. Mint and freeze authority off, confirmed on-chain. <strong>Small labelled dev buy</strong> (≤0.5 SOL, wallet published). No bundles, no paid callers. <strong>Pin one official CA</strong> on the site, on the X account and inside the extension from day one.</li>
+<li><strong>Dogfood launch:</strong> the extension stamps every $CFEED copycat as "copy #N of $CFEED". Copycats show up within hours (about 10 for Kimchi), so launch day doubles as the live demo.</li>
+<li><strong>Optional 2-week hook:</strong> pump.fun's US$2.5M PnL competition (sign-up by 26 Oct, runs to 9 Nov). <strong>Any public post needs Ethan's OK.</strong></li>
+<li><strong>Comparables we must not copy:</strong> fable ($FABLE staking from revenue), Raindrop (50% swap-fee share to $RAIN), Trenchee (fee rewards to holders). <strong>Comparable we can copy:</strong> Larpcheck (hold-to-access).</li>
+<li><strong>Token fit: about 6/10</strong> (Git bot also scored about 6).</li>
+<li><strong>Legal line:</strong> usage credit only. Labels stay factual ("newer mint, different deployer, 0 graduations") and never accuse named people. A$300 consult. Not legal advice.</li>
+</ul>
+<h3>Platform and policy risk</h3><ul>
+<li><strong>X ToS (effective 9 Oct 2026)</strong> bans access "by any means… other than through our currently available, published interfaces" and "crawling or scraping… in any form" without consent (x.com/en/tos via Project Bot; <a href="https://techcrunch.com/2023/09/08/x-updates-its-terms-to-ban-crawling-and-scraping/">TechCrunch on the 2023 change</a>).</li>
+<li>Mitigation: checks run locally on what the user's browser has already loaded. Only the CA, link or handle being checked goes to the server. Nothing is stored, nothing is auto-blocked or auto-posted, and there are no public account scorecards or shared handle blocklists until legal review.</li>
+<li>Remaining risk is grey, not zero. Control Panel for Twitter (300k users) shows long-lived X DOM rewriting can survive.</li>
+<li><strong>Chrome Web Store:</strong></li>
+<li>One narrow purpose ("verify crypto content on X"), with no swaps or trading bolted on.</li>
+<li>Limited Use disclosure (<a href="https://developer.chrome.com/docs/webstore/program-policies/limited-use">policy</a>).</li>
+<li>No remote code.</li>
+<li>Badges must not imitate X's UI or verified marks.</li>
+<li>Token promotion inside the extension invites review scrutiny, so keep the hold check on the website.</li>
+<li><strong>DOM breakage:</strong> a selector health check plus fast patch releases. Founder time is budgeted for it.</li>
+<li><strong>Liability:</strong> we can't offer Pocket-Universe-style US$30k coverage. Default to "unverified". Calling a copycat "real" is the one error with a zero-tolerance pass line.</li>
+</ul>
+<h3>Budget and founder load (A$; US$1 ≈ A$1.43; estimates unless sourced)</h3><table>
+<thead>
+<tr>
+<th>Item</th>
+<th>One-off</th>
+<th>Monthly</th>
+<th>4-month total</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CWS fee (US$5) + domain</td>
+<td>32</td>
+<td></td>
+<td>32</td>
+</tr>
+<tr>
+<td>VPS + Redis</td>
+<td></td>
+<td>10</td>
+<td>40</td>
+</tr>
+<tr>
+<td>Solana RPC (free tier) + pumpdata.fun free 300/day</td>
+<td></td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>Small LLM for reason text / ambiguous cases (mints only)</td>
+<td></td>
+<td>10</td>
+<td>40</td>
+</tr>
+<tr>
+<td>Open blocklists (licences to confirm)</td>
+<td></td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>Legal consult (token + ToS)</td>
+<td>300</td>
+<td></td>
+<td>300</td>
+</tr>
+<tr>
+<td>Token launch (rent + ≤0.5 SOL labelled dev buy)</td>
+<td>83</td>
+<td></td>
+<td>83</td>
+</tr>
+<tr>
+<td>Contingency</td>
+<td>50</td>
+<td></td>
+<td>50</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td></td>
+<td><strong>~A$20 (hard cap A$25)</strong></td>
+<td><strong>A$545</strong></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>To day 30: about A$72.</strong> Headroom is about A$455.</li>
+<li><strong>Hard server cap of A$25/month</strong> (RobinSight lesson): above it the product degrades instead of spending. Paid RPC is only added from revenue.</li>
+<li><strong>Founder load:</strong> 20-25 h/week for 3-4 weeks, then about 10 h/week, mostly DOM fixes and disputes.</li>
+</ul>
+<h3>Business model and unit economics (estimates)</h3><ul>
+<li><strong>Tiers:</strong></li>
+<li>Free: unlimited local collapsing and 30 automatic stamps a day.</li>
+<li>Pro: US$9/month or hold $CFEED, unlimited.</li>
+<li>x402: US$0.005 per check. MCP free for 50 a day.</li>
+<li>Verdicts are cached per mint and shared across users, so cost to serve is under US$0.20 per Pro user per month (about 95% gross margin).</li>
+<li>Cash acquisition cost is about US$0. Time is the constraint.</li>
+</ul>
+<h3>Solo GTM</h3><ol>
+<li>Blind proof first. The pitch line is the measured result vs fable and Raindrop on the same CAs.</li>
+<li>First users (outreach needs Ethan's OK): traders replying "fake CA" or "scam" under memecoin posts, Community mods, Solana Telegram groups.</li>
+<li>Dogfood launch day.</li>
+<li>Agent channels (MCP, x402, Grok template) and directories.</li>
+<li>25% cash referral. No token referral payouts.</li>
+</ol>
+<h3>12-month financial snapshot (estimates)</h3><table>
+<thead>
+<tr>
+<th>Month</th>
+<th>Installs</th>
+<th>Pro</th>
+<th>MRR (US$)</th>
+<th>Cumulative cost (A$)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>0-200 (unlisted test)</td>
+<td>0-10</td>
+<td>0-90</td>
+<td>~72</td>
+</tr>
+<tr>
+<td>3</td>
+<td>1,500</td>
+<td>40</td>
+<td>~0.4k</td>
+<td>~480</td>
+</tr>
+<tr>
+<td>6</td>
+<td>5,000</td>
+<td>120</td>
+<td>~1.1k</td>
+<td>~560</td>
+</tr>
+<tr>
+<td>12</td>
+<td>10,000-15,000</td>
+<td>200-350</td>
+<td>~1.8-3.2k</td>
+<td>Out-of-pocket under A$1,000; revenue covers running costs from about month 3</td>
+</tr>
+</tbody>
+</table>
+<h3>Defensibility</h3><ul>
+<li>A labelled ticker-family case set (Trench Bot scans plus disputes) with <strong>published blind accuracy against fable and Raindrop</strong>.</li>
+<li>The read-only, local-first trust story, with no payouts and no swaps.</li>
+<li>Weak against fable or Raindrop adding the badge. Speed and measured accuracy are the only moat.</li>
+</ul>
+<h3>Risks (mitigation, cheap test)</h3><table>
+<thead>
+<tr>
+<th>Risk</th>
+<th>Mitigation</th>
+<th>Cheap test</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>fable, Raindrop or BotBlind ship a copycat badge or crypto rules</td>
+<td>Ship first; publish a blind head-to-head</td>
+<td>X bot weekly watch of both changelogs</td>
+</tr>
+<tr>
+<td>Wrong "real" call</td>
+<td>Two-signal rule; "no confirmed real mint" default</td>
+<td>Mint Seal line: 0 copies called real</td>
+</tr>
+<tr>
+<td>False hides / condemning good coins</td>
+<td>Reply-level collapse, raw toggle, slider</td>
+<td>Hard-case line (Kimchi/CHOO/ヤギ spam)</td>
+</tr>
+<tr>
+<td>Nobody pays</td>
+<td>Hold path, x402, A$25 cap</td>
+<td>Founding pass once Ethan picks it</td>
+</tr>
+<tr>
+<td>Server costs (RobinSight)</td>
+<td>Hard cap, per-mint cache, on-view checks</td>
+<td>Cost log during the blind runs</td>
+</tr>
+<tr>
+<td>X ToS / DOM churn</td>
+<td>Local-only, send only the item checked</td>
+<td>Legal consult; selector monitor</td>
+</tr>
+<tr>
+<td>CWS rejection</td>
+<td>Narrow purpose, no remote code, no X-like badges</td>
+<td>Unlisted listing in week 4</td>
+</tr>
+<tr>
+<td>Mobile gap</td>
+<td>Grok template / Telegram later</td>
+<td>Ask the first 25 users</td>
+</tr>
+</tbody>
+</table>
+<h3>Proof plan (blind, three sets; v1 must pass all three to count as beating Raindrop, fable and BotBlind)</h3><p>None of these sets has been opened by me. Results on Trench Bot's 398 design cases are <strong>method checks only</strong>.</p>
+<ol>
+<li><strong>Copycat check, Mint Seal frozen holdout</strong> (Project Bot runs it blind):
+   - Part A: real mint found in at least 14 of 16, and no copy ever called real.
+   - Part B: real mint found in 2 of 3 (75% once there are more than 3), no copy called real, and all-fake groups correct in at least 90%. Thin groups are reported separately.</li>
+<li><strong>Coin and account verdicts, Trench Bot's 182 held-back cases</strong> (<code>clean-feed-holdout</code>, cases_blind sha256 55c3793b…9318, labels f1d37ca5…e57a). <strong>Report by type:</strong>
+   - 23 fake copies;
+   - 14 phishing;
+   - 37 shill;
+   - 7 non-scam;
+   - 101 brand-name, reported separately as easy.
+   - Pass (proposed): flag at least 90% of fake copies and phishing, at least 80% of shill, and keep all 7 non-scams.
+   - Caveat: 7 non-scams (20 in design) against about 370 scams can't measure false flags well. That's why set 3 exists.</li>
+<li><strong>Feed collapse, Project Bot's 60-post feed set</strong> (posts after 10:30am): <strong>at least 85% of scams collapsed and at most 3% of genuine posts hidden.</strong></li>
+<li><strong>Hard-case line in every report:</strong>
+   - spam replies under coins that held up (Kimchi, CHOO, ヤギ, WRHND) get collapsed, and the coin doesn't get flagged;
+   - scam-warning accounts stay visible;
+   - fake US fund-name farms (pass holder tests) get caught by the paid-attention signal;
+   - risky survivors like $shiit are stamped "risky · paid attention", not "fake";
+   - X bot's six genuine hard cases stay visible.</li>
+<li><strong>Rival head-to-head on the same CAs</strong> (supporting, not pass/fail): fable's line, Raindrop/RugCheck data, PastTokenBot's list. If ours isn't right where they're silent or wrong on at least 30% of copy groups, uniqueness drops to 3.</li>
+<li><strong>Time per answer</strong> logged against the 10-second test.</li>
+</ol>
+<p><strong>Then the 30-day paid validation, once Ethan picks it to launch as a coin (about A$72):</strong></p>
+<ul>
+<li>Unlisted CWS listing and a US$9 founding Pro for 3 months.</li>
+<li><strong>Pass:</strong> at least 25 paid and at least 30% of installs active 3+ days a week.</li>
+<li><strong>Kill:</strong> below 10 paid, or if half say "fable or Raindrop is enough".</li>
+</ul>
+<h3>Free private step this run (claimed 10:21am)</h3><ul>
+<li><strong>Data:</strong> X bot's 119 shill-check records (22-24 Oct).</li>
+<li><strong>44 of the 48 shilled or mixed coins (92%) carried at least one pattern Clean Feed can collapse in the page:</strong></li>
+<li>template or identical text: 39;</li>
+<li>airdrop, allocation or phishing lure: 18;</li>
+<li>paid TG gain posts: 22;</li>
+<li>impostor or other CA: 7.</li>
+<li><strong>25 of 26 named ring accounts recur across 2+ records</strong>, so ring accounts are reused across coins.</li>
+<li><strong>Caveats:</strong> these are X bot's summaries (biased upward), not raw replies. There's no false-positive sample. Method check, not a score.</li>
+<li><strong>Files:</strong> data/clean-feed/README.md, data/clean-feed/shill-check-tally.txt.</li>
+</ul>
+<h3>Design-set method check (X bot&#x27;s 173 posts; METHOD CHECK ONLY)</h3><p><strong>Rules v0:</strong> <code>data/clean-feed/rules_v0.py</code>, with the result in <code>rules_v0_result.txt</code>. These are text rules only; the copycat engine wasn't run. They cover:</p>
+<ul>
+<li>regex families for phishing ("check eligibility", "allocation scan", "% of supply distributed", "airdrop worth a look", recovery scams);</li>
+<li>regex families for caller templates ("Alpha telegram", "Nx from my call", "$61K → $56.4M");</li>
+<li>reply-spam hooks and farmed-hype paragraphs;</li>
+<li>near-duplicate text (3+ copies from accounts under 20k followers);</li>
+<li>same-account, same-CA bursts.</li>
+</ul>
+<p><strong>Results:</strong></p>
+<ul>
+<li><strong>Collapsed 127 of 145 scam and fluff posts (88%) and hid 0 of 28 genuine posts</strong>, including all six genuine hard cases.</li>
+<li>By label:</li>
+<li>phishing 32/32;</li>
+<li>farmed hype 22/22;</li>
+<li>reply spam 31/35;</li>
+<li>templates 30/36;</li>
+<li>wrong contracts 12/18 (by text alone; catching the rest is the stamp's job);</li>
+<li>old news 0/2 (Tapeline is off).</li>
+</ul>
+<p><strong>Why this proves little:</strong></p>
+<ul>
+<li>I wrote the rules after reading the set's README and examples, so they're tuned to it.</li>
+<li>"Duplicates in the set" stands in for "duplicates in the thread".</li>
+<li>28 genuine posts can't measure a 3% false-hide rate.</li>
+<li>Only Project Bot's 60-post set and Trench Bot's 182 held-back cases count.</li>
+</ul>
+<h3>Re-run on the updated design sets (updated 24 Oct, 10:40am AWST; rules v0 UNCHANGED, not re-tuned; METHOD CHECK ONLY)</h3>
+<p>Script: <code>data/clean-feed/rerun_v0.py</code>, which loads the rules verbatim from <code>rules_v0.py</code>. Output: <code>rerun_v0_result.txt</code>. No holdout was opened.</p>
+<p><strong>X bot, 222 posts (60 genuine, 34 of them replies)</strong></p>
+<ul>
+<li><strong>Full set:</strong> scam and fluff <strong>129/162 collapsed (80%)</strong>; <strong>genuine hidden 0/60</strong>.</li>
+<li>phishing 34/40;</li>
+<li>reply spam 31/44;</li>
+<li>templates 30/36;</li>
+<li>farmed hype 22/22;</li>
+<li>wrong contracts 12/18;</li>
+<li>old news 0/2.</li>
+<li><strong>Without batch 2 (173 rows):</strong> 127/145 collapsed (88%); genuine hidden 0/28. Same as v1.</li>
+<li><strong>Batch 2's 17 new scam replies:</strong> only 2 collapsed. Missed:</li>
+<li>all 9 bare "$shiit" ticker drops;</li>
+<li>all 4 "you may be eligible on ANSEM airdrop" replies;</li>
+<li>both "scan your wallet, claim up to 25k USD" replies.</li>
+<li>These were written after the rules, so this is the first honest out-of-sample read, and it's poor.</li>
+<li><strong>Hard cases (all 13 kept, 0 hidden):</strong></li>
+<li>creator warning with CA + "airdrop" + "claim link";</li>
+<li>fake-SpaceX fact-check;</li>
+<li>bare correct $CHOO CA reply;</li>
+<li>"wrong CA, correct one is in the replies";</li>
+<li>Kimchi "scammer / drained" warning;</li>
+<li>SHIIT lookup-bot reply;</li>
+<li>organic Kimchi "airdrop" post;</li>
+<li>the single real-Kimchi-CA reply;</li>
+<li>Phantom referral;</li>
+<li>pump.fun $2.5M;</li>
+<li>Solana "BREAKING $AAPL";</li>
+<li>Cointelegraph Netanyahu;</li>
+<li>Cointelegraph Wells Fargo.</li>
+<li><strong>Genuine by type:</strong> all 0 hidden, including organic Kimchi/CHOO replies 0/11, founder replies (toly, mert) 0/4, pump.fun dev replies 0/2, airdrop-innocent 0/6, "whats the ca"/correction 0/6.</li>
+</ul>
+<p><strong>Trench Bot, 498 cases</strong> (sha256 0903ea9f…de2a, <strong>matches</strong>)</p>
+<ul>
+<li><strong>Flag cases: 48/378 flagged.</strong> Text rules can only act on the 65 flag-accounts that have post text:</li>
+<li>phishing accounts 10/13;</li>
+<li>shill-ring accounts 38/59 (52 have posts).</li>
+<li>The 306 flag coins (impostor 87, brand bait 210, paid-attention coins 9) carry no post text. Judging them is the copycat stamp's job, which wasn't run, so they read 0.</li>
+<li><strong>Keep cases wrongly flagged: 1/120.</strong></li>
+<li>The 60 easy coins and 40 easy accounts are well-known blue chips and official accounts. The coins have no posts and the accounts are profile-only, so the text rules can't fire on them. <strong>They test nothing for text rules</strong>; they matter for the stamp.</li>
+<li>The only real test is the 13 hard keep accounts: 1/13 wrongly flagged.</li>
+<li><strong>Wrongly hidden: @ren_nevermind</strong> (organic ヤギ poster). Its own three posts of the real ヤギ CA tripped <code>same_ca_burst</code> (same handle + same CA 3+ times).</li>
+<li><strong>Missed phishing accounts (3):</strong> the airdrop-page template reworded ("Meet National Oil Dividend Fund through its airdrop", "The XTO airdrop page is here", "Explore the XTO airdrop").</li>
+</ul>
+<p><strong>v2 changes (described, not applied):</strong></p>
+<ol>
+<li><code>same_ca_burst</code> should count only replies across 3+ <em>different conversations</em> within minutes, not an account's own posts. That would fix @ren_nevermind.</li>
+<li>Strip leading @mentions before the duplicate check, and add a <strong>bare-ticker reply burst</strong> rule (the same $ticker with no other content from 3+ accounts under unrelated posts). That would catch the $shiit drops and also feeds the paid-attention signal.</li>
+<li>Add phishing families: "eligible on <X> airdrop", "scan your wallet … claim up to $N", and a generic airdrop-page family ("airdrop" + "Solana memecoin" + "CA=").</li>
+<li>Get hard keep cases that carry real post text. The 100 easy negatives can't measure false flags for text rules.</li>
+</ol>
+<h3>Rules v2 FROZEN (updated 24 Oct, 10:47:43am AWST): design-set numbers, TUNED ON THESE SETS</h3>
+<p><strong>Files</strong> (in <code>/workspace/idea-bot/data/clean-feed/</code>, read-only; any change becomes v2.1 with a new hash):</p>
+<ul>
+<li><code>rules_v2.py</code>: sha256 <code>379262f4e28aab1f81faa891c8d2fd4ed92fde1d94ef0f5668dd858e325796d1</code>.</li>
+<li><code>metamask_blocklist.json</code>: a snapshot of MetaMask's eth-phishing-detect list taken 10:44am AWST, used only as a secondary link check. sha256 <code>335cd0193dc465d57ca3eafdd3451b07e54a5db9c319ffb384d5611b95f9c9c1</code>.</li>
+<li><strong>Combined hash</strong> (sha256 of <code>FROZEN_v2.sha256</code>): <code>fb532d15f54e74658354efcfa87f5d09e3f94dce1ba1af8a4aa6822bc79bd596</code>. Also recorded in <code>FROZEN_v2.txt</code>.</li>
+<li>Not frozen: the test scripts <code>eval_v2.py</code> and <code>eval_links_v2.py</code>. Output is in <code>rules_v2_design_result.txt</code>.</li>
+</ul>
+<p><strong>What v2 changes:</strong></p>
+<ul>
+<li><strong>Same CA repeated:</strong> counted only across replies in 3+ different conversations. An account's own timeline posts no longer count.</li>
+<li><strong>Duplicate check:</strong> leading @mentions are stripped first, and it needs 5+ words, so short "whats the ca" questions don't count as copies.</li>
+<li><strong>Bare-$ticker reply bursts:</strong> caught when one account drops the same ticker in 3+ threads, or 5+ accounts drop it across 5+ threads (so 3 organic fans saying "$KIMCHI 🚀" stay visible).</li>
+<li><strong>Phishing phrase families:</strong> "may/could be eligible", "eligible on X airdrop + check", "scan your wallet", "claim up to", and a general airdrop-page family.</li>
+<li><strong>Weak lures</strong> ("claim now/your", "see what you can claim") only count from accounts under 50k followers.</li>
+<li><strong>Other new families:</strong> caller ads, price brags, 10x+ multiples (only next to a CA, MC wording or a $price-to-$price pair), promo-service replies, ring lines, link-only bursts, and lure-account memory.</li>
+<li><strong>Warning guard:</strong> posts that are warnings, corrections or CA questions never get lure or link rules.</li>
+<li><strong>Link rules are patterns:</strong></li>
+<li>a free static host (netlify.app, vercel.app, pages.dev and similar) with a Solana mint in the URL, or a claim-style subdomain name;</li>
+<li>*.memepage.io claim subdomains;</li>
+<li>the MetaMask list, used only as a secondary check.</li>
+<li>Links are read only as the expanded URL X shows; pages are never fetched.</li>
+<li><strong>Copycat-stamp policy</strong> (wording only; the engine itself goes to the 12:15 Mint Seal run):</li>
+<li>"no confirmed real mint" is <strong>neutral, never a flag</strong>;</li>
+<li>it names a real coin only when <strong>2+ signals agree on the same mint</strong>, and at least one is not the Jupiter verified tag;</li>
+<li>names are matched exactly after stripping suffixes like "(reversed)". There's no substring matching, and a ticker-only match with a conflicting name doesn't count, so ELON never resolves to Dogelon.</li>
+</ul>
+<p><strong>Design-set numbers (tuned, so they prove little):</strong></p>
+<ul>
+<li><strong>X bot, full 222:</strong> scam and fluff <strong>152/162 collapsed (94%)</strong>; <strong>genuine hidden 0/60</strong>; all 13 hard cases kept.</li>
+<li><strong>X bot without batch 2:</strong> 136/145 (94%); 0/28 hidden.</li>
+<li><strong>Batch 2 now:</strong> 16/17 caught (v1 got 2/17). The one miss is "$bproof or $shiit".</li>
+<li><strong>Still missed:</strong> 6 wrong-contract posts (migration-bot posts; the stamp's job), 2 old-news posts (Tapeline's job), the WeHave1DFacts RT, and a Garlinghouse/XRP template.</li>
+<li><strong>Trench Bot, 549 cases</strong> (sha256 5d351c9a…3e5d, rebuilt 10:46 with 51 hard-keep posts):</li>
+<li>flagged accounts with text: 61/65;</li>
+<li>keep cases wrongly flagged: <strong>0/171</strong>, including <strong>0/51 new hard-keep posts</strong> and 0/13 hard keep accounts.</li>
+<li>One honest out-of-sample note: before the follower guard, the new hard keeps produced <strong>1 false flag</strong>, @solana's "Claim now if you hold a Bored Ape". The guard was added after seeing it.</li>
+<li>The 306 flagged coins have no text and are left to the stamp.</li>
+<li><strong>Links (Trench Bot's 148 resolved destinations):</strong></li>
+<li>41 flagged: 22 free-host links with a mint in the URL, 19 memepage subdomains, and 23 MetaMask matches (which overlap);</li>
+<li>0 flagged among 107 twitter/x/axiom/t.me/solscan links;</li>
+<li>0 flagged links came from genuine or keep posts.</li>
+<li><strong>Caveat:</strong> link-domain rules are partly seen on the holdout (Trench Bot says 15 drainer destinations overlap), so the link result there is not fully blind. None of the pages is confirmed as a working drainer.</li>
+</ul>
+<p><strong>v1 blind result (Project Bot, 10:46am AWST; I did not open its folder):</strong></p>
+<ul>
+<li><strong>Overall:</strong> v1 drops to <strong>5.0</strong>.</li>
+<li><strong>Set A (Trench Bot's 182 held-back cases) FAILED:</strong></li>
+<li>81.6% caught without brand-name coins (the line is 85%);</li>
+<li>2 of 5 non-scams wrongly flagged;</li>
+<li>shill 26/37, phishing 12/14;</li>
+<li>all 4 copies with a known real mint named the <strong>wrong</strong> real coin;</li>
+<li>WRHND was stamped "no confirmed real mint" when it should only be risky.</li>
+<li><strong>Mint Seal Part A</strong> passed 16/16, but it's too easy (Jupiter-verified labels).</li>
+<li><strong>Root cause:</strong> most pump.fun originals are never Jupiter-verified, so "real one is X" named a wrong coin 22 times (e.g. ELON → Dogelon). The v2 stamp policy above answers this. The engine is re-tested at 12:15.</li>
+</ul>
+<p><strong>New OG-ranking rivals (not checked by me):</strong> OGfinder, Solana OG Bot, Solami and Prysm /og, alongside Buddy, Vamp Alert and Rick. <strong>Planned v2 test:</strong> a head-to-head against OGfinder and Vamp Alert on the same copycat families: who names the right original, and who stays neutral when unsure.</p>
+<h3>What v2 needs (team asks)</h3><ul>
+<li><strong>X bot:</strong></li>
+<li>more genuine excited replies and Community posts (the 173-post set has 28 genuine posts and no Communities);</li>
+<li>a weekly watch of fable's and Raindrop's changelogs;</li>
+<li>Ethan's home-timeline sample only if he OKs it.</li>
+<li><strong>Trench Bot:</strong></li>
+<li>more non-scam coins and accounts;</li>
+<li>a few confirmed drainer destinations (opened safely, not by me);</li>
+<li>Communities examples;</li>
+<li>keep the 182 held back.</li>
+<li><strong>Git bot:</strong></li>
+<li>commercial licences of the three blocklists;</li>
+<li>check PastTokenBot's method and any API, and the WhiteOwl-Extension repo;</li>
+<li>watch fable's GitHub.</li>
+<li><strong>Project Bot:</strong></li>
+<li>score v1;</li>
+<li>run the three blind sets;</li>
+<li>write the hard-case line.</li>
+<li><strong>Growth Bot:</strong> is the hold-to-unlock plus burn-own token job enough, or should v2 lead with x402 for agents?</li>
+</ul>
+<h3>Dropped or merged this run</h3><ul>
+<li><strong>Broad "scam and fluff filter" as the lead:</strong> gate c (fable, BotBlind, PurifyX, FeedShield, Pocket Universe/Kerberus, Scam Sniffer). It's kept as a supporting feature.</li>
+<li><strong>Decoy</strong> is merged in as a later feature. Signing simulators already cover it (Pocket Universe, Phantom/Blowfish, Scam Sniffer, Web3 Antivirus).</li>
+<li><strong>Public shill or KOL scorecards:</strong> dropped for X policy reasons. Paid-promo labels stay private.</li>
+<li><strong>Stake-to-report with rewards:</strong> dropped as a holder payout. Only burning your own stake remains.</li>
+</ul>
+<h3>Sourced facts vs estimates</h3><p><strong>Sourced:</strong></p>
+<ul>
+<li>Team data: X bot signals and 24 Oct digest; Trench Bot clean-feed-cases.md, design-set README and thesis-inputs; Git bot gap record and rival update; Project Bot rival report (CWS counts, fable details, X ToS date, CWS rules, RobinSight).</li>
+<li>Rival pages linked above.</li>
+<li>DexScreener ticker checks.</li>
+<li>This run's free tally.</li>
+</ul>
+<p><strong>Estimates:</strong></p>
+<ul>
+<li>installs, conversion, MRR and latency targets;</li>
+<li>RPC and LLM costs and the cost cap;</li>
+<li>A$ conversion;</li>
+<li>my Innovation and Uniqueness scores;</li>
+<li>the proposed pass line for set 2.</li>
+</ul>
+</section>
+<section class="review"><h2>Project Bot review</h2>
+<p class="meta"><span class="badge mid">5/10</span> <span>Reviewed 24 Oct 2026, 10:45am AWST</span></p>
+<h3>Verdict</h3><ul>
+<li><strong>Score: 5.0/10 (PROVISIONAL, feed set pending). Token fit 6/10. Passes Ethan's rules gate.</strong> Innovation 5, Usability 8, Uniqueness 4.</li>
+<li><strong>Down from 5.5 at 10:45am.</strong> That first score came before any blind results. Two of the three blind sets are now in:</li>
+<li><strong>Set A (Trench Bot's 182 held-back cases): FAIL.</strong> 91.5% of scams caught, but 2 of 5 non-scams were flagged (40%). With the easy brand-name coins left out, only 81.6% were caught, under the 85% line.</li>
+<li><strong>Set B (Mint Seal Part A): PASS, but trivial.</strong> 16 of 16 real mints found and 0 copycats called real. Each group has exactly one Jupiter-verified mint, and Jupiter verified was one of the label sources, so a Jupiter check alone would score 16 of 16.</li>
+<li><strong>Set 3 (my 60-post feed set): pending.</strong> It's built from 11:45am and second-labelled by Git bot.</li>
+<li><strong>The headline stamp failed its blind test.</strong> Where Set A has a known real mint (3 Kimchi copies and 1 AOP copy), "copy #N → real is X" named the right one <strong>0 of 4 times</strong>. Those reals aren't Jupiter-verified, so v1 fell back to "no confirmed real mint". 22 other "copy" stamps cited a wrong "real", for example Speed → "speed real fast" and ELON → Dogelon. It also flagged WRHND, a coin labelled "keep, mark as risky".</li>
+<li><strong>The verdict itself isn't new.</strong> Buddy does it automatically on trading pages. Vamp Alert (which Solana OG Bot redirects to) and OGfinder do it automatically in Telegram groups. Rick shows same-ticker "PVP" matches on fresh scans. Solami sells a duplicates API, and Prysm has <code>/og</code>. Only the X-feed surface is open.</li>
+<li><strong>What holds up:</strong></li>
+<li>0 copycats were called "real" on either set.</li>
+<li>Collapsing at the reply level works: 7 of 10 spam accounts under held-up coins were collapsed, and both organic accounts stayed visible.</li>
+<li>Usability is 8, and the budget fits A$1,000.</li>
+<li><strong>Second correction (from 10:45am):</strong> idea bot's own 10:40am out-of-sample read collapsed only 2 of 17 new scam replies.</li>
+</ul>
+<h3>Score breakdown</h3><div class="sub">From “Score history”</div><table>
+<thead>
+<tr>
+<th>When (AWST)</th>
+<th>Score</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>24 Oct, 10:45am</td>
+<td>5.5/10 provisional</td>
+<td>First score, from the desk review before any blind results. Core rows averaged 6.4, capped at 6 for no payer, then cut for the commodity verdict and the 2 of 17 out-of-sample read</td>
+</tr>
+<tr>
+<td>24 Oct, 10:46am</td>
+<td><strong>5.0/10 PROVISIONAL (feed set pending)</strong></td>
+<td>Re-scored after the blind run: Set A failed (81.6% without brand-name coins, 40% false flags on 5 non-scams, 0 of 4 real mints named) and Set B's pass is trivial (Jupiter verified alone gets 16 of 16). A "Measured accuracy" row of 4 was added; the other rows are unchanged</td>
+</tr>
+</tbody>
+</table>
+<h3>Competitors</h3><div class="sub">From “2. Competitor check: what the thesis missed”</div><p>The thesis already names fable, Raindrop, BotBlind, PastTokenBot, Xwap, Alphagate, RugSentry, Rempart and others, so those aren't counted as missed. New ones found this run (logged in missed-competitors.jsonl):</p>
+<table>
+<thead>
+<tr>
+<th>Missed rival</th>
+<th>What it does</th>
+<th>Price / model</th>
+<th>Where found</th>
+<th>Threat to Clean Feed</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><a href="https://buddycheck.xyz/">Buddy</a></strong></td>
+<td>Free beta Chrome/Brave/Edge/Arc extension. Reads the CA from the URL on pump.fun, DexScreener, GMGN, Photon, Axiom, Birdeye, BullX and more, and auto-builds a risk report: bundlers, snipers, dev sells, site age, live liquidity alerts, and a <strong>vamp check</strong> ("VAMP: copy of $WOTF. The OG launched 13h earlier and sits at $77.4M MC"). Open source (AGPL 3.0), never touches the wallet.</td>
+<td>Free; funded by $BUDDY fees, <strong>80% buys back and burns $BUDDY</strong> (barred model for us); mentions an X tracker</td>
+<td>Web search for pump.fun copycat checkers; page text from the search index (a live fetch was blocked by Cloudflare)</td>
+<td><strong>High.</strong> Same verdict logic, already automatic, already in the browser. Moving it onto x.com is one content script away</td>
+</tr>
+<tr>
+<td><strong><a href="https://vampalert.com/">Vamp Alert</a></strong> (also <a href="https://solanaogbot.com/">solanaogbot.com</a>, which redirects to it)</td>
+<td>Paste a CA, ticker or name and it ranks every same-ticker, same-name mint by launch time to the second, with "OG Launch or vamp", Verified OG, image OG and per-launchpad OGs. <strong>Telegram bot answers every CA posted in a group</strong> and tags you when a new copy launches; browser push alerts, no account</td>
+<td>Free (no pricing shown)</td>
+<td>Same web search; site fetched 10:42am AWST</td>
+<td><strong>High</strong> for the verdict; in Telegram, not X. It admits launch order isn't always the crowd's coin, which is Clean Feed's opening</td>
+</tr>
+<tr>
+<td><strong><a href="https://docs.rick.bot/features/token-discovery">Rick</a></strong> (Telegram/Discord scanner bot)</td>
+<td><code>/old</code> OG finder across chains, <code>/pfs exact</code> oldest pump.fun deploys, and <strong>PVP matches shown automatically on scans of tokens under 24h old</strong>; <code>/dev</code> deployer history</td>
+<td>Not checked</td>
+<td>Rick's own docs, via the same search</td>
+<td><strong>Medium.</strong> Already in most trader Telegram groups; not on X</td>
+</tr>
+<tr>
+<td><strong><a href="https://chromewebstore.google.com/detail/bgooiolaoinoncegoopcmincbomphmhi">Moni Discover</a></strong></td>
+<td>X extension with Moni Score, smart followers, handle-change history, and <strong>Trusted/Scam flags right in the X feed</strong> (changelog), impersonation detection, CA links, one-click trading</td>
+<td>Free to install; needs sign-in</td>
+<td>CWS listing read 10:43am AWST: <strong>6,000 users</strong>, v2.15.8, updated 14 Oct 2026; <a href="https://getmoni.io/changelog">Moni changelog</a></td>
+<td><strong>Medium.</strong> Account-level flags in the feed for 6k users; no CA family verdict</td>
+</tr>
+<tr>
+<td><strong><a href="https://coinufo.com/learn/copycat-tokens">CoinUFO</a></strong></td>
+<td>Ticker pages that list every contract sharing a ticker, ranked by peak liquidity, and say whether this one launched first; automatic brand-name flags ("903 of 5,421 scanned tokens (17%)" in 24h)</td>
+<td>Not checked</td>
+<td>Web search (learn page updated 27 Sep 2026)</td>
+<td>Low (website), but another free family list</td>
+</tr>
+<tr>
+<td><strong><a href="https://www.rugchckbot.app/community">Rugcheck Bot</a></strong></td>
+<td>Mention it on X with a CA, $ticker or link and it replies with a verdict; Discord mode auto-checks every CA posted in a channel; teams can sign to respond</td>
+<td>Has its own token ($RC, CA on site)</td>
+<td>Web search for Telegram/X anti-rug bots</td>
+<td>Low to medium. Single-mint verdict on demand. Its link to rugcheck.xyz is unconfirmed (different domain)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>What this does to the gap:</strong> "which mint is real" is now a commodity answer (PastTokenBot, Vamp Alert, Buddy, Rick, CoinUFO, Xwap's picker). What's left is narrower: (1) <strong>automatic, on x.com, on every CA, with no paste</strong>, and (2) a <strong>"real" call that needs two independent signals</strong> (pinned CA from the project's account, launch buyers, deployer record, pool reserves) rather than launch order or market cap, plus the <strong>paid-attention modifier</strong> for fund-name farms that pass holder tests. Point (2) is the defensible part, and only the blind runs can prove it.</p>
+<h3>All rivals, one line each (24 Oct)</h3>
+<table>
+<thead>
+<tr>
+<th>Rival</th>
+<th>Surface</th>
+<th>What overlaps with Clean Feed</th>
+<th>Automatic?</th>
+<th>Model</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Buddy</strong> (buddycheck.xyz)</td>
+<td>Browser extension on trading pages (pump.fun, DexScreener, GMGN, Axiom…)</td>
+<td>"VAMP: copy of $X, the OG sits at …", bundlers, snipers, dev sells</td>
+<td>Yes, from the page URL</td>
+<td>Free; 80% of $BUDDY fees go to buyback-and-burn (barred for us)</td>
+</tr>
+<tr>
+<td><strong>Vamp Alert</strong> (vampalert.com)</td>
+<td>Website, Telegram group bot, push alerts</td>
+<td>Ranks the same ticker and name by launch time; "OG Launch or vamp"; Verified OG and image OG</td>
+<td>Yes, in Telegram groups</td>
+<td>Free</td>
+</tr>
+<tr>
+<td><strong>Solana OG Bot</strong> (solanaogbot.com)</td>
+<td>Website (redirects to Vamp Alert)</td>
+<td>Same-ticker launch ranking, crowns the OG</td>
+<td>On search</td>
+<td>Free</td>
+</tr>
+<tr>
+<td><strong>OGfinder</strong> (ogfinder.tech)</td>
+<td>Website and Telegram group bot</td>
+<td>"Not the OG · #4 of 12 by age · OG is …pump", mint/freeze flags, deployer serial-launch history, /watch clone alerts</td>
+<td>Yes, for every CA pasted in a group</td>
+<td>Not checked</td>
+</tr>
+<tr>
+<td><strong>Rick</strong> (rick.bot)</td>
+<td>Telegram and Discord scanner</td>
+<td><code>/old</code> OG finder, <code>/pfs exact</code>, PVP same-ticker matches on scans of tokens under 24h old, <code>/dev</code></td>
+<td>Yes, on scans</td>
+<td>Not checked</td>
+</tr>
+<tr>
+<td><strong>Solami</strong> (solami.dev)</td>
+<td>API <code>/data/token/duplicates</code></td>
+<td>Namesakes oldest first, an <code>earlier</code> flag, avatar-reuse hashes</td>
+<td>API call</td>
+<td>Needs a DataApi permission (beta)</td>
+</tr>
+<tr>
+<td><strong>Prysm</strong> (<code>/og</code>)</td>
+<td>Telegram bot</td>
+<td>Oldest 15 tokens with the exact ticker, with "+188m after OG"; filters out fake-liquidity copies</td>
+<td>On command</td>
+<td>Not checked</td>
+</tr>
+<tr>
+<td><strong>BotBlind</strong> (botblind.app)</td>
+<td>X extension (replies)</td>
+<td>Folds spam replies into a grey line with the reason; Show, mark as human or bot, threshold; spam hooks include "airdrops", "100x", t.me</td>
+<td>Yes</td>
+<td>Free, Pro "coming soon"; fully local</td>
+</tr>
+<tr>
+<td><strong>Raindrop</strong> (raindropext.com)</td>
+<td>X extension</td>
+<td>Auto-detects every CA, pump.fun mint and ticker in the timeline; price overlay and one-tap buy</td>
+<td>Yes</td>
+<td>Swap fees; 50% go to $RAIN holders (barred for us)</td>
+</tr>
+<tr>
+<td><strong>fable</strong> (fable.market)</td>
+<td>X extension</td>
+<td>Red/amber/green line under crypto posts; CA, $ticker and @handle scans; Robinhood-Chain index plus Solana</td>
+<td>Yes</td>
+<td>Free; stakers get 50% of API revenue and 10% of $FABLE fees (barred for us)</td>
+</tr>
+<tr>
+<td><strong>PastTokenBot</strong> (pasttokenbot.fun)</td>
+<td>Website</td>
+<td>Paste a CA and it shows "ORIGINAL TOKEN" or "COPYCAT DETECTED", with older same-ticker tokens by age</td>
+<td>On paste</td>
+<td>Not checked</td>
+</tr>
+</tbody>
+</table>
+<p>Also logged at 10:45am: Moni Discover, CoinUFO and Rugcheck Bot (see the table above). <strong>The closest rival overall is Buddy. For the exact stamp format it's OGfinder.</strong></p>
+<h3>Build plan</h3><div class="sub">From “6. Build plan: what v2 must fix, in order (from the blind run)”</div><ol>
+<li><strong>"Real" for unverified coins.</strong> Most pump.fun reals are never Jupiter-verified. Add a second verified-type signal that works on day 1:
+   - the CA pinned by the project's own X account or website;
+   - the pump.fun creator's own profile;
+   - deployer history (pumpdata.fun).
+   Then allow "likely real" when oldest pool, most holders and the pinned CA agree. Target the Kimchi and AOP cases.</li>
+<li><strong>Never condemn a held-up coin.</strong> "No confirmed real mint" must not count as a flag on its own. Show it as a neutral grey stamp, and flag only "copy" or clear brand bait (a famous brand name with no official Solana mint). Re-test the strict and primary mappings on Set A Part 2 or a fresh holdout.</li>
+<li><strong>Use name matching that tolerates suffixes,</strong> e.g. "KIMCHI (reversed)" and "Baby Kimchi", the way Vamp Alert handles "2.0" and "(Official)". Also cut the wrong-"real" references: only cite a real when it shares both ticker and name.</li>
+<li><strong>Widen the text rules on new data, not this holdout:</strong>
+   - gain-multiple forms ("NX 🚀 from my $X call", "MC 41K → 138K");
+   - "view/explore … airdrop page";
+   - "Dexvra listing" retweets;
+   - bare "CA <address>" replies across threads.</li>
+<li><strong>Paid-attention modifier.</strong> Build it and test it on coins with posts attached (fund-name farms, $shiit).</li>
+<li><strong>Links:</strong> if a link-domain rule is added, note that 15 drainer destinations appear in both Trench Bot's design set and the holdout. The holdout can't count as blind for link catches.</li>
+<li><strong>Uniqueness:</strong> add Buddy, OGfinder, Vamp Alert, Rick, Solami and Prysm <code>/og</code> to the teardown, and run the head-to-head on the same CAs. If Clean Feed isn't right where they're silent or wrong on at least 30% of copy groups, uniqueness drops to 3.</li>
+<li>Then run Mint Seal Part B and Project Bot's 60-post feed set, and re-score.</li>
+</ol>
+<h3>Original 4-week plan (10:45am, still the schedule; the v2 fixes above come first)</h3>
+<ol>
+<li><strong>Week 1: copycat engine first, not the DOM layer.</strong> Candidate lookup, on-chain reads, two-signal rule, cache. Log calls and cost per uncached mint from day 1 (pumpdata.fun: 300/day no key, 2,000/day free key, US$10/month for 20,000/day). Hand it to the Mint Seal holdout and Trench Bot's 23 fake copies blind.</li>
+<li><strong>Week 2: reply collapse with idea bot's four v2 rule fixes</strong> (cross-conversation <code>same_ca_burst</code>, bare-ticker reply bursts, the "eligible on X airdrop" and "scan your wallet" families, reworded airdrop pages). Then my 60-post feed set blind.</li>
+<li><strong>Week 3: DOM layer, stamp UI, raw toggle, slider,</strong> MCP <code>check_ca</code> and x402.</li>
+<li><strong>Week 4: unlisted CWS listing</strong> under a new name, plus a head-to-head on the same copy groups vs <strong>Buddy, Vamp Alert and PastTokenBot</strong> (not just fable and Raindrop).
+- <strong>Budget line:</strong> about A$72 to day 30 (A$52 itemised plus about A$20 contingency) and A$545 over 4 months; A$455 headroom; hard cap A$25/month. Once free limits bind, pumpdata.fun's US$10/month key (≈A$14) takes running costs to about A$34/month, so lift the cap to about A$35 or drop the LLM line; the unknown is candidate-search calls on big families.
+- <strong>Money test:</strong> parked until Ethan picks this thesis to launch as a coin (US$9 founding Pro, pass ≥25 paid and ≥30% active 3+ days a week). Not waiting on him.</li>
+</ol>
+<details><summary>Rest of the review (fact-check and notes)</summary>
+<h3>Blind results (predictions frozen 10:41am AWST, before any label was opened)</h3><p>Method: <code>METHOD.md</code>. The post rules are idea bot's saved <code>rules_v0.py</code>, unchanged (sha256 56087f56…e07d). idea bot saved no copycat-engine code, so I built the stamp from the thesis text with no tuning:</p>
+<ul>
+<li><strong>Candidates:</strong> DexScreener and Jupiter search on the coin's ticker and name.</li>
+<li><strong>Signals:</strong> S1 Jupiter verified, S2 oldest first pool, S3 most holders.</li>
+<li><strong>"Real" rule:</strong> S1 plus S2 or S3. A variant that takes any 2 of the 3 gave identical results.</li>
+<li><strong>Mapping:</strong> "copy" or "no confirmed real mint" counts as a flag.</li>
+</ul>
+<p>Hashes:</p>
+<ul>
+<li>Set A blind input 55c3793b…9318 ✓. Set A labels f1d37ca5…e57a ✓, opened only after the freeze.</li>
+<li>Set B blind input 669fb6df…d8f8 ✓. Set B labels c404a487…ac1a.</li>
+<li>Frozen predictions: Set A <code>bb7f85b6a7923abb40f45984967da7d7c92ba6ed79bad581722954dc0ac6e5b2</code>, Set B <code>9968bf4686653fa22dcb718fa41dabb07e2a51779b31d6e7cc642cf17b0815e0</code>.</li>
+</ul>
+<h3>Set A: Trench Bot's held-back cases, by type</h3>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>n</th>
+<th>Caught / kept</th>
+<th>Rate</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Brand-name bait (easy)</td>
+<td>101</td>
+<td>100 flagged</td>
+<td>99%</td>
+</tr>
+<tr>
+<td>Fake copies (impostors)</td>
+<td>23</td>
+<td>22 flagged (0 of 4 named the right real)</td>
+<td>96%</td>
+</tr>
+<tr>
+<td>Phishing accounts</td>
+<td>14</td>
+<td>12 flagged</td>
+<td>86%</td>
+</tr>
+<tr>
+<td>Shill accounts (template)</td>
+<td>37</td>
+<td>26 flagged</td>
+<td>70%</td>
+</tr>
+<tr>
+<td>Shill accounts (paid-only attention)</td>
+<td>2</td>
+<td>2 flagged</td>
+<td>100%</td>
+</tr>
+<tr>
+<td>Non-scam (3 organic accounts + 2 "risky" coins)</td>
+<td>5</td>
+<td>3 kept, <strong>2 flagged</strong></td>
+<td>40% false flags</td>
+</tr>
+<tr>
+<td><strong>All scams</strong></td>
+<td>177</td>
+<td>162</td>
+<td><strong>91.5%</strong></td>
+</tr>
+<tr>
+<td><strong>Scams without brand bait</strong></td>
+<td>76</td>
+<td>62</td>
+<td><strong>81.6%</strong></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>Pass line (at least 85% of scams caught, at most 3% of genuine hidden): FAIL,</strong> with or without brand bait. The thesis's own proposed lines also fail: phishing 86% against a 90% target, shill 72% against 80%, and only 3 of 5 non-scams kept against "keep all".</li>
+<li><strong>Strict mapping (only "copy" counts as a flag):</strong> 0 false flags, but just 28.8% caught. On these cases the "no confirmed real mint" fallback does most of the work.</li>
+<li><strong>Misses:</strong></li>
+<li>Gain posts the regex doesn't match: "3X MC: 41K → 138K", "29.6X 🚀 from my $MI call" (the pattern needs "Nx from").</li>
+<li>Bare "CA <address>" reply spam with no repeats in the set.</li>
+<li>"Dexvra New Listing" retweets.</li>
+<li>Phishing worded as "Explore the Aura Final Bull airdrop page" or "View its airdrop page", which nearly matches the existing regex but doesn't.</li>
+<li>2 shill accounts with no posts.</li>
+<li><strong>Paid-attention modifier:</strong> not testable, because coin inputs carry no posts. Neither case expected to get "keep, mark as risky" received it.</li>
+</ul>
+<h3>Set B: Mint Seal holdout Part A</h3>
+<ul>
+<li><strong>Primary rule: 16 of 16 real mints found, 0 copycats called real, 0 no-calls. PASS</strong> (the line is at least 14 of 16, with 0 copies called real).</li>
+<li><strong>Caveat:</strong> this set can't tell a good engine from "trust Jupiter's verified tag". The real mint was the oldest pool and the most-held in 14 of 16 groups, with GOAT and PENGU the exceptions. Part B (fresh pump.fun groups, mostly all-fake) isn't frozen or run yet, and it's the harder test.</li>
+</ul>
+<h3>Hard cases: coins that held up but drew spam</h3>
+<table>
+<thead>
+<tr>
+<th>Coin</th>
+<th>Spam accounts in Set A</th>
+<th>Spam collapsed</th>
+<th>Organic account kept</th>
+<th>Coin's own stamp</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Kimchi (CSocnz…)</td>
+<td>6 (3 phishing, 3 shill)</td>
+<td>3/6</td>
+<td>n/a</td>
+<td>Not a Set A case. The 3 Kimchi copies got "no confirmed real mint", never "real is CSocnz"</td>
+</tr>
+<tr>
+<td>CHOO</td>
+<td>1 phishing</td>
+<td>1/1</td>
+<td>n/a</td>
+<td>Not in set</td>
+</tr>
+<tr>
+<td>ヤギ</td>
+<td>1 shill</td>
+<td>1/1</td>
+<td>1/1 kept</td>
+<td>Not in set</td>
+</tr>
+<tr>
+<td>WRHND (GTZPzH…)</td>
+<td>2 phishing</td>
+<td>2/2</td>
+<td>1/1 kept</td>
+<td><strong>Flagged "no confirmed real mint"</strong>, though the label is "keep, mark as risky" ✗</td>
+</tr>
+<tr>
+<td>$shiit</td>
+<td>0</td>
+<td>n/a</td>
+<td>n/a</td>
+<td>Not in set</td>
+</tr>
+</tbody>
+</table>
+<p>Collapsing at the reply level works: 7 of 10 spam accounts were collapsed and both organic accounts were kept. The coin-level stamp is the problem, because it condemns a held-up coin with no verified twin.</p>
+<h3>1. Fact-check (checked 10:38–10:45am AWST, with fixes added 10:46am)</h3><p><strong>Verified</strong></p>
+<ul>
+<li><strong>Trench Bot copycat counts:</strong> "215 brand name-bait mints among 314 new $500k coins in about 25 hours (SpaceX 17, IShowSpeed 11, YouTube 11, Gemini 11, MrBeast 10)" matches <code>trench-bot:thesis-input:mint-seal:copycat-evidence-run10</code> exactly. The thesis leaves out that 313 of the 314 rugged, which makes the problem stronger.</li>
+<li><strong>Free tally (44 of 48):</strong> <code>idea-bot/data/clean-feed/shill-check-tally.txt</code> shows 119 records, 48 shilled or mixed, 44 with a collapsible pattern (template 39, lure 18, paid TG 22, impostor CA 7). Correct as stated. It's X bot's summaries, not raw replies, as the thesis says.</li>
+<li><strong>Rempart:</strong> US$0.05 per signed Solana verdict, confirmed on <a href="https://scan.rempart.app/">scan.rempart.app</a>. Missing context: Rempart also sells a <strong>US$0.15 "deep" report with the deployer funding graph</strong>, which is the exact "deep check" Clean Feed wants users to burn $CFEED for. That job is already priced.</li>
+<li><strong>Name clash:</strong> the <a href="https://chromewebstore.google.com/detail/clean-feed/hlejhonddfacjgoobkanakghkeapkljc">Clean Feed</a> CWS listing exists: an LLM topic filter for X, v1.1, updated 5 Mar 2025, no ratings. Correct; rename before listing.</li>
+<li><strong>Rival facts reused from my 24 Oct sweep</strong> (CWS pages read today): fable 57 users v0.30.1, Scam Sniffer 40k with a 0.25% DEX fee, Pocket Universe 100k with 0.76–0.8%, Kerberus 30k, Web3 Antivirus 20k, Alphagate X 6k, PurifyX 160, Control Panel for Twitter 300k, RobinSight shut on server costs, X ToS effective 9 Oct 2026. All match.</li>
+<li><strong>Budget arithmetic:</strong> 4-month total A$545 adds up (32 + 40 + 40 + 300 + 83 + 50). Headroom A$455 is right. MRR maths checks: 5,000 × 2% = 100 and 15,000 × 4% = 600 payers, so US$0.9–5.4k MRR; 2,000 x402 checks a day × US$0.005 × 30 ≈ US$300 a month.</li>
+</ul>
+<p><strong>Wrong, unsupported or missing</strong></p>
+<ul>
+<li><strong>"Nobody stamps real or copy #N of $X automatically":</strong> true only for the X feed. Buddy does it automatically on trading pages, Vamp Alert does it automatically in Telegram groups, Rick does same-ticker matches automatically on fresh scans. See section 2.</li>
+<li><strong>Kerberus "0.8% on Uniswap/Pancake, 0.95% on Jupiter":</strong> the cited docs page only says Pro charges "a small fee on some swaps on select DEXes" and points to the Terms. The figures aren't on that page. Treat as unchecked.</li>
+<li><strong>"A$72 to day 30":</strong> not itemised. The table gives A$52 for month 1 (A$32 one-off plus A$10 VPS plus A$10 LLM), so A$72 must include about A$20 of contingency. Fine, but say so.</li>
+<li><strong>Lookup cost vs the A$25 cap (estimate; the thesis under-costs the data side):</strong> the thesis budgets only pumpdata.fun's no-key 300 lookups a day. pumpdata.fun also offers a free key for 2,000 a day and US$10/month (≈A$14) for 20,000 a day (its own page, checked in my 23 Oct re-score). Per-mint deployer data is cheap, but adding the US$10 key to the A$10 VPS and A$10 LLM makes about A$34 a month, over the thesis's A$25 cap. Either drop the LLM line or set the cap at about A$35 (still far inside A$1,000; 4-month total about A$600). The open cost is <strong>calls per stamp on big families</strong>: Vamp Alert notes popular tickers can have "thousands" of copies, so building the candidate list could take many searches per uncached mint. The blind runs must log calls and cost per stamp.</li>
+<li><strong>Out-of-sample read (idea bot's own 10:40am update):</strong> batch 2's 17 new scam replies collapsed 2 of 17; 3 reworded airdrop-page phishing accounts missed; 1 of 13 hard keep accounts wrongly flagged (@ren_nevermind posting the real ヤギ CA three times tripped <code>same_ca_burst</code>). The thesis summary still leads with the tuned 88% figure; the summary should carry the 2 of 17.</li>
+<li><strong>Not re-opened:</strong> the The Block "seven-figure" Kerberus deal (page behind a bot check), Scam Sniffer blocklist licence terms, pump.fun's US$2.5M PnL competition dates.</li>
+</ul>
+<h3>Fact-check fixes from the blind-run check (10:40am AWST)</h3>
+<table>
+<thead>
+<tr>
+<th>Claim</th>
+<th>Check (24 Oct, ~10:40am AWST)</th>
+<th>Verdict</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Raindrop finds every CA, pump.fun mint and ticker in the X timeline, with price, RugCheck and one-tap buy; 50% of swap fees go to $RAIN</td>
+<td>raindropext.com/docs (updated June 2026): "auto-detects token addresses, Pump.fun mints, and ticker mentions", with an inline overlay showing price, mcap, liquidity and BUY. RugCheck is in the Scanner and Inspector, not the inline overlay. "50% of all swap fees … distributed back to $RAIN holders"</td>
+<td>✓ (RugCheck placement is slightly overstated)</td>
+</tr>
+<tr>
+<td>fable puts a scam/caution/trusted line under crypto posts, is Robinhood-Chain-first, pays $FABLE stakers from revenue, free and open source, v0.30.1</td>
+<td>fable.market: "one quiet line … red / amber / green", contract/$ticker/@handle scans, index "on Robinhood Chain", chains "Robinhood Chain, Base, Ethereum, BSC and Solana". Stake page: "50% of the Fable API's revenue and 10% of the fees $FABLE generates". The site shows <strong>v0.29.3</strong></td>
+<td>✓ (version differs; 57 users and upload-by-default not re-checked)</td>
+</tr>
+<tr>
+<td>BotBlind collapses spam replies with a reason bar, Show and Not-a-bot, 3 strictness modes; <strong>no contract or crypto-template checks</strong></td>
+<td>botblind.app v1.0.3: 0–100 score, a fold line that says why, Show, mark as human or bot, a threshold. Its spam-hook signal <strong>does include "airdrops", "100x", t.me and bit.ly links</strong>. No contract checks. It makes no network requests at all</td>
+<td><strong>Partly wrong:</strong> it has crude crypto-spam hooks. It's also more private than Clean Feed, which sends each CA to a server</td>
+</tr>
+<tr>
+<td>PastTokenBot lists older same-ticker tokens only on paste, and "gives no verdict"</td>
+<td>Search snapshot of pasttokenbot.fun: paste a CA and it shows "ORIGINAL TOKEN" or "COPYCAT DETECTED, found 2 older token(s)", ranked by age. The site wouldn't load from the box (500 error, connection failure)</td>
+<td><strong>Wrong on "no verdict":</strong> it does give an original-or-copycat verdict on paste</td>
+</tr>
+<tr>
+<td>"Nobody stamps real or copy #N automatically"</td>
+<td><strong>OGfinder</strong> (ogfinder.tech): a Telegram group bot that replies automatically to every pasted CA with "Not the OG · #4 of 12 by age · OG is …pump", plus mint/freeze and deployer serial-launch history, and /watch clone alerts. <strong>Vamp Alert</strong> gives an original-or-vamp verdict, a Telegram group bot and push alerts on new copies. Also Solana OG Bot, Solami <code>/data/token/duplicates</code> (with avatar reuse) and Prysm <code>/og</code></td>
+<td><strong>Overstated:</strong> true only for the X-feed surface. The same stamp already ships automatically in Telegram</td>
+</tr>
+<tr>
+<td>x402 at US$0.005 per check, "the pay-per-call standard for agents", payable in USDC or burned $CFEED credits</td>
+<td>x402 supports Solana with the <code>exact</code> scheme. Facilitator fees: CDP has 1,000 free a month, then US$0.001; PayAI is about US$0.00133 per Solana settlement. That's <strong>20–30% of a US$0.005 price</strong>. x402 transfers tokens to <code>payTo</code> and doesn't burn them, so burn credits need a separate flow</td>
+<td>✓ standard; the fee cut and the burn mechanics are missing</td>
+</tr>
+<tr>
+<td>$CFEED has 0 DexScreener matches</td>
+<td>DexScreener search: 0 pairs with "feed" in the symbol for CFEED (fuzzy BSC results only) and 0 for CLEANFEED. Jupiter has no exact match</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>A$72 to day 30, A$545 over 4 months, A$25/month cap, fits A$1,000</td>
+<td>The table adds up (32+40+40+300+83+50 = 545), leaving A$455 headroom. The summary line saying "A$72 … including the A$300 legal consult and A$83 launch" can't be right, since those two alone are A$383. Only the 4-month total includes them</td>
+<td>✓ fits. Fix the wording</td>
+</tr>
+<tr>
+<td>Agent revenue: 2,000 checks/day ≈ US$0.3k/month</td>
+<td>2,000 × 30 × US$0.005 = US$300 gross, or about US$210–240 after facilitator fees</td>
+<td>Roughly ✓</td>
+</tr>
+</tbody>
+</table>
+<h3>3. Money check</h3><ul>
+<li><strong>Who pays today:</strong> nobody, for this job. Every in-feed or copycat rival is free: fable (revenue staking), Raindrop (50% swap-fee share to $RAIN), Buddy (80% fee buyback), Vamp Alert, PastTokenBot, BotBlind, Moni. The money in this category is swap fees (Scam Sniffer 0.25%, Pocket Universe 0.76–0.8%) or token fees spent on holders, and both are outside Ethan's rules.</li>
+<li><strong>Per-call money exists for agents:</strong> Rempart US$0.05 a verdict and US$0.15 deep; pumpdata.fun US$0.005. That supports the x402 line, not the US$9 Pro line.</li>
+<li><strong>US$9/month Pro:</strong> plausible only if blind accuracy is shown to beat the free tools. Expect "Buddy is free" as the top objection; the kill line ("half say fable or Raindrop is enough") should add Buddy and Vamp Alert.</li>
+<li><strong>Money evidence: 4/10.</strong> Base case US$1–3k MRR at month 12 is an estimate with no payer behind it.</li>
+</ul>
+<h3>4. Scores (re-scored 10:46am after the blind run)</h3><table>
+<thead>
+<tr>
+<th>Criterion</th>
+<th>Score</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Problem severity</td>
+<td>7</td>
+<td>Copycat mints by the dozen (215 name-bait, 313 of 314 rugged in ~25h, Trench Bot); drainer-reply complaints from 55k–91k accounts (X bot). Demand for relief, not payment</td>
+</tr>
+<tr>
+<td>Timing</td>
+<td>7</td>
+<td>Copycat volume and free per-mint data are new; but four rivals shipped or updated this month (Buddy, BotBlind 21 Oct, fable 5 Oct, Xwap 7 Oct)</td>
+</tr>
+<tr>
+<td>Differentiation</td>
+<td>4</td>
+<td>Family verdict is commodity; only in-feed automatic placement and the two-signal "real" rule are new, both unproven</td>
+</tr>
+<tr>
+<td>Usability</td>
+<td>8</td>
+<td>Install, open x.com, stamps already there; no wallet, no login. Minus: no mobile</td>
+</tr>
+<tr>
+<td>Ape appeal</td>
+<td>7</td>
+<td>Answers "is this the real CA?" before the click, inside the feed; defensive, not upside</td>
+</tr>
+<tr>
+<td>Solo buildability</td>
+<td>7</td>
+<td>2–3 weeks is realistic for the DOM layer and stamp; X DOM churn and uncached lookup cost are the hard parts</td>
+</tr>
+<tr>
+<td>Self-serve sales</td>
+<td>8</td>
+<td>CWS, card, USDC, hold check; no demo</td>
+</tr>
+<tr>
+<td>Distribution</td>
+<td>6</td>
+<td>CWS plus MCP, x402 and a Grok template; dogfood launch is clever; no audience and outreach needs Ethan's OK</td>
+</tr>
+<tr>
+<td>Retention</td>
+<td>6</td>
+<td>Used every trading session if it's right; one wrong "real" kills it</td>
+</tr>
+<tr>
+<td>Money evidence</td>
+<td>4</td>
+<td>All rivals free; nobody pays a subscription for an in-feed crypto check</td>
+</tr>
+<tr>
+<td>Token fit</td>
+<td>6</td>
+<td>Hold-to-unlock plus burn-own, Larpcheck precedent, launch day doubles as demo; weaker pull than rivals' payout tokens, and the deep-check burn competes with Rempart's US$0.15</td>
+</tr>
+<tr>
+<td><strong>Innovation (tech bros)</strong></td>
+<td><strong>5</strong></td>
+<td>Thesis says 6. Automatic family verdicts already run in Buddy and Vamp Alert; new now: doing it in-feed, two-signal "real", paid-attention modifier</td>
+</tr>
+<tr>
+<td><strong>Usability (tech bros)</strong></td>
+<td><strong>8</strong></td>
+<td>Agree with Git bot: first value under 30 seconds inside X, 5-step flow, no setup; mobile gap</td>
+</tr>
+<tr>
+<td><strong>Uniqueness (tech bros)</strong></td>
+<td><strong>4</strong></td>
+<td>Thesis says 5. Closest rival: <strong>Buddy</strong> (automatic "copy of $X, OG is…" in the browser, free, open source); <strong>OGfinder</strong> does the same "#N of M by age, OG is …" automatically for every CA pasted in a Telegram group. The one thing we do that it doesn't: the stamp on x.com itself, on every CA in posts and replies, with "real" needing two signals, not launch order. Copyable in one release by Buddy, fable or Raindrop</td>
+</tr>
+<tr>
+<td>Measured accuracy (blind, new row 10:46am)</td>
+<td>4</td>
+<td>Set B passes 16/16 but is trivial (one Jupiter-verified mint per group, and Jupiter verified was a label source). Set A fails: 81.6% of scams caught with brand bait left out, 2 of 5 non-scams flagged, and the headline stamp named the right real mint 0 of 4 times</td>
+</tr>
+<tr>
+<td><strong>Overall</strong></td>
+<td><strong>5.0/10 (PROVISIONAL, feed set pending)</strong></td>
+<td>Was 5.5 at 10:45am (core rows averaged 6.4, capped at 6 for no payer, then cut for the commodity verdict and the 2 of 17 out-of-sample read). Re-scored to 5.0 after the blind run: Set A failed and Set B's pass is trivial. Set 3 (60-post feed set) is still to come</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Rules gate: PASS</strong> (tech-bro buyer; token fit 6 ≥ 5; about A$545 over 4 months; pump.fun; no holder payouts or fee-funded buybacks).
+<strong>Rank (updated 10:46am):</strong> joint 5th of 10 at 5.0, level with Mint Seal, Second Look, Revtrace and Askwatch. <strong>Below Tapeline Check v3 (5.5)</strong>, the top rules-passing thesis, and below Breach Kit (5.5), Tapeline (6, superseded) and Ledgerport (6.5, fails the rules gate). It is no longer joint 1st among rules-passing theses.</p>
+<h3>5. Token-launch check (pump.fun only)</h3><ul>
+<li><strong>Job:</strong> hold $CFEED to unlock Pro (unlimited stamps, Communities safe mode, copycat alerts on coins you hold); burn your own for deep checks and API/x402 credits; lock your own to dispute a verdict (burned if frivolous, returned if upheld, nobody paid from it). That's clean under Ethan's rules.</li>
+<li><strong>Launch:</strong> pump.fun after 25 paying users and the A$300 legal consult; mint and freeze authority off; ≤0.5 SOL labelled dev buy; one pinned CA on site, X and inside the extension; Holder Rewards and Tokenized Agent off; no bundles or paid callers (Trench Bot: paid-only attention now reads as a rug).</li>
+<li><strong>Watch:</strong> keep any token talk off the CWS listing (review risk). Price deep-check burns well under Rempart's US$0.15 or the burn has no reason to exist. Buddy, fable and Raindrop all pay holders; ours won't, so the token's pull is the dogfood demo plus real Pro use. <strong>Token fit 6/10.</strong></li>
+</ul>
+<h3>Blind-test status (10:46am AWST)</h3><table>
+<thead>
+<tr>
+<th>Set</th>
+<th>Status</th>
+<th>Result</th>
+<th>Pass line</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Mint Seal Part A (16 groups, 99 mints)</td>
+<td><strong>Run, frozen 10:41am</strong> (predictions sha256 9968bf46…15e0)</td>
+<td>16/16 real, 0 copies called real: <strong>PASS (trivial)</strong></td>
+<td>≥14 of 16 real found, 0 copies called real</td>
+</tr>
+<tr>
+<td>Mint Seal Part B (fresh pump.fun groups)</td>
+<td>Not frozen or run yet</td>
+<td>n/a</td>
+<td>≥2 of 3 real (75% above 3), 0 copies called real, ≥90% all-fake groups</td>
+</tr>
+<tr>
+<td>Trench Bot's 182 held-back cases</td>
+<td><strong>Run, frozen 10:41am</strong> (predictions sha256 bb7f85b6…e5b2)</td>
+<td>91.5% caught, 81.6% without brand-name coins, 2/5 false flags: <strong>FAIL</strong></td>
+<td>≥85% of scams caught, ≤3% of genuine hidden</td>
+</tr>
+<tr>
+<td>My 60-post feed set</td>
+<td>Being built from 11:45am</td>
+<td>Pending</td>
+<td>≥85% collapsed, ≤3% genuine hidden</td>
+</tr>
+</tbody>
+</table>
+<h3>Data notes (blind run)</h3><ul>
+<li>Set A's real make-up is <strong>101 / 23 / 14 / 39 / 5</strong>, not 101 / 23 / 14 / 37 / 7. Shill includes 2 paid-only-attention cases. The non-scams are 3 organic accounts plus 2 coins labelled "keep, mark as risky", and there's no plain "keep" coin. A 3% false-flag rate can't be measured on 5 cases.</li>
+<li>Set B is circular with Jupiter's verified tag, as explained above.</li>
+<li>The Mint Seal README still says "not hashed or frozen yet", though <code>partA/SHA256SUMS</code> exists. The holdout folder and build scripts are writable; only the data files are read-only.</li>
+<li><code>cases.jsonl</code>, which has the full labels, sits beside <code>cases_blind.jsonl</code> and is world-readable.</li>
+<li>Live data was fetched about 10:40am AWST. The labels predate it, so market changes could shift the age and holder signals slightly.</li>
+</ul>
+<h3>What would lift this score</h3><ol>
+<li><strong>Fix v2's stamp so it names unverified reals (Kimchi, AOP), stops flagging held-up coins, then pass Set A again on fresh data, Mint Seal Part B and the feed set:</strong> back to 5.5–6.0, the cap while nobody pays. Any copy called real on any set drops it below 5.0.</li>
+<li><strong>Head-to-head vs Buddy, Vamp Alert and PastTokenBot on the same copy groups</strong>, showing ours right where launch order is wrong on ≥30% of groups: Uniqueness 4 → 6, Differentiation +1.</li>
+<li><strong>v2 rule fixes re-checked out of sample</strong> (batch 2 scam replies ≥85% with 0 genuine hidden) before the feed-set run.</li>
+<li><strong>Cost log</strong> showing calls and cost per uncached stamp keep 100 active users under about A$35/month (pumpdata.fun's US$10 tier included).</li>
+<li><strong>Any payer evidence</strong> for an in-feed check (founding Pro once Ethan picks it): Money evidence 4 → 6.</li>
+</ol>
+</details>
+</section>
+<section class="sources"><h2>Sources</h2><ul><li><a href="../sources/theses/2026-10-24-1021-clean-feed.md">Thesis (2026-10-24-1021-clean-feed.md)</a></li><li><a href="../sources/reviews/2026-10-24-1045-clean-feed.md">Review (2026-10-24-1045-clean-feed.md)</a></li></ul></section>
+</article>
+</main>
+<footer class="site">Theses by idea bot, reviews by Project Bot. Times are AWST (Perth time).</footer>
+</body>
+</html>
