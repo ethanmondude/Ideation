@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Marshal ($MRSHL) v6.7</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="site"><a href="../index.html">Startup theses</a></header>
+<main>
+<p class="back"><a href="../index.html">&larr; All theses</a></p>
+<article>
+<h1>Marshal ($MRSHL) v6.7</h1>
+<p class="tagline">The final spec. The dump-wallet operator rule now runs as a real rule, the install page says &quot;Read-only. Never connects a wallet.&quot;</p>
+<p class="meta"><span>25 Oct 2026, 12:30pm AWST</span> <span class="badge pending">Review pending</span></p>
+<section class="exec"><h2>Executive summary</h2>
+<ul>
+<li><strong>Problem:</strong> the scam sits between an X post and a buy. Trench Bot's log has <strong>856 rugs among 869 coins</strong> that crossed US$500k. Run 24 alone was 27 rugs out of 28. The brand-bait dump template (one 13–14% wallet plus a 0.24% companion) came back with the same two wallets.</li>
+<li><strong>Product:</strong> Marshal is a free, read-only Chrome extension for x.com. It folds paid-caller replies with a reason, puts a fact pill (never green) by every Solana CA, and warns when the coin page you open isn't the CA the post wrote. It names the earlier rug a coin's top wallet already dumped. The stamp is grey until the gate, and it never fires on dust, pool authorities or operators that also hold live coins.</li>
+<li><strong>Who pays and how much:</strong> users pay nothing (Ethan: free only). Income is a disclosed, optional Axiom referral link (30% of Axiom's net fee on referred users, <a href="https://docs.axiom.trade/getting-started/referral-program">docs</a>). Creator fees are a bonus.</li>
+<li><strong>Token's job:</strong> v1.1 only. Projects or named people burn their own $MRSHL to register their real CA or "no coin", and users burn ≥US$2 of their own to file a report. No payouts, buybacks or holder unlocks. Token fit 6/10 (Project Bot).</li>
+<li><strong>Cost against A$1,000:</strong> ~A$73 to day 30. A$449 lean / A$549 worst over 4 months, including ~A$300 legal (est.). Running cost is capped at A$25 a month, and v6.7 adds A$0.</li>
+<li><strong>Path to US$10k/month:</strong> about 667 active referred Axiom traders at US$15 a month each (est.). Base case at month 12 is US$1.5–3.4k a month (est.).</li>
+<li><strong>Why now, edge, main risk:</strong> pump.fun is still ~79% of 24h US$500k coins (100% of the ones with real liquidity), the boycott is fading, and repeat dump wallets are stable. The edge is automatic, deterministic folds plus on-chain stamps under every post, with no tag and no wallet connection. Main risks: XRAY or SlipZero adding reply folds, and referral income never covering costs.</li>
+<li><strong>First move this week:</strong> Ethan picks the name. Claude Code then builds from SPEC <code>1549aeeb…13d6</code> (final). Trench Bot's 14:00 run decides <code>r4b_red</code>. The 30-day unlisted listing is the referral test.</li>
+<li><strong>Verdict: build, about 50% confident</strong> (unchanged). My score estimate is 7.0, rising to 7.25 if the 14:00 run keeps 0 false stamps and red turns on. XRAY is a downside risk to Uniqueness (6) that Project Bot should weigh.</li>
+</ul>
+</section>
+<section class="thesis"><h2>Full thesis</h2>
+<div class="byline"><p><em>Written by idea bot, Sun 25 Oct 2026, ~12:30–12:40pm AWST (Perth). Thesis id <code>idea-bot:thesis:clean-feed</code>. Refine of v6.6, which Project Bot scored <strong>7.0 (held, fourth flat score)</strong> at 10:45am. Growth Bot called a <strong>hard stop</strong> at 12:03pm: v6.7 carries only Project Bot's six listed fixes plus one install line, and after it the spec is final. The v6.6 and v6.7 deltas are now <strong>merged into <code>theses/marshal-SPEC.md</code></strong>: new sha256 <code>1549aeeb600dfb9c43694a2dd245ee2be026963c7116d0aea50a6b530fdb13d6</code>, 1,415 lines. The v6.5 file (<code>031b9084…bd93</code>) is backed up at <code>/tmp/marshal-SPEC.v6.5-031b9084.bak</code> and <code>idea-bot/data/marshal-v6.7/</code>. (est.) = estimate; [unverified] = not checked against a source.</em></p></div>
+<h3>What changed in v6.7 (each change tied to a weakness Project Bot named at 10:45am)</h3><ol>
+<li><strong>Weakness: "the replay hard-codes the operator wallet, so rule (b) is untested" → fixed, and tested on an unseen run.</strong> <code>data/marshal-v6.7/r4b-replay-v67.py</code> contains no wallet list. It builds each wallet's priors (<code>{mint, share}</code>) from the holder snapshots of earlier runs, then applies rule (b) as written: hold ≥1% of a prior that's reserve-backed, not down ≥90%, and <strong>at least 24h old</strong> (Project Bot's suggestion (c), adopted). On Trench Bot's runs 23 and 24 (52 rows), the rule finds <code>HLnpSz…</code>'s live priors by itself: PANGEA, FORK and $MINT. The result is <strong>4 stamps, all 4 right, 0 false</strong>: Riot Games and GTA 6 in run 23, TESLA SI and SpaceX in run 24. It suppressed 10 operator rows, 9 dust rows and 4 pool-authority rows. <strong>Run 24 is the first blind run</strong>, because v6.6's rule was written before it. Trench Bot's own tally for it is also 2 right, 0 false. AT-125 now has a (d) fixture (<code>HLnpSz…</code> holding PANGEA at 2.76% and $MINT at 3.32% gives 0 stamps), an (e) grep that finds no wallet literal in the code, and an (f) case where young priors don't count as operator evidence. <strong>Project Bot's 12:45pm item (g) is in too:</strong> there's now <strong>one named non-holder wallet list</strong> (<code>config/non_holder_wallets.json</code>, with address, label and source link for each entry). R4, R4b and R12 all drop these addresses before any holder rule runs. The list starts with Meteora DBC's pool authority <code>FhVo3m…</code> (Trench Bot run 24, citing Meteora's docs). A listed address is never a top holder, is never written to wallet memory and is never an "operator". In run 24 it was kept off a stamp only because one of its 134 priors happened to be alive. New <strong>AT-128</strong> (run 24 alone) proves the list skips it even when every prior is dead. The list never holds operators, because the operator test is the rule itself.</li>
+<li><strong>Weakness: "USMS recall 2 of 3; companion size left out" → I tested it and state the miss plainly.</strong> The 0.24% companion amount (exactly <strong>2,376,720.17 tokens</strong>) appears in <strong>44 cached coins, all rugs, across 8 different wallets</strong>, so it's a real template. But in runs 23 and 24 it showed up only on coins the wallet rule had already stamped, so it adds <strong>0 recall</strong>. A generic exact-amount version also matches a round 30,000,000-token holding in a live coin (blind ape). So: <strong>USMS-type sub-1% ladder repeats are a stated miss in v1</strong> (recall is 4 of the 5 labelled brand-dump repeats). The companion amount is a v1.1 Why note in §12.3, with a guard against round amounts.</li>
+<li><strong>Weakness: "R13b must count <code>total_stable_claimed</code> and never show an amount" → fixed.</strong> I confirmed against pump.fun's <code>pump_fees</code> IDL (sha <code>6b9fa3ec…2b29</code>): <code>SocialFeePda</code> = bump, version, user_id, platform, total_claimed, last_claimed, <strong>total_stable_claimed</strong>, then 120 reserved bytes. I re-read both LEANREA mints at 12:33pm: stable claimed is <strong>0</strong> on both, so they're still "not claimed". Claimed = <code>total_claimed &gt; 0 OR total_stable_claimed &gt; 0</code>. No R13b string may contain an amount (AT-124 (f) and (g)). R13b stays v1.1 behind its swap-in gate.</li>
+<li><strong>Weakness: "claims-bot is 22★, not 0★; three rivals missed" → fixed, plus one more rival I found myself.</strong> GitHub API at 12:32pm: pumpfun-claims-bot <strong>22★</strong>, pumpfun-creator-rewards <strong>12★</strong>, pump-fun-skills <strong>34★</strong>. SlipZero, creator-rewards and pump.fun's <code>coin-fees</code> skill are now in SPEC §1. <strong>New this run: XRAY</strong> (<a href="https://xray.social/">xray.social</a>). It's a Chrome extension for X with a per-profile badge (past names, call record, smart followers), a red <strong>"shill vs wallet"</strong> badge on a tweet when a KOL's linked wallet sells after posting, and bundle/insider data on hover. It has paid tiers and its own Ethereum token. Price and users are [unverified] because the site refused the box's connection. It's the closest in-feed overlay found so far. It badges <em>accounts</em>, not reply folds, post-vs-landing guards or coin-history stamps, so Growth Bot's kill line isn't met. It goes on the weekly watch list with a stated kill check.</li>
+<li><strong>Weakness: "rugcheck seed terms unverified" → the Helius/RPC holder seed is now the default.</strong> The seed uses holder reads that Trench Bot saves from now on, plus Marshal's own reads. The 594 rugcheck-derived lists are opt-in, only once rugcheck's terms are confirmed.</li>
+<li><strong>Weakness: "R4b red needs Trench Bot's runs 2–3" → partly met. Run 2 landed, and run 3 has a pre-committed flip.</strong> Counting runs 1–2 under the v6.7 rule gives 4 exact repeats, 0 false. That's above the ≥3 count, but only <strong>2 distinct wallets</strong> (<code>GxhREMk4…</code> and <code>2XqJKxdy…</code>). The SPEC now says: <strong>if Trench Bot's 14:00 run gives 0 false stamps under this rule, set <code>r4b_red=true</code></strong> (a config change). Any false red stamp on a live coin keeps it grey.</li>
+<li><strong>Install line (X bot 11:59 / Growth Bot 12:06, not a rule):</strong> the CWS short description, listing, landing page and first-run tour step 1 all say exactly <strong>"Read-only. Never connects a wallet."</strong> (AT-129). This answers the "fake twitter tracker" 10 SOL loss X bot found. The FOMO-wallet recipient wording for R13b goes on the v1.1 list, as Growth Bot asked.</li>
+</ol>
+<p>(Project Bot's 12:45pm re-score put Uniqueness at 6.5, provisional on the 14:00 run, with overall still 7.0. It also asked for v6.7 only after 14:00. I wrote it now because Growth Bot's 12:03 hard stop and this run's brief ask for it. The 14:00 result changes only the config flag <code>r4b_red</code>, which is pre-committed above, so no further spec edit is needed.)</p>
+<p>Nothing else changed. No fold threshold, no §5.1 text, no token or budget line, and AT-112 is untouched.</p>
+<h3>Problem and user (unchanged except run 24)</h3><p>Tech-bro desktop Solana traders (Chrome, Brave, Arc) find coins on X and buy on Axiom, GMGN, Photon, Jupiter or pump.fun. New sourced pain from run 24 (Trench Bot <code>latest.md</code>, 12:00–12:25):</p>
+<ul>
+<li><strong>TESLA SI</strong> (<code>2Kjut7Jj…ozBypump</code>): the top wallet <code>GxhREMk4…</code> holds 13.53% again and has now been in 6 earlier brand rugs, all down 99.7%+.</li>
+<li><strong>SpaceX</strong> (<code>J5mvMEGy…tgApump</code>): went from US$575k to ~US$84k, with <code>2XqJKxdy…</code> holding 30M tokens, now seen in 7 earlier rugs.</li>
+<li>A trader lost 10 SOL to "a fake twitter tracker" (<a href="https://x.com/trenchlotin/status/2114175205895487981">post</a>), which is why the install line matters.</li>
+</ul>
+<h3>Evidence of money</h3><p>Unchanged. Axiom's 30-day fees were US$31.85M (<a href="https://memefees.com/terminals/axiom">memefees</a>), and its referral pays 30% of net fee. Paid neighbours are Antares Pro US$24.99/30d and Frontrun Silver US$75 / Gold US$180 a month (<a href="https://docs.frontrun.pro/plans-and-pricing">pricing</a>). Cielo Pro is US$59 a month (<a href="https://cielo.finance/">site</a>). <strong>Still missing:</strong> proof that a free tool's users sign up for Axiom through it. The build is that test.</p>
+<h3>Market sizing</h3><p>Unchanged (bottom-up, est.): 10–15k installs in year 1, 2–3% referred sign-ups, 50% of those active at US$15 a month, giving US$1.5–3.4k a month at month 12.</p>
+<h3>Competitive teardown (new and changed rows; full list in SPEC §1)</h3><table>
+<thead>
+<tr>
+<th>Rival</th>
+<th>What it does</th>
+<th>Price / traction</th>
+<th>Gap left</th>
+<th>Why they won't fill it soon</th>
+<th>Threat</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>XRAY</strong> (<a href="https://xray.social/">xray.social</a>) <strong>NEW</strong></td>
+<td>X Chrome overlay: profile badge (past names, call record, smart followers), red "shill vs wallet" tweet badge, bundles/insiders on hover, stealth radar</td>
+<td>Paid tiers + own ETH token; price/users [unverified]</td>
+<td>No reply folds (caller_ad/dup/same_ca), no post-vs-landing mint guard, no repeat-dump-wallet coin stamp</td>
+<td>Built around KOL-wallet links and an indexed account graph, not reply-fold rules</td>
+<td><strong>High (closest in-feed overlay)</strong></td>
+</tr>
+<tr>
+<td><a href="https://slipzero.app/">SlipZero</a></td>
+<td>Trading extension with quick-buy on Axiom and X; Fees Monitor/Claims Explorer</td>
+<td>Free start, Premium in USDC</td>
+<td>A dashboard and sniper, no folds; connects to trading</td>
+<td>A trading-first product</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td><a href="https://github.com/nirholas/pumpfun-claims-bot">@pumpfunclaims / pumpfun-claims-bot</a></td>
+<td>Telegram feed of GitHub fee claims with labels</td>
+<td>Free, <strong>22★</strong></td>
+<td>Fires only on a claim; not in the feed</td>
+<td>Telegram-first</td>
+<td>Medium (R13b only)</td>
+</tr>
+<tr>
+<td><a href="https://github.com/nirholas/pumpfun-creator-rewards">pumpfun-creator-rewards</a></td>
+<td>Fee-recipient lookup web app + JSON API</td>
+<td>Free, 12★</td>
+<td>Lookup only</td>
+<td>A data tool</td>
+<td>Low–medium</td>
+</tr>
+<tr>
+<td><a href="https://github.com/pump-fun/pump-fun-skills/blob/main/coin-fees/SKILL.md">pump.fun <code>coin-fees</code> skill</a></td>
+<td>Official agent answer to "where do this coin's fees go"</td>
+<td>Free, 34★</td>
+<td>Agent-side, no feed</td>
+<td>The platform's own docs</td>
+<td>Low (makes the fact a commodity)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Closest rival to the whole product:</strong> EDGERUN for folds in the feed, and now XRAY for in-feed badges. <strong>The one thing we do that neither can:</strong> automatic reply folds with reasons, plus coin-level on-chain stamps (post vs landing, repeat dump wallet) under every CA, read-only, with no tag.</p>
+<h3>Product and user experience (unchanged flow)</h3><ol>
+<li>Add to Chrome. The listing's first line reads "Read-only. Never connects a wallet."</li>
+<li>A toast says "Marshal is on".</li>
+<li>Shill replies fold, each with a reason.</li>
+<li>A TESLA SI-style CA shows grey (red after the gate) "same top wallet as Riot Games (GxhR…), down 99.7% from peak · Why".</li>
+<li>A <code>HLnpSz…</code> paper cap shows no dump stamp. Its Why panel says "top wallet also holds PANGEA (2.76%)", and R4/R12 already flag the cap.</li>
+</ol>
+<p>Under the hood: wallet memory <code>{mint, share, launch_ms, snapshot_ms}</code>, a rule-based operator test, reserve-backed peaks, and a program-account list held in config. My scores (Project Bot scores officially) are unchanged: Innovation 7.5, Usability 8.5, Uniqueness 6, with XRAY a downside watch.</p>
+<h3>Token design on pump.fun ($MRSHL)</h3><p>Unchanged from SPEC §8. v1.1 burn-to-register and burn-to-report (≥US$2), burns only, mint and freeze authority off, no payouts, buybacks or Holder Rewards. Legal line: "$MRSHL is burned by projects that register their official CA and by users who send a report. It isn't an investment and gives no right to profits or revenue."</p>
+<h3>Budget and founder load</h3><p>Unchanged: <strong>~A$73 to day 30; A$449 lean / A$549 worst over 4 months; headroom ≥A$451.</strong> v6.7 adds 0 paid calls (the Helius free tier covers holder reads). Founder load is ~20 h/week for 3 weeks reviewing Claude Code's build, then ~10 h/week (est.).</p>
+<h3>Business model, go-to-market, 12-month snapshot, defensibility</h3><p>All unchanged from v6.6. Defensibility now rests on wallet memory that builds forward from the build date (default Helius seed) instead of the rugcheck-derived snapshots, so it starts thinner but is clean.</p>
+<h3>Risks (mitigation · cheap test)</h3><table>
+<thead>
+<tr>
+<th>Risk</th>
+<th>Mitigation</th>
+<th>Cheap test</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>XRAY adds reply folds or a landing guard</td>
+<td>Weekly watch, stated kill check in SPEC §13</td>
+<td>Install XRAY's free tier on 20 threads in build week 3 [needs Ethan's OK to install]</td>
+</tr>
+<tr>
+<td>R4b red on 2 wallets only</td>
+<td>Red gate holds unless the 14:00 run has 0 false; any live-coin false keeps grey</td>
+<td>Trench Bot 14:00 run</td>
+</tr>
+<tr>
+<td>Operator rule hides a real dumper that also holds a live coin</td>
+<td>The Why note still names the live coin; R4/R12 catch DBC caps</td>
+<td>AT-125 (d)/(f)</td>
+</tr>
+<tr>
+<td>Seed is thin on day 1 (Helius default)</td>
+<td>Rugcheck lists only after a terms OK</td>
+<td>Ask rugcheck / read terms before build [unverified]</td>
+</tr>
+<tr>
+<td>Referral never pays</td>
+<td>Free plan at ≤A$25/month</td>
+<td>30-day test</td>
+</tr>
+</tbody>
+</table>
+<h3>Kill or confirm</h3><ol>
+<li><strong>R4b red (free, today 14:00):</strong> 0 false stamps under the v6.7 rule means <code>r4b_red=true</code>. Otherwise grey.</li>
+<li><strong>XRAY check (free):</strong> if its badges fold caller-ad/dup replies or warn on a mismatched landing, re-score Uniqueness before the build.</li>
+<li><strong>30-day validation once Ethan picks the name (~A$73):</strong> pass at ≥30% of installs active 3+ days a week and ≥10 referred Axiom sign-ups. Kill at &lt;15% active or 0 sign-ups after 300 installs.</li>
+</ol>
+<h3>Second thesis hunt (Growth Bot 12:06 steer): screened and dropped (gates: a audience, b token, c competitors, d revenue comp, e money test, f bootstrap)</h3><p>I started from X bot's 11:59 lead: cheap one-time-price clones of pricey SaaS (<a href="https://databull.app/alternatives/google-analytics">DataBull</a> US$29 lifetime, rising to US$99; <a href="https://beaconanalytics.io/">Beacon</a> US$197 once). I looked for a crypto-native version that suits tech-bro traders and a pump.fun token.</p>
+<ul>
+<li><strong>Pay-once self-hosted wallet tracker (Cielo clone on the user's own Cloudflare + Helius free):</strong> <strong>gates c + b.</strong> <a href="https://cielo.finance/">Cielo</a> has a free tier (Pro US$59/mo). <a href="https://github.com/SoCloseSociety/WhalegodTG">WhalegodTG</a> is already free, MIT and self-hosted on free tiers, and Axiom/GMGN have built-in trackers. A one-time price is the only token job.</li>
+<li><strong>Pay-once memecoin terminal:</strong> <strong>gates c + e.</strong> <a href="https://www.megabot.space/">MegaBot Pro</a> sells US$999 lifetime, <a href="https://krypt.cc/bot">Krypto Bot</a> is free, and ZER◎ sells one-time setup. The clones' selling features are bundlers and volume bots, which is market manipulation Ethan shouldn't sell.</li>
+<li><strong>"Which post moved my coin" attribution for coin teams (DataBull for pump.fun):</strong> <strong>gates a + c.</strong> The buyers are coin teams, not traders, and 856 of 869 US$500k coins are rugs. <a href="https://weavr.fun/">Weavr</a>, <a href="https://www.web3trackers.com/">web3trackers</a>, <a href="https://mintfunnel.co/onchain-attribution/">Mintfunnel</a>, Kaizen and XRAY already ship it.</li>
+<li><strong>Pay-once Frontrun-style X-profile intel extension:</strong> <strong>gates c + f.</strong> Frontrun is free with 6M labels and open source, XRAY exists, and the moat is X history data that A$1,000 can't buy.</li>
+<li><strong>Fee-recipient "claim vs chain" check</strong> (a post says "fees go to @x / your FOMO wallet", and we compare it with the on-chain sharing config): this angle <strong>isn't</strong> covered by SlipZero, creator-rewards or pump.fun's skill, because they look up recipients but never compare against the post's claim. But it only makes sense under the post, which makes it Marshal R13b, not a separate product. Stand-alone: <strong>gates b + d</strong> (no token job, no payer). Kept in SPEC §12.3 v1.1 with the wallet-recipient wording.</li>
+<li><strong>Pay-once AI-search-visibility audit (US$79 anchors):</strong> <strong>gates a + c.</strong> Askwatch is parked, and ProofSource and QAS sell it already.</li>
+<li><strong>Pay-once agent audit-trail/replay ("would pay 3x for replay"):</strong> <strong>gates b + c.</strong> Langfuse, AgentOps and Helicone are free/OSS, and there's no pump.fun token job.</li>
+<li><strong>Count: 7 dropped</strong> (a+c ×2, b+c ×2, c+e ×1, c+f ×1, b+d ×1). <strong>No second thesis written.</strong> Pattern: one-time clones work where the incumbent's moat is software. Crypto trader tools' moats are data (labels, X history) or execution, and free self-host versions already exist.</li>
+</ul>
+<h3>Build brief for Claude Code</h3><p><strong>Build v1 from <code>theses/marshal-SPEC.md</code> alone: sha256 <code>1549aeeb600dfb9c43694a2dd245ee2be026963c7116d0aea50a6b530fdb13d6</code>, 1,415 lines (v6.7, FINAL).</strong> <code>HANDOFF.md</code> points to it. Everything below is already inside the SPEC. This list is only a map of where v6.7 landed:</p>
+<ul>
+<li><strong>Header item 10:</strong> the v6.6+v6.7 merge note and the "final, new rules go to §12.3 only" line.</li>
+<li><strong>§1:</strong> XRAY, SlipZero, @pumpfunclaims (22★), creator-rewards and the <code>coin-fees</code> skill.</li>
+<li><strong>§2:</strong> v6.7 changes to feature 3 (AT-125, AT-126, AT-128 in v1; AT-124 and AT-127 in v1.1).</li>
+<li><strong>§5.3b R4b:</strong></li>
+<li>one shared non-holder wallet list for R4/R4b/R12 (<code>config/non_holder_wallets.json</code>, sourced entries, starting with <code>FhVo3m…</code>);</li>
+<li>full v6.7 rule pseudocode (≥1%; operator rule over stored shares, ≥24h-old live priors; reserve-backed; unknown drawdown never dumped);</li>
+<li>Helius/RPC seed default;</li>
+<li>USMS stated miss; companion amount moved to v1.1;</li>
+<li>red gate status and the pre-committed flip.</li>
+<li><strong>§10:</strong> install line "Read-only. Never connects a wallet." (CWS short description, listing, landing page, first-run tour step 1).</li>
+<li><strong>§11.J2:</strong> AT-124 to AT-129, with fixtures and numeric pass lines (AT-128 is Project Bot's run 24 test for the non-holder list; AT-129 is the install line).</li>
+<li><strong>§12.3:</strong> R13b <code>fees_to_github</code> full pseudocode with <code>total_stable_claimed</code> and no amounts; wallet-recipient wording; companion-size Why note.</li>
+<li><strong>§13:</strong> week-3 test list adds AT-125/126/128/129; weekly watch adds XRAY and SlipZero with a kill check.</li>
+</ul>
+<p><strong>Scope of the MVP:</strong> SPEC §2 features 1–10, free only. <code>r4b_red=false</code> unless Trench Bot's 14:00 run passes. <strong>Token integration:</strong> none in v1. <strong>Fixtures to copy into <code>fixtures/v67/</code>:</strong> <code>trench-bot/r4b-repeat-check.jsonl</code> (sha <code>e6fa75f2…b4d1</code>, 52 rows), <code>idea-bot/data/marshal-v6.7/gh-fee-check-v67.out.jsonl</code>, and the replay output <code>r4b-replay-v67.out.txt</code>.</p>
+<h3>Light feasibility checks this run (free; no holdout, sealed or blind file opened)</h3><ul>
+<li><strong>R4b rule replay (12:3x pm, <code>data/marshal-v6.7/r4b-replay-v67.py</code>, read-only):</strong></li>
+<li>Inputs: Trench Bot's <code>r4b-repeat-check.jsonl</code> (52 rows, sha <code>e6fa75f2…b4d1</code>), holder snapshots in <code>trench-bot/raw/r*/c/</code> (800 files), <code>coins.jsonl</code> (launch times).</li>
+<li>Result: 4 stamps, 4 right, 0 false; 10 operator, 9 dust and 4 pool-authority rows suppressed; 1 stated miss (USMS).</li>
+<li><strong>Companion amount scan:</strong> 2,376,720.17 tokens appears in 44 cached coins (all rugs, 8 owners). It's on the 4 stamped coins in runs 23–24 and on no unstamped one. 30,000,000 (round) also appears in live blind ape.</li>
+<li><strong>pump_fees IDL (12:32pm, <code>pump-fun/pump-public-docs</code> main):</strong> the <code>SocialFeePda</code> layout includes <code>total_stable_claimed</code>.</li>
+<li><strong>LEANREA re-read (12:33pm, public mainnet RPC, <code>gh-fee-check-v67.py</code>):</strong> both mints show stable claimed 0, still "not claimed".</li>
+<li><strong>GitHub API (12:32pm):</strong> claims-bot 22★ (last push 24 Oct 1:39am AWST), creator-rewards 12★, pump-fun-skills 34★, github-claims 7★.</li>
+<li><strong>Web:</strong> XRAY (search-index copy of its homepage; direct fetch 500, curl TLS failure, so price and users [unverified]), DataBull, Beacon, MegaBot, Krypto Bot, Frontrun, Cielo, WhalegodTG, Weavr, web3trackers, Mintfunnel pages as linked.</li>
+</ul>
+<h3>Sourced facts vs estimates</h3><p><strong>Sourced:</strong></p>
+<ul>
+<li>Run 24 counts, repeats and the DBC pool authority (Trench Bot <code>latest.md</code>, 12:00–12:25).</li>
+<li>X bot 11:59 digest (FOMO-wallet redirects, fake-tracker loss, DataBull).</li>
+<li>Project Bot's 10:45 review and missed-competitor log.</li>
+<li>My replay, IDL and RPC reads above.</li>
+<li>The rival pages linked.</li>
+</ul>
+<p><strong>Estimates:</strong> installs, referral conversion, income, confidence, sub-scores and the score estimate.</p>
+</section>
+<section class="review"><h2>Project Bot review</h2>
+<p class="pending-note">Review pending.</p>
+</section>
+<section class="sources"><h2>Sources</h2><ul><li><a href="../sources/theses/2026-10-25-1230-marshal-v6.7.md">Thesis (2026-10-25-1230-marshal-v6.7.md)</a></li></ul></section>
+</article>
+</main>
+<footer class="site">Theses by idea bot, reviews by Project Bot. Times are AWST (Perth time).</footer>
+</body>
+</html>

@@ -1075,6 +1075,225 @@
 - <strong>Money test:</strong> parked until Ethan picks this thesis to launch as a coin (US$9 founding Pro, pass ≥25 paid and ≥30% active 3+ days a week). Not waiting on him.</li>
 </ol>
 <h3>Re-scores (living review)</h3>
+<h4>Re-score 25 Oct 2026, 12:45pm AWST (v6.6, new evidence: Trench Bot run 24)</h4><p>No new thesis file: idea bot's newest is still <code>/workspace/idea-bot/theses/2026-10-25-1030-marshal-v6.6.md</code>, and it's holding v6.7 until after Trench Bot's 14:00 run (Growth Bot's 12:02pm hard stop). This re-score is for <strong>new evidence</strong>: Trench Bot run 24 (~12:00–12:25pm) is R4b check run 2 of 3 and the <strong>first run scored blind</strong> against the v6.6 filters. SPEC still frozen: sha256 <code>031b9084…bbd93</code> (checked 12:34pm, matches). Inputs read: Trench Bot <code>latest.md</code> (run 24) and its 12:13pm thesis inputs, <code>trench-bot/r4b-repeat-check.jsonl</code> (now 52 rows, sha256 <code>e6fa75f2…b4d1</code>, 28 rows for run 24), idea bot's draft replay <code>idea-bot/data/marshal-v6.7/r4b-replay-v67.out.txt</code> (read only), Growth Bot's scoreboard (12:40pm) and lessons (to <code>growth-bot:lesson:one-non-holder-wallet-list</code>). Light checks only.</p>
+<p><strong>New overall: 7.0/10, held at the cap. Uniqueness 6 → 6.5 (provisional until the 14:00 run).</strong> Token fit <strong>6</strong>, Innovation <strong>7.5</strong>, Usability <strong>8.5</strong>, Uniqueness <strong>6.5</strong>. Passes Ethan's rules. Still the top-ranked rules-passing thesis. Closest rival unchanged: EDGERUN in the feed; SlipZero / @pumpfunclaims for the fee-recipient pill.</p>
+<h3>What run 24 shows (checked against the jsonl rows)</h3>
+<ul>
+<li><strong>2 red stamps, both right, 0 false.</strong> TESLA SI <code>2Kjut7JjSJDDCgGtDvqpENt2MoLosgaRXsLyozBypump</code> carries <code>GxhREMk4…</code> at 13.53% (now 6 earlier brand rugs, all down 99.7%+) and was <strong>live at ~US$514k at scan</strong>. That's the product's best case: a stamp on a coin people can still buy. SpaceX <code>J5mvMEGy…tgApump</code> carries <code>2XqJKxdy…</code> at 3.01% (7 earlier, down 99.6%+) and went from US$575k to ~US$84k. Runs 23 + 24 together: <strong>4 correct stamps, 0 false</strong>, so my lift #2 condition (≥3 exact repeats over runs 1–3, 0 false stamps, 0 on PANGEA or $MINT) is met so far. Both of idea bot's draft v6.7 replay and Trench Bot's own scoring agree.</li>
+<li><strong>The operator rule ran as a rule this time.</strong> Trench Bot applied v6.6's rule (b) directly and it hid the 5 <code>HLnpSz…</code> DBC caps because that wallet also holds ~2.8% of PANGEA and ~3.3% of $MINT (idea bot's replay reads 5.2% and 3.5% from a different snapshot; either way ≥1%). Those caps are still caught by the paper-cap rule, so nothing is lost.</li>
+<li><strong>The weak spot it exposed:</strong> the 4 false <em>matches</em> were all <code>FhVo3m…</code>, Meteora DBC's pool authority (unsold curve supply). v6.6 kept them off the stamp <strong>only because one of that account's 134 earlier coins is still alive</strong>. That's luck, not design. The SPEC's own red gate (§5.3b) asks for "0 pool, router or exchange false matches", which needs the pool authority excluded <em>before</em> matching. idea bot's draft v6.7 replay already does this with a <code>POOL_ACCOUNTS</code> set, which is the right shape (a sourced list of program accounts is fine; a hard-coded list of <em>operators</em> isn't).</li>
+<li><strong>Wallet diversity is low:</strong> all 4 stamps come from the same 2 wallets. First-seen template wallets (Speed <code>F5t3J3…</code> 13.69%, MrBeast <code>2r9xMm…</code> 13.22%) get no memory stamp. The SPEC already has a <code>template13</code> rule (13.0–14.6% wallet plus ~0.24% companion) for exactly these, so no new rule is needed.</li>
+<li><strong>Meta check:</strong> no shift. pump.fun had 18 of 18 real-liquidity US$500k crossings in run 24 (Trench Bot); StonkFun 0 of 247 in 24h. No new free rival in the feed. Competitors the sweep missed: <strong>none</strong> (no new feature, so no new sweep).</li>
+</ul>
+<h3>Weak spots</h3>
+<table>
+<thead>
+<tr>
+<th>Weak spot (10:45am)</th>
+<th>Status at 12:45pm</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>R4b red needs ≥3 repeats, 0 false over runs 1–3</td>
+<td><strong>Mostly fixed:</strong> 4 right, 0 false over runs 23–24, run 24 blind. Run 25 (14:00) is the last check</td>
+</tr>
+<tr>
+<td>Rule (b) untested (replay hard-coded the operator)</td>
+<td><strong>Fixed:</strong> run 24 applied it as a rule</td>
+</tr>
+<tr>
+<td>No named pool / program-account list (new)</td>
+<td><strong>Open, must fix in v6.7</strong> (A4 in the brief)</td>
+</tr>
+<tr>
+<td>USMS-type sub-1% ladder repeats missed</td>
+<td><strong>Still open</strong> (v6.7 item b)</td>
+</tr>
+<tr>
+<td>No payer or referral proof</td>
+<td><strong>Still open</strong>, comes from the build</td>
+</tr>
+<tr>
+<td>Rugcheck seed terms</td>
+<td><strong>Still [unverified]</strong>; Helius/RPC seed is the default</td>
+</tr>
+</tbody>
+</table>
+<h3>Refined idea</h3>
+<p>Marshal is unchanged as a product: a free, automatic X-feed fact layer. The refinement is one rule of hygiene: every holder-based rule (R4, R4b, R12) first drops a single, sourced list of wallets that aren't people (pool authorities, curves, exchange hot wallets), and the dump-wallet stamp can go red after the 14:00 run if it stays at 0 false.</p>
+<h3>Scores (old → new)</h3>
+<table>
+<thead>
+<tr>
+<th>Criterion</th>
+<th>10:45am</th>
+<th>12:45pm</th>
+<th>Reason (source)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Uniqueness</td>
+<td>6</td>
+<td><strong>6.5</strong> (provisional)</td>
+<td>First blind R4b run: a live coin (TESLA SI, ~US$514k) gets a correct "same top wallet as 6 earlier rugs" stamp. No rival found stamps this in the feed automatically (EDGERUN, SiftscanBot, SlipZero don't). Back to 6 if run 25 gives a false stamp</td>
+</tr>
+<tr>
+<td>Innovation</td>
+<td>7.5</td>
+<td>7.5</td>
+<td>Unchanged. Goes to 7 if a false red stamp lands on a live coin</td>
+</tr>
+<tr>
+<td>All other rows</td>
+<td>—</td>
+<td>unchanged</td>
+<td>No new evidence on money, distribution, retention or token</td>
+</tr>
+<tr>
+<td><strong>Overall</strong></td>
+<td>7.0</td>
+<td><strong>7.0 (held at the cap)</strong></td>
+<td>88.5/13 = 6.81, rounds to 7.0. The 7 cap holds until referral proof (lift #1)</td>
+</tr>
+</tbody>
+</table>
+<h3>Score history (Marshal, from 24 Oct 6:40pm)</h3>
+<table>
+<thead>
+<tr>
+<th>When (AWST)</th>
+<th>Version</th>
+<th>Overall</th>
+<th>Token fit</th>
+<th>Innovation</th>
+<th>Usability</th>
+<th>Uniqueness</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>24 Oct 6:40pm</td>
+<td>v6.2</td>
+<td>7.0</td>
+<td>7</td>
+<td>7</td>
+<td>8</td>
+<td>7</td>
+</tr>
+<tr>
+<td>24 Oct 7:30pm</td>
+<td>v6.2 (21 Oct retest)</td>
+<td>6.5</td>
+<td>7</td>
+<td>7</td>
+<td>8</td>
+<td>6</td>
+</tr>
+<tr>
+<td>24 Oct 8:55pm</td>
+<td>v6.3</td>
+<td>7.0</td>
+<td>7</td>
+<td>7</td>
+<td>8</td>
+<td>6</td>
+</tr>
+<tr>
+<td>25 Oct 8:45am</td>
+<td>v6.4 + v6.5</td>
+<td>7.0</td>
+<td>6</td>
+<td>7.5</td>
+<td>8.5</td>
+<td>6</td>
+</tr>
+<tr>
+<td>25 Oct 10:45am</td>
+<td>v6.6</td>
+<td>7.0</td>
+<td>6</td>
+<td>7.5</td>
+<td>8.5</td>
+<td>6</td>
+</tr>
+<tr>
+<td><strong>25 Oct 12:45pm</strong></td>
+<td><strong>v6.6 + run 24</strong></td>
+<td><strong>7.0</strong></td>
+<td>6</td>
+<td>7.5</td>
+<td>8.5</td>
+<td><strong>6.5</strong></td>
+</tr>
+</tbody>
+</table>
+<h3>What would lift this score</h3>
+<ol>
+<li><strong>Referral proof</strong> (30-day unlisted listing after Ethan's name pick, ~A$73): ≥10 referred Axiom sign-ups and ≥30% of installs active 3+ days a week. Still the only route above the 7 cap, <strong>about +0.5</strong>.</li>
+<li><strong>Run 25 (14:00) at 0 false stamps</strong> with A4 in place: confirms Uniqueness 6.5 and flips <code>r4b_red</code>. No overall change on its own (cap), but it locks the row.</li>
+<li><strong>R13b swap-in gate</strong> (build week 1): ≥3 distinct "made for @dev" vaults where metadata-R13 shows nothing. <strong>About +0.25 to a row</strong> (Distribution 6 → 6.5).</li>
+</ol>
+<h3>What @idea bot should change next</h3>
+<ul>
+<li>Still <strong>one</strong> v6.7 after the 14:00 run, nothing sooner. Its fix list is my six items from 10:45am (a–f) <strong>plus (g): one named non-holder wallet list</strong> shared by R4, R4b and R12, each entry with a source, starting with <code>FhVo3m…</code> (Meteora DBC pool authority). Your draft replay's <code>POOL_ACCOUNTS</code> set is the right shape; put it in the SPEC, not just the script.</li>
+<li>Add <strong>AT-128</strong> (run 24 fixture, below) so the pool authority is skipped by the list even when every prior is dead.</li>
+<li>Don't add a first-seen-wallet rule: <code>template13</code> already covers Speed and MrBeast. Trench Bot's "FhVo3m… as top holder = paper cap" tell is a nice one-liner, but it's a new rule, so v1.1.</li>
+<li>Then merge once into <code>marshal-SPEC.md</code> with a new sha. After that, the SPEC is final for Claude Code.</li>
+</ul>
+<h3>Claude Code build brief (v6.6, updated 12:45pm 25 Oct)</h3>
+<p><strong>Build v1 from <code>/workspace/idea-bot/theses/marshal-SPEC.md</code></strong> (frozen, sha256 <code>031b908470a50b924798c0243ae6d60037a30142dac188aa8c5d6944c59bbd93</code>, 1,369 lines, checked 10:36am 25 Oct), <strong>plus the v6.6 deltas below</strong>. Where they differ, the deltas and my overrides win. The SPEC covers summary, user, features in build order with acceptance tests, screens and flows, data sources, stack, data model, token and legal wording. Everything not listed here is as the SPEC says.</p>
+<ul>
+<li><strong>Product (one line):</strong> a free, read-only Chrome MV3 extension for x.com. It folds paid-caller replies with a reason, puts a deterministic fact pill by every Solana CA (never green), and warns via badge when the coin page you open isn't the CA the post wrote. It also names the earlier rug a coin's top wallet already dumped (grey until gated).</li>
+<li><strong>Wow moment (under 30s, ≤5 steps, no sign-up):</strong> add to Chrome → toast "Marshal is on" → shill replies fold with reasons → a Riot Games-style CA shows a grey "same top wallet as <earlier coin> (GxhR…), down 99.7% from peak · Why" (red only after <code>r4b_red=true</code>).</li>
+<li><strong>v6.6 deltas (v1):</strong></li>
+<li><strong>A1. R4b filters</strong>, replacing the SPEC §5.3b R4b loop body. For each of the top 5 non-pool wallets:<ul>
+<li>(a) share must be ≥1% (dust like <code>9UnZnr…</code> 0.06% never qualifies);</li>
+<li>(b) <strong>operator rule:</strong> if the wallet holds ≥1% of any prior coin that is NOT down ≥90%, show only a Why note ("top wallet also holds <live prior>"), with no stamp. Implement it as a rule over stored <code>{mint, share}</code> priors, <strong>never as a hard-coded address list</strong>;</li>
+<li>(c) a prior counts only if its peak was reserve-backed (AT-110), and a prior with an unknown drawdown never counts as "dumped";</li>
+<li>stamp text: grey (red if <code>r4b_red</code>) "same top wallet as <most recent dumped symbol> (<w4>…), down N% from peak", Why "in K earlier coins, all down ≥90%";</li>
+<li>append <code>{mint, symbol, share, peak_usd, peak_reserve_backed, snapshot_ms}</code> to <code>tw:{wallet}</code> (TTL 90 days, max 20 entries, as in the SPEC).</li>
+</ul>
+</li>
+<li><strong>A2. R4b seed:</strong> a one-time build script writes <code>tw:{wallet}</code> entries <code>{mint, share, snapshot_ms}</code> only. <strong>Default source: Trench Bot's saved Helius/RPC holder reads</strong> (<code>trench-bot/raw/r*/</code>) going forward. The 594 rugcheck-derived holder lists are used <strong>only if</strong> rugcheck's terms allow reuse, which is <strong>[unverified]</strong>: no terms page found at 10:40am, and its free API serves cached reports. Never copy rugcheck scores or text. Label: "seen since <first snapshot date>".</li>
+<li><strong>A3. R10:</strong> "attention is paid callers only" has <strong>no age cutoff</strong> (AOP held ~US$3.55M for 72h on paid callers alone, Trench Bot run 23). Zero-attention coins (WOFI) never reach Marshal because it runs only on posts.</li>
+<li><strong>A4 (new, 12:45pm). One named non-holder wallet list</strong>, used by R4, R4b and R12 before any holder rule runs. Each entry has an address, a label and a source link. Start with <code>FhVo3mqL8PW5pH5U2CN4XE33DokiyZnUwuGpH2hmHLuM</code> = Meteora DBC pool authority (per Meteora's docs, as cited by Trench Bot run 24), plus the pump.fun bonding-curve, PumpSwap pool and known exchange hot wallets the SPEC already says to skip. A wallet on this list is never "top holder", never matched in <code>tw:{wallet}</code> memory and never an "operator". Reason: in run 24 the pool authority matched 134 earlier coins and was kept off the red stamp only because one of those coins happened to be alive.</li>
+<li><strong><code>r4b_red</code>:</strong> ships <code>false</code>. Flip it to <code>true</code> (config only) once Trench Bot's 14:00 run shows <strong>0 false stamps</strong> under A1 + A4. Runs 23–24 already give 4 correct stamps (Riot Games, GTA 6, TESLA SI, SpaceX) and 0 false, and run 24 was blind to the v6.6 filters.</li>
+<li><strong>Template rule note:</strong> first-seen dump wallets (Speed <code>F5t3J3…</code> 13.69%, MrBeast <code>2r9xMm…</code> 13.22% in run 24) get no R4b stamp because memory has no prior. The SPEC's existing <code>template13</code> line (13.0–14.6% top wallet plus a ~0.24% companion) is the rule meant for them. Keep it; don't add another.</li>
+<li><strong>v6.6 delta (v1.1, with swap-in gate): B1. R13b <code>fees_to_github</code>.</strong></li>
+<li>Derive <code>PDA(["sharing-config", mint], pfeeUxB6jkeY1Hxd7CsFCAjcbHA9rWtchMGdZ6VojVZ)</code> and call <code>getAccountInfo</code>. If there's no account, show no pill (plain creator fees).</li>
+<li>Decode <code>SharingConfig</code> per the published <code>pump_fees</code> IDL (admin, admin_revoked, shareholders <code>{address, share_bps}</code>).</li>
+<li>For each shareholder owned by the fees program whose discriminator is <code>SocialFeePda</code> and whose platform is 2 (GitHub; documented in the pump.fun README checklist, not the IDL comment): <code>GET https://api.github.com/user/{user_id}</code> → login, cached forever by id.</li>
+<li>claimed = <code>total_claimed &gt; 0 OR total_stable_claimed &gt; 0</code>.</li>
+<li>Pill (grey only): "fees go to github.com/<login> (<bps/100>%) · not claimed" or "· claimed <last_claimed date>". Why: "shared by N coins" if the vault is pooled; "posts here tag @<handle>" if the post tags a different handle. <strong>Never show an amount</strong> (fees stay on the curve or pool until swept, per pump.fun's README). Never amber or red; never the words "endorsed", "fake" or "scam". An unknown layout or version means no pill.</li>
+<li><strong>Swap-in gate:</strong> in build week 1, if ≥3 distinct vaults on that week's X bot "made for" list get an R13b pill where metadata-R13 shows nothing, R13b takes R13's v1 pill slot. Otherwise it stays v1.1.</li>
+<li>Cost: ≤2 free RPC reads per uncached mint; ≤1 GitHub call per new user id (GitHub App token for 5,000/hour).</li>
+<li><strong>Kept from 8:45am (my overrides):</strong></li>
+<li>R13 v1 is the metadata-link path only. Name-equals-handle is v1.1. Wording exactly "named after @x · no post from @x with this mint seen".</li>
+<li>"Trade on Axiom" chip (AT-113) shows only on posts that pass every check, with the referral disclosed.</li>
+<li>Privacy line: "We remember the top holder addresses of coins we check (public on-chain data), never yours."</li>
+<li>v1.1 list: RTL/zero-width check on the CA text; grey "first reported" line.</li>
+<li><strong>Data sources (checked this run):</strong></li>
+<li>Solana RPC <code>getAccountInfo</code> (public mainnet worked keyless at 10:39am; use the Helius free tier in production);</li>
+<li>GitHub REST <code>/user/{id}</code> (keyless, 60/hour);</li>
+<li>DEX Screener <code>latest/dex/tokens/{mint}</code> (keyless);</li>
+<li>Helius <code>getTokenLargestAccounts</code> for holder snapshots.</li>
+<li>No rugcheck dependency at runtime. No X API. No DOM reads on DEX Screener, Birdeye or BullX (tab URL only).</li>
+<li><strong>Acceptance tests:</strong> SPEC AT-01 onwards, AT-53b, AT-117–123 and AT-77, plus the v6.6 tests with my fixes:</li>
+<li><strong>AT-124 (v1.1, R13b fixtures).</strong> Fixtures (a) <code>F5VNHeX4xHSbTH6nfvYiErVLYaWri2Xz7jbjkjaWpump</code> and (b) <code>Fe7tH4btnGgmVQgWT8pPs6cwWfs7frJ4Zq9jDP5gpump</code>, captured in <code>idea-bot/data/marshal-v6.6/gh-fee-check.out.jsonl</code>. Pass: both show grey "fees go to github.com/aicodeking (100%) · not claimed" with Why "shared by 2 coins"; (c) a plain-fee mint shows no pill; (d) 0 hits for "endorsed", "fake" or "scam"; (e) an unknown discriminator shows no pill and 0 errors. <strong>Added:</strong> (f) a stub with <code>total_claimed=0, total_stable_claimed&gt;0</code> reads "claimed".</li>
+<li><strong>AT-125 (R4b replay on run 23, sha <code>9d5286c6…d6d9</code>).</strong> Pass: exactly 2 stamps (Riot Games, GTA 6), 0 on the 6 dust and 5 <code>HLnpSz…</code> rows, and none for USMS. <strong>Added:</strong> (d) a fixture where <code>HLnpSz…</code> has priors with known drawdowns, including PANGEA and $MINT at ~2.6–3.4% and not down ≥90%. It must still give 0 stamps, which proves the operator <em>rule</em> works without an address list; (e) a grep finds no hard-coded wallet list in R4b.</li>
+<li><strong>AT-128 (new, R4b run 24, <code>trench-bot/r4b-repeat-check.jsonl</code> rows marked run 24).</strong> Pass: exactly 2 stamps (TESLA SI <code>2Kjut7Jj…Bypump</code> via <code>GxhREMk4…</code>, SpaceX <code>J5mvMEGy…tgApump</code> via <code>2XqJKxdy…</code>); 0 stamps on the 4 <code>FhVo3m…</code> rows <strong>because A4 skips them, not because a prior is alive</strong> (test with a stub where all 134 priors are dead); 0 stamps on the 5 <code>HLnpSz…</code> operator rows; 0 on dust <code>9UnZnr…</code>.</li>
+<li><strong>AT-126:</strong> the AOP <code>25X5iC9VQY1yJhVTtfrXY1RVwocLrCQPaTBPnstApump</code> stub at 72h+ with ≥5 posts, all from R7 accounts, shows the paid-only stamp, and a grep finds no age condition in R10.</li>
+<li><strong>AT-127:</strong> R13b makes 0 paid calls, ≤2 RPC reads per uncached mint and ≤1 GitHub call per new id, and leaves the A$25 cap untouched in a 10k-mint replay.</li>
+<li><strong>Token (v1.1, pump.fun, after Ethan's pick and the ~A$300 legal consult):</strong> unchanged.</li>
+<li>$MRSHL burn-to-register <code>{x_handle, mint | "no coin"}</code> counts only after that handle's own post says so and never turns a stamp green.</li>
+<li>Burn-to-report: ≥US$2, from a wallet older than the coin that is a 7-day holder or has an upheld past report.</li>
+<li>Burns only; mint and freeze authority off; Holder Rewards off; no buybacks; no payouts.</li>
+<li><strong>Legal wording:</strong> "$MRSHL is burned by projects that register their official CA and by users who send a report. It isn't an investment and gives no right to profits or revenue." State facts about coins, wallets and fee configs only, and never call a person a scammer. "Not claimed" is a fact, not an accusation.</li>
+<li><strong>Budget:</strong> ~A$73 to day 30; A$449 lean / A$549 worst over 4 months, including ~A$300 legal (est.) and ~A$76 launch (est.); running cap A$25/month. R13b adds A$0.</li>
+<li><strong>Launch checklist:</strong> check the SPEC hash → all ATs pass (AT-125(d) and AT-128 included) → unlisted CWS listing (single purpose "verify crypto content on X and the coin page you open from it", no token talk) → 30-day referral test → Ethan approves any posting or token launch.</li>
+</ul>
 <h4>Re-score 25 Oct 2026, 10:45am AWST (v6.6)</h4><p>Thesis file: <code>/workspace/idea-bot/theses/2026-10-25-1030-marshal-v6.6.md</code> (same as <code>latest-thesis.md</code>, 185 lines; a delta on top of the frozen SPEC). Build file <code>/workspace/idea-bot/theses/marshal-SPEC.md</code> <strong>still frozen</strong>: sha256 <code>031b908470a50b924798c0243ae6d60037a30142dac188aa8c5d6944c59bbd93</code>, 1,369 lines (checked 10:36am, matches). Version page: <code>2026-10-25-1045-marshal-v6.6.md</code>. Inputs read: Growth Bot's refine protocol and lessons (to idea bot's 10:30am "tuned on a run is not a pass" lesson), Trench Bot <code>latest.md</code> (run 23, ~10:10–10:25am) and its 10:21am thesis inputs, <code>trench-bot/r4b-repeat-check.jsonl</code>, Git bot's refinements (latest 8:20am) and gaps (no retired gap revived), X bot's 9:51am digest, ecosystem radar (8:06am). Light checks only (Ethan's 11:28am rule): no holdout, blind set or engine.</p>
 <p><strong>New overall: 7.0/10, held (fourth flat version; v6.4 + v6.5 were 7.0 at 8:45am).</strong> No row moved. Token fit <strong>6</strong>, Innovation <strong>7.5</strong>, Usability <strong>8.5</strong>, Uniqueness <strong>6</strong>. Passes Ethan's rules (tech-bro desktop traders; token fit 6 ≥ 5; ~A$73 to day 30; pump.fun only; burns only). Closest rival: EDGERUN in the feed; for the new R13b fee-recipient pill, <strong>SlipZero</strong> (Chrome extension with X quick-buy plus a per-token unclaimed-fee explorer with social-fee badges) and <strong>@pumpfunclaims</strong>. Still the top-ranked rules-passing thesis.</p>
 <h3>Why it holds</h3>
