@@ -1075,6 +1075,366 @@
 - <strong>Money test:</strong> parked until Ethan picks this thesis to launch as a coin (US$9 founding Pro, pass ≥25 paid and ≥30% active 3+ days a week). Not waiting on him.</li>
 </ol>
 <h3>Re-scores (living review)</h3>
+<h4>Re-score 25 Oct 2026 6:45pm AWST (Garm v6.9 + Trench Bot run 27; roll-back watch closed)</h4><p>No new thesis from idea bot this slot (its 6:30pm note says no new version), so this is a re-score on new evidence. SPEC unchanged: sha256 <code>c5bc6463…22bc</code> (re-hashed 6:40pm, matches <code>HANDOFF.md</code>).</p>
+<p><strong>New evidence checked:</strong> Trench Bot run 27 (~6:10pm, 18 rows in <code>/workspace/trench-bot/r4b-repeat-check.jsonl</code>, also logged in <code>marshal-TESTLOG.md</code>) is roll-back scan 2 of 2. I re-read the rows myself: 3 red stamps under the v6.8 rule (Odyssey via <code>6L3fPs…</code> at 14.3%, 11 earlier matches; T1K0 via <code>ryfbhb…</code> at 1.12%, 2 matches; GTA6 via <code>Cp9AyW…</code> at 13.72%, 1 match). All three are marked right, all three top wallets are on-curve keypairs, and <code>pool_or_program_stamp</code> is false on every row. The other 15 rows give no stamp. Watch total is 4 right and 0 false, and the running blind tally over runs 24–27 is 9 right, 0 false. So <code>r4b_red=true</code> stays and there's no roll-back.</p>
+<p><strong>Caveats (why this doesn't lift the overall):</strong> all 18 run-27 coins were rugs, so the scan says nothing new about false reds on live coins. T1K0's stamp rests on a 1.12% holder, close to the ≥1% floor. And Chunkee (<code>GkrpmR…pump</code>) died when ~326 batch-made or shared-funder wallets sold ~76% of supply in ~3 seconds; R4b, R12 and the cluster test all stayed silent. That fails safe (no stamp), but it's a stated miss, not a catch.</p>
+<p><strong>Meta check:</strong> no shift. Trench Bot run 27 has 14 of 14 real-liquidity crossings on pump.fun, 0 StonkFun in 24 hours; #BOYCOTTPUMPFUN is louder but no migration shows on chain. No free rival has added reply folds (XRAY and EDGERUN unchanged since 2:45pm). Git bot has logged no new Garm refinement since 8:20am.</p>
+<table>
+<thead>
+<tr>
+<th>Row</th>
+<th>Was</th>
+<th>Now</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Uniqueness</td>
+<td>6.5 provisional</td>
+<td><strong>6.5 (firm)</strong></td>
+<td>Pre-committed gate met: both scheduled blind scans clean (runs 26–27, 4 right, 0 false, 0 pool or program stamps). Not 7, because no red has yet landed right on a live coin from a fresh wallet</td>
+</tr>
+<tr>
+<td>All other rows</td>
+<td>—</td>
+<td>unchanged</td>
+<td>No SPEC change; no new evidence on money, distribution, retention or token</td>
+</tr>
+<tr>
+<td><strong>Overall</strong></td>
+<td>7.0</td>
+<td><strong>7.0 (held at the cap)</strong></td>
+<td>Still capped until referral proof</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Refined idea:</strong> none to the product. The build brief closes the roll-back watch, adds run 27 as a second regression fixture, and adds the sprayed-farm dump (Chunkee) to the stated misses.</p>
+<h3>Score history (Marshal / Garm, from 24 Oct 6:40pm)</h3>
+<table>
+<thead>
+<tr>
+<th>When (AWST)</th>
+<th>Version</th>
+<th>Overall</th>
+<th>Token fit</th>
+<th>Innovation</th>
+<th>Usability</th>
+<th>Uniqueness</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>24 Oct 6:40pm</td>
+<td>v6.2</td>
+<td>7.0</td>
+<td>7</td>
+<td>7</td>
+<td>8</td>
+<td>7</td>
+</tr>
+<tr>
+<td>24 Oct 7:30pm</td>
+<td>v6.2 (21 Oct retest)</td>
+<td>6.5</td>
+<td>7</td>
+<td>7</td>
+<td>8</td>
+<td>6</td>
+</tr>
+<tr>
+<td>24 Oct 8:55pm</td>
+<td>v6.3</td>
+<td>7.0</td>
+<td>7</td>
+<td>7</td>
+<td>8</td>
+<td>6</td>
+</tr>
+<tr>
+<td>25 Oct 8:45am</td>
+<td>v6.4 + v6.5</td>
+<td>7.0</td>
+<td>6</td>
+<td>7.5</td>
+<td>8.5</td>
+<td>6</td>
+</tr>
+<tr>
+<td>25 Oct 10:45am</td>
+<td>v6.6</td>
+<td>7.0</td>
+<td>6</td>
+<td>7.5</td>
+<td>8.5</td>
+<td>6</td>
+</tr>
+<tr>
+<td>25 Oct 12:45pm</td>
+<td>v6.6 + run 24</td>
+<td>7.0</td>
+<td>6</td>
+<td>7.5</td>
+<td>8.5</td>
+<td>6.5</td>
+</tr>
+<tr>
+<td>25 Oct 2:45pm</td>
+<td>v6.8 (incl. v6.7)</td>
+<td>7.0</td>
+<td>6</td>
+<td>7.5</td>
+<td>8.5</td>
+<td>6.5</td>
+</tr>
+<tr>
+<td>25 Oct 4:45pm</td>
+<td>Garm v6.9 (status)</td>
+<td>7.0</td>
+<td>6</td>
+<td>7.5</td>
+<td>8.5</td>
+<td>6.5 provisional</td>
+</tr>
+<tr>
+<td><strong>25 Oct 6:45pm</strong></td>
+<td><strong>Garm v6.9 + run 27</strong></td>
+<td><strong>7.0</strong></td>
+<td>6</td>
+<td>7.5</td>
+<td>8.5</td>
+<td><strong>6.5 firm</strong></td>
+</tr>
+</tbody>
+</table>
+<h3>What would lift this score</h3>
+<ol>
+<li><strong>Referral proof</strong> (30-day unlisted listing, ~A$73): ≥10 referred Axiom sign-ups and ≥30% of installs active 3+ days a week. Still the only route above the 7 cap, <strong>about +0.5</strong>.</li>
+<li><strong>A right red on a live coin from a fresh wallet</strong>, or a week-1 red with no false stamp on live coins: justifies <strong>Uniqueness 7</strong>.</li>
+<li><strong>Exact dump-script amounts in the SPEC</strong> (blind gate passed in run 26; run 27 shows the first non-rug hit at a round 30,000,000, so amber only, never red): <strong>about +0.5 Innovation</strong>.</li>
+</ol>
+<h3>What @idea bot should change next</h3>
+<ul>
+<li>Still no new version for scan results; the watch is closed and logged in <code>marshal-TESTLOG.md</code>.</li>
+<li>When the hard stop lifts: exact-amount rule first (amber, never red), then the sprayed-farm fact idea with Chunkee as the fixture and a blind gate before any rule.</li>
+<li>Keep the second-thesis hunt going; the 6:30pm drops (bundling, auditable PnL, fee-back, x402 tracker, exit-liquidity X-ray) were on the right gates.</li>
+</ul>
+<h3>Claude Code build brief (Garm v6.9, updated 6:45pm 25 Oct)</h3>
+<p><strong>Build v1 from <code>/workspace/idea-bot/theses/marshal-SPEC.md</code> alone</strong> (file name kept from the old name; content is Garm): sha256 <code>c5bc6463e9628351e5121d2238d94a3ebd681e2a5ca30712b72341d46ed822bc</code>, 1,435 lines. <code>HANDOFF.md</code> points to the same hash.</p>
+<ul>
+<li><strong>Product (one line):</strong> a free, read-only Chrome MV3 extension for x.com. It folds paid-caller replies with a reason, puts a fact pill by every Solana CA (never green), warns when the coin page you open isn't the CA the post wrote, and shows a <strong>red</strong> "same top wallet as <earlier rug>, down N%" stamp. Optional, disclosed "Trade on Axiom" referral link. Never connects a wallet.</li>
+<li><strong>Wow moment (under 30s, ≤5 steps, no sign-up):</strong> add to Chrome → toast "Garm is on" → shill replies fold with reasons → a brand-bait CA shows red "same top wallet as <earlier rug>, down 99.6% from peak · Why".</li>
+<li><strong>Config:</strong> <code>r4b_red=true</code>. The roll-back watch is closed (2 of 2 scans clean). Week-1 rule: set it to <code>false</code> if any red lands on a pool or program account, or wrong on a live coin.</li>
+<li><strong>Holder pipeline (unchanged):</strong> <code>getTokenLargestAccounts(mint)</code> → resolve each token account to its owner (<code>getMultipleAccounts</code>, <code>jsonParsed</code>) → drop owners where <code>PublicKey.isOnCurve(owner) === false</code> → drop <code>config/non_holder_wallets.json</code> → the R4b rule.</li>
+<li><strong>Regression fixtures:</strong> copy run 26 (25 rows) and run 27 (18 rows) from <code>/workspace/trench-bot/r4b-repeat-check.jsonl</code> into <code>fixtures/v68/</code>. Pass: output matches every row's <code>v68_stamp</code>. Run 26 has exactly 1 red ($OpenAI via <code>2XqJKx…</code>); run 27 has exactly 3 (Odyssey via <code>6L3fPs…</code>, T1K0 via <code>ryfbhb…</code>, GTA6 via <code>Cp9AyW…</code>); 0 on <code>5YRgrP…</code> and <code>Bcf8ox…</code>.</li>
+<li><strong>Known misses to state in the Why/FAQ:</strong> wallets held through a program (for example a multisig vault); repeat wallets whose earlier coins never had real reserves (<code>Bcf8ox…</code> type); and sprayed farms where hundreds of small, linked wallets below the top 20 sell together (Chunkee type). All fail safe with no stamp.</li>
+<li><strong>Acceptance:</strong> every AT in SPEC §11 at its stated line (AT-130 to AT-133 included) plus both fixtures; AT-112 output byte-identical.</li>
+<li><strong>Data sources (as in SPEC, verified earlier):</strong> Helius free tier for <code>getTokenLargestAccounts</code> and <code>getMultipleAccounts</code>; DEX Screener <code>latest/dex/tokens/{mint}</code> (keyless). No X API, no rugcheck at runtime. Off-curve check is local maths (0 RPC).</li>
+<li><strong>Token (v1.1, pump.fun, after the ~A$300 legal consult):</strong> $GARM burn-to-register and burn-to-report (≥US$2), burns only, mint and freeze authority off, no payouts, buybacks or Holder Rewards. Garm's own pinned-CA check matches the <strong>full</strong> mint address, never a prefix (GARM-prefixed vanity mints exist). Profile and site say "no coin yet" until launch day.</li>
+<li><strong>Legal wording:</strong> "$GARM is burned by projects that register their official CA and by users who send a report. It isn't an investment and gives no right to profits or revenue." State facts about coins and wallets only; never call a person a scammer.</li>
+<li><strong>Budget:</strong> ~A$73 to day 30; A$449 lean / A$549 worst over 4 months, including ~A$300 legal (est.); running cap A$25 a month. This re-score adds A$0.</li>
+<li><strong>Launch checklist:</strong> check the SPEC hash → all ATs and both fixtures pass → unlisted Chrome Web Store listing (single purpose "verify crypto content on X and the coin page you open from it", no token talk) → 30-day referral test → Ethan approves any posting or token launch.</li>
+</ul>
+<h4>Re-score 25 Oct 2026, 4:45pm AWST (Garm v6.9, status version)</h4><p>Thesis file: <code>/workspace/idea-bot/theses/2026-10-25-1630-garm-v6.9.md</code> (same as <code>latest-thesis.md</code>). Build file <code>/workspace/idea-bot/theses/marshal-SPEC.md</code> (content is Garm): sha256 <code>c5bc6463e9628351e5121d2238d94a3ebd681e2a5ca30712b72341d46ed822bc</code>, 1,435 lines (checked 4:40pm, <strong>matches</strong> idea bot and <code>HANDOFF.md</code>, which was corrected at 4:36pm and now names Garm and the 1,435-line hash). v6.9 changes nothing in the SPEC. Version page: <code>2026-10-25-1645-garm-v6.9.md</code>. Inputs read: Growth Bot's refine protocol and lessons (to its 4:40pm handoff lesson), Trench Bot's 4:24pm thesis inputs (run 26 roll-back watch, exact-amount blind run, serial-deployer survivors), <code>trench-bot/r4b-repeat-check.jsonl</code> (99 rows: 24 / 28 / 22 / 25 for runs 23 to 26), X bot's 3:59pm digest, Git bot's refinements (latest still 8:20am, nothing new). Light checks only.</p>
+<p><strong>New overall: 7.0/10, held at the cap (sixth flat version).</strong> Token fit <strong>6</strong>, Innovation <strong>7.5</strong>, Usability <strong>8.5</strong>, Uniqueness <strong>6.5</strong> (held, still provisional, 1 of 2 blind scans clean). Passes Ethan's rules. Still the top-ranked rules-passing thesis. Closest rival: EDGERUN for folds in the feed, XRAY for in-feed badges.</p>
+<h3>Why it holds</h3>
+<ul>
+<li><strong>Roll-back watch scan 1 of 2 is clean, and I checked it myself.</strong> Of the 25 run-26 rows, exactly 1 has <code>v68_stamp=true</code> ($OpenAI <code>6SsUYv…pump</code>, top wallet <code>2XqJKx…</code> at 13.53%, 9 matched earlier coins, marked right) and all 25 have <code>pool_or_program_stamp=false</code>. The operator rule held back <code>5YRgrP…</code> on rug $XRP, and the DBC operator <code>Bcf8ox…</code> (top holder of SOURCE, PANDA, PAC and GARY) got no stamp because its earlier coins had no real reserves. Running tally: 6 right, 0 false over runs 24 to 26. This is the first truly blind result, but it's one scan and one stamp. The agreed bar was two clean scans, so Uniqueness stays provisional at 6.5 rather than firming early.</li>
+<li><strong>The other v6.9 items are logged, not built.</strong> The <code>Bcf8ox…</code> silence is the rule failing safe (a stated miss with a v1.1 gate), the "dev turned the live on" shill template goes to the v1.1 fold list, and the copycat-$GARM risk sits in the launch plan. None changes v1, so none moves a row.</li>
+<li><strong>Exact dump-script amounts passed their blind run</strong> (Trench Bot run 26: 1 rug hit, 0 non-rug hits; 48 log coins, all rugs). That clears the gate idea bot set for v1.1, but under the hard stop it stays in §12.3, so no Innovation lift until it's in the SPEC. Trench Bot's own caveat matters: pulled coins keep only dust in the holder list, so the check works only while the dump wallet still holds.</li>
+<li><strong>Serial-deployer survivors (4 of 4 collapsed, Trench Bot 4:24pm)</strong> back the <code>deployer_launches</code> fact that's already in v1 (SPEC §5.3, data model). Small n, supportive, no new feature needed.</li>
+<li><strong>Meta check: no shift.</strong> #BOYCOTTPUMPFUN doubled to about 105 posts an hour after @travladd's post on the Squads competition, but rival-launchpad mentions were 0 in that hour (X bot 3:59pm digest), and the replies pushing @EquiFold and StonkFun are shills, not migration. Copycat-ticker flipping (the $KIMCHI story) is a reason for the full-address CA match, which the launch plan now has. No free rival has added reply folds.</li>
+<li><strong>Competitors the sweep missed:</strong> none (no new user-facing feature).</li>
+<li><strong>Process note:</strong> I agree with Growth Bot's 4:27pm lesson. A version with no SPEC change shouldn't get a new number; scan results belong in <code>marshal-TESTLOG.md</code>. A status version can only hold flat.</li>
+</ul>
+<h3>Weak spots</h3>
+<table>
+<thead>
+<tr>
+<th>Weak spot (2:45pm)</th>
+<th>Status at 4:45pm</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>R4b red passed after fixes, not blind</td>
+<td><strong>Half closed:</strong> blind scan 1 of 2 clean (1 right, 0 false, 0 pool or program stamps). One more scheduled scan decides it</td>
+</tr>
+<tr>
+<td>Curve check on owner vs token account</td>
+<td><strong>Fixed in SPEC</strong> (AT-133); Trench Bot ran run 26 owner-first</td>
+</tr>
+<tr>
+<td>Wallet diversity</td>
+<td><strong>Unchanged:</strong> run 26's only stamp reused <code>2XqJKx…</code>; still 4 stamping wallets</td>
+</tr>
+<tr>
+<td>USMS-type sub-1% ladder repeats</td>
+<td><strong>Still open (stated miss)</strong>; exact amounts may cover part of it in v1.1</td>
+</tr>
+<tr>
+<td>No payer or referral proof</td>
+<td><strong>Still open</strong>, comes from the build</td>
+</tr>
+<tr>
+<td>Rugcheck seed terms</td>
+<td><strong>Still [unverified]</strong>; Helius/RPC seed is the default</td>
+</tr>
+<tr>
+<td>HANDOFF.md out of date after the rename</td>
+<td><strong>Fixed 4:36pm</strong> (checked)</td>
+</tr>
+</tbody>
+</table>
+<h3>Refined idea</h3>
+<p>None this run. Garm is unchanged: a free, read-only X-feed fact layer with automatic reply folds and a red "same top wallet as <earlier rug>" stamp, earning through a disclosed Axiom referral.</p>
+<h3>Scores (old → new)</h3>
+<table>
+<thead>
+<tr>
+<th>Criterion</th>
+<th>2:45pm</th>
+<th>4:45pm</th>
+<th>Reason (source)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Uniqueness</td>
+<td>6.5 (provisional)</td>
+<td><strong>6.5 (held, provisional)</strong></td>
+<td>Blind scan 1 of 2 clean; firms after scan 2. A false red sends it back to 6</td>
+</tr>
+<tr>
+<td>All other rows</td>
+<td>—</td>
+<td>unchanged</td>
+<td>No SPEC change; no new evidence on money, distribution, retention or token</td>
+</tr>
+<tr>
+<td><strong>Overall</strong></td>
+<td>7.0</td>
+<td><strong>7.0 (held at the cap)</strong></td>
+<td>6.81 raw, rounds to 7.0. The cap holds until referral proof</td>
+</tr>
+</tbody>
+</table>
+<h3>Score history (Marshal / Garm, from 24 Oct 6:40pm)</h3>
+<table>
+<thead>
+<tr>
+<th>When (AWST)</th>
+<th>Version</th>
+<th>Overall</th>
+<th>Token fit</th>
+<th>Innovation</th>
+<th>Usability</th>
+<th>Uniqueness</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>24 Oct 6:40pm</td>
+<td>v6.2</td>
+<td>7.0</td>
+<td>7</td>
+<td>7</td>
+<td>8</td>
+<td>7</td>
+</tr>
+<tr>
+<td>24 Oct 7:30pm</td>
+<td>v6.2 (21 Oct retest)</td>
+<td>6.5</td>
+<td>7</td>
+<td>7</td>
+<td>8</td>
+<td>6</td>
+</tr>
+<tr>
+<td>24 Oct 8:55pm</td>
+<td>v6.3</td>
+<td>7.0</td>
+<td>7</td>
+<td>7</td>
+<td>8</td>
+<td>6</td>
+</tr>
+<tr>
+<td>25 Oct 8:45am</td>
+<td>v6.4 + v6.5</td>
+<td>7.0</td>
+<td>6</td>
+<td>7.5</td>
+<td>8.5</td>
+<td>6</td>
+</tr>
+<tr>
+<td>25 Oct 10:45am</td>
+<td>v6.6</td>
+<td>7.0</td>
+<td>6</td>
+<td>7.5</td>
+<td>8.5</td>
+<td>6</td>
+</tr>
+<tr>
+<td>25 Oct 12:45pm</td>
+<td>v6.6 + run 24</td>
+<td>7.0</td>
+<td>6</td>
+<td>7.5</td>
+<td>8.5</td>
+<td>6.5</td>
+</tr>
+<tr>
+<td>25 Oct 2:45pm</td>
+<td>v6.8 (incl. v6.7)</td>
+<td>7.0</td>
+<td>6</td>
+<td>7.5</td>
+<td>8.5</td>
+<td>6.5</td>
+</tr>
+<tr>
+<td><strong>25 Oct 4:45pm</strong></td>
+<td><strong>Garm v6.9 (status)</strong></td>
+<td><strong>7.0</strong></td>
+<td>6</td>
+<td>7.5</td>
+<td>8.5</td>
+<td>6.5</td>
+</tr>
+</tbody>
+</table>
+<h3>What would lift this score</h3>
+<ol>
+<li><strong>Referral proof</strong> (30-day unlisted listing, ~A$73): ≥10 referred Axiom sign-ups and ≥30% of installs active 3+ days a week. The only route above the 7 cap, <strong>about +0.5</strong>.</li>
+<li><strong>Trench Bot's next scheduled scan at 0 false red stamps</strong> closes the roll-back watch and firms Uniqueness at 6.5; a correct red on a <em>live</em> coin from a new wallet would justify <strong>Uniqueness 7</strong> (no change under the cap).</li>
+<li><strong>Exact dump-script amounts moved into the SPEC</strong> after the hard stop lifts (blind gate now passed): catches fresh dump wallets that memory can't, <strong>about +0.5 Innovation</strong>.</li>
+</ol>
+<h3>What @idea bot should change next</h3>
+<ul>
+<li><strong>No v7.0 for scan results.</strong> Log Trench Bot's next scan in <code>marshal-TESTLOG.md</code>. Only a roll-back (a pool or program stamp, or a wrong red on a live coin) justifies touching the SPEC.</li>
+<li>When the hard stop lifts, the exact-amount rule is the first v1.1 item to write up (its gate passed in run 26), with Trench Bot's "dump wallet must still hold" limit stated.</li>
+<li>Keep hunting for a second thesis; the three drops this run were on the right gates.</li>
+</ul>
+<h3>Claude Code build brief (Garm v6.9, updated 4:45pm 25 Oct)</h3>
+<p><strong>Build v1 from <code>/workspace/idea-bot/theses/marshal-SPEC.md</code> alone</strong> (the file name is kept from the old name; the content is Garm): sha256 <code>c5bc6463e9628351e5121d2238d94a3ebd681e2a5ca30712b72341d46ed822bc</code>, 1,435 lines (checked 4:40pm 25 Oct). <code>HANDOFF.md</code> points to the same hash; <code>marshal-BUILD.md</code> is history only. The SPEC covers the product summary, wow moment, user, features 1–10 in build order with acceptance tests (to AT-133), screens and flows, data sources, stack, data model, token and legal wording. The only additions:</p>
+<ul>
+<li><strong>Product (one line):</strong> a free, read-only Chrome MV3 extension for x.com. It folds paid-caller replies with a reason, puts a fact pill by every Solana CA (never green), warns when the coin page you open isn't the CA the post wrote, and shows a <strong>red</strong> "same top wallet as <earlier rug>, down N%" stamp.</li>
+<li><strong>Wow moment (under 30s, ≤5 steps, no sign-up):</strong> add to Chrome → toast "Garm is on" → shill replies fold with reasons → a brand-bait CA shows red "same top wallet as <earlier rug> (2XqJ…), down 99.6% from peak · Why".</li>
+<li><strong>Config:</strong> <code>r4b_red=true</code>. Roll-back watch is 1 of 2 clean; set it to <code>false</code> if Trench Bot's next scheduled scan stamps a pool or program account, or any red lands wrong on a live coin in week 1.</li>
+<li><strong>Holder pipeline (unchanged):</strong> <code>getTokenLargestAccounts(mint)</code> → resolve each token account to its owner (<code>getMultipleAccounts</code>, <code>jsonParsed</code>) → drop owners where <code>PublicKey.isOnCurve(owner) === false</code> → drop <code>config/non_holder_wallets.json</code> → the R4b rule.</li>
+<li><strong>Extra regression fixture:</strong> copy run 26's 25 rows from <code>/workspace/trench-bot/r4b-repeat-check.jsonl</code> into <code>fixtures/v68/</code>. Pass: output matches every row's <code>v68_stamp</code>; exactly 1 red ($OpenAI <code>6SsUYvtS…pump</code> via <code>2XqJKxdy…</code>), 0 on <code>5YRgrP…</code> (operator held back on $XRP) and 0 on <code>Bcf8ox…</code>, 0 pool or program stamps.</li>
+<li><strong>Known misses to state in the Why/FAQ:</strong> wallets held through a program (for example a multisig vault), and repeat wallets whose earlier coins never had real reserves (<code>Bcf8ox…</code> type). Both fail safe.</li>
+<li><strong>Acceptance:</strong> every AT in SPEC §11 at its stated line (AT-130 to AT-133 included) plus the run-26 fixture; AT-112 output byte-identical.</li>
+<li><strong>Data sources (as in SPEC, verified earlier):</strong> Helius free tier for <code>getTokenLargestAccounts</code> and <code>getMultipleAccounts</code>; DEX Screener <code>latest/dex/tokens/{mint}</code> (keyless). No X API, no rugcheck at runtime. Off-curve check is local maths (0 RPC).</li>
+<li><strong>Token (v1.1, pump.fun, after the ~A$300 legal consult):</strong> $GARM burn-to-register and burn-to-report (≥US$2), burns only, mint and freeze authority off, no payouts, buybacks or Holder Rewards. Garm's own pinned-CA check matches the <strong>full</strong> mint address, never a prefix (GARM-prefixed vanity mints already exist). Profile and site say "no coin yet" until launch day.</li>
+<li><strong>Legal wording:</strong> "$GARM is burned by projects that register their official CA and by users who send a report. It isn't an investment and gives no right to profits or revenue." State facts about coins and wallets only; never call a person a scammer.</li>
+<li><strong>Budget:</strong> ~A$73 to day 30; A$449 lean / A$549 worst over 4 months, including ~A$300 legal (est.); running cap A$25 a month. v6.9 adds A$0.</li>
+<li><strong>Launch checklist:</strong> check the SPEC hash → all ATs and the run-26 fixture pass → unlisted Chrome Web Store listing (single purpose "verify crypto content on X and the coin page you open from it", no token talk) → 30-day referral test → Ethan approves any posting or token launch.</li>
+</ul>
 <h4>Re-score 25 Oct 2026, 2:45pm AWST (v6.8, covers v6.7 too)</h4><p>Thesis file: <code>/workspace/idea-bot/theses/2026-10-25-1430-marshal-v6.8.md</code> (same as <code>latest-thesis.md</code>). Build file <code>/workspace/idea-bot/theses/marshal-SPEC.md</code>: sha256 <code>96c09037a93b0cb1f43546141367437ae031b06feb6a7b0a84f12d5cb782e871</code>, 1,428 lines (checked 2:38pm, <strong>matches</strong> idea bot and <code>HANDOFF.md</code>). Version page: <code>2026-10-25-1445-marshal-v6.8.md</code>. Inputs read: Growth Bot's refine protocol and lessons (to Trench Bot's 2:21pm off-curve lesson), Trench Bot's 2:21pm thesis inputs (run 25 final tally, template amounts and off-curve skip, <code>HLnpSz…</code> correction), <code>trench-bot/r4b-repeat-check.jsonl</code> (now 74 rows: 24 / 28 / 22 for runs 23 / 24 / 25, sha256 <code>a93dceb6…b88a</code>), Git bot's refinements (latest still 8:20am, nothing new) and SPEC §5.3b. Light checks only: no holdout, blind set or engine.</p>
 <p><strong>New overall: 7.0/10, held at the cap (fifth flat version).</strong> Token fit <strong>6</strong>, Innovation <strong>7.5</strong>, Usability <strong>8.5</strong>, Uniqueness <strong>6.5</strong> (held, still provisional). Passes Ethan's rules. Still the top-ranked rules-passing thesis. Closest rival: EDGERUN for folds in the feed, XRAY for in-feed badges.</p>
 <h3>Why it holds</h3>
