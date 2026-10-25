@@ -1,0 +1,426 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Marshal ($MRSHL) v6.5</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="site"><a href="../index.html">Startup theses</a></header>
+<main>
+<p class="back"><a href="../index.html">&larr; All theses</a></p>
+<article>
+<h1>Marshal ($MRSHL) v6.5</h1>
+<p class="tagline">Free X-feed shill folding, now with &quot;named after @x&quot; and dump-wallet memory</p>
+<p class="meta"><span>25 Oct 2026, 8:30am AWST</span> <span class="badge high">7/10</span></p>
+<section class="exec"><h2>Executive summary</h2>
+<ul>
+<li><strong>Problem:</strong> the scam sits between an X post and a buy. In Trench Bot's log, 804 of 817 coins that crossed US$500k are rugs; run 22 was 17 of 17. Paid callers, copy rings, reply spam, borrowed names and reused dump wallets surround every call, and every scanner (SiftscanBot, Larpcheck, Tetrascore) works only when tagged.</li>
+<li><strong>Product:</strong> Marshal, a free, read-only Chrome extension for x.com. It folds paid-caller machinery into one grey bar with a reason, puts a fact pill by every CA, warns (badge + notification, never on the page) when the coin page you open isn't the coin the post wrote, and, new in v6.5, says when a coin is named after someone and no post from them with that mint has been seen and when its top wallet is the same one behind an earlier collapse.</li>
+<li><strong>Who pays and how much:</strong> users pay nothing (Ethan: free only). Income is a disclosed, optional Axiom referral sign-up link (Axiom pays referrers 30% of its net fee on referred users' trades; <a href="https://docs.axiom.trade/getting-started/referral-program">docs</a>) plus pump.fun creator fees as a bonus.</li>
+<li><strong>Token's job:</strong> v1.1 only, after launch: projects or named people burn their own $MRSHL to register their real CA or "no coin" (counts only after their own post says so), and users burn ≥US$2 of their own to send a report to the shared list. No payouts, no buybacks, nothing unlocked by holding. Token fit est. 6/10.</li>
+<li><strong>Cost against A$1,000:</strong> ~A$73 to day 30; A$449 lean / A$549 worst over 4 months including ~A$300 legal (est.) and ~A$76 launch (est.); running cost capped at A$25/month.</li>
+<li><strong>Path to US$10k/month:</strong> about 667 active referred Axiom traders at an assumed US$15/month referral each (est., see unit economics). Base case at month 12 is US$1–4k/month (est.); US$10k is upside.</li>
+<li><strong>Why now, edge, main risk:</strong> tokenised-handle launchpads and reused dump wallets appeared this week; every rival needs a tag. Edge: automatic, deterministic folds and stamps in the feed, plus personal memory (rings, clicks) that starts at install. Main risk: referral income may never cover costs, and EDGERUN or SiftscanBot could go in-feed.</li>
+<li><strong>First move this week:</strong> Project Bot scores v6.4, then the v6.5 delta merges into the SPEC and Claude Code builds. <strong>Verdict: build, about 50% confident</strong> (up from test ~30% at v6.3, since the head-to-head passed and v6.5 adds two cheap, data-backed rules). My score estimate: 7.0–7.5.</li>
+</ul>
+</section>
+<section class="thesis"><h2>Full thesis</h2>
+<div class="byline"><p><em>Written by idea bot, Sun 25 Oct 2026, ~8:30–8:55am AWST (Perth). Thesis id <code>idea-bot:thesis:clean-feed</code>. Refine of v6.4 (free only + Trade on Axiom; awaiting Project Bot's score; v6.3 scored 7.0). The build spec <code>theses/marshal-SPEC.md</code> stays <strong>frozen at v6.4 (sha256 <code>5831e16a…86d2</code>)</strong> so Project Bot scores the file it was promised; the v6.5 changes are the "SPEC v6.5 delta" in the Build brief below, to merge after that score. (est.) = estimate; [unverified] = not checked against a source.</em></p></div>
+<h3>What changed in v6.5 (tied to each weakness named)</h3><ol>
+<li><strong>Uniqueness (X bot 7:55am: SiftscanBot).</strong> @SiftscanBot already checks a coin's CA against the project's own X profile and website when tagged (<a href="https://x.com/SiftscanBot/status/2114079764604387615">CLEAN</a>, <a href="https://x.com/SiftscanBot/status/2113929823265394819">RIGGED</a>). <strong>Fixed by repositioning:</strong> the v1.1 project-pinned CA stamp is no longer pitched as unique anywhere. The pitch is now "automatic in your feed, no tagging", plus a check nobody does: whether the <em>person a coin is named after</em> ever posted it (new R13 below). SiftscanBot added to the rival table.</li>
+<li><strong>New feature R13 <code>named_after</code> (borrowed handle).</strong> $HANDLES (<a href="https://x.com/handlespad/status/2114093842622226869">launch</a>) now mints one pump.fun coin per X profile, and its own site says "Profile association does not imply endorsement by the account owner or X" (<a href="https://handles.one">handles.one</a>, read 8:45am). Free light check: DexScreener lists the main $HANDLES mint <code>FGALFg…ABpump</code> linking <code>x.com/handlespad</code>, plus a same-name copy <code>3Fwka2…LJpump</code> with no links, about US$2.8–3.4k cap each. R13 shows a grey fact, never red: "named after @x · no post from @x with this mint seen". This is the borrowed-name problem made into a product, so demand is rising, not static.</li>
+<li><strong>Innovation and safety (Trench Bot run 22): dump-wallet memory (R4b).</strong> GTA6 Coin <code>3P4ypi…pump</code> has wallets 4G9JAz… at 13.31% and 6tzAKf… at 0.24%, the same two wallets at the same sizes as run 21's Gemini rug. R4b keeps a server-side memory of top-holder wallets of mints Marshal has already checked, and shows red "same top wallet as <coin> (down N% from peak)" when a wallet repeats. <strong>Honest limit (light check):</strong> only 10 of Trench Bot's 956 log lines carry top-holder wallets (713 carry the creator wallet), so the memory can't be seeded from history; it builds forward from R12's existing holder read, plus creator wallets for the existing <code>dev_repeat</code>. A matching buy <em>size</em> without a matching wallet (Apple's 2,376,720-token companion buy) is a grey "Why" note only, n=1.</li>
+<li><strong>Plain-name copy of a trending coin.</strong> Trench Bot: the FhVo3m… operator now copies trending coins by plain name (SWORDOPE <code>F3EsW4…</code>, 99.9% one wallet), not only with reversed-text tricks. R4's copy rule now also matches plain names when one wallet holds ≥90%.</li>
+<li><strong>Consistency as a selling point.</strong> @Larpcheckbot scored the same coin $HI 39, 46, 50 and 56 inside ~20 minutes (<a href="https://x.com/Larpcheckbot/status/2114137621672698093">39</a>, <a href="https://x.com/Larpcheckbot/status/2114140275794686294">56</a>). Marshal's AT-112 already makes output deterministic; v6.5 puts "one stamp per coin, same on every screen" in the pitch and adds AT-120 (same mint, 4 asks in 20 min, identical non-live pills).</li>
+<li><strong>Missed competitor and terms (Git bot 8:20am).</strong> <a href="https://antaresscan.com/install">Antares</a> (8 trading sites, not X; <a href="https://antaresscan.com/pricing">Pro US$24.99/30 days</a>) is added to the rival table: it scores coins on terminals, doesn't check a post against the coin it lands on, and has no X stamp. Git bot's terms note (Birdeye bans automated extraction; DEX Screener limits content use) is already covered: v6.3 reads only the tab URL on DEX Screener, Birdeye and BullX. AT-53's no-injection test now names those three sites as well (AT-53b).</li>
+<li><strong>Token fit (was est. 6 under free-only).</strong> Unchanged design; R13 adds a natural registry use: a person or project whose name is used can burn its own $MRSHL to register "this handle has no coin" or "my coin is X" (v1.1, same rules as AT-116: counts only once that handle's own post says so). Still est. 6/10. I can't fix it further without bringing back a paid tier, which Ethan ruled out.</li>
+<li><strong>Demand evidence.</strong> Still no payer, but Marshal no longer needs one (free). The launch gate stays activity only. Background demand from X bot: 52 fake/wrong/official-CA posts in 6 hours, steady.</li>
+<li><strong>Budget:</strong> unchanged (A$73 to day 30, A$449–549 over 4 months, A$25/month cap). R13 and R4b add 0 paid calls: R13 reuses R11's metadata read; R4b reuses R12's holder read and adds ≤1 Upstash write per checked mint.</li>
+</ol>
+<h3>Problem and user</h3><ul>
+<li><strong>User:</strong> tech-bro desktop Solana traders (Chrome, Brave, Arc) who find coins on X and buy on GMGN, Axiom, Photon, Jupiter or pump.fun.</li>
+<li><strong>Pains (sourced):</strong></li>
+<li>Rugs dominate: 804 rugs of 817 US$500k coins; brand/copy name-bait ~449 of them (Trench Bot <code>latest.md</code>, run 22).</li>
+<li>Borrowed names, now productised: $HANDLES mints a coin per X handle, with an explicit no-endorsement disclaimer (<a href="https://handles.one">handles.one</a>).</li>
+<li>Reused dump wallets: GTA6 Coin reused run 21's Gemini wallets at identical sizes (Trench Bot run 22).</li>
+<li>Copy rings: @CipherEdgeCalls posted eight $CATTLEAXE ladder cards in six minutes; @JanoskianSwe1 and @r3b3ld14 post word-for-word copies a minute apart (X bot 7:55am).</li>
+<li>Inconsistent scanners: Larpcheck's four scores for $HI in 20 minutes (links above).</li>
+<li>People build their own checkers from LLM prompts (<a href="https://x.com/SajadFlips/status/2114061938384638242">@SajadFlips</a>): the need is real, the tools are manual.</li>
+<li><strong>Workarounds:</strong> tag a bot, paste into RugCheck, open Antares on the terminal, keep a mental blacklist.</li>
+</ul>
+<h3>Evidence of money</h3><ul>
+<li><strong>Money at the buy moment:</strong> Axiom earned US$31.85M of fees in 30 days (<a href="https://memefees.com/terminals/axiom">memefees</a>, read 24 Oct). The referral pays 30% of Axiom's net fee on referred users (<a href="https://docs.axiom.trade/getting-started/referral-program">docs</a>).</li>
+<li><strong>Paid safety and caller tools exist:</strong> Antares Pro US$24.99/30 days in crypto (<a href="https://antaresscan.com/pricing">pricing</a>); CALIBER Pro US$19.99/mo (<a href="https://chromewebstore.google.com/detail/caliber/fkelefefncjbipiaoeanffmhjpgdkjdl">CWS</a>); Frontrun US$75/180 a month (<a href="https://www.frontrun.pro/pricing">pricing</a>); SolTracks Pro US$12/mo (Project Bot missed-competitors).</li>
+<li><strong>Missing:</strong> no proof yet that a free tool's users sign up for Axiom through it. That's the 30-day test.</li>
+</ul>
+<h3>Market sizing (bottom-up; estimates labelled)</h3><ul>
+<li>Reach (sourced): Frontrun 90,000+ users (its site, per SPEC §1); CALIBER tracks 850+ KOLs.</li>
+<li><strong>Installs (est.):</strong> 10,000–15,000 in year 1 (unchanged from v6.3).</li>
+<li><strong>Referral (est., assumptions labelled):</strong> 2–3% of installs are new Axiom sign-ups via the link = 200–450 referred traders; assume 50% stay active and each pays Axiom ~US$50/month in fees (assumption, not sourced), so Marshal earns 30% = US$15/month each. 100–225 active × US$15 = <strong>US$1.5–3.4k/month at month 12</strong>. US$10k needs ~667 active referred traders.</li>
+<li><strong>Creator fees (est.):</strong> only after launch; volume-dependent; treated as zero in the plan.</li>
+</ul>
+<h3>Competitive teardown (new and changed rows; full table in SPEC §1)</h3><table>
+<thead>
+<tr>
+<th>Rival</th>
+<th>What it does</th>
+<th>Price / traction</th>
+<th>Gap left</th>
+<th>Why they won't fill it soon</th>
+<th>Threat</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://x.com/SiftscanBot/status/2114079764604387615">SiftscanBot</a></td>
+<td>Reply bot: score, real socials, whether the project's X and site point to the CA (RIGGED if not), insider/sniper share</td>
+<td>Free; 185 followers; no price seen</td>
+<td>Tag only; no folds, no guard; doesn't check a person whose name is borrowed without a link</td>
+<td>Bot model; going in-feed means building an extension</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td><a href="https://x.com/Larpcheckbot/status/2114095354345849104">Larpcheck</a></td>
+<td>Tag bot: NARRATIVE/COIN verdicts, scores</td>
+<td>Free replies; hold $LARPCHECK for Pro</td>
+<td>Tag only; scores drift (39–56 on one coin in 20 min)</td>
+<td>Scores come from a model</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td><a href="https://antaresscan.com/install">Antares</a></td>
+<td>Extension on 8 trading sites: 1000-point coin risk score</td>
+<td>Pro US$24.99/30 days (crypto)</td>
+<td>Not on X; no post-vs-landing check; no folds</td>
+<td>Terminal-side product</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td><a href="https://handles.one">handles.one</a></td>
+<td>Launchpad: one token per X handle</td>
+<td>80% creator rewards to launcher, 20% to buyback and burn of its own token</td>
+<td>It creates the problem R13 labels</td>
+<td>It's the source, not a rival</td>
+<td>None (demand)</td>
+</tr>
+<tr>
+<td>EDGERUN</td>
+<td>Free MIT feed tool, per-CA push counts</td>
+<td>Free</td>
+<td>No two-step caller-ad fold, no guard, no personal memory</td>
+<td>Small open-source team</td>
+<td>Medium-high (closest)</td>
+</tr>
+<tr>
+<td><strong>Gate c on the lead:</strong> passes. No tool does in-feed folds plus post-vs-landing guard plus personal memory; Siftscan and Larpcheck need a tag.</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3>Product and user experience</h3><p><strong>First minute (AT-23: &lt;30 s, ≤5 steps, no sign-up, wallet or X login):</strong> add to Chrome → toast "Marshal is on · checks locally · only CAs leave your browser" → shill replies fold with a reason → each CA gets a grey/amber/red fact pill (never green) → a coin named after @someone shows "named after @someone · no post from @someone with this mint seen" → a coin whose top wallet repeats shows red "same top wallet as Gemini (DhUh…), down N% from peak · Why" (N computed live).
+<strong>Advanced under the hood:</strong> deterministic rule engine (AT-112), X snowflake dating, post-to-tab provenance, server-side wallet memory keyed by public holder addresses, on-device ring graph and click history.
+<strong>What's hard:</strong> X DOM churn; deciding which handle a coin is "named after" without false matches (R13 requires the handle in the coin's own metadata link, or name/ticker equal to the handle, case-insensitive, ≥4 chars); wallet memory must exclude pools, curves, lockers and exchanges (reuse R12's exclusion list).
+<strong>Copycat risk:</strong> SiftscanBot or EDGERUN could add R13 in weeks. Not clonable quickly: each user's ring memory and click history, and a wallet memory that grows with every coin Marshal users check.
+<strong>Scores (mine; Project Bot scores officially):</strong> Innovation 7.5 (+0.5 for R4b wallet memory and R13), Usability 8 (unchanged, automatic, no tagging), Uniqueness 6.5 (+0.5: R13 has no rival found; the project-pinned check lost its uniqueness to Siftscan, which v6.4 hadn't claimed in v1 anyway).</p>
+<h3>Token design on pump.fun ($MRSHL)</h3><ul>
+<li><strong>Job in the product (v1.1, after launch):</strong> (1) project/handle registry: burn your own $MRSHL (fixed count, est. US$20) to register <code>{x_handle, mint}</code> or <code>{x_handle, "no coin"}</code>; counts only after that handle's own post says the same (AT-116, extended by AT-121); paying never turns a stamp green. (2) Burn-to-report: ≥US$2 of your own $MRSHL at burn time per report to the shared list; grey only, ≥3 independent, aged wallets (SPEC §8).</li>
+<li><strong>Launch only after</strong> ≥30% of installs active 3+ days a week over 30 days, the ~A$300 legal consult and Ethan's pick. Mint and freeze authority off; small labelled dev buy ≤0.5 SOL from a published wallet; no bundles, snipers or paid callers; Holder Rewards OFF; Tokenized Agent buybacks OFF; pin one official CA on day one (copies appear within hours, as $HANDLES' copy <code>3Fwka2…</code> shows).</li>
+<li><strong>Fee flow:</strong> pump.fun 1.25% curve fee with 0.30% to the creator, PumpSwap creator tiers (<a href="https://pump.fun/docs/fees">fees</a>, updated 17 Oct 2026) → published operating wallet for hosting only, verifiable on Solscan. Creator fees are a bonus.</li>
+<li><strong>Public repo:</strong> extension, Worker and burn verifier MIT.</li>
+<li><strong>Comparables:</strong> Larpcheck (hold for Pro; claimed buyback, barred for us); Bubblemaps (hold-to-unlock); handles.one (20% to buyback-and-burn: a model we must not copy). Organic vs shilled attention on these isn't measured.</li>
+<li><strong>Legal line (not legal advice):</strong> "$MRSHL is burned by projects that register their official CA and by users who send a report. It isn't an investment and gives no right to profits or revenue." No payouts, revenue share, staking yield or fee-funded burns (ASIC INFO 225; no paid promoters, INFO 269).</li>
+</ul>
+<h3>Budget and founder load (A$; US$1 = A$1.424)</h3><table>
+<thead>
+<tr>
+<th>Item</th>
+<th>One-off</th>
+<th>Monthly</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Chrome Web Store fee</td>
+<td>7.12</td>
+<td></td>
+</tr>
+<tr>
+<td>Domain</td>
+<td>15.91/yr</td>
+<td></td>
+</tr>
+<tr>
+<td>Workers, Upstash, Helius, DexScreener, GeckoTerminal, Jupiter (free tiers)</td>
+<td></td>
+<td>0</td>
+</tr>
+<tr>
+<td>Paid steps (from income only)</td>
+<td></td>
+<td>cap 25</td>
+</tr>
+<tr>
+<td>Legal consult (est.)</td>
+<td>300</td>
+<td></td>
+</tr>
+<tr>
+<td>Token launch (est.)</td>
+<td>~76.24</td>
+<td></td>
+</tr>
+<tr>
+<td>Contingency (est.)</td>
+<td>50</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Day 30 ~A$73; 4 months A$449 lean / A$549 worst; headroom ≥A$451.</strong> R4b's extra Upstash writes: ≤1 per checked mint, inside 500K commands/month at the A$25 cap. Founder load (est.): ~20 h/week for 3 weeks reviewing Claude Code's build, then ~10 h/week.</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3>Business model and unit economics (estimates)</h3><ul>
+<li>Free to every user; cost driver is distinct mints checked, not users (cached per mint).</li>
+<li>Referral: est. US$15/month per active referred trader (assumption above); marginal cost ~US$0.</li>
+<li>At the A$25 cap with no income, Ethan's out-of-pocket is ≤A$25/month.</li>
+</ul>
+<h3>Go-to-market (solo; all posting and outreach only with Ethan&#x27;s OK)</h3><ol>
+<li>Public side-by-side: Marshal vs tagging Siftscan/Larpcheck on 20 live threads ("no tag, same answer every time").</li>
+<li>Weekly "named after you" thread: handles with coins they never posted (facts only, handle owners can register "no coin").</li>
+<li>Local share card ("accounts that cost me SOL this week", handles blurred).</li>
+<li>CWS listing, single purpose "verify crypto content on X and the coin page you open from it"; no token talk.</li>
+</ol>
+<h3>12-month snapshot (estimates)</h3><table>
+<thead>
+<tr>
+<th>Month</th>
+<th>Installs</th>
+<th>Active referred traders</th>
+<th>Income/month (US$)</th>
+<th>Cumulative out-of-pocket (A$)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>0–200</td>
+<td>0–3</td>
+<td>0–45</td>
+<td>~73</td>
+</tr>
+<tr>
+<td>3</td>
+<td>1,500</td>
+<td>15–25</td>
+<td>~0.2–0.4k</td>
+<td>~450 (incl. legal + launch if picked)</td>
+</tr>
+<tr>
+<td>6</td>
+<td>5,000</td>
+<td>50–80</td>
+<td>~0.75–1.2k</td>
+<td>~500</td>
+</tr>
+<tr>
+<td>12</td>
+<td>10–15k</td>
+<td>100–225</td>
+<td>~1.5–3.4k</td>
+<td>&lt;1,000; income covers the cap from ~month 3 (est.)</td>
+</tr>
+</tbody>
+</table>
+<h3>Defensibility</h3><ul>
+<li>Per-user ring memory and click history start at install; a rival starts at zero for that user.</li>
+<li>Wallet memory (R4b) grows with every mint users check; rules tuned on Trench Bot's 817-coin log and X bot's ring lists.</li>
+<li>Determinism and read-only trust; MIT code.</li>
+<li>Weak against EDGERUN or Siftscan going in-feed; speed and public side-by-sides are the rest.</li>
+</ul>
+<h3>Risks (mitigation · cheap test)</h3><table>
+<thead>
+<tr>
+<th>Risk</th>
+<th>Mitigation</th>
+<th>Cheap test</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>R13 names the wrong handle</td>
+<td>Handle must be in the coin's metadata link or exactly equal name/ticker (≥4 chars); grey only; "named after" wording, never "fake"</td>
+<td>AT-121 on 20 fixtures incl. common words ("DOGE", "CAT")</td>
+</tr>
+<tr>
+<td>R4b flags a market maker or exchange wallet</td>
+<td>Reuse R12's pool/curve/locker exclusion; red only on exact wallet + earlier coin ≥90% down from peak; else grey</td>
+<td>AT-122 with an exchange hot wallet fixture</td>
+</tr>
+<tr>
+<td>Wallet memory too thin early</td>
+<td>Seed from the 10 Trench Bot rows + creator wallets; label "seen since <date>"</td>
+<td>Count fires over Trench Bot's next 3 runs (n≥3 before marketing it)</td>
+</tr>
+<tr>
+<td>Referral never pays</td>
+<td>Free plan runs at ≤A$25/month</td>
+<td>30-day test below</td>
+</tr>
+<tr>
+<td>Siftscan/EDGERUN copy</td>
+<td>Ship first; publish side-by-side</td>
+<td>Weekly watch (X bot, Git bot)</td>
+</tr>
+<tr>
+<td>Defamation</td>
+<td>Facts about coins and wallets only; no person called a scammer</td>
+<td>Legal consult; AT-75</td>
+</tr>
+</tbody>
+</table>
+<h3>Kill or confirm</h3><p><strong>Free and private first:</strong></p>
+<ol>
+<li>Project Bot scores v6.4 (pending), then the v6.5 delta.</li>
+<li>R4b base rate: Trench Bot logs, for its next 3 runs, whether each new US$500k coin's top non-pool wallet appeared in an earlier coin (no new tooling; a field in its existing scan). Keep R4b red only if ≥3 repeats are found with 0 exchange/pool false matches; otherwise ship it grey.</li>
+<li>R13 base rate: count, in X bot's next digest, posts naming a coin tied to a handle that never posted it (≥5 in 6 hours keeps it in v1; fewer moves it to v1.1).
+<strong>30-day validation once Ethan picks Marshal (~A$73):</strong> unlisted CWS listing. <strong>Pass:</strong> ≥30% of installs active 3+ days a week and ≥10 referred Axiom sign-ups. <strong>Kill:</strong> &lt;15% active or 0 sign-ups after 300 installs.</li>
+</ol>
+<h3>Comparables</h3><p>Frontrun (paid overlay, 90k+ users), CALIBER (paid in-feed caller badges), Antares (paid terminal scanner), SiftscanBot and Larpcheck (free tag bots), Bubblemaps (hold-to-unlock), RobinSight (token-backed X scanner that shut down on server costs; hence the A$25 cap).</p>
+<h3>Screened and dropped this run (gates: a audience, b token, c competitors, d revenue comp, e money test, f bootstrap)</h3><ul>
+<li><strong>Scrub</strong> (Telegram tracker idea #55: rebuild a launch's first 24h as a sourced timeline): <strong>gate c.</strong> Bubblemaps, pumpdata.fun (dev history, first buyers), GMGN, Larpcheck and SiftscanBot cover the parts; a timeline view is a feature. Kept as a possible Marshal "Why" panel layout.</li>
+<li><strong>Feud</strong> (idea #56: live cats-vs-dogs launch war map with votes): <strong>gate d</strong> (no verified-revenue comp for a launch-war game) and <strong>e</strong>.</li>
+<li><strong>Multi-agent coding dashboard</strong> (whatsmyagentdoing, wisp; X bot): <strong>gates a + b</strong> (buyers are general devs; no natural token job) and <strong>c</strong> (open-source tools already shipping).</li>
+<li><strong>Labelled pump.fun outcome dataset over x402</strong> (Git bot: sellers with own data earn): <strong>gates e + f.</strong> Top data sellers earn hundreds to low thousands of US$ a week on Base, x402 volume is mostly synthetic (Git bot), and checkers earn ~US$22/week; no path to US$10k/month.</li>
+<li><strong>Stand-alone dump-wallet registry:</strong> <strong>gate c</strong> (Bubblemaps, RugCheck insiders, GMGN). Kept as Marshal R4b.</li>
+<li><strong>Count: 5 dropped</strong> (c ×2, d+e ×1, a+b+c ×1, e+f ×1).</li>
+</ul>
+<h3>Build brief for Claude Code</h3><p><strong>Build v1 from <code>theses/marshal-SPEC.md</code> (v6.4, sha256 <code>5831e16a4658603359a7e4dc9f728f716b0221f61310b8d3cb3c88999ebf86d2</code>) plus the delta below.</strong> Everything not mentioned here is unchanged.</p>
+<p><strong>Scope of the MVP:</strong> SPEC §2 features 1–10, plus R13 (as part of feature 2/3) and R4b (feature 3). Free only.</p>
+<p><strong>Feature list in build order (delta):</strong> 1–3 as SPEC → add R4 plain-name copy (feature 3) → add R13 <code>named_after</code> (feature 3, server; local render in feature 2) → add R4b wallet memory (feature 3, after R12) → 4–10 as SPEC.</p>
+<p><strong>Architecture and stack:</strong> unchanged (Chrome MV3 content script on x.com only; tab URL only elsewhere; Cloudflare Workers + Upstash; Helius free). New Upstash keys: <code>tw:{wallet}</code> → list of <code>{mint, symbol, peak_usd, seen_ms}</code> (TTL 90 days, max 20 entries); <code>named:{mint}</code> → <code>{handle, source, posted_mint: bool|null, checked_ms}</code> (TTL 24h). These store public on-chain holder addresses of coins, never a user's wallet; add one privacy line: "We remember the top holder addresses of coins we check (public on-chain data), never yours."</p>
+<p><strong>Data sources and limits:</strong> no new paid source. R13 uses R11's Helius DAS <code>getAsset</code> external links / DexScreener profile socials (cached 24h). Whether the handle posted the mint is decided from posts the user's browser has rendered for that handle (local cache, as the hijack tell does), else <code>posted_mint = null</code> → wording "no post from @x with this mint seen". No X API. R4b uses R12's <code>getTokenLargestAccounts</code> read.</p>
+<p><strong>Rules (pseudocode, not frozen code):</strong></p>
+<pre><code>R4 copy (extend):  if coin.name/ticker equals a trending coin's (case-insensitive, after stripping bidi/zero-width)
+                   and coin.mint != trending.mint and top_nonpool_wallet_share &gt;= 90%
+                   -&gt; red &quot;copy of &lt;trending&gt; · one wallet holds N%&quot;
+                   trending = DexScreener/GeckoTerminal trending top 40, refreshed 10 min (existing call)
+
+R13 named_after:   handle = first of (metadata X link to a profile that is not the coin's own account*,
+                   coin.name or ticker == an X handle in the user's local cache, len&gt;=4, not in majors/brands/common-words list)
+                   *own account = linked handle created after or within 24h of the mint, or whose bio/posts contain the mint
+                   if no handle -&gt; no pill
+                   if handle posted this exact mint (local cache or registry AT-116) -&gt; no pill
+                   else -&gt; GREY &quot;named after @handle · no post from @handle with this mint seen&quot;
+                   never amber/red; never &quot;fake&quot;; fold rules unaffected
+
+R4b wallet memory: after R12 reads top holders (excluding pools, curves, lockers, known exchanges, SPEC R12 list):
+                   for w in top 5 non-pool wallets with share &gt;= 1%:
+                       for prior in tw:{w} where prior.mint != coin.mint:
+                           drop = 1 - live_mc(prior)/prior.peak_usd
+                           if drop &gt;= 0.90 -&gt; RED &quot;same top wallet as &lt;prior.symbol&gt; (&lt;mint4&gt;…), down X% from peak&quot;
+                           else -&gt; GREY note in Why: &quot;top wallet also held &lt;prior.symbol&gt;&quot;
+                       append {coin.mint, symbol, peak, now} to tw:{w}
+                   exact-size companion match without wallet match -&gt; Why-panel grey note only
+                   seed: Trench Bot rows with top_nonpool_wallets / template_wallet fields (10 rows), read once at build
+</code></pre>
+<p><strong>UI and first-minute flow:</strong> unchanged; R13 grey pill and R4b red pill use the existing pill component and "Why" panel (each line links to Solscan for the wallet and DexScreener for the earlier coin).</p>
+<p><strong>Token integration steps:</strong> unchanged (none in v1). v1.1 AT-116 registry gains <code>{x_handle, "no coin"}</code> entries (AT-121 c).</p>
+<p><strong>New acceptance tests (numeric pass lines):</strong>
+| ID | Test | Pass line |
+|---|---|---|
+| AT-53b | No injection on DEX Screener, Birdeye, BullX fixtures | 0 content scripts, 0 <code>chrome.scripting</code> calls, 0 DOM changes |
+| AT-117 | R4 plain-name copy: SWORDOPE copy <code>F3EsW4…</code> fixture (99.9% one wallet) vs live SWORDOPE; plus 5 legit same-name coins under 90% | 1/1 red; 0/5 red |
+| AT-118 | R4b wallet memory: GTA6 Coin <code>3P4ypi…pump</code> after Gemini <code>DhUhuC…pump</code> stub (stubbed peak and live cap with a ≥90% drop; real figures not checked this run) | red naming Gemini; Apple size-only case → grey Why note only; exchange hot-wallet fixture → 0 fires |
+| AT-119 | R4b false-flag rate on 50 random checked mints with stubbed memory | ≤1 red that isn't an exact wallet + ≥90% drop |
+| AT-120 | Consistency: same mint asked 4 times in 20 min with live data frozen | identical non-live pills 4/4 (extends AT-112) |
+| AT-121 | R13 named_after on 20 fixtures: 8 handle-linked coins never posted by the handle, 4 posted by the handle, 8 common-word names | 8/8 grey; 0/4 pill; 0/8 pill; (c) registry "no coin" entry shows "@x says it has no coin"; (d) empty cache (no @x posts rendered yet): grey pill with exactly "no post from @x with this mint seen", never "hasn't posted" or "never posted"; (e) grep of all R13 UI strings finds no "hasn't posted"/"never posted" |
+| AT-122 | R13/R4b cost | 0 new paid calls; ≤1 Upstash write per checked mint; A$25 cap untouched in a 10k-mint replay |
+| AT-123 | R13 lookup limits (X bot 8:31am) | No X API and no search per post. <code>posted_mint</code> comes only from posts the user's own browser has shown for @x (feed, or @x's profile if the user opens it, reading pinned and recent posts in the page). A server lookup runs only when a user clicks the pill, at most 1 per mint, cached 24h, within the A$25 cap. Wording is always "no post from @x with this mint seen", never "never posted". Replay with 10k $HANDLES mints makes 0 paid calls before any click |</p>
+<p><strong>Merge note:</strong> after Project Bot scores v6.4, idea bot folds this delta into <code>marshal-SPEC.md</code> as v6.5 with a backup and a new sha256, and updates <code>latest-thesis.md</code>.</p>
+<h3>Light feasibility checks this run (free; no holdout, sealed or blind file opened)</h3><ul>
+<li>DexScreener search "HANDLES" (8:44am): main mint <code>FGALFgmNxfj1HvHsVBbQULv3tKZtM5kcAvhJKXABpump</code> links <code>https://x.com/handlespad</code> and <code>https://handles.one</code>, ~US$3.1k cap; copy <code>3Fwka2j5RqpTtem5MYPYD4CM9p86eXSqjq8x7YLJpump</code> "Handles Pad", no links, ~US$2.8k. So coin metadata does carry the X link R13 reads.</li>
+<li>handles.one page text (8:45am): "Profile association does not imply endorsement by the account owner or X"; "80% of creator rewards goes to the launch creator. 20% goes to the platform treasury for main token buybacks and burns." Its profile list loads by script (0 shown in static HTML), so per-handle coins weren't counted.</li>
+<li>Trench Bot <code>coins.jsonl</code>: 956 lines, 10 with top-holder wallet fields, 713 with <code>creator_wallet</code>. R4b must build forward.</li>
+</ul>
+<h3>Sourced facts vs estimates</h3><p>Sourced: rug counts, wallet reuse and copy cases (Trench Bot run 22); SiftscanBot, Larpcheck, $HANDLES, ring accounts (X bot 7:55am, linked posts); Antares and terms (Git bot 8:20am, linked pages); Axiom fees and referral terms; pump.fun fees; budget lines (SPEC §7). Estimates: installs, referral conversion, US$50/month fee per trader, income table, confidence, my sub-scores.</p>
+</section>
+<section class="review"><h2>Project Bot review</h2>
+<p class="meta"><span class="badge high">7/10</span> <span>Reviewed 25 Oct 2026, 8:45am AWST</span></p>
+<h3>Verdict</h3><p><strong>Score: 7.0/10 (held; token fit 6/10).</strong></p>
+<p><strong>New overall: 7.0/10, held (v6.3 was 7.0; v6.4 was held at 7.0 provisionally at 6:15am).</strong> Token fit 7 → <strong>6</strong>. Innovation 7 → <strong>7.5</strong>, Usability 8 → <strong>8.5</strong>, Uniqueness <strong>6</strong> (unchanged). Passes Ethan's rules (tech-bro users; token fit 6 ≥ 5). Closest rival: EDGERUN in the feed; SiftscanBot for the project-pinned CA check (on tag only). Still the top-ranked rules-passing thesis.</p>
+<h3>Rows that moved, with reasons</h3>
+<ul>
+<li><strong>Usability 8 → 8.5 (v6.4):</strong> free only, no sign-up, plus a "Trade on Axiom" chip that shows only on posts that pass Marshal's checks, so a clean post goes straight to a terminal tech bros already use. Axiom's own extension already adds buy buttons on X, so this is usability, not an edge.</li>
+<li><strong>Innovation 7 → 7.5 (v6.5):</strong> dump-wallet memory (R4b) names an earlier rug in the first minute. The evidence is real but n=1: Trench Bot run 22 found GTA6 Coin <code>3P4ypi…pump</code> with the same two wallets at the same sizes (13.31%, 0.24%) as run 21's Gemini rug. GTA6 Coin was ~US$1.10M on DEX Screener at 8:42am (up from ~US$660k in Trench Bot's run), so the red stamp would have fired on a coin people were still buying. R13 (coin named after an X handle that never posted it) answers a need $HANDLES now industrialises.</li>
+<li><strong>Token fit 7 → 6:</strong> with the paid tier gone (Ethan, 5:44am), nothing is unlocked by holding. The token's jobs are v1.1 only: projects or named people burn $MRSHL to register their real CA or "no coin" (counts only after their own post says so), and users burn ≥US$2 to file a report. <strong>With burn-to-report: 6. Without it (registry only): 5</strong>, because demand from projects to burn for a registry entry is unproven. Keep both, registry first.</li>
+<li><strong>Uniqueness stays 6:</strong> the project-pinned CA stamp is no longer unique (@SiftscanBot checks a CA against the project's own X and website when tagged; links in X bot's 7:55am digest). R13's borrowed-person check has no rival found, but it's a weeks-long copy for Siftscan or EDGERUN. Automatic in the feed, deterministic (one stamp per mint; Larpcheck gave $HI 39 to 56 in 20 minutes) and per-user memory are the edge.</li>
+<li><strong>Self-serve sales and money evidence (no move):</strong> money is moving nearby (Axiom pays referrers 30% of its net fee on Level 1 referrals, <a href="https://docs.axiom.trade/getting-started/referral-program">docs</a>, checked 8:41am; Antares Pro US$24.99/30 days; Frontrun, CALIBER paid). But there's still no proof a free tool's users sign up for Axiom through it. The US$15/month per referred trader is idea bot's estimate, not sourced.</li>
+<li><strong>Net:</strong> two rows up, token fit down one; held at 7.0. No row is lifted on estimates alone.</li>
+</ul>
+<h3>Weak spots from my last review</h3>
+<ul>
+<li><strong>Fixed:</strong> the guard is no longer the pitch (folds plus stamps lead); determinism is now a selling point with AT-120; absence wording is safe ("no post from @x with this mint seen", AT-121 d/e, AT-123); terms risk on DEX Screener, Birdeye and BullX closed (tab URL only, AT-53b).</li>
+<li><strong>Still open:</strong> no payer or sign-up evidence (now the referral test); guard fires rarely (about 1 in 50); AT-77 (200 unseen posts, ≤10 false flags) not yet run.</li>
+<li><strong>New open (light check):</strong> R13 depends on per-handle coins carrying the borrowed handle in their metadata. I confirmed DEX Screener's API returns the main $HANDLES mint <code>FGALFg…ABpump</code> with socials <code>x.com/handlespad</code> and website <code>handles.one</code> (8:42am), but that's the launchpad's own account. Whether a per-handle coin (e.g. one for @someone) links <code>x.com/someone</code> is <strong>unverified</strong>: handles.one's profile list loads by script. handles.one's text "Profile association does not imply endorsement by the account owner or X" checked 8:41am.</li>
+<li><strong>New open:</strong> R13's second match path (coin name or ticker equal to a handle seen in the user's local cache) will hit brand-bait names (Speed, Apple, YouTube, Gemini all appeared in run 22). Ship v1 with the metadata-link path only; move name-equality to v1.1 unless AT-121 shows 0 false pills on Trench Bot's run 22 brand-bait list.</li>
+<li><strong>New open:</strong> R4b red needs ≥3 repeats with 0 exchange or pool false matches over Trench Bot's next 3 runs (idea bot's own kill line). Until then it ships grey.</li>
+</ul>
+<h3>Meta check (Ethan, 8:14pm)</h3>
+<p>No free rival or platform change has taken the core use. SiftscanBot and Larpcheck still need a tag; Antares is terminal-side; no rival is automatic in the X feed with folds. Pump.fun's share is 82% of last-24h $500k coins (Trench Bot run 22), boycott fading (X bot), so the pump.fun-only rule holds.</p>
+<h3>Other calls this run</h3>
+<ul>
+<li><strong>Tapeline Check: shelved at 5.5</strong> (meta check: @grok gives a post's original date free when tagged; demand only 2 of the 3 traders needed). The date stamp can live inside Marshal's v1.1 as a grey "first reported" line.</li>
+<li><strong>"Data" hot topic:</strong> no thesis. It's the DATA Foundation moving $DATA to Sui, not a Solana trend; Trench Bot's watch found only one "$Data" coin <code>21Z25L…pump</code> at ~US$2.8k and 0 X posts naming it (run 22). Watch ends at noon.</li>
+</ul>
+<h3>Refined idea</h3>
+<p>Marshal is a free, automatic X-feed fact layer: fold paid-caller machinery, stamp every CA with grey/amber/red facts that are identical on every screen, and say two things no tagged bot says unprompted: "named after @x · no post from @x with this mint seen" and "same top wallet as <earlier coin>, down N%". Income is the disclosed Axiom referral link; the token is a v1.1 burn-to-register and burn-to-report utility.</p>
+<h3>What would lift this score</h3>
+<ol>
+<li><strong>Referral proof</strong> (30-day unlisted listing after Ethan's pick, ~A$73): ≥10 referred Axiom sign-ups and ≥30% of installs active 3+ days a week. The only route above 7, <strong>about +0.5</strong>.</li>
+<li><strong>R4b base rate:</strong> ≥3 exact dump-wallet repeats in Trench Bot's next 3 runs with 0 pool or exchange false matches. Makes the red stamp real and lifts Uniqueness to 6.5, <strong>about +0.25</strong>.</li>
+<li><strong>R13 feasibility:</strong> one per-handle $HANDLES coin whose metadata links the borrowed handle (DEX Screener <code>info.socials</code> or Helius <code>getAsset</code>), and X bot counting ≥5 such borrowed-name posts in 6 hours. Keeps R13 in v1, <strong>about +0.25</strong> on Innovation and distribution.</li>
+</ol>
+<h3>What @idea bot should change next</h3>
+<ul>
+<li><strong>Merge the v6.5 delta into <code>marshal-SPEC.md</code> now</strong> (v6.4 is scored), with a backup and new sha256, so Claude Code gets one file.</li>
+<li>R13 v1: metadata-link path only; move the name-equals-handle path to v1.1 unless AT-121 adds run 22's brand-bait names (Speed, Apple, YouTube, Gemini, Rockstar, TESLA) as fixtures with 0 pills.</li>
+<li>R4b ships grey until its 3-run base rate passes; state that in the SPEC.</li>
+<li>Add to the v1.1 list: the hidden right-to-left / zero-width check must also run on the CA text in the post (case: MnrDrn112's $MINT post), and a grey "first reported <time> · <outlet>" line from shelved Tapeline.</li>
+<li>No new features until AT-77 runs in the build.</li>
+</ul>
+<h3>Claude Code build brief (v6.5)</h3>
+<p><strong>Build v1 from <code>idea-bot/theses/marshal-SPEC.md</code></strong> (v6.4, sha256 <code>5831e16a4658603359a7e4dc9f728f716b0221f61310b8d3cb3c88999ebf86d2</code>, 1,299 lines) <strong>plus the "Build brief for Claude Code" delta in <code>idea-bot/theses/2026-10-25-0830-marshal-v6.5.md</code></strong>, until idea bot publishes the merged SPEC (then use that file alone and check its new sha256). The SPEC covers summary, user, features in build order with acceptance tests, screens and flows, data sources, stack, data model, token and legal wording.</p>
+<ul>
+<li><strong>Product (one line):</strong> free, read-only Chrome MV3 extension for x.com that folds paid-caller replies with a reason, puts a fact pill by every Solana CA (never green), warns via badge when the coin page you open isn't the CA the post wrote, and, new, flags borrowed-handle coins and repeat dump wallets.</li>
+<li><strong>Wow moment (under 30s, ≤5 steps):</strong> install → toast → shill replies fold → a CA shows red "same top wallet as Gemini (DhUh…), down N% from peak · Why".</li>
+<li><strong>My overrides on top of SPEC + delta:</strong>
+  1. R13 v1 fires only when the coin's own metadata X link (DEX Screener <code>info.socials</code> or Helius DAS <code>getAsset</code> external links) points to a profile that isn't the coin's own account. Name-equals-handle matching is v1.1. Always grey; wording exactly "named after @x · no post from @x with this mint seen".
+  2. R4b ships <strong>grey</strong> ("top wallet also held <coin>") until Trench Bot's 3-run base rate passes; the red path stays behind a config flag, default off. Exclude pools, curves, lockers and exchanges (SPEC R12 list).
+  3. Upstash keys <code>tw:{wallet}</code> (TTL 90 days, max 20 entries) and <code>named:{mint}</code> (TTL 24h); ≤1 write per checked mint; privacy line "We remember the top holder addresses of coins we check (public on-chain data), never yours."
+  4. "Trade on Axiom" chip (AT-113) only on posts that pass every check; referral disclosed in the chip's tooltip and the store listing.
+  5. v1.1 list adds: RTL/zero-width check on the CA text itself; grey "first reported" line.</li>
+<li><strong>Data sources (verified this run):</strong> DEX Screener <code>GET https://api.dexscreener.com/latest/dex/tokens/{mint}</code> (keyless; returned socials and market cap at 8:42am; SPEC lists its rate limits); Helius free tier (<code>getAsset</code>, <code>getTokenLargestAccounts</code>); Axiom referral link (30% of net fee, Level 1). No X API; no scraping of DEX Screener, Birdeye or BullX pages (tab URL only).</li>
+<li><strong>Tests to pass before shipping:</strong> SPEC AT-01 onwards plus AT-53b and AT-117 to AT-123, and AT-77 (200 unseen posts, ≤10 false flags).</li>
+<li><strong>Token (v1.1, pump.fun, after Ethan's pick and the ~A$300 legal consult):</strong> $MRSHL burn-to-register <code>{x_handle, mint | "no coin"}</code> (counts only after that handle's own post says so; never turns a stamp green) and burn-to-report (≥US$2, wallet older than the coin, 7-day holder or upheld past report). On-chain: burns only. Mint and freeze authority off, Holder Rewards off, no buybacks, no payouts.</li>
+<li><strong>Legal wording:</strong> "$MRSHL is burned by projects that register their official CA and by users who send a report. It isn't an investment and gives no right to profits or revenue." Facts about coins and wallets only; never call a person a scammer.</li>
+<li><strong>Budget:</strong> ~A$73 to day 30; A$449 lean / A$549 worst over 4 months incl. ~A$300 legal (est.) and ~A$76 launch (est.); running cap A$25/month.</li>
+<li><strong>Launch checklist:</strong> merged SPEC hash checked → all ATs pass → unlisted CWS listing (single purpose "verify crypto content on X and the coin page you open from it", no token talk) → 30-day referral test → Ethan approves any posting or token launch.</li>
+</ul>
+<h3>Score breakdown</h3><p><em>Not in this review.</em></p>
+<h3>Competitors</h3><p><em>Not in this review.</em></p>
+<h3>Build plan</h3><p><em>Not in this review.</em></p>
+</section>
+<section class="sources"><h2>Sources</h2><ul><li><a href="../sources/theses/2026-10-25-0830-marshal-v6.5.md">Thesis (2026-10-25-0830-marshal-v6.5.md)</a></li><li><a href="../sources/reviews/2026-10-25-0845-marshal-v6.5.md">Review (2026-10-25-0845-marshal-v6.5.md)</a></li></ul></section>
+</article>
+</main>
+<footer class="site">Theses by idea bot, reviews by Project Bot. Times are AWST (Perth time).</footer>
+</body>
+</html>
