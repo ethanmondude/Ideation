@@ -1,0 +1,1086 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rugmemory v0</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="site"><a href="../index.html">Startup theses</a></header>
+<main>
+<p class="back"><a href="../index.html">&larr; All theses</a></p>
+<article>
+<h1>Rugmemory v0</h1>
+<p class="tagline">Rap-sheet lookup for pump.fun coins, for AI trading agents (second thesis, build-ready draft)</p>
+<p class="meta"><span>25 Oct 2026, 8:45pm AWST</span> <span class="badge mid">5/10</span></p>
+<section class="exec"><h2>Executive summary</h2>
+<ul>
+<li><strong>Pitch:</strong> "Every pump.fun wallet now has a rap sheet." It's an API plus MCP server an AI trading agent calls before it buys. It answers one bounded question: does this coin's top-holder set, exact holding sizes or deployer match coins in our log that died, with the dead coin named as proof? It gives facts plus a match reason. It never gives a score or price advice.</li>
+<li><strong>Edge (narrow):</strong> a memory built from our own labelled outcomes. That means dump wallets that come back on new coins (the GTA6 Coin wallets came from the Gemini rug, and the fomo top wallet is the run 27 IShowSpeed dumper), and exact repeat sizes that show up even when the wallet rotates (134,739,491.878 tokens on both the OpenAI and fomo coins). Those exact-amount sizes appear on 51 rug coins and 1 non-rug. Rugcheck works from contract and holder checks and doesn't track this. The fomo coin is the live case: rugcheck gave it one warning and no danger flag, while our memory matches it. The catch is that fomo's IShowSpeed prior hasn't died yet, so under graded outcomes it's only a <code>pending_match</code> today.</li>
+<li><strong>Biggest finding tonight: DeFade is closer than rugcheck.</strong> Its paid API (from US$35/month, checked 25 Oct) already sells <code>/v1/wallet-reputation</code> ("repeat offenders across past rugs"). It added <code>/v1/exit-playbook</code> today, 25 Oct, and has had <code>deployer-reputation</code> with funder history since 24 Oct. It also has a 15-tool MCP connector. What we'd still own is outcomes graded by code at a fixed horizon, exact-amount template memory, a free tier and an open method. That's thin.</li>
+<li><strong>Buyer:</strong> teams building Solana trading agents (crypto-native builders, Project Bot's call). AI labs are a bonus later, through an RL-environment package (§13), not v1. Builders already pay for this category: rugcheck sells API plans at US$40, 100 and 500 a month, DeFade at US$35–2,549, and Birdeye at US$39–499 (all checked 25 Oct). Those are price lists, not counts of customers.</li>
+<li><strong>Token job:</strong> after a free daily quota, a holder burns their <strong>own</strong> tokens from their own wallet to buy call credits. There are no payouts, no buybacks or burns funded from revenue, mint authority is off, launch is from a fresh wallet, and there's one pinned CA. Burns earn Ethan nothing. Running costs come from free tiers, and pump.fun creator fees go to hosting only.</li>
+<li><strong>Cost:</strong> A$0/month on free tiers with a hard A$25 cap. About A$50 up front without a token, and about A$276 with token and legal (est.).</li>
+<li><strong>Kill lines:</strong> <strong>AT-K1</strong> is to beat rugcheck clearly at 50 outcomes, measured on discordant catches because 98.8% of logged coins are rugs. <strong>AT-K2</strong> applies if DeFade's <code>wallet-reputation</code>/<code>exit-playbook</code> already catches ≥80% of our catches that rugcheck misses. <strong>AT-FP</strong> caps false matches at ≤1 in 20 survivors plus ≤1 in 50 random live mints.</li>
+<li><strong>Verdict: TEST, not pass. Confidence it reaches Ethan: ~20% (est.).</strong> It's cheap to keep testing because Trench Bot's head-to-head is already running. My expected scores are Inspo bar 6–7, Uniqueness 5–6 now that DeFade is named, and Token 6. Build nothing past the free private replay until AT-K1 and AT-K2 pass.</li>
+</ul>
+</section>
+<section class="thesis"><h2>Full thesis</h2>
+<div class="byline"><blockquote>
+<p><em>Written by idea bot, Sun 25 Oct 2026, ~8:40–8:55pm AWST (Perth), at Growth Bot's 8:40pm ask. Status: <strong>v0, waiting on the rugcheck head-to-head (3 of ~50 outcomes)</strong>. Not scored yet; Project Bot scores it next against Ethan's inspo bar. Garm stays the live thesis: <code>latest-thesis.md</code> and <code>marshal-SPEC.md</code> (sha <code>c5bc6463…</code>) were not touched. Working name "Rugmemory"; ticker TBD, trademark not checked. (est.) = estimate. [unverified] = not checked against a source. Prices checked on the web tonight are marked (checked 25 Oct). FX US$1 = A$1.424 (same rate as the Garm SPEC §7).</em></p>
+</blockquote></div>
+<h3>1. Problem and user</h3><ul>
+<li><strong>User:</strong> a builder running an autonomous or semi-autonomous Solana memecoin agent (ElizaOS/solana-agent-kit-style stacks, Telegram sniper bots with an LLM layer, personal Claude Code trading scripts). Before each buy the agent asks bounded questions, Jev-style. "Have these hands rugged before?" is one it can't answer from contract checks.</li>
+<li><strong>Pain, in our data:</strong> 939 of the 950 coins that crossed $500k in Trench Bot's log are rugs (trench-bot/latest.md, run 28). A $500k cap doesn't prove a coin is real. Contract checks pass most of them because pump.fun coins ship with mint and freeze revoked by default. The tell is in <em>who holds</em>, and the same operators reuse wallets and script sizes:</li>
+<li>The fomo top wallet <code>8xA1VE…</code> was run 27's IShowSpeed dump wallet. It now holds exactly 134,739,491.878 tokens, the same count the OpenAI dump wallet <code>2XqJKx…</code> held in run 26.</li>
+<li>GTA6 Coin <code>3P4y…</code> reused the wallets from the Gemini rug (Garm AT-118).</li>
+<li>Brand-bait exact repeat buy sizes: 48 of 48 rugs (chat). Exact-amount log total: 51 rug coins and 1 non-rug, the 30M amber case (latest.md).</li>
+<li>Deployer <code>Eu6e8H…</code> launched 5 brand coins in about 6 hours (run 28).</li>
+<li><strong>Why an agent and not a human:</strong> a human uses DeFade's web page or Trench Radar's bubble map. An agent needs JSON in under a second, facts it can act on, and no captcha or login.</li>
+</ul>
+<h3>2. Evidence of money (what&#x27;s checked, what isn&#x27;t)</h3><table>
+<thead>
+<tr>
+<th>Signal</th>
+<th>What it shows</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Rugcheck API: free with cached reports at 3 rps; Basic US$40/month, Business US$100, Pro US$500 (A$57/142/712)</td>
+<td>Developers pay for rug checks by API</td>
+<td>rugcheck.xyz/api, fluxrpc.com/rugcheck (checked 25 Oct)</td>
+</tr>
+<tr>
+<td>DeFade API: Lite US$35/month (650 units), Starter US$149, Growth US$299, Pro US$549, Enterprise US$2,549; credits US$0.025/call; REST + MCP</td>
+<td>A paid agent-facing rug API with wallet reputation exists and has a price ladder</td>
+<td>defade.org/api (checked 25 Oct)</td>
+</tr>
+<tr>
+<td>Birdeye Data: Lite US$39, Starter US$99, Premium US$199, Business US$499</td>
+<td>Builders pay for Solana token data</td>
+<td>birdeye.so/data-api/pricing (checked 25 Oct)</td>
+</tr>
+<tr>
+<td>Bubblemaps Data API: Starter US$170/month, Standard US$850</td>
+<td>Holder-cluster data is sold B2B</td>
+<td>pro.bubblemaps.io (checked 25 Oct)</td>
+</tr>
+<tr>
+<td>Trench Radar: Standard 1.5 SOL/month; Premium 0.45 SOL/week</td>
+<td>Traders pay for bundle and cluster views</td>
+<td>docs.trench.bot/pricing (search summary 25 Oct) [page not opened]</td>
+</tr>
+<tr>
+<td>pumpdata.fun: US$0.005/call over x402, MCP</td>
+<td>Per-call trench data sold to agents</td>
+<td>Garm SPEC §7, Git bot run 14</td>
+</tr>
+<tr>
+<td>x402 per-call sellers show almost no buyers</td>
+<td>Per-call alone is weak</td>
+<td>X bot, 25 Oct digest</td>
+</tr>
+<tr>
+<td>"Google Analytics for agents": 3 people said they'd pay</td>
+<td>Unrelated, but it's the bar for intent: people saying they'd pay doesn't prove they pay</td>
+<td>X bot 7:55pm</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>Not proven:</strong> that anyone pays for <em>outcome memory</em> in particular. None of these prices show a paying customer count. The first real payer evidence would be distinct wallets burning for credits (§8). That waits for Ethan's pick, because no money tests run before then.</li>
+</ul>
+<h3>3. Market sizing (all assumptions, labelled)</h3><ul>
+<li><strong>A1 (assumption):</strong> 300–3,000 active builders or teams run Solana memecoin agents or bots that make automated pre-buy checks. No source; it's a guess from the size of rival price ladders and agent-kit GitHub activity [unverified].</li>
+<li><strong>A2 (assumption):</strong> 3–10% of them would wire in a second rug-check call next to rugcheck or GMGN's <code>token/security</code>, giving 9–300 integrations.</li>
+<li><strong>A3 (assumption):</strong> an active integration makes 500–5,000 checks a day, mostly cached.</li>
+<li><strong>Read:</strong> this is a niche of tens to a few hundred integrations, not a large market. Burns create token demand, not revenue (§8). A product this size passes only as a cheap, honest token-utility product, not as a business. Labs (§13) would be a separate bulk route, priced per dataset, and the sample is thin: 951 coins, 11 non-rugs.</li>
+</ul>
+<h3>4. Competitive teardown</h3><table>
+<thead>
+<tr>
+<th>Rival</th>
+<th>What it gives agents</th>
+<th>Price (checked 25 Oct unless marked)</th>
+<th>Outcome memory?</th>
+<th>Our gap vs it</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>rugcheck</strong></td>
+<td>Contract, LP and holder risks, "Creator history of rugged tokens", insider graph; REST</td>
+<td>Free 3 rps cached; US$40/100/500 a month</td>
+<td>Creator history only</td>
+<td>Repeat <em>holder</em> wallets and exact sizes. In the head-to-head it caught ChatGPT; fomo has only a warning. <strong>The AT-K1 baseline.</strong></td>
+</tr>
+<tr>
+<td><strong>DeFade</strong></td>
+<td>30 endpoints incl. <code>wallet-reputation</code>, <code>deployer-reputation</code> (with funder history), <code>exit-playbook</code> (same hands' earlier peaks and falls, added 25 Oct), bundles, sybil clusters, funding origin; MCP with 15 tools; Crew Radar on Telegram</td>
+<td>Lite US$35 … Enterprise US$2,549; US$0.025 overage</td>
+<td><strong>Yes, by its own description</strong>: "repeat offenders across past rugs"</td>
+<td><strong>Closest rival.</strong> Our only claims are exact-amount memory, outcomes graded by code at a fixed horizon, free tier and open method. <strong>AT-K2 measures this.</strong></td>
+</tr>
+<tr>
+<td>GMGN</td>
+<td><code>token/security</code>: rug_ratio, bundler and insider rates, top-10 share; Agent API and skills</td>
+<td>Free 5/5 rate bucket; Plus and Pro tiers [prices unverified]</td>
+<td>rug_ratio is a model, no named priors</td>
+<td>Named prior coin as proof</td>
+</tr>
+<tr>
+<td>Birdeye</td>
+<td>Prices, holders, security, OHLCV</td>
+<td>US$39–499</td>
+<td>No</td>
+<td>Labels</td>
+</tr>
+<tr>
+<td>Bubblemaps</td>
+<td>Holder clusters, labels, history mode</td>
+<td>US$170/850</td>
+<td>No outcome labels</td>
+<td>Agent-first, outcome-linked</td>
+</tr>
+<tr>
+<td>Axiom bundler %</td>
+<td>In-terminal bundler and insider %</td>
+<td>Free in the terminal</td>
+<td>No</td>
+<td>API and memory</td>
+</tr>
+<tr>
+<td>Trench Radar</td>
+<td>Free bundle scanner, bubble map, clusters; Telegram</td>
+<td>1.5 SOL/month and up [page not opened]</td>
+<td>No (cluster view)</td>
+<td>Agent JSON, memory</td>
+</tr>
+<tr>
+<td>TellTales</td>
+<td>Cluster and bundle view for humans (team notes)</td>
+<td>[unverified]</td>
+<td>No [unverified]</td>
+<td>Agent JSON</td>
+</tr>
+<tr>
+<td>Larpcheck</td>
+<td>Narrative/"LARP" verdicts when tagged on X</td>
+<td>Free</td>
+<td>No</td>
+<td>Different question (claims, not wallets)</td>
+</tr>
+<tr>
+<td>x402 per-call checkers (pumpdata pre-buy US$0.02, Dexra 0.005 USDC, swap-gate US$0.008)</td>
+<td>Per-call pre-trade checks</td>
+<td>As listed (team notes)</td>
+<td>Partial (deployer facts)</td>
+<td>Same lane; X bot: few buyers</td>
+</tr>
+<tr>
+<td>Free GitHub alternative</td>
+<td>A builder can call getTokenLargestAccounts and keep their own wallet list</td>
+<td>Free</td>
+<td>Only what they log</td>
+<td>Our labelled history since 21 Oct (thin)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Teardown read:</strong> "memory of past rugs" is not an empty lane. DeFade sells it under that name, with an MCP connector, as of this week. Rugmemory survives only if (a) exact-amount and template memory catches rugs that DeFade's wallet reputation misses, and (b) a free, open, fact-only answer gets builders to wire it in next to the paid tools. If AT-K2 fails, drop the lead.</p>
+<h3>5. Product and first-minute UX</h3><ul>
+<li><strong>One-line pitch (chosen):</strong> <strong>"Every pump.fun wallet now has a rap sheet."</strong> Alternatives: "Has this money rugged before?" and "A memory of every pump.fun rug, one call away." The rap sheet line passes Project Bot's "every X is now a Y" test and is about wallets, never people.</li>
+<li><strong>First minute:</strong>
+  1. The docs page shows one curl command and one MCP install line. There's no signup for the free key (one key per IP per day, 100 calls).
+  2. Paste the fomo mint into the playground and get <code>"memory": "pending_match"</code>. The top wallet <code>8xA1VE…</code> "was top wallet (13.67%) on IShowSpeed 2nryo7…, outcome pending (crossed 18:05 AWST today, last read ~$532k of a ~$560k peak)". The amount 134,739,491.878 is "the same exact holding as the OpenAI top wallet <code>2XqJKx…</code>, outcome pending". Each prior comes with Solscan and DexScreener links. It turns <code>match</code> (strong) only once a prior is graded rug by code (§15.5). <strong>Caveat found while writing:</strong> fomo is the live case, but its IShowSpeed prior is still alive in coins.jsonl (~$532k of a ~$560k peak), and I couldn't confirm which OpenAI coin <code>2XqJKx…</code> held or whether it has dumped. So today the match rests on Trench Bot's hand verdict "rug", not on a graded outcome.
+  3. Paste a clean coin (CHOO) and get <code>"memory": "no_match"</code>, plus the honest line "Memory covers 951 coins since 21 Oct 2026. No match is not a safety signal."</li>
+<li><strong>What it never says:</strong> "safe", "buy", "sell", a probability, or a price target. The field is called <code>memory</code>, not <code>verdict</code>.</li>
+</ul>
+<h3>5b. Inspo bar self-check (Ethan&#x27;s set: Firecrawl, Exa, DataVendor, Jev, Gojiberry; Project Bot&#x27;s row)</h3><table>
+<thead>
+<tr>
+<th>Bar</th>
+<th>Rugmemory</th>
+<th>Mark (est.)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Builders or agents plug it in (API/MCP/extension)</td>
+<td>Yes: REST + MCP, one curl, one install line</td>
+<td>8</td>
+</tr>
+<tr>
+<td>One-line "every X is now a Y" pitch</td>
+<td>"Every pump.fun wallet now has a rap sheet."</td>
+<td>8</td>
+</tr>
+<tr>
+<td>Developers or companies already pay for the category</td>
+<td>Yes for rug APIs (rugcheck, DeFade, Birdeye price lists). Not shown for outcome memory itself</td>
+<td>6</td>
+</tr>
+<tr>
+<td>Runs on data (DataVendor)</td>
+<td>Our labelled log, graded by code. Small: 951 coins, 11 non-rugs</td>
+<td>5</td>
+</tr>
+<tr>
+<td>Jev-style bounded question inside the agent loop</td>
+<td>"Have these hands rugged before?" Bounded and cheap, but answers are facts, not calibrated probabilities</td>
+<td>7</td>
+</tr>
+<tr>
+<td>Polished first-minute wow</td>
+<td>The fomo receipt, once its priors are graded</td>
+<td>6</td>
+</tr>
+<tr>
+<td>Outside crypto (team rule: 2 of top 3)</td>
+<td><strong>No.</strong> This is the one crypto slot</td>
+<td>–</td>
+</tr>
+<tr>
+<td><strong>Row estimate</strong></td>
+<td>Before Project Bot scores it</td>
+<td><strong>~6.5</strong> (under the 7 line until AT-K1/K2 pass)</td>
+</tr>
+</tbody>
+</table>
+<h3>6. Token design (Ethan&#x27;s rules)</h3><ul>
+<li><strong>Job: spend-to-burn for calls.</strong> The free quota is 100 calls a day per key with no token. Above that, a holder sends an SPL <strong>Burn</strong> of their own tokens from their own wallet, with a memo <code>rm:&lt;key_id&gt;</code>. The server verifies it (<code>getTransaction</code>: Burn instruction, mint is ours, the signer owns the burned account, amount ≥ pack price, signature not used before) and credits that key. Pack price is set in tokens at launch, for example N tokens = 10,000 calls (N is fixed at launch, est. US$5 equivalent). It is changed at most once a month with 7 days' notice. Credits can't be transferred or refunded and don't expire.</li>
+<li><strong>Optional, v1.1:</strong> stake-for-limits, where holding ≥X tokens in the wallet that signed raises the free quota. It's checked by balance read, never escrowed by us. No custody, no lockup program.</li>
+<li><strong>Never:</strong> holder payouts, revenue share, staking yield, buybacks or burns funded from revenue or creator fees, profit promises. Mint authority off. Launch from a fresh wallet, with one pinned CA in docs, MCP manifest and API responses (<code>"official_mint"</code>). Same rule set as Garm SPEC §8, cited rather than copied.</li>
+<li><strong>Honest token read:</strong> agents would have to hold a memecoin to buy volume. Many teams won't, so the token is a nice extra and the free tier carries adoption. Token score 6 (est.).</li>
+</ul>
+<h3>7. Budget in A$ (rugmemory alone)</h3><table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Cost</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Hosting: Cloudflare Workers Free + Cron Triggers + D1 Free</td>
+<td><strong>A$0</strong> (Workers Paid US$5 = <strong>A$7.12/month</strong> if CPU limits bite)</td>
+</tr>
+<tr>
+<td>Helius Free (1M credits/month, 10 rps; checked 25 Oct)</td>
+<td><strong>A$0</strong> (Developer US$49 = A$69.78, never without revenue)</td>
+</tr>
+<tr>
+<td>DexScreener API (free, commercial use allowed, no resale; checked 25 Oct)</td>
+<td><strong>A$0</strong></td>
+</tr>
+<tr>
+<td>Domain: subdomain of Garm's domain</td>
+<td><strong>A$0</strong> (own .com A$15.91/yr if Ethan wants one)</td>
+</tr>
+<tr>
+<td>Contingency</td>
+<td><strong>A$50 (est.)</strong></td>
+</tr>
+<tr>
+<td>Legal: extend Garm's token/ToS consult to a second token</td>
+<td><strong>A$150 (est.)</strong>, before launch only</td>
+</tr>
+<tr>
+<td>Token launch: ≤0.5 SOL dev buy + fees + rent (Garm SPEC §7 table)</td>
+<td><strong>~A$76.24 (est.)</strong>, only after the gate</td>
+</tr>
+<tr>
+<td><strong>Running cost</strong></td>
+<td><strong>A$0/month on free tiers, hard cap A$25/month</strong> (server spend counter)</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>Total:</strong> about A$50 before the token; <strong>about A$276</strong> with legal and token. <strong>Shared-budget flag:</strong> if Ethan's A$1,000 and A$25 a month cover <em>both</em> products, Garm's 4-month worst case (A$549) leaves about A$451. Rugmemory fits in that, but both running caps would then have to share the A$25. Ethan needs to say which applies.</li>
+</ul>
+<h3>8. Business model</h3><ul>
+<li><strong>Revenue to Ethan from burns: A$0 by design.</strong> Burned tokens are destroyed, not paid to us.</li>
+<li><strong>Income:</strong> pump.fun creator fees on the token's trading (rates per Garm SPEC §8, pump.fun fees page 17 Oct). They go to a published operating wallet for hosting only, never buys or burns. That's a bonus, not the plan.</li>
+<li><strong>Later, optional, Ethan's call:</strong> a USDC plan for teams that won't hold the token, and a bulk labelled-dataset licence (§13). Neither is in v1. No money tests before Ethan's pick.</li>
+<li><strong>What success looks like:</strong> distinct wallets burning for credits. That's public on-chain payer evidence, the proof Project Bot asks for.</li>
+</ul>
+<h3>9. GTM (free, private first)</h3><ol>
+<li><strong>Weeks 0–2, private:</strong> replay against Trench Bot's log plus the live head-to-head (AT-K1, AT-K2, AT-FP). No public URL.</li>
+<li><strong>On pass:</strong> publish the MCP server to MCP directories, plus a one-file plugin for solana-agent-kit/ElizaOS (Git bot's 10pm radar names the projects). Post fomo-style "only memory caught it" receipts as on-chain facts only. No X post fields go in the product.</li>
+<li><strong>Distribution bet:</strong> agent skills and MCP listings are where trench data tools now get found (pumpdata, DeFade MCP; trends.md).</li>
+<li>Token only after AT-K1, AT-K2 and AT-FP pass and Ethan picks it.</li>
+</ol>
+<h3>10. 12-month snapshot (est., if gates pass)</h3><table>
+<thead>
+<tr>
+<th>Month</th>
+<th>Coins in memory</th>
+<th>Integrations (A2)</th>
+<th>Burning wallets</th>
+<th>Running cost</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>~10k (≈300/day, Trench Bot pace)</td>
+<td>0 (private)</td>
+<td>0</td>
+<td>A$0</td>
+</tr>
+<tr>
+<td>3</td>
+<td>~25k</td>
+<td>10–30</td>
+<td>0–20</td>
+<td>A$0–7</td>
+</tr>
+<tr>
+<td>6</td>
+<td>~55k</td>
+<td>20–80</td>
+<td>10–60</td>
+<td>≤A$25</td>
+</tr>
+<tr>
+<td>12</td>
+<td>~110k</td>
+<td>30–150</td>
+<td>20–150</td>
+<td>≤A$25</td>
+</tr>
+<tr>
+<td>Memory growth is the one solid number. Everything else is a guess.</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3>11. Defensibility</h3><ul>
+<li><strong>Weak to moderate.</strong> The data is public on-chain, so anyone with an RPC key can build the same memory from the same day. DeFade already has. What we'd own: (1) a head start of days, not months; (2) exact-amount template keys; (3) outcomes graded by code at a fixed horizon, published with method, so a builder can audit every match. Rivals give scores.</li>
+<li>Operators can beat wallet memory cheaply by rotating wallets, which fomo already shows. Amount memory survives one rotation but not a change of script size.</li>
+</ul>
+<h3>12. Risks</h3><ol>
+<li><strong>DeFade overlap (high).</strong> See AT-K2.</li>
+<li><strong>Base rate (high).</strong> 98.8% of $500k crossers are rugs, so "always say rug" is ~99% accurate. The product has to be judged on discordant catches and survivor false flags, not accuracy (AT-K1, AT-FP).</li>
+<li><strong>Low recall (high).</strong> Memory hits a small share of rugs: exact amounts on 51 coins, wallet stamps on 7 distinct coins from 4 wallets in runs 23–25 (Garm §5.3b). That's roughly ≤6% of the 939 rugs (est.). Most rugs are first-seen wallets.</li>
+<li><strong>Thin seed.</strong> Most holder lists in the log come from rugcheck reports. Their reuse terms aren't confirmed (Garm §5.3b seed rule), so v1 seeds only from Helius/RPC holder reads.</li>
+<li><strong>Licence.</strong> DexScreener bans resale of API data (checked 25 Oct), so we publish only derived facts and our own labels, never raw DexScreener fields. GeckoTerminal's free tier carries no commercial rights (CoinGecko licence FAQ, checked 25 Oct), so it's not used in production.</li>
+<li><strong>False red on a live coin</strong>, from an operator or market-maker wallet that holds many coins. Mitigations: the operator rule, the non-holder list and the off-curve drop (cited in §15).</li>
+<li><strong>Agents won't hold a memecoin.</strong> The free tier carries adoption, so the token may see few burns.</li>
+<li><strong>Lag (medium).</strong> Template operators run coins in parallel, so a wallet's priors are often still alive when it shows up on the next coin, as fomo shows. Strong matches need a prior graded at 72h, so memory is slowest against the fastest operators.</li>
+<li><strong>Defamation and safety framing.</strong> Facts about addresses only, with links and no adjectives about people.</li>
+</ol>
+<h3>13. Later packaging: RL environment (not v1)</h3><p>Git bot's variant: "every pump.fun coin past $500k is a graded rug-avoidance task". It's <strong>rug-avoidance only</strong> until there are a few hundred survivors (Project Bot). Inputs are only what was visible at the $500k cross. The grader works out the label by code: <strong>rug = drawdown ≥90% from peak by 72h, or base-pool liquidity pulled (reserves below 10% of the cross reading)</strong>; held = ≥$500k with reserves at 72h. Tasks are split by date, after the model's cutoff, and the grader rejects any answer that reads post-cross prices. Run the grader through a falsepass-style check before any sale. It reuses the v1 grader (§15.5) unchanged.</p>
+<h3>14. Kill or confirm</h3><ul>
+<li><strong>Kill</strong> on any of these: AT-K1 fails at 50 outcomes; AT-K2 shows DeFade catches ≥80% of our rugcheck-missed catches; AT-FP is breached; or Git bot's 10pm radar finds no real trading-agent project that would wire it in (Project Bot's condition 1).</li>
+<li><strong>Confirm (send to Ethan)</strong> when AT-K1, AT-K2 and AT-FP all pass, Project Bot's inspo-bar row is ≥7, and the replay cost stays at A$0.</li>
+<li><strong>Timing:</strong> Trench Bot adds about 17–28 $500k coins per scan, but outcomes need 24–72h, so ~50 graded outcomes takes about 2–4 days (est.).</li>
+</ul>
+<hr />
+<h3>15. Build brief for Claude Code (v1)</h3><p><strong>Build only after the gates pass. Until then, only the private replay (§15.8) runs.</strong></p>
+<h3>15.1 v1 surface: REST + MCP</h3>
+<table>
+<thead>
+<tr>
+<th>REST</th>
+<th>MCP tool</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET /v1/coin/{mint}</code></td>
+<td><code>check_coin</code></td>
+<td>Live top-holder read → wallet, amount and deployer matches against memory</td>
+</tr>
+<tr>
+<td><code>POST /v1/coins</code> (≤20 mints)</td>
+<td><code>check_coins</code></td>
+<td>Batch version</td>
+</tr>
+<tr>
+<td><code>GET /v1/wallet/{address}</code></td>
+<td><code>check_wallet</code></td>
+<td>A wallet's rap sheet: logged coins where it was a top holder or deployer, with graded outcomes</td>
+</tr>
+<tr>
+<td><code>GET /v1/outcome/{mint}</code></td>
+<td><code>get_outcome</code></td>
+<td>Our graded outcome for a logged coin (cross time, peak, 24h/72h state, rule used)</td>
+</tr>
+<tr>
+<td><code>POST /v1/credits/burn</code></td>
+<td>none</td>
+<td>Body <code>{key_id, signature}</code>: verify the burn, credit the key</td>
+</tr>
+<tr>
+<td><code>GET /v1/usage</code></td>
+<td><code>get_usage</code></td>
+<td>Quota, credits, memory size and <code>memory_since</code></td>
+</tr>
+<tr>
+<td>Auth is an <code>x-api-key</code> header. The free key comes from <code>POST /v1/keys</code>, rate-limited to 1 per IP per day. MCP runs on Streamable HTTP via cloudflare/agents (MIT, per trends.md), with tools that are read-only.</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong><code>check_coin</code> response (example from fixtures; numbers rounded):</strong></p>
+<pre><code class="language-json">{
+  &quot;mint&quot;: &quot;74g7WvZVcmCGMrbeRMyA4TMhDtcack6drczQtFibpump&quot;,
+  &quot;as_of&quot;: &quot;2026-10-25T12:10:41Z&quot;,
+  &quot;memory&quot;: &quot;match&quot;,
+  &quot;match_strength&quot;: &quot;strong&quot;,
+  &quot;_example_note&quot;: &quot;shape only: shows fomo AFTER both priors grade rug at 72h; today they are pending&quot;,
+  &quot;matches&quot;: [
+    {&quot;type&quot;: &quot;wallet&quot;, &quot;wallet&quot;: &quot;8xA1VE…&quot;, &quot;share_pct&quot;: 13.53,
+     &quot;prior&quot;: {&quot;mint&quot;: &quot;2nryo7…&quot;, &quot;symbol&quot;: &quot;IShowSpeed&quot;, &quot;share_pct&quot;: 13.67,
+               &quot;outcome&quot;: &quot;rug&quot;, &quot;rule&quot;: &quot;drawdown_72h&gt;=90%&quot;, &quot;drop_pct&quot;: &quot;&lt;graded&gt;&quot;},
+     &quot;reason&quot;: &quot;Top wallet was also top wallet on IShowSpeed, down ≥90% at 72h&quot;,
+     &quot;links&quot;: [&quot;https://solscan.io/account/8xA1VE…&quot;, &quot;https://dexscreener.com/solana/2nryo7…&quot;]},
+    {&quot;type&quot;: &quot;exact_amount&quot;, &quot;amount&quot;: &quot;134739491.878&quot;, &quot;wallet&quot;: &quot;8xA1VE…&quot;,
+     &quot;prior&quot;: {&quot;mint&quot;: &quot;&lt;OpenAI mint held by 2XqJKx…&gt;&quot;, &quot;symbol&quot;: &quot;OpenAI&quot;, &quot;outcome&quot;: &quot;rug&quot;, &quot;drop_pct&quot;: &quot;&lt;graded&gt;&quot;},
+     &quot;seen_in_coins&quot;: 2, &quot;all_priors_rug&quot;: true,
+     &quot;reason&quot;: &quot;Same exact holding as OpenAI's top wallet; every prior with it is down ≥90%&quot;}
+  ],
+  &quot;deployer&quot;: {&quot;address&quot;: &quot;…&quot;, &quot;logged_launches&quot;: 1, &quot;logged_rugs&quot;: 0},
+  &quot;notes&quot;: [&quot;Wallets held through a program, like a multisig vault, aren't matched.&quot;],
+  &quot;coverage&quot;: {&quot;coins_in_memory&quot;: 951, &quot;memory_since&quot;: &quot;2026-10-21&quot;, &quot;no_match_is_not_safe&quot;: true},
+  &quot;official_mint&quot;: &quot;&lt;pinned CA after launch&gt;&quot;,
+  &quot;method_url&quot;: &quot;https://…/method&quot;
+}
+</code></pre>
+<p><code>memory</code> is one of <code>match | pending_match | no_match | unknown</code>. <code>pending_match</code> means a wallet or amount match whose priors are all younger than 72h or not yet graded; it never counts for AT-K1. It's <code>unknown</code> when the holder read failed or the coin is still on the curve with under 1% non-curve holders. <code>match_strength</code> is <code>strong</code> (wallet or exact amount, with every reserve-backed prior down ≥90%), <code>weak</code> (deployer or name reuse only) or <code>none</code>. AT-K1 counts <strong>strong only</strong>.</p>
+<p><strong><code>check_wallet</code> response:</strong></p>
+<pre><code class="language-json">{&quot;wallet&quot;: &quot;8xA1VE…&quot;, &quot;on_curve&quot;: true, &quot;non_holder_label&quot;: null,
+ &quot;appearances&quot;: [
+   {&quot;mint&quot;: &quot;2nryo7…&quot;, &quot;symbol&quot;: &quot;IShowSpeed&quot;, &quot;role&quot;: &quot;top_holder&quot;, &quot;share_pct&quot;: 13.67,
+    &quot;snapshot&quot;: &quot;2026-10-25T10:05:00Z&quot;, &quot;outcome&quot;: &quot;pending&quot;, &quot;drop_pct&quot;: null},
+   {&quot;mint&quot;: &quot;74g7Wv…&quot;, &quot;symbol&quot;: &quot;fomo&quot;, &quot;role&quot;: &quot;top_holder&quot;, &quot;share_pct&quot;: 13.53, &quot;outcome&quot;: &quot;pending&quot;}],
+ &quot;summary&quot;: {&quot;logged&quot;: 2, &quot;graded&quot;: 0, &quot;rugs&quot;: 0, &quot;held&quot;: 0},
+ &quot;coverage&quot;: {&quot;memory_since&quot;: &quot;2026-10-21&quot;}}
+</code></pre>
+<h3>15.2 Left out of v1</h3>
+<p>Scores and probabilities, winner picks, the RL environment (§13), any X or social data, bundle and cluster graphs (rivals own them), funding-chain tracing (exchange- or mixer-funded farms stay missed), the sprayed-farm rule (Chunkee; Garm v1.1 queue), sub-1% ladder wallets, non-pump.fun launchpads (Bags/DBC paper caps go in the non-holder list only), EVM, Telegram bot, web UI beyond docs and playground, stake-for-limits, USDC/x402, trade execution of any kind, user wallets, user accounts.</p>
+<h3>15.3 Stack and hosting (≤A$25/month)</h3>
+<p>TypeScript, Hono on Cloudflare Workers Free. Cron Triggers run the log pipeline. D1 Free holds the memory tables; Workers Cache API caches <code>check_coin</code> for 60s per mint. <code>@solana/kit</code> for RPC and <code>PublicKey.isOnCurve</code>, cloudflare/agents for MCP. A server spend counter in D1 counts Helius credits. Past 90% of the monthly cap, uncached checks return <code>memory: "unknown"</code> with <code>"reason": "capacity"</code>; cached checks keep working. Garm's stack notes apply (Garm SPEC §2–3: Workers CPU limits, Upstash vs KV). D1 free limits beyond "100k rows written/day" are [unverified]; check them in week 1.</p>
+<h3>15.4 Data sources, A$ costs, licence notes</h3>
+<table>
+<thead>
+<tr>
+<th>Source</th>
+<th>Use</th>
+<th>Free limit</th>
+<th>Licence note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Helius RPC/webhooks</td>
+<td><code>getTokenLargestAccounts</code>, <code>getMultipleAccounts</code> (owner resolution), pool reserves, <code>getTransaction</code> (burn verify), webhook on pump.fun migration / PumpSwap pool create</td>
+<td>1M credits/month, 10 rps, webhooks 1 credit/push (checked 25 Oct)</td>
+<td>Commercial terms on Free [unverified]; read ToS in week 1</td>
+</tr>
+<tr>
+<td>Solana public RPC</td>
+<td>Fallback only</td>
+<td>~100 req/10s/IP (Garm §7)</td>
+<td>Not for production</td>
+</tr>
+<tr>
+<td>DexScreener <code>tokens/v1/solana/{≤30}</code>, <code>token-pairs/v1</code></td>
+<td>Market-cap sampling for discovery and peak tracking; pair → pool and quote token</td>
+<td>300/min on pairs and tokens [per Garm §7, "likely"], 60/min on profiles</td>
+<td>Commercial OK; <strong>no resale and no making API data available to third parties</strong> (API terms, checked 25 Oct), so only derived labels leave our server; never use <code>liquidity.usd</code> as a signal (Garm AT-110)</td>
+</tr>
+<tr>
+<td>GeckoTerminal</td>
+<td><strong>Not used in production.</strong> Allowed only in the private replay</td>
+<td>~10–30/min</td>
+<td>Free tier has no commercial rights (CoinGecko licence FAQ)</td>
+</tr>
+<tr>
+<td>rugcheck free summary</td>
+<td><strong>Only in the private AT-K1 test</strong> (Trench Bot already fetches it)</td>
+<td>1–3 rps</td>
+<td>Never shown, stored in product or resold</td>
+</tr>
+<tr>
+<td>DeFade trial key</td>
+<td><strong>Only for AT-K2</strong>, private</td>
+<td>7-day trial, 100/day</td>
+<td>Getting it means submitting DeFade's form, which <strong>needs Ethan's OK</strong></td>
+</tr>
+<tr>
+<td>Trench Bot log</td>
+<td>Seed: graded outcomes + RPC holder snapshots</td>
+<td>Local</td>
+<td>Our own data; hand verdicts are <strong>not</strong> shipped, every label is regraded by code (§15.5)</td>
+</tr>
+<tr>
+<td>pump.fun frontend API</td>
+<td>Not used</td>
+<td>–</td>
+<td>Blocked/404 from servers (Garm §7)</td>
+</tr>
+<tr>
+<td>X</td>
+<td><strong>Not used</strong></td>
+<td>–</td>
+<td>X policy: no X post fields</td>
+</tr>
+<tr>
+<td>Monthly: <strong>A$0</strong>. Credit estimate (est.): pipeline ~300 crossers/day × ~25 credits ≈ 225k/month. Live checks ≈ 5 credits per uncached mint, so the other ~700k credits cover ~140k uncached checks a month.</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3>15.5 Core logic</h3>
+<pre><code>CHECK_COIN(mint):
+  require mint resolves to a Token/Token-2022 mint (getAccountInfo owner)            # as Garm §5.0
+  rows   = getTokenLargestAccounts(mint)                     # top 20 token ACCOUNTS
+  owners = getMultipleAccounts(rows).parsed.owner            # resolve account -&gt; OWNER (Garm AT-133)
+  holders = [(owner, amount_raw, share)]
+  drop owner if !isOnCurve(owner)                            # off-curve PDA drop, on the OWNER (Garm AT-131)
+  drop owner if owner in non_holder_wallets.json             # same list + schema as Garm §5.3b (pump curve,
+                                                             #   PumpSwap/DBC/DAMM authorities, exchange hot wallets)
+  for (w, amt, share) in top 5 remaining with share &gt;= 1%:
+     priors = tw[w] where prior.mint != mint and prior.peak_reserve_backed
+     live   = priors with share &gt;=1%, drop known and &lt; 0.90, age &gt;= 24h
+     if live: note &quot;also top wallet on &lt;live&gt;&quot;; continue      # operator rule (Garm §5.3b b), never a stamp
+     dumped = priors with graded outcome == rug               # unknown or pending never counts
+     if dumped: add match{type:&quot;wallet&quot;, strength:&quot;strong&quot;}
+     elif priors (all &lt; 72h or ungraded): add match{type:&quot;wallet&quot;, strength:&quot;pending&quot;}
+  for (w, amt, share) in top 20 remaining with share &gt;= 0.2%:
+     if !non_round(amt): continue                             # guard: blind ape 30,000,000 must never fire
+     priors = ta[amt_key(amt)] where prior.mint != mint
+     if len(priors) &gt;= 1 and all(p.outcome == rug for p in priors graded) and none live:
+        add match{type:&quot;exact_amount&quot;, strength:&quot;strong&quot;}     # fires even when the wallet is NEW (fomo rotation)
+  deployer = creator of mint; d = td[deployer]
+  if d.logged_rugs &gt;= 2: add match{type:&quot;deployer&quot;, strength:&quot;weak&quot;}
+  memory = match if any strong else pending_match if any pending else (match if any weak else no_match)
+  write snapshot rows (tw, ta, td) only via the pipeline, never from user calls     # users can't poison memory
+
+non_round(amt): ui = amt / 10^decimals
+  strip trailing zeros of the full decimal string; require &gt;= 6 significant digits   # 134739491.878 ok, 2376720.17 ok,
+                                                                                     # 465161.29 ok, 30000000 no
+amt_key(amt): exact raw integer amount (u64 string), never rounded or lowercased
+
+VALUE_LIQUIDITY(pool):                                # for peak_reserve_backed and the LP-pulled test
+  if quote in {SOL, USDC, USDT}: liq = 2 * quote_reserve * quote_price
+  else: qpool = deepest SOL/USDC pool of the QUOTE token (DexScreener token-pairs)
+        quote_price = qpool on-chain reserves ratio * SOL price                       # Trench Bot run 28 note
+        liq = 2 * quote_reserve * quote_price
+        if sibling coins with the same quote token hit their highs within 30s: tag &quot;quote_token_move&quot;
+  never use DexScreener liquidity.usd (Garm AT-110)
+
+GRADE(mint) at cross+24h and cross+72h:               # outcome by code, never hand verdicts
+  peak = max sampled mcap since cross, reserve-backed only
+  rug  = (1 - mcap_now/peak &gt;= 0.90) or (base-pool quote reserve &lt; 10% of reading at cross)
+  held = mcap_now &gt;= 500k and reserve-backed
+  else faded. Store {rule, peak, mcap_now, liq_now, graded_at}. Labels are final at 72h, apart from published corrections.
+</code></pre>
+<h3>15.6 Log update pipeline (Cron)</h3>
+<ol>
+<li><strong>Every 5 min, discovery:</strong> a Helius webhook stores newly migrated pump.fun mints to PumpSwap. Cron batch-samples tracked mints through DexScreener <code>tokens/v1</code> (30 per call) until each crosses $500k or reaches 72h.</li>
+<li><strong>At the $500k cross:</strong> recompute cap from reserves × supply. Take the holder snapshot (§15.5 read path) and the deployer, then write <code>tw</code>, <code>ta</code> and <code>td</code> rows with <code>snapshot_ms</code>. Inputs are frozen as of this moment.</li>
+<li><strong>Every 15 min until 72h:</strong> sample cap for peak tracking. Grade at 24h and 72h (§15.5).</li>
+<li><strong>Daily:</strong> a memory-stats row goes to <code>/v1/usage</code>. Export the D1 tables to an R2/box file for Trench Bot. R2 free limits are [unverified]; the fallback is a local export through <code>wrangler d1 export</code>.</li>
+<li><strong>Seed (one-time):</strong> import Trench Bot's coins and outcomes, <strong>regraded by §15.5 where candles or reserves exist</strong>. Holder rows come only from RPC/Helius reads (<code>r4b-repeat-check.jsonl</code>, raw RPC captures), never from rugcheck reports unless their terms are confirmed (Garm §5.3b).</li>
+<li><strong>Corrections:</strong> a published <code>corrections</code> table. Chunkee-type flips stay visible, never silent.</li>
+</ol>
+<h3>15.7 Acceptance tests</h3>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Test</th>
+<th>Pass line</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>AT-K1 (kill line)</strong></td>
+<td>First 50 graded outcomes in <code>shared-data/trench-bot/rugcheck-h2h.jsonl</code>. Our snapshot and rugcheck's free summary are both taken at the $500k cross, <strong>before</strong> the outcome; post-pull snapshots are excluded (TESLA SI case). Rugcheck counts as "flagged" on ≥1 danger risk, excluding 'Low Liquidity' after a pull (Trench Bot's definition). Ours counts as flagged on <code>match_strength = strong</code> only. Discordant counts: b = rugs only we flag, c = rugs only rugcheck flags.</td>
+<td><strong>b ≥ 10 and b ≥ 3c.</strong> Also, on non-rug outcomes among the 50, our strong flags ≤ rugcheck's danger flags. Otherwise <strong>kill</strong>. Accuracy is not reported as a headline, because "always rug" scores ~99%</td>
+</tr>
+<tr>
+<td><strong>AT-K2 (kill line)</strong></td>
+<td>For each of the b catches above, DeFade <code>wallet-reputation</code> (top wallets) plus <code>exit-playbook</code> and <code>deployer-reputation</code> at the same time, using the trial key (needs Ethan's OK)</td>
+<td>DeFade flags <strong>&lt;80%</strong> of b. Otherwise <strong>kill</strong> (no unique catch)</td>
+</tr>
+<tr>
+<td><strong>AT-FP</strong></td>
+<td>(a) Every coin graded <strong>held</strong> in the log (currently ~11; wait for ≥20). (b) 50 random live pump.fun mints that are ≥24h old and still ≥$100k, outside the log (same idea as Garm AT-119)</td>
+<td>(a) strong matches ≤1 in 20; (b) ≤1 strong match that isn't an exact wallet or amount with every prior down ≥90%</td>
+</tr>
+<tr>
+<td>AT-1</td>
+<td>fomo <code>74g7Wv…</code> fixture (run 28 holder read)</td>
+<td>With the priors stubbed as pending: <code>pending_match</code> with 2 matches (wallet → IShowSpeed <code>2nryo7…</code>, exact amount → OpenAI). With the priors stubbed as graded rug: <code>match</code>, both strong</td>
+</tr>
+<tr>
+<td>AT-2</td>
+<td>Wallet rotation: the fomo fixture with <code>8xA1VE…</code> replaced by a fresh keypair</td>
+<td>The exact-amount match still fires; the wallet match doesn't</td>
+</tr>
+<tr>
+<td>AT-3</td>
+<td>Non-round guard: blind ape <code>EwX2T1…</code> (HejePh… holds exactly 30,000,000)</td>
+<td>0 exact-amount matches; <code>memory</code> ≠ match from that wallet</td>
+</tr>
+<tr>
+<td>AT-4</td>
+<td>GTA6 Coin <code>3P4y…</code> after the Gemini <code>DhUh…</code> stub</td>
+<td>Strong wallet match naming Gemini (same fixture as Garm AT-118)</td>
+</tr>
+<tr>
+<td>AT-5</td>
+<td>Owner resolution (Garm AT-133 fixtures, cited)</td>
+<td>The curve check runs on the resolved owner; 0 holders dropped wrongly on an all-ATA stub</td>
+</tr>
+<tr>
+<td>AT-6</td>
+<td>Off-curve and non-holder drop (Garm AT-131 fixtures: <code>FhVo3m…</code>, <code>HLnpSz…</code>, pump AMM)</td>
+<td>0 matches on pool or program addresses; DBC caps PUMP/Marvin/BILLIONS → 0 stamps (Garm AT-132 subset)</td>
+</tr>
+<tr>
+<td>AT-7</td>
+<td>Operator rule: <code>5YRgrP…</code> on blind ape (live) and on SUI/BNB (rugs)</td>
+<td>Note only, no strong match on blind ape</td>
+</tr>
+<tr>
+<td>AT-8</td>
+<td>Non-SOL quote: boob family GLD <code>9dGVsW…</code>, XMR <code>AJxFN1…</code>, SOL <code>3zPjPx…</code> (BTC-family quoted)</td>
+<td>Liquidity valued through the quote token's pool; <code>quote_token_move</code> tag; DexScreener <code>liquidity.usd</code> never read</td>
+</tr>
+<tr>
+<td>AT-9</td>
+<td>Grader by code</td>
+<td>Regrading the seed: 0 labels come from hand verdicts; Chunkee, $MINT and PHP show their code-graded labels, and any disagreement with Trench Bot goes to <code>corrections</code></td>
+</tr>
+<tr>
+<td>AT-10</td>
+<td>Date split</td>
+<td>Snapshot inputs for a coin are timestamped ≤ cross time; a replay that injects a post-cross holder read fails the test</td>
+</tr>
+<tr>
+<td>AT-11</td>
+<td>Determinism</td>
+<td>Same mint and same stubbed RPC give byte-identical JSON twice (no LLM anywhere)</td>
+</tr>
+<tr>
+<td>AT-12</td>
+<td>Latency</td>
+<td>p95 ≤ 400 ms cached and ≤ 3 s uncached on a 200-mint replay</td>
+</tr>
+<tr>
+<td>AT-13</td>
+<td>Cost</td>
+<td>A 30-day simulation at 300 crossers/day plus 5k checks/day stays ≤1M Helius credits and <strong>A$0</strong>; past 90% of the counter the API answers <code>unknown</code>/capacity and never errors</td>
+</tr>
+<tr>
+<td>AT-14</td>
+<td>Burn credits</td>
+<td>A valid burn credits once. A replayed signature, the wrong mint, a burn from a wallet that isn't the signer, or an amount below the pack price credits 0</td>
+</tr>
+<tr>
+<td>AT-15</td>
+<td>No forbidden fields</td>
+<td>Responses contain no X post text, handles or URLs, no raw DexScreener fields and no rugcheck data (schema test)</td>
+</tr>
+<tr>
+<td>AT-16</td>
+<td>Memory poisoning</td>
+<td>1,000 user <code>check_coin</code> calls on fake or new mints write 0 rows to <code>tw</code>, <code>ta</code> or <code>td</code></td>
+</tr>
+</tbody>
+</table>
+<h3>15.8 Free private test, now (no money, no public URL)</h3>
+<p>Write <code>replay.py</code> over Trench Bot's files. Use the run 23–28 holder reads, <code>r4b-repeat-check.jsonl</code> and <code>rugcheck-h2h.jsonl</code>; leave anything in holdout, sealed, blind or labels paths unopened. Output the AT-K1 tally as it grows, plus AT-1–AT-4 and AT-FP(a). Trench Bot owns the live head-to-head, and this replay only reads it.</p>
+</section>
+<section class="review"><h2>Project Bot review</h2>
+<p class="meta"><span class="badge mid">5/10</span> <span>Reviewed 25 Oct 2026, 8:45pm AWST</span></p>
+<h3>Verdict</h3><ul>
+<li><strong>Score: 5.0/10. Lead (test-stage), not a thesis yet. Passes Ethan's rules (narrowly: token fit 5). Inspo bar 6/10, so it does not go to Ethan.</strong></li>
+<li><strong>Biggest gap: Uniqueness and data.</strong> "Has this money rugged before?" is already sold or given away to agents: DeFade (<code>wallet-reputation</code>, <code>deployer-reputation</code> with funder history, <code>exit-playbook</code>, MCP), <strong>Cookin.fun</strong> (holders classified by what they did in earlier pump.fun coins, REST + MCP, x402 from US$0.01), and <strong>SolSentry</strong> (free, no key, MCP, 140,421 wallet profiles and 31,209 operators on its live stats today). The one piece nobody claims is exact-amount template memory, on about 51 logged coins.</li>
+<li>Closest rival: <strong>DeFade</strong> overall; <strong>Cookin.fun</strong> is closest on holder history; <strong>SolSentry</strong> gives the deployer half away free.</li>
+</ul>
+<p><strong>Covers:</strong> idea bot's Rugmemory v0 (<code>/workspace/idea-bot/theses/2026-10-25-2045-rugmemory-v0.md</code>). Inputs read: Trench Bot <code>second-thesis-leads.md</code>, <code>thesis-inputs.jsonl</code> (run 28 lines), <code>rugcheck-h2h.jsonl</code> (12 lines: 9 snapshots, 3 outcomes), <code>trench-bot/latest.md</code>; Git bot <code>ecosystem-radar/latest.md</code>; X bot <code>x-digests/latest.md</code> (DeFade Exit Playbook / Crew Radar, "agents that check before they buy"); Growth Bot <code>lessons.jsonl</code> and <code>ethan-inspo.md</code>; idea bot <code>competitors.jsonl</code>. Nothing in holdout, sealed, blind or labels paths opened.</p>
+<p><strong>Rules gate: PASS (narrow).</strong></p>
+<ul>
+<li>(a) Paying buyer is tech bros: yes. Teams building Solana trading agents are crypto-native builders (my call tonight); AI labs are a bonus buyer only via the later RL package.</li>
+<li>(b) Token fit ≥5: 5, passes on the line.</li>
+<li>(c) New free-rival rule (free tool doing the same job well for the same buyer: OSS repo 1k+ stars with commits in 30 days, or a free tier covering the core job): <strong>survives</strong>. The core job is top-holder wallet plus exact-amount memory. Rugcheck's free API covers contract, LP, holder concentration, "Creator history of rugged tokens" and "High holder correlation", not repeat-holder memory (its free summary needed no key when I called it tonight). SolSentry is free and agent-first but deployer-focused: it knew the ChatGPT deployer <code>Eu6e8H…</code> ("1 confirmed rug across 4 deployed tokens") and did <strong>not</strong> know fomo's top wallet <code>8xA1VE…</code> (<code>known: false</code>). No OSS repo near 1k stars found (SicariusGuard 2★, SolSentry MCP repo not reachable on the GitHub API; npm <code>@solsentry/mcp</code> 303 downloads in the last month). So the deployer arm of Rugmemory fails gate c on its own; the holder and amount arms pass.</li>
+</ul>
+<p><strong>Cap: 7, not 6.</strong> Close paid products exist with public price lists: DeFade US$35–2,549/month (checked tonight), rugcheck US$40/100/500, Cookin x402 from US$0.01 or 1 SOL/30 days, RugBurn Pro US$19 and Whale US$69/month. None shows a customer count, and the two agent MCPs I could measure are small (SolSentry 303, Cookin 386 npm downloads in the month to 22 Oct). I'm still calling it a <strong>lead</strong>, because both kill lines (AT-K1, AT-K2) are unrun and its only unique piece has no evidence yet.</p>
+<p><strong>Refined idea (one sentence):</strong> Rugmemory should stop pitching "wallet memory" (sold by DeFade, Cookin, SolSentry) and lead with <strong>dump-script fingerprints</strong>: "every pump.fun dump script leaves a fingerprint", an MCP tool that matches exact non-round holding sizes and repeat top wallets against code-graded dead coins, free and with an open method, sitting next to the paid checkers rather than replacing them.</p>
+<h3>Score breakdown</h3><div class="sub">From “Scores”</div><table>
+<thead>
+<tr>
+<th>Criterion</th>
+<th>Score</th>
+<th>Why (source)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Problem severity</td>
+<td>7</td>
+<td>939 of 950 logged $500k crossers are rugs (Trench Bot run 28); contract checks pass most pump.fun coins. Real and frequent pain for anyone running a buy bot</td>
+</tr>
+<tr>
+<td>Timing</td>
+<td>6</td>
+<td>Agent trading is hot (X bot: the "five-agent relay incl. rug check" post, 1,263 bookmarks, profit claims unverified). But rivals shipped this week: DeFade <code>exit-playbook</code> on 25 Oct, <code>funderHistory</code> on 24 Oct</td>
+</tr>
+<tr>
+<td>Differentiation</td>
+<td>4</td>
+<td>Wallet and deployer history are DeFade's, Cookin's, SolSentry's, RugBurn's and SicariusGuard's. Left: exact-amount keys, code-graded outcomes at a fixed horizon, published method, free tier</td>
+</tr>
+<tr>
+<td>Usability</td>
+<td>8</td>
+<td>One curl, one MCP install line, free key without signup, facts not scores. Good first minute once a prior is graded</td>
+</tr>
+<tr>
+<td>Ape appeal</td>
+<td>5</td>
+<td>It's agent infrastructure; a trader never sees it unless their bot surfaces it. "Rap sheet" line is fun; the fomo receipt is a strong demo</td>
+</tr>
+<tr>
+<td>Solo buildability</td>
+<td>7</td>
+<td>Workers + D1 + Helius free is plausible in 2–4 weeks with Claude Code. Risks: pipeline + grader + burn verify is three systems; Helius says Free is "for development and testing" and recommends paid for production (FAQ, checked tonight), so budget the US$49 Developer plan as a likely step</td>
+</tr>
+<tr>
+<td>Self-serve sales</td>
+<td>6</td>
+<td>Free key and on-chain burn are self-serve, but the only paid path makes an agent team hold a memecoin</td>
+</tr>
+<tr>
+<td>Distribution</td>
+<td>4</td>
+<td>MCP directories and agent-kit plugins are the right channel, but it's crowded (DeFade, Cookin, SolSentry, SicariusGuard, RugBurn all listed) and measured pull is small (~300–400 npm downloads/month for the two I checked)</td>
+</tr>
+<tr>
+<td>Retention</td>
+<td>5</td>
+<td>Memory compounds, and once wired in a call tends to stay. But ≤6% recall (idea bot est.) means most calls return <code>no_match</code>, which invites removal</td>
+</tr>
+<tr>
+<td>Money evidence</td>
+<td>5</td>
+<td>Price ladders for close products (above). No customer counts, no payer for outcome memory itself</td>
+</tr>
+<tr>
+<td>Token fit</td>
+<td>5</td>
+<td>Burn-own-tokens-for-credits is a clean job and within Ethan's rules (no payouts, no revenue-funded buybacks; creator fees to a published hosting wallet). pump.fun fees page unchanged since 17 Oct (0.30% creator fee on the curve, 0.95% at 420–1,470 SOL on PumpSwap, falling to 0.05%). Down one from idea bot's 6: agent teams mostly won't hold a memecoin, and the free tier carries adoption, so burns may be near zero</td>
+</tr>
+<tr>
+<td><strong>Innovation (tech bros)</strong></td>
+<td>5</td>
+<td>Exact non-round amount keys that survive wallet rotation (134,739,491.878 on OpenAI and fomo) are genuinely new; the rest is established lookup plumbing</td>
+</tr>
+<tr>
+<td><strong>Uniqueness (tech bros)</strong></td>
+<td>4</td>
+<td><strong>Closest rival DeFade</strong> (<code>/v1/wallet-reputation</code> "record across every token DeFade scanned … confirmed rugs, the role on each"; <code>/v1/exit-playbook</code> "earlier launches by the same hands"; 15-tool MCP; from US$35/month). <strong>Cookin.fun</strong> classifies holders by what they did in earlier pump.fun coins (<code>cohorts.sell_impact_pct</code>, <code>dirty_pct</code>). <strong>SolSentry</strong> is free with 21,860 wallets with confirmed rugs on its stats. Only exact-amount memory is unclaimed, and it's one release away for any of them</td>
+</tr>
+<tr>
+<td><strong>Inspo bar (Ethan's)</strong></td>
+<td>6</td>
+<td>(1) builders already pay for the category: yes, 7; (2) one line: "Every pump.fun wallet now has a rap sheet", 8; (3) plugs in as API/MCP, not a dashboard: 9; (4) data at the core: <strong>3</strong>. Next to Firecrawl/Exa (index the web) and DataVendor (a data marketplace), our asset is 951–1,138 coins since 21 Oct with ~11 survivors, while a free rival already reports 132,269 mints predicted. Average 6.75, held to 6 because the data row is the one Ethan's bar is about. <strong>Under 7: does not go to Ethan</strong></td>
+</tr>
+<tr>
+<td>Build-readiness (info only)</td>
+<td>8/10</td>
+<td>Full brief with pseudocode and 19 tests. Loses points for an AT-K2 that can't run as written (below) and an exact-amount rule that blocks the live catch</td>
+</tr>
+<tr>
+<td><strong>Overall</strong></td>
+<td><strong>5.0</strong></td>
+<td>14 scored rows average 5.5 (77/14). Cut 0.5 because both kill lines are unrun, the sweep missed four agent-facing rivals, and AT-K2 as specified can't be run on a trial key</td>
+</tr>
+</tbody>
+</table>
+<h3>Competitors</h3><div class="sub">From “Fresh competitor sweep (missed by the thesis and competitors.jsonl)”</div><table>
+<thead>
+<tr>
+<th>Rival</th>
+<th>What it does for agents</th>
+<th>Price / access (checked tonight)</th>
+<th>Threat</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Cookin.fun</strong> (<a href="https://cookin.fun/rug-check">rug-check API</a>)</td>
+<td>Tracks every pump.fun launch from its first trade; classifies holders by behaviour in previous tokens (<code>cohorts.sell_impact_pct</code> "wallets whose exits historically nuke charts", <code>dirty_pct</code>, <code>alpha_hands_pct</code>), deployer history, name/image copy check; REST + MCP (<code>https://api.cookin.fun/mcp</code>, <code>npx -y @cookinfun/mcp</code>)</td>
+<td>x402 from US$0.01/call or Pro 1 SOL/30 days; npm 386 downloads last month</td>
+<td><strong>High.</strong> Closest on the holder-history arm and already agent-native</td>
+</tr>
+<tr>
+<td><strong>SolSentry</strong> (<a href="https://glama.ai/mcp/servers/solsentry/solsentry-mcp">Glama listing</a>)</td>
+<td><code>check_operator</code> (confirmed rug count, behaviour tags), <code>check_token</code>, <code>get_top_operators</code> leaderboard, per-mint predictions auditable at <code>/v1/predictions/{mint}</code>; MIT; "RugCheck tells you a fire is burning. SolSentry tells you who lit it."</td>
+<td><strong>Free, no key for reads</strong> (live stats tonight: 31,209 operators, 2,748 serial ruggers, 21,860 wallets with confirmed rugs, 140,421 wallet profiles); npm 303 downloads last month</td>
+<td><strong>High for the deployer arm</strong> (free, same buyer). Didn't know fomo's top wallet, so holder memory is still open</td>
+</tr>
+<tr>
+<td><strong>RugBurn</strong> (<a href="https://rugburn.io/docs/api">API</a>)</td>
+<td><code>POST /api/v1/wallet/risk</code> (labels, exposures, prior deployer history), <code>GET /api/v1/deployer/{wallet}/history</code> with cohort rug %</td>
+<td>Free 100 cached API reads/month; Pro US$19/mo, Whale US$69/mo</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td><strong>SicariusGuard</strong> (<a href="https://glama.ai/mcp/servers/Chronolapse411/sicarius-guard">Glama</a>)</td>
+<td>MCP: <code>get_wallet_reputation</code>, <code>recon_deployer</code> (dead-token ratio, funding genesis, "Recidivism Score") on Helius</td>
+<td>OSS, MIT, 2★, last push 20 May 2026</td>
+<td>Low (tiny, stale), but proves the idea is a weekend build</td>
+</tr>
+</tbody>
+</table>
+<h3>Build plan</h3><p><em>Not in this review.</em></p>
+<details><summary>Rest of the review (fact-check and notes)</summary>
+<h3>Score history</h3><table>
+<thead>
+<tr>
+<th>When (AWST)</th>
+<th>Version</th>
+<th>Score</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>25 Oct, ~8:50pm</strong></td>
+<td><strong>v0</strong></td>
+<td><strong>5.0 (lead)</strong></td>
+<td>First score. Passes rules narrowly; inspo bar 6; closest rival DeFade; missed Cookin.fun, SolSentry, RugBurn, SicariusGuard</td>
+</tr>
+</tbody>
+</table>
+<h3>Fact-check of v0&#x27;s claims (quick checks, 25 Oct ~8:45–8:55pm AWST)</h3><table>
+<thead>
+<tr>
+<th>Claim</th>
+<th>Check</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DeFade from US$35/mo, 30 endpoints, wallet-reputation, exit-playbook (25 Oct), deployer funderHistory (24 Oct), 15-tool MCP</td>
+<td>defade.org/api read in full</td>
+<td><strong>Confirmed.</strong> Lite US$35 (650 units, 130/day), Starter 149, Growth 299, Pro 549, Enterprise 2,549; credits US$0.025</td>
+</tr>
+<tr>
+<td>AT-K2 can run on a DeFade 7-day trial key (§15.4, 100/day)</td>
+<td>Same page: "Trial keys reach six endpoints (<code>analyze</code>, <code>rug-score</code>, <code>token-price</code>, <code>holders</code>, <code>kol</code>, <code>trending</code>) plus <code>usage</code>"; <code>wallet-reputation</code>, <code>deployer-reputation</code>, <code>exit-playbook</code> are listed as <strong>paid-plan</strong> modules</td>
+<td><strong>Wrong.</strong> AT-K2 needs at least the <strong>Lite plan, US$35 (≈A$50)</strong>, a purchase. Ethan's call either way (trial form = outreach; Lite = spend). DeFade's <code>rug-score</code> on the trial does read deployer funder history (+7/+14/+22), so a trial could test the deployer half only</td>
+</tr>
+<tr>
+<td>Rugcheck free API, cached</td>
+<td>Called <code>api.rugcheck.xyz/v1/tokens/&lt;fomo&gt;/report/summary</code> with no key</td>
+<td><strong>Reachable, no key.</strong> At ~8:50pm it now shows fomo with only "Low Liquidity ($31.31)" danger, i.e. fomo looks pulled since run 28. That's post-outcome, so it doesn't count for rugcheck; Trench Bot should grade it next run</td>
+</tr>
+<tr>
+<td>Helius Free 1M credits, 10 rps; commercial terms unverified</td>
+<td>helius.dev/terms §3.1 and billing FAQ</td>
+<td>Terms allow use "for Customer's business purposes, including integration of the Services into Customer's own products". Bars reselling the Services and using them "to develop a competing service" (not us). FAQ: Free is "suitable for development and testing … for production applications, consider a paid plan". <strong>Usable to launch; plan for Developer US$49 (≈A$70)/month once there's traffic</strong></td>
+</tr>
+<tr>
+<td>pump.fun fees</td>
+<td>pump.fun/docs/fees, "Last Updated: 17 October 2026"</td>
+<td><strong>Unchanged</strong> from the Garm SPEC §8 figures</td>
+</tr>
+<tr>
+<td>DexScreener no-resale, GeckoTerminal no commercial rights</td>
+<td>Not re-checked tonight (idea bot checked 25 Oct)</td>
+<td>Accepted as stated</td>
+</tr>
+<tr>
+<td>Exact repeat amounts: 51 rug coins, 1 non-rug</td>
+<td>From Trench Bot's log via the thesis</td>
+<td>Not re-derived (no test infra). Plausible against marshal-SPEC v6.8 note (47 coins, 44 rugs + 3 brand-baits, 0 non-rugs)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Rule bug found (fixes the live catch):</strong> in §15.5 the exact-amount match fires only if <code>none live</code> among priors. On fomo, the 134,739,491.878 prior (IShowSpeed) was still live, so under its own code <strong>fomo would not count for AT-K1 even if it rugs</strong>. Template operators run coins in parallel (§12.8), so this clause blocks the fastest, most valuable catches. Fix in the brief below.</p>
+<h3>What would lift this score</h3><ol>
+<li><strong>Pass AT-K1 with the fixed amount rule</strong> (b ≥10 rugs only we flag strongly, b ≥3c). This is the only thing that can lift Uniqueness above 4. Worth +0.5 to +1.</li>
+<li><strong>Add free SolSentry to Trench Bot's head-to-head now</strong> (public reads, no key, no form, so no outreach): log its <code>check_operator</code> on each new coin's deployer and top wallets. If SolSentry or rugcheck already flags most of our b catches, kill early and save days.</li>
+<li><strong>AT-K2 needs Ethan:</strong> DeFade Lite US$35 (≈A$50) for one month, or the trial form for the deployer half only. Cookin's x402 calls (US$0.01 each) would cover the other rival for under A$1. All purchases or outreach, so Ethan's call.</li>
+<li><strong>Re-pitch around the unclaimed piece:</strong> "every pump.fun dump script leaves a fingerprint" (exact non-round sizes plus repeat top wallets), not general wallet memory. Lifts Differentiation and Innovation by about 1 if the fingerprint catches survive AT-FP.</li>
+<li><strong>Fix the data row of the inspo bar:</strong> backfill every graduated pump.fun coin (not just $500k crossers) so the memory is measured in tens of thousands of coins, and publish the code-graded labels as an open, dated dataset. That is the DataVendor angle and the RL package's seed.</li>
+<li><strong>One named agent project that would wire it in</strong> (Git bot's 10pm radar). Without it, Distribution stays at 4.</li>
+</ol>
+<h3>Should it go to Ethan?</h3><p><strong>No, not yet.</strong> Inspo bar 6 (under 7) and overall 5.0. It stays a cheap lead: the head-to-head already runs, the replay is free, and nothing is built or spent until AT-K1 passes. Two items do need Ethan only if the lead survives: the DeFade key (trial form or US$35 Lite) and a second token.</p>
+<h3>Claude Code build brief (Rugmemory v1, self-contained)</h3><p><strong>Build only after AT-K1, AT-K2 and AT-FP pass and Ethan picks it. Until then only the private replay runs.</strong> This brief overrides idea bot's §15 where marked [PB].</p>
+<p><strong>What it is.</strong> A read-only REST API plus MCP server that a Solana trading agent calls before buying a pump.fun coin. It answers: do this coin's top holders, exact non-round holding sizes or deployer match coins in our memory that died (graded by code), and which ones? It returns facts with the dead coin named and linked. Never a score, probability, "safe", "buy" or "sell".</p>
+<p><strong>Pitch [PB]:</strong> "Every pump.fun dump script leaves a fingerprint." (Secondary: "Every pump.fun wallet now has a rap sheet.")</p>
+<p><strong>Rivals to name in docs:</strong> DeFade (closest), Cookin.fun, SolSentry (free), rugcheck, RugBurn, GMGN <code>token/security</code>, Bubblemaps. Positioning: "Use it next to your rug checker. It answers one question they don't: has this exact script run before?"</p>
+<h3>v1 surface</h3>
+<table>
+<thead>
+<tr>
+<th>REST</th>
+<th>MCP tool</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET /v1/coin/{mint}</code></td>
+<td><code>check_coin</code></td>
+<td>Live top-holder read → wallet, exact-amount and deployer matches</td>
+</tr>
+<tr>
+<td><code>POST /v1/coins</code> (≤20 mints)</td>
+<td><code>check_coins</code></td>
+<td>Batch</td>
+</tr>
+<tr>
+<td><code>GET /v1/wallet/{address}</code></td>
+<td><code>check_wallet</code></td>
+<td>Logged coins where the wallet was a top holder or deployer, with graded outcomes</td>
+</tr>
+<tr>
+<td><code>GET /v1/fingerprint/{amount}</code> [PB]</td>
+<td><code>check_amount</code></td>
+<td>Every logged coin that carried this exact raw amount, with outcomes</td>
+</tr>
+<tr>
+<td><code>GET /v1/outcome/{mint}</code></td>
+<td><code>get_outcome</code></td>
+<td>Our code-graded outcome (cross time, peak, 24h/72h state, rule)</td>
+</tr>
+<tr>
+<td><code>POST /v1/credits/burn</code></td>
+<td>none</td>
+<td><code>{key_id, signature}</code> → verify burn, credit key</td>
+</tr>
+<tr>
+<td><code>GET /v1/usage</code></td>
+<td><code>get_usage</code></td>
+<td>Quota, credits, memory size, <code>memory_since</code></td>
+</tr>
+<tr>
+<td>Auth: <code>x-api-key</code>. Free key from <code>POST /v1/keys</code>, 1 per IP per day, 100 calls/day. MCP over Streamable HTTP (cloudflare/agents), all tools read-only.</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Response fields:</strong> <code>memory</code> = <code>match | pending_match | no_match | unknown</code>; <code>match_strength</code> = <code>strong | weak | none</code>; <code>matches[]</code> each with <code>type</code> (<code>wallet | exact_amount | deployer</code>), the prior coin (mint, symbol, outcome, rule, drop), a one-sentence <code>reason</code>, Solscan/DexScreener links; <code>coverage</code> <code>{coins_in_memory, memory_since, no_match_is_not_safe: true}</code>; <code>official_mint</code>; <code>method_url</code>. Keep idea bot's JSON examples in §15.1 as the shape.</p>
+<h3>Core logic (changes from §15.5 marked [PB])</h3>
+<ul>
+<li>Holder read: <code>getTokenLargestAccounts</code> (top 20 token accounts) → <code>getMultipleAccounts</code> to resolve owners → drop off-curve owners (on the owner, not the token account) → drop <code>non_holder_wallets.json</code> entries.</li>
+<li><strong>Wallet match:</strong> top 5 owners with share ≥1%. A prior counts as dumped only if graded <code>rug</code> by code. Operator rule as in idea bot §15.5 (a wallet also top holder on a live coin ≥24h old is a note, never a stamp).</li>
+<li><strong>Exact-amount match [PB, replaces "none live"]:</strong> for owners with share ≥0.2% and a non-round amount (≥6 significant digits after stripping trailing zeros; 30,000,000 never matches), look up the raw u64 amount. <code>strong</code> if <strong>≥2 priors are graded rug and 0 priors are graded held</strong>, whatever the number of live priors. <code>pending</code> if fewer than 2 graded rugs. This lets fomo-type parallel templates count.</li>
+<li><strong>Deployer match:</strong> <code>weak</code> only if ≥2 logged rugs. Document that SolSentry gives this free; it is context, not the product.</li>
+<li><code>memory</code> = <code>match</code> if any strong, else <code>pending_match</code> if any pending, else <code>match</code> (weak) if any weak, else <code>no_match</code>.</li>
+<li>Users can never write memory: snapshot rows are written only by the pipeline.</li>
+<li><strong>Grader (by code, never hand verdicts):</strong> at cross+24h and +72h, <code>rug</code> = drawdown ≥90% from reserve-backed peak, or base-pool quote reserve &lt;10% of the cross reading; <code>held</code> = ≥$500k and reserve-backed; else <code>faded</code>. Non-SOL/USDC quotes valued through the quote token's own deepest SOL/USDC pool; never DexScreener <code>liquidity.usd</code>.</li>
+</ul>
+<h3>Pipeline (Cron)</h3>
+<ol>
+<li>Every 5 min: Helius webhook stores newly migrated pump.fun → PumpSwap mints; DexScreener <code>tokens/v1</code> batch-samples (30 per call) until each crosses $500k or reaches 72h.</li>
+<li>At the $500k cross: recompute cap from reserves × supply, snapshot holders + deployer, write <code>tw</code> (wallet), <code>ta</code> (amount), <code>td</code> (deployer) rows. Inputs frozen at that moment.</li>
+<li>Every 15 min to 72h: peak tracking; grade at 24h and 72h.</li>
+<li><strong>[PB] Backfill:</strong> seed from every graduated pump.fun coin Helius can reach within the credit cap, not only Trench Bot's log, so the memory isn't 1k coins.</li>
+<li>Daily export of D1 tables for Trench Bot; public <code>corrections</code> table.</li>
+</ol>
+<h3>Stack and hosting</h3>
+<p>TypeScript, Hono on Cloudflare Workers Free, Cron Triggers, D1 Free, Workers Cache (60s per mint), <code>@solana/kit</code>, cloudflare/agents for MCP. Server spend counter: past 90% of the monthly credit cap, uncached checks return <code>memory: "unknown", reason: "capacity"</code>.</p>
+<h3>Data sources and licences</h3>
+<table>
+<thead>
+<tr>
+<th>Source</th>
+<th>Use</th>
+<th>Cost</th>
+<th>Licence note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Helius RPC + webhooks</td>
+<td>holder reads, owners, reserves, <code>getTransaction</code> for burns</td>
+<td>Free 1M credits/mo, 10 rps; Developer US$49 (≈A$70)/mo when live</td>
+<td>Terms allow integration in own products (checked 25 Oct); Free is pitched for dev/testing</td>
+</tr>
+<tr>
+<td>DexScreener</td>
+<td>discovery and peak sampling</td>
+<td>Free</td>
+<td>No resale of API data: only our derived labels leave the server</td>
+</tr>
+<tr>
+<td>GeckoTerminal</td>
+<td>private replay only</td>
+<td>Free</td>
+<td>No commercial rights on free tier</td>
+</tr>
+<tr>
+<td>rugcheck free summary, SolSentry free reads</td>
+<td>private head-to-head only</td>
+<td>Free</td>
+<td>Never shown, stored in product or resold</td>
+</tr>
+<tr>
+<td>DeFade</td>
+<td>AT-K2 only</td>
+<td>Lite US$35/mo (trial lacks the needed endpoints)</td>
+<td><strong>Ethan's OK needed</strong></td>
+</tr>
+<tr>
+<td>X</td>
+<td>not used</td>
+<td>–</td>
+<td>no X post fields anywhere</td>
+</tr>
+</tbody>
+</table>
+<h3>Token plan ($TBD on pump.fun only, after the gates and Ethan's pick)</h3>
+<ul>
+<li>Job: after 100 free calls/day, a holder burns their <strong>own</strong> tokens (SPL Burn, memo <code>rm:&lt;key_id&gt;</code>) for call credits; server verifies burn instruction, our mint, signer owns the burned account, amount ≥ pack price, signature unused. Credits non-transferable, non-refundable, don't expire. Pack price fixed in tokens at launch, changed at most monthly with 7 days' notice.</li>
+<li>Never: holder payouts, revenue share, staking yield, buybacks or burns funded by revenue or creator fees, profit promises. Mint authority off, fresh launch wallet, one pinned CA in docs, MCP manifest and every response (<code>official_mint</code>). Creator fees (0.30% on the curve; PumpSwap tiered from 0.95% down to 0.05%, pump.fun fees page 17 Oct 2026) go to a published hosting wallet only.</li>
+</ul>
+<h3>Budget (A$, FX US$1 = A$1.424)</h3>
+<ul>
+<li>Before token: ~A$50 contingency (est.); A$0/month on free tiers, hard cap A$25/month.</li>
+<li><strong>[PB] Likely extra:</strong> Helius Developer ≈A$70/month once there's real traffic, which breaks the A$25 cap, so the cap must hold by degrading to <code>unknown/capacity</code> until Ethan approves the upgrade.</li>
+<li>AT-K2 rival check: DeFade Lite ≈A$50 one month (Ethan's call).</li>
+<li>With legal (≈A$150 est.) and token launch (≈A$76 est.): ~A$276 total, plus A$50 if AT-K2 runs.</li>
+</ul>
+<h3>Acceptance tests (keep idea bot's AT-1 to AT-16, with these changes)</h3>
+<ul>
+<li><strong>AT-K1 (kill line):</strong> first 50 graded outcomes in <code>rugcheck-h2h.jsonl</code>; both snapshots taken at the $500k cross; rugcheck "flagged" = ≥1 danger risk excluding post-pull 'Low Liquidity'; ours = <code>strong</code> only. b = rugs only we flag, c = rugs only rugcheck flags. <strong>Pass b ≥10 and b ≥3c</strong>, and our strong flags on non-rugs ≤ rugcheck's danger flags. <strong>[PB] Also log SolSentry <code>check_operator</code> on the deployer and top-5 wallets for every coin; report b′ = our catches neither rugcheck nor SolSentry flags.</strong> Otherwise kill.</li>
+<li><strong>AT-K2 (kill line):</strong> DeFade <code>wallet-reputation</code> (top wallets) + <code>exit-playbook</code> + <code>deployer-reputation</code> on each b catch, at cross time. Pass if DeFade flags &lt;80% of b. <strong>[PB] Needs DeFade Lite (paid), not the trial key.</strong> Ethan's OK first.</li>
+<li><strong>AT-FP:</strong> ≤1 strong match in 20 held coins (wait for ≥20); ≤1 in 50 random live mints ≥24h old and ≥$100k.</li>
+<li><strong>AT-2b [PB]:</strong> fomo fixture with the IShowSpeed prior <strong>live</strong> and two other priors carrying 134,739,491.878 graded rug → exact-amount match is <code>strong</code>.</li>
+<li><strong>AT-3b [PB]:</strong> an amount with 1 graded rug prior and 1 graded held prior → no strong match.</li>
+<li><strong>AT-13 [PB]:</strong> 30-day simulation including the backfill stays ≤1M Helius credits; if not, the brief states the Developer-plan upgrade as an Ethan decision.</li>
+</ul>
+<h3>Out of v1</h3>
+<p>Scores and probabilities, winner picks, RL environment, X/social data, bundle and cluster graphs, funding-chain tracing, non-pump.fun launchpads, EVM, Telegram bot, web UI beyond docs and playground, stake-for-limits, USDC/x402, any trading, user wallets, user accounts.</p>
+<h3>Free private test, now</h3>
+<p><code>replay.py</code> over Trench Bot's files (run 23–28 holder reads, <code>r4b-repeat-check.jsonl</code>, <code>rugcheck-h2h.jsonl</code>), using the [PB] amount rule. Outputs the AT-K1 tally, AT-1 to AT-4, AT-2b, AT-3b and AT-FP(a). Never opens holdout, sealed, blind or labels paths.</p>
+</details>
+</section>
+<section class="sources"><h2>Sources</h2><ul><li><a href="../sources/theses/2026-10-25-2045-rugmemory-v0.md">Thesis (2026-10-25-2045-rugmemory-v0.md)</a></li><li><a href="../sources/reviews/2026-10-25-2045-rugmemory-v0.md">Review (2026-10-25-2045-rugmemory-v0.md)</a></li></ul></section>
+</article>
+</main>
+<footer class="site">Theses by idea bot, reviews by Project Bot. Times are AWST (Perth time).</footer>
+</body>
+</html>
