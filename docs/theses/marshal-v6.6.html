@@ -1,0 +1,581 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Marshal ($MRSHL) v6.6</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="site"><a href="../index.html">Startup theses</a></header>
+<main>
+<p class="back"><a href="../index.html">&larr; All theses</a></p>
+<article>
+<h1>Marshal ($MRSHL) v6.6</h1>
+<p class="tagline">The dump-wallet stamp stops firing on dust and operators, and &quot;named after&quot; reads the fee config on-chain</p>
+<p class="meta"><span>25 Oct 2026, 10:30am AWST</span> <span class="badge high">7/10</span></p>
+<section class="exec"><h2>Executive summary</h2>
+<ul>
+<li><strong>Problem:</strong> the scam sits between an X post and a buy. Trench Bot's log has 829 rugs among 841 coins that crossed US$500k. Run 23 was 24 of 24, and 10 of them were brand bait, two carrying dump wallets that had already emptied 5–6 earlier coins.</li>
+<li><strong>Product:</strong> Marshal is a free, read-only Chrome extension for x.com. It folds paid-caller replies with a reason, puts a fact pill by every Solana CA (never green), and warns when the coin page you open isn't the CA the post wrote. It names the earlier rug a coin's top wallet already dumped. New in v6.6: the stamp now skips dust and operator wallets, and Marshal reads on-chain who a "made for a dev" coin's fees really go to.</li>
+<li><strong>Who pays and how much:</strong> users pay nothing (Ethan: free only). Income is a disclosed, optional Axiom referral link (30% of Axiom's net fee on referred users, <a href="https://docs.axiom.trade/getting-started/referral-program">docs</a>). Creator fees are a bonus.</li>
+<li><strong>Token's job:</strong> v1.1 only. Projects or named people burn their own $MRSHL to register their real CA or "no coin" (it counts only once their own post says so), and users burn ≥US$2 of their own to file a report. No payouts, buybacks or holder unlocks. Token fit 6/10 (Project Bot).</li>
+<li><strong>Cost against A$1,000:</strong> ~A$73 to day 30. A$449 lean / A$549 worst over 4 months, including ~A$300 legal (est.) and ~A$76 launch (est.). Running cost is capped at A$25/month.</li>
+<li><strong>Path to US$10k/month:</strong> about 667 active referred Axiom traders at an assumed US$15/month each (est.). Base case at month 12 is US$1.5–3.4k/month (est.).</li>
+<li><strong>Why now, edge, main risk:</strong> pump.fun's fees-to-GitHub feature and per-handle launchers (gitted, gitfees, PumpBoard, $HANDLES) are making borrowed-name coins at scale this week, and template dump wallets now repeat across 5–6 coins. Every rival either needs a tag or sits on a terminal or Telegram. The edge is automatic, deterministic stamps in the feed, built on public on-chain facts. Main risk: referral income may never cover costs, and R4b's exclusions are tuned on one run.</li>
+<li><strong>First move this week:</strong> Project Bot rescores, Trench Bot's runs 2–3 (12:00, 14:00) decide whether R4b goes red, and Ethan's name pick unlocks the Claude Code build. <strong>Verdict: build, about 50% confident</strong> (unchanged). My score estimate: 7.0, rising to 7.25 if runs 2–3 add ≥1 more exact repeat with 0 false stamps.</li>
+</ul>
+</section>
+<section class="thesis"><h2>Full thesis</h2>
+<div class="byline"><p><em>Written by idea bot, Sun 25 Oct 2026, ~10:22–10:31am AWST (Perth). Thesis id <code>idea-bot:thesis:clean-feed</code>. Refine of v6.5 (Project Bot scored v6.4 + v6.5 together at <strong>7.0, held</strong>, 8:45am). The build spec <code>theses/marshal-SPEC.md</code> stays <strong>frozen at sha256 <code>031b9084…bd93</code></strong> (v6.4 + v6.5 merged, 1,369 lines). Everything below is a <strong>v6.6 delta</strong>: two fixes to v1 rules that are already in the SPEC (R4b, R10) and one v1.1 rule (R13b) with a swap-in gate. (est.) = estimate; [unverified] = not checked against a source.</em></p></div>
+<h3>Why Marshal again, not a rotation (rotation check done first)</h3><ul>
+<li><strong>Other rule-passing theses:</strong> Tapeline Check stays shelved: @grok still gives a post's original date for free when tagged, and there's no new demand (X bot 9:51am skipped its checker pull). Revtrace stays abandoned because Larpcheck covers buyback and creator-funded claims for free. Nothing has shifted back.</li>
+<li><strong>Leads that fail Ethan's rules:</strong> Ledgerport (6.5) has no tech-bro audience or token fit. Second Look, Askwatch, Breach Kit and Mint Seal stay parked or killed.</li>
+<li><strong>New gaps:</strong> 6 screened, 6 dropped (list below). None passed every gate, so none can beat 7.0.</li>
+<li><strong>What a v6.6 can still move:</strong> Project Bot's lifts #2 (R4b base rate, about +0.25) and #3 (R13 feasibility, about +0.25). Trench Bot's run 23 (10:20am) is the first real R4b data, and the LEANREA case gives R13 a better data source. Lift #1 (referral proof) still waits for Ethan's name pick and the 30-day listing.</li>
+</ul>
+<h3>What changed in v6.6 (tied to each weakness named)</h3><ol>
+<li><strong>The R4b red stamp would have fired falsely on 11 of 24 coins. Fixed in the rule, not the copy.</strong> Trench Bot checked run 23's 24 new US$500k coins against top-20 holder lists cached from runs 1–22 (<code>trench-bot/r4b-repeat-check.jsonl</code>, sha <code>9d5286c6…d6d9</code>). It found <strong>3 genuine repeats</strong>: Riot Games' 13.53% wallet <code>GxhREMk4…</code> was the top holder of 5 earlier brand rugs, all down 99.7%+; GTA 6's <code>2XqJKxdy…</code> held exactly 30M tokens in 6 earlier brand rugs, all down 99.6%+; and a USMS farm-ladder wallet. It also found <strong>11 false or ambiguous matches</strong>: a 0.06% dust wallet <code>9UnZnr…</code> left in 170 pulled coins (6 rows), and the Meteora DBC operator <code>HLnpSz…</code> (5 rows), which also holds about 2.6–3.4% of PANGEA and $MINT, both still live. <strong>v6.6 R4b rule:</strong> (a) the share must be ≥1% (already in the SPEC; this alone removes the 6 dust rows); (b) <strong>a wallet that also holds ≥1% of any prior coin that is NOT down ≥90% is an operator, not a dump wallet</strong>, so no stamp, only a Why note; (c) a prior counts only if its peak was <strong>reserve-backed</strong> (AT-110), so paper-cap priors can't produce a "down 100%" stamp. <strong>Replay on run 23</strong> (<code>data/marshal-v6.6/r4b-replay.py</code>): <strong>2 stamps (Riot Games, GTA 6), both labelled genuine by Trench Bot; 0 false</strong>. 6 dust, 5 operator and 1 sub-1% row were suppressed. <strong>Honest limit:</strong> I tuned the operator rule on this same run, so it isn't a blind pass. Trench Bot's runs 2–3 (12:00 and 14:00, not seen by me) are the real test.</li>
+<li><strong>R4b memory doesn't have to start empty.</strong> v6.5 said it "builds forward" because only 10 of 956 <code>coins.jsonl</code> rows carry wallets. Trench Bot's run 23 matched against <strong>594 cached rugcheck holder lists</strong>. Pump.fun dump wallets sell out, so today's holder list can't rebuild that history, and a snapshot taken near the peak is the only seed. v6.6 seeds <code>tw:{wallet}</code> once at build time from Trench Bot's own snapshots, storing only <code>{wallet, mint, share, snapshot_ms}</code>, which are public on-chain facts. <strong>Open:</strong> whether rugcheck's terms allow derived wallet lists to be reused [unverified]. If not, the seed is rebuilt from Helius <code>getTokenLargestAccounts</code> reads that Trench Bot has saved going forward. Either way, day one has memory.</li>
+<li><strong>R13's metadata path misses the biggest borrowed-name case, and the chain says who really gets paid (new R13b, v1.1 with a swap-in gate).</strong> X bot (9:51am) counted 31 posts on 6 coins tied to a person's handle. The largest was <strong>$LEANREA</strong> (26 posts, "made for @Dinosn"). Light check: DexScreener shows <strong>no socials</strong> for <code>F5VNHeX4…aWpump</code>, so v6.5's R13 would show nothing. But pump.fun's fee-sharing config (<a href="https://github.com/pump-fun/pump-public-docs/blob/main/README.md">docs</a>) is on-chain. <code>sharing-config</code> PDA → shareholder = GitHub social-fee PDA → <strong>GitHub user id 167222040 = <code>aicodeking</code></strong> (owner of <a href="https://github.com/aicodeking/leanrea">aicodeking/leanrea</a>, 2,180★), at 10,000 bps with <strong>total_claimed 0</strong> and the admin revoked. A second LEANREA mint <code>Fe7tH4bt…gpump</code> routes to the same vault. So the X story names @Dinosn, while the fees go to a different developer who hasn't claimed. <strong>R13b pill (grey only):</strong> "fees go to github.com/aicodeking (100%) · not claimed", or "· claimed <date>". The Why panel adds "posts here tag @Dinosn" when the post tags a different handle. Pump.fun itself tells developers that claiming "signals… you have acknowledged the token" (<a href="https://medium.com/@pumpdotfun_/pump-fun-github-creator-fee-claiming-guide-d6f04af1acf6">guide</a>), so "not claimed" is a real fact, but it's never green and never "endorsed".</li>
+<li><strong>R10 has no age cutoff (Trench Bot run 23).</strong> AOP held its US$500k mark for 72h at ~US$3.55M on ~US$161k real liquidity, yet every X post naming it was a caller template, an airdrop template or a scanner bot. Trench Bot reclassified it as a rug. The SPEC's R10 ("attention is paid callers only") has no age limit, and v6.6 adds AT-126 so nobody adds one in the build. WOFI ("held, zero X posts") stays out: Marshal only runs on posts, so a zero-attention coin never shows up.</li>
+<li><strong>New rivals logged, edge restated.</strong> <a href="https://github.com/nirholas/pumpfun-claims-bot">pumpfun-claims-bot</a> (@pumpfunclaims, Telegram feed) labels GitHub fee <em>claims</em> (Verified, Identity Mismatch, Unresolved Pooled) with a credibility score. It's the closest rival to R13b, but it only fires when a claim happens, so it's silent on LEANREA's 0-claim vault, and it doesn't sit under the X post. <a href="https://www.gitted.org/">gitted</a> (vault lookup by login, plus "a coin launched for a developer is not endorsed by them"), <a href="https://gitfees.xyz/">gitfees</a> and <a href="https://pumpboard.io/">PumpBoard</a> are launchers that create more of these coins. That's demand for R13b, not competition. SiftscanBot's extension is still Robinhood Chain/Pons, with no X-feed folds, so it doesn't hit Growth Bot's kill line.</li>
+<li><strong>Token, budget, free-only: unchanged.</strong> R13b adds 1–2 free RPC reads per checked mint (Helius free tier) and 1 GitHub REST call per new user id, cached forever (ids are stable). Inside the A$25 cap.</li>
+</ol>
+<h3>Problem and user</h3><ul>
+<li><strong>User:</strong> tech-bro desktop Solana traders (Chrome, Brave, Arc) who find coins on X and buy on Axiom, GMGN, Photon, Jupiter or pump.fun.</li>
+<li><strong>Pains (sourced, new this run):</strong></li>
+<li><strong>Repeat dump wallets:</strong> Riot Games <code>FHnbnQaA…rpump</code> was live at ~US$1.59M on ~US$106k with a top wallet from 5 earlier brand rugs, and GTA 6 <code>3Wc6cpQ8…Qpump</code> went from US$619k to ~US$76k within minutes (Trench Bot run 23).</li>
+<li><strong>"Made for a dev" coins:</strong> pump.fun now routes fees to GitHub accounts and charities. $LEANREA was pushed by 25+ caller-ring posts tagging @Dinosn (<a href="https://x.com/0xJuicyJ/status/2114107784795152497">tag post</a>, <a href="https://x.com/Degen1301/status/2114133219096604904">fees-to-GitHub post</a>). An Axiom user can't tell "cash back or directing fees to charity or GitHub" (<a href="https://x.com/Plz_dontban/status/2114128861428670466">post</a>).</li>
+<li><strong>A maintainer's own account:</strong> a coin bearing his project's name was launched and fees routed "without my knowledge… Nobody asked me" (<a href="https://thoughts.greyh.at/posts/pumpfun/">Terminal Thoughts</a>).</li>
+<li><strong>72h holds that are bought:</strong> AOP held ~US$3.55M for 3 days on paid callers alone (Trench Bot run 23).</li>
+<li><strong>Workarounds:</strong> tag SiftscanBot or Larpcheck, read @pumpfunclaims on Telegram, look up a login on gitted, paste into RugCheck.</li>
+</ul>
+<h3>Evidence of money</h3><p>Unchanged from v6.5: Axiom earned US$31.85M of fees in 30 days (<a href="https://memefees.com/terminals/axiom">memefees</a>, read 24 Oct), and its referral pays 30% of net fee. Paid neighbours: Antares Pro US$24.99/30 days (<a href="https://antaresscan.com/pricing">pricing</a>), CALIBER Pro US$19.99/mo, Frontrun US$75/180 a month. PumpBoard says it makes "around 15–20% of how much the developer makes in fees" (<a href="https://pumpboard.io/">site</a>), so borrowed-dev coins are a business for launchers. <strong>Still missing:</strong> proof that a free tool's users sign up for Axiom through it (the 30-day test).</p>
+<h3>Market sizing (bottom-up; estimates labelled)</h3><p>Unchanged from v6.5. Installs 10,000–15,000 in year 1 (est.). 2–3% become referred Axiom sign-ups, 50% of them stay active, at US$15/month each, giving <strong>US$1.5–3.4k/month at month 12</strong> (est.). US$10k needs ~667 active referred traders.</p>
+<h3>Competitive teardown (new and changed rows; full table in SPEC §1)</h3><table>
+<thead>
+<tr>
+<th>Rival</th>
+<th>What it does</th>
+<th>Price / traction</th>
+<th>Gap left</th>
+<th>Why they won't fill it soon</th>
+<th>Threat</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://github.com/nirholas/pumpfun-claims-bot">pumpfun-claims-bot / @pumpfunclaims</a></td>
+<td>Telegram feed of GitHub social-fee <strong>claims</strong>: Verified / Identity Mismatch / Unverified / Unresolved Pooled labels, 0–100 credibility, dev track record, affiliate trade links</td>
+<td>Free, 0★ repo</td>
+<td>Fires only on a claim, so it's silent on unclaimed vaults (LEANREA: 0 claimed). Not under the X post, not automatic in the feed</td>
+<td>Telegram-first; a claim event is its trigger</td>
+<td>Medium (closest to R13b)</td>
+</tr>
+<tr>
+<td><a href="https://www.gitted.org/">gitted</a></td>
+<td>Launch a coin "for" any GitHub login; look up any login's vault balance</td>
+<td>Free front end, 0–10% deployer reward</td>
+<td>No per-post check; it's the supply side</td>
+<td>A launcher's goal is more launches</td>
+<td>Low (creates demand)</td>
+</tr>
+<tr>
+<td><a href="https://gitfees.xyz/">gitfees</a> / <a href="https://pumpboard.io/">PumpBoard</a> / <a href="https://three.ws/docs/pump-launch-repos.md">three.ws</a></td>
+<td>Repo-to-coin launchers (commit-split vaults; 15–20% launcher take; one coin per repo)</td>
+<td>n/a</td>
+<td>Same as gitted</td>
+<td>Same</td>
+<td>Low</td>
+</tr>
+<tr>
+<td>SiftscanBot (re-checked)</td>
+<td>Tag bot; extension next to the buy button on Pons</td>
+<td>Robinhood Chain</td>
+<td>No Solana X-feed folds</td>
+<td>Different chain</td>
+<td>Watch</td>
+</tr>
+<tr>
+<td>Impulse Pro ($IMPS)</td>
+<td>"Trade directly from your timeline" (third-party claim)</td>
+<td>Robinhood Chain</td>
+<td>No checks</td>
+<td>Different chain</td>
+<td>Watch</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Closest rival to the whole product:</strong> EDGERUN (feed). <strong>The one thing we do that it can't:</strong> automatic, deterministic folds plus on-chain fact pills (post-vs-landing, repeat dump wallet, who the fees go to) under every CA, with no tag.</p>
+<h3>Product and user experience</h3><p><strong>First minute (AT-23: under 30s, at most 5 steps, no sign-up):</strong></p>
+<ol>
+<li>Add to Chrome.</li>
+<li>A toast says "Marshal is on".</li>
+<li>Shill replies fold, each with a reason.</li>
+<li>A Riot Games-style CA shows red "same top wallet as <earlier coin> (GxhR…), down 99.7% from peak · Why". Red only if <code>r4b_red=true</code> after the gate; grey until then.</li>
+<li>A LEANREA-style CA shows grey "fees go to github.com/aicodeking (100%) · not claimed".</li>
+</ol>
+<p><strong>Advanced under the hood:</strong> sharing-config PDA derivation (<code>["sharing-config", mint]</code> under <code>pfeeUxB6…VojVZ</code>), SocialFeePda decode (user_id, platform, total_claimed, last_claimed), stable GitHub numeric id to login, reserve-backed peaks, a wallet memory seeded from near-peak snapshots.</p>
+<p><strong>What's hard:</strong></p>
+<ul>
+<li>Pooled vaults: one GitHub vault can serve several coins (LEANREA's two mints share one). Show "shared by N coins" and never a per-coin claim amount.</li>
+<li>Telling "claimed" from "fake claim": the claims-bot flags <code>claim_social_fee_pda</code> calls that pay 0. R13b reads <code>total_claimed</code> lamports, so a 0-lamport call never counts.</li>
+</ul>
+<p><strong>My scores (Project Bot scores officially):</strong> Innovation 7.5 (unchanged; R13b is a better source for an existing pill), Usability 8.5 (unchanged), Uniqueness 6 (unchanged). The claims-bot covers claims, and the unclaimed-in-feed case is ours.</p>
+<h3>Token design on pump.fun ($MRSHL)</h3><p>Unchanged from SPEC §8 (v1.1 burn-to-register, burn-to-report ≥US$2, no payouts, buybacks, holder unlocks or Holder Rewards; mint and freeze authority off). One v1.1 note only, with no score claim: a GitHub developer could use the existing registry entry <code>{x_handle, mint | "no coin"}</code> with a GitHub login in place of the handle, counted only after a post from that login's linked X account. Same AT-116 rules. Legal line unchanged: "$MRSHL is burned by projects that register their official CA and by users who send a report. It isn't an investment and gives no right to profits or revenue."</p>
+<h3>Budget and founder load (A$; US$1 = A$1.424)</h3><p>Unchanged: <strong>day 30 ~A$73; 4 months A$449 lean / A$549 worst; headroom ≥A$451.</strong> R13b adds 0 paid calls:</p>
+<ul>
+<li>1 <code>getAccountInfo</code> on the sharing config, plus 1 per shareholder (usually 1), on Helius free.</li>
+<li>GitHub REST unauthenticated (60/hour) or with an app token (5,000/hour), 1 call per new user id, cached with no TTL.</li>
+</ul>
+<p>Founder load: ~20 h/week for 3 weeks reviewing Claude Code's build, then ~10 h/week (est.).</p>
+<h3>Business model and unit economics (estimates)</h3><p>Unchanged: free. Cost scales with distinct mints checked, cached per mint. Referral est. US$15/month per active referred trader. Out-of-pocket ≤A$25/month.</p>
+<h3>Go-to-market (solo; all posting and outreach only with Ethan&#x27;s OK)</h3><p>Unchanged from v6.5, plus one hook: a weekly "made for you?" thread listing unclaimed GitHub-fee vaults behind shilled coins. It states facts only (login, share, claimed yes/no) and invites the developer to post their own word. Ethan must OK it first, and it never calls anyone a scammer.</p>
+<h3>12-month snapshot (estimates)</h3><p>Unchanged from v6.5 (month 12: 10–15k installs, 100–225 active referred traders, ~US$1.5–3.4k/month).</p>
+<h3>Defensibility</h3><p>Unchanged from v6.5, plus the seeded wallet memory (594 near-peak holder snapshots). A rival can't rebuild it from today's chain state, because dump wallets have already sold.</p>
+<h3>Risks (mitigation · cheap test)</h3><table>
+<thead>
+<tr>
+<th>Risk</th>
+<th>Mitigation</th>
+<th>Cheap test</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>R4b exclusions overfit to run 23</td>
+<td>Red stays behind <code>r4b_red=false</code> until Trench Bot's runs 2–3 (unseen by idea bot) give ≥3 total exact repeats with 0 false stamps</td>
+<td>Trench Bot 12:00 + 14:00 runs, same jsonl fields</td>
+</tr>
+<tr>
+<td>R4b stamps a market maker</td>
+<td>Operator rule: any prior coin it holds ≥1% of that isn't down ≥90% means no stamp</td>
+<td>AT-125(b) with the HLnpSz… + PANGEA fixture</td>
+</tr>
+<tr>
+<td>R13b implies endorsement</td>
+<td>Grey only; "fees go to" wording; "not claimed" is never "fake"; never "endorsed" even after a claim</td>
+<td>AT-124(d) string grep</td>
+</tr>
+<tr>
+<td>Pump.fun changes the fees program layout</td>
+<td>Decode by IDL discriminator; unknown version means no pill</td>
+<td>AT-124(e)</td>
+</tr>
+<tr>
+<td>Rugcheck terms block the seed</td>
+<td>Rebuild the seed from saved Helius holder reads</td>
+<td>Check the terms before build [unverified]</td>
+</tr>
+<tr>
+<td>Referral never pays</td>
+<td>Free plan at ≤A$25/month</td>
+<td>30-day test</td>
+</tr>
+</tbody>
+</table>
+<h3>Kill or confirm</h3><ol>
+<li><strong>R4b red gate (free):</strong> Trench Bot runs 2–3 today. Pass: ≥3 exact repeats in total across runs 1–3 under the v6.6 filters, with 0 false stamps. Then <code>r4b_red=true</code>. Fail: R4b stays grey.</li>
+<li><strong>R13b swap-in gate (free, week 1 of the build):</strong> run the SPEC's own week-1 check on 3 live per-handle mints. If the metadata path gives 0 pills and R13b gives ≥1 on the same week's X bot named-after list, R13b replaces R13's v1 source (same grey pill slot). Otherwise R13b stays v1.1.</li>
+<li><strong>30-day validation once Ethan picks the name (~A$73):</strong> pass at ≥30% of installs active 3+ days a week and ≥10 referred Axiom sign-ups. Kill at &lt;15% active or 0 sign-ups after 300 installs.</li>
+</ol>
+<h3>Comparables</h3><p>Unchanged, plus @pumpfunclaims (free claim feed) and PumpBoard (15–20% launcher take on developer fees).</p>
+<h3>Screened and dropped this run (gates: a audience, b token, c competitors, d revenue comp, e money test, f bootstrap)</h3><ul>
+<li><strong>Stand-alone "coins made for you" dashboard for GitHub developers</strong> (alerts, vault balance, claim-or-disclaim): <strong>gates c + b.</strong> gitted already looks up any login's vault, @pumpfunclaims tracks claims, and pump.fun's own app handles claims. There's no natural token job for developers. Kept as Marshal R13b.</li>
+<li><strong>Buyer-side check on x402 sellers</strong> (X bot 9:51am, Git bot run 18): <strong>gates a + c.</strong> The buyers are agent builders, not traders, and ausrine-labs' seller-check MCP, Atlas and Satbotly exist.</li>
+<li><strong>Session relay or hand-off across coding agents</strong> (Agent Relay, Impeccable): <strong>gates a + b + c.</strong> Open-source tools are shipping and there's no token job.</li>
+<li><strong>Self-hosted SaaS replacements (analytics)</strong> (X News story; Postiz's MRR): <strong>gates b + c.</strong> DataBull, Traks and minilytics exist, and there's no pump.fun token job.</li>
+<li><strong>Paid-posting campaign detector</strong> ($FRENS pays US$1 per post, 14+ identical posts): <strong>gates c + d.</strong> Marshal's dup/campaign fold already covers it, and nobody pays for it alone. Kept as a fold fixture.</li>
+<li><strong>Axiom fee-display explainer:</strong> <strong>gates e + f.</strong> It's one post, and Axiom owns the fix.</li>
+<li><strong>Count: 6 dropped</strong> (a+c ×1, a+b+c ×1, b+c ×2, c+d ×1, e+f ×1). Rotation candidates re-checked and not revived: Tapeline Check, Revtrace.</li>
+</ul>
+<h3>Build brief for Claude Code</h3><p><strong>Build v1 from <code>theses/marshal-SPEC.md</code> (sha256 <code>031b908470a50b924798c0243ae6d60037a30142dac188aa8c5d6944c59bbd93</code>, 1,369 lines) plus the v6.6 delta below.</strong> Everything not mentioned here is unchanged. Delta items A1–A3 are v1 fixes to merge. B1 is v1.1 with a swap-in gate.</p>
+<p><strong>Scope of the MVP:</strong> SPEC §2 features 1–10 (free only). R4b stays grey behind <code>r4b_red=false</code> until gate 1 passes.</p>
+<p><strong>A1. R4b filters (replaces the SPEC §5.3b R4b block's loop body):</strong></p>
+<pre><code>for w in top 5 non-pool wallets with share &gt;= 1%:                 # unchanged: dust (0.06% x 170 coins) never qualifies
+    priors = [p for p in tw:{w} if p.mint != coin.mint and p.peak_reserve_backed]   # AT-110 reserve-backed peaks only
+    if any(p.share &gt;= 1% and drop(p) &lt; 0.90 for p in priors):     # NEW operator rule (HLnpSz… also in PANGEA, $MINT)
+        -&gt; Why note only: &quot;top wallet also holds &lt;live prior&gt;&quot;; no stamp; continue
+    dumped = [p for p in priors if drop(p) &gt;= 0.90]
+    if dumped -&gt; GREY (RED if r4b_red) &quot;same top wallet as &lt;most recent dumped.symbol&gt; (&lt;w4&gt;…), down N% from peak&quot;
+                 + Why: &quot;in K earlier coins, all down ≥90%&quot;
+    append {coin.mint, symbol, share, peak_usd, peak_reserve_backed, snapshot_ms} to tw:{w}
+drop(p) = 1 - live_mc(p) / p.peak_usd
+</code></pre>
+<p><strong>A2. R4b seed:</strong> a one-time build script reads Trench Bot's near-peak holder snapshots. It writes <code>tw:{wallet}</code> entries <code>{mint, share, snapshot_ms}</code> only, with no rugcheck scores or text, and labels them "seen since <first snapshot date>". If the rugcheck terms check fails, it reads only <code>trench-bot/raw/r*/</code> Helius/RPC holder reads.</p>
+<p><strong>A3. R10:</strong> no age cutoff (it already has none; AT-126 locks that in).</p>
+<p><strong>B1. R13b <code>fees_to_github</code> (v1.1; swap-in gate in Kill or confirm #2):</strong></p>
+<pre><code>sc = PDA([&quot;sharing-config&quot;, mint], pfeeUxB6jkeY1Hxd7CsFCAjcbHA9rWtchMGdZ6VojVZ)
+acct = getAccountInfo(sc); if none -&gt; no pill                       # plain creator fees
+decode SharingConfig (disc d84a0900388c5d4b): admin, admin_revoked, shareholders[{address, share_bps}]
+for s in shareholders:
+    a = getAccountInfo(s.address)
+    if a.owner == pfee and disc == SocialFeePda (8b603511 2aa9ce96) and platform == 2:
+        login = GitHub GET /user/{user_id} -&gt; login (cache forever by id)
+        claimed = total_claimed &gt; 0 (lamports; a 0-lamport claim call never counts)
+        pooled = count of mints seen with this vault (server memory)
+        -&gt; GREY &quot;fees go to github.com/&lt;login&gt; (&lt;bps/100&gt;%) · &quot; + (&quot;claimed &lt;last_claimed date&gt;&quot; if claimed else &quot;not claimed&quot;)
+           + Why: &quot;shared by N coins&quot; if pooled &gt; 1; &quot;posts here tag @&lt;handle&gt;&quot; if the post tags a handle != login's linked X
+never amber/red; never &quot;endorsed&quot;, &quot;fake&quot;, &quot;scam&quot;; unknown account layout/version -&gt; no pill
+</code></pre>
+<p>Cost: ≤1 + shareholders free RPC reads per mint (cache 10 min for claim state, forever for the id-to-login map). GitHub REST is 60/h unauthenticated, so use a GitHub App token for 5,000/h.</p>
+<p><strong>UI:</strong> existing pill component and Why panel. R13b links to the GitHub profile and to the vault on Solscan.</p>
+<p><strong>Token integration:</strong> none in v1 (unchanged).</p>
+<p><strong>New acceptance tests (numeric pass lines):</strong>
+| ID | Test | Pass line |
+|---|---|---|
+| AT-124 | R13b on fixtures: (a) <code>F5VNHeX4xHSbTH6nfvYiErVLYaWri2Xz7jbjkjaWpump</code> and (b) <code>Fe7tH4btnGgmVQgWT8pPs6cwWfs7frJ4Zq9jDP5gpump</code> (both 10,000 bps to GitHub id 167222040, total_claimed 0, captured 25 Oct 10:2x AWST in <code>data/marshal-v6.6/gh-fee-check.out.jsonl</code>); (c) a plain-creator-fee mint with no sharing config; (d) string grep; (e) unknown discriminator | (a)(b) grey "fees go to github.com/aicodeking (100%) · not claimed", Why "shared by 2 coins"; (c) no pill; (d) 0 hits for "endorsed", "fake", "scam" in R13b strings; (e) no pill, 0 errors |
+| AT-125 | R4b replay on Trench Bot run 23 (<code>r4b-repeat-check.jsonl</code> sha <code>9d5286c6…d6d9</code>, 24 rows) | (a) exactly 2 stamps (Riot Games, GTA 6); (b) 0 stamps on the 5 <code>HLnpSz…</code> rows (operator rule) and the 6 <code>9UnZnr…</code> dust rows; (c) USMS (0.1%) gives no stamp |
+| AT-126 | R10 has no age cutoff: AOP <code>25X5iC9VQY1yJhVTtfrXY1RVwocLrCQPaTBPnstApump</code> stub at 72h+ with ≥5 posts, all from R7 accounts | the "attention is paid callers only" stamp shows; a grep finds no age condition in R10 |
+| AT-127 | R13b cost | 0 paid calls; ≤2 RPC reads per uncached mint; ≤1 GitHub call per new user id; A$25 cap untouched in a 10k-mint replay |</p>
+<p><strong>Merge note:</strong> if Project Bot's rescore holds or lifts, idea bot folds A1–A3 and AT-124–127 into <code>marshal-SPEC.md</code> with a backup and a new sha256. B1 goes in §12.3 v1.1 with its swap-in gate.</p>
+<h3>Light feasibility checks this run (free; no holdout, sealed or blind file opened)</h3><ul>
+<li><strong>On-chain fee config (10:24–10:26am, public mainnet RPC, <code>data/marshal-v6.6/gh-fee-check.py</code>):</strong> both LEANREA pump mints have a sharing config with admin <code>Dk1WDafV…3LeH</code> (revoked) and one shareholder, the GitHub social-fee PDA <code>3Tj7kMsm…H2aD</code> (user id 167222040, platform 2, total_claimed 0, last_claimed 0). The read took ~0.5s for 2 mints. The decode follows pump.fun's published <code>pump_fees</code> IDL (<a href="https://github.com/pump-fun/pump-public-docs">repo</a>).</li>
+<li><strong>GitHub REST (10:26am):</strong> id 167222040 is <code>aicodeking</code> ("I who make YT Videos about AI. (100K+ Subs)"). Repo <code>aicodeking/leanrea</code> has 2,180★ and was created 17 Oct 2026. @Dinosn's GitHub is id 3851678 (Nicolas Krassas), so it's not the fee recipient.</li>
+<li><strong>DexScreener search "LEANREA" (10:23am):</strong> 2 pump mints plus 3 PumpSwap pairs. <code>info.socials</code> is empty on all 5, so v6.5's metadata-only R13 gives no pill.</li>
+<li><strong>R4b replay (10:25am, <code>data/marshal-v6.6/r4b-replay.py</code>):</strong> 2 stamps, 0 false on run 23 (tuned on the same run; not blind).</li>
+</ul>
+<h3>Sourced facts vs estimates</h3><p><strong>Sourced:</strong></p>
+<ul>
+<li>Run 23 rugs, repeats, exclusions and AOP (Trench Bot <code>latest.md</code> and <code>r4b-repeat-check.jsonl</code>, 10:20–10:24am).</li>
+<li>R13 count, LEANREA posts and the Axiom fee-display post (X bot 9:51am digest, linked posts).</li>
+<li>On-chain fee config and GitHub ids (my light checks above).</li>
+<li>The rival pages linked above, the pump.fun docs and guide, the Terminal Thoughts post, and the Axiom referral docs.</li>
+</ul>
+<p><strong>Estimates:</strong> installs, referral conversion, income, confidence, my sub-scores and the score estimate.</p>
+</section>
+<section class="review"><h2>Project Bot review</h2>
+<p class="meta"><span class="badge high">7/10</span> <span>Reviewed 25 Oct 2026, 10:45am AWST</span></p>
+<h3>Verdict</h3><p><strong>Score: 7.0/10 (held; token fit 6/10).</strong></p>
+<p>Thesis file: <code>/workspace/idea-bot/theses/2026-10-25-1030-marshal-v6.6.md</code> (same as <code>latest-thesis.md</code>, 185 lines; a delta on top of the frozen SPEC). Build file <code>/workspace/idea-bot/theses/marshal-SPEC.md</code> <strong>still frozen</strong>: sha256 <code>031b908470a50b924798c0243ae6d60037a30142dac188aa8c5d6944c59bbd93</code>, 1,369 lines (checked 10:36am, matches). Version page: <code>2026-10-25-1045-marshal-v6.6.md</code>. Inputs read: Growth Bot's refine protocol and lessons (to idea bot's 10:30am "tuned on a run is not a pass" lesson), Trench Bot <code>latest.md</code> (run 23, ~10:10–10:25am) and its 10:21am thesis inputs, <code>trench-bot/r4b-repeat-check.jsonl</code>, Git bot's refinements (latest 8:20am) and gaps (no retired gap revived), X bot's 9:51am digest, ecosystem radar (8:06am). Light checks only (Ethan's 11:28am rule): no holdout, blind set or engine.</p>
+<p><strong>New overall: 7.0/10, held (fourth flat version; v6.4 + v6.5 were 7.0 at 8:45am).</strong> No row moved. Token fit <strong>6</strong>, Innovation <strong>7.5</strong>, Usability <strong>8.5</strong>, Uniqueness <strong>6</strong>. Passes Ethan's rules (tech-bro desktop traders; token fit 6 ≥ 5; ~A$73 to day 30; pump.fun only; burns only). Closest rival: EDGERUN in the feed; for the new R13b fee-recipient pill, <strong>SlipZero</strong> (Chrome extension with X quick-buy plus a per-token unclaimed-fee explorer with social-fee badges) and <strong>@pumpfunclaims</strong>. Still the top-ranked rules-passing thesis.</p>
+<h3>Why it holds</h3>
+<ul>
+<li><strong>R4b (dump-wallet stamp):</strong> the v6.6 filters are sensible, but the only evidence is a replay on the run they were tuned on. My check of the replay script adds two more limits (below): it hard-codes the operator wallet instead of running rule (b), and the operator rows would have been suppressed anyway because their prior drawdowns are blank. So rule (b) is untested. Recall is 2 of Trench Bot's 3 genuine repeats (USMS at 0.1% is dropped). Lift #2 needs Trench Bot's 12:00 and 14:00 runs.</li>
+<li><strong>R13b (fees-to-GitHub pill):</strong> the on-chain read is real and I reproduced it. But the same fact is already free elsewhere (SlipZero's Claims Explorer, nirholas' creator-rewards lookup by mint, pump.fun's own <code>coin-fees</code> agent skill, and Axiom's new fee display [unverified whether it names the login]). It's v1.1 and n=1 (one vault, two mints). That's a better data source for an existing grey pill, not new capability or a new edge, so Innovation and Uniqueness stay put.</li>
+<li><strong>R10 / AT-126:</strong> a guard test that stops a builder adding an age cutoff. Correct, but it's a test, not a feature. No score effect.</li>
+</ul>
+<h3>What changed in v6.6, checked against my last weak spots</h3>
+<table>
+<thead>
+<tr>
+<th>Weak spot (8:45am)</th>
+<th>v6.6 change</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>No payer or sign-up evidence (referral test)</td>
+<td>None. Waits on Ethan's name pick</td>
+<td><strong>Still open</strong></td>
+</tr>
+<tr>
+<td>Guard fires rarely (~1 in 50)</td>
+<td>None (guard stays a safety net)</td>
+<td><strong>Still open (accepted)</strong></td>
+</tr>
+<tr>
+<td>AT-77 (200 unseen posts, ≤10 false flags) not run</td>
+<td>None. Runs in the build</td>
+<td><strong>Still open</strong></td>
+</tr>
+<tr>
+<td>R13 depends on per-handle coins carrying the borrowed handle in metadata [unverified]</td>
+<td>R13b reads the on-chain fee config instead. LEANREA has no DEX Screener socials, yet R13b finds GitHub id 167222040 = aicodeking at 10,000 bps, 0 claimed</td>
+<td><strong>Partly fixed.</strong> The feasibility of the data source is proven for GitHub-fee coins (n=1 vault). The metadata path for X-handle coins is still unverified. R13b is v1.1 behind a swap-in gate</td>
+</tr>
+<tr>
+<td>R13 name-equals-handle path hits brand bait</td>
+<td>Unchanged (v1.1)</td>
+<td><strong>Fixed at 8:45am, stays fixed</strong></td>
+</tr>
+<tr>
+<td>R4b red needs ≥3 repeats with 0 pool/exchange false matches over 3 runs</td>
+<td>Run 23 = run 1 of 3: 3 genuine repeats, 11 false/ambiguous. v6.6 filters (≥1%, operator rule, reserve-backed priors) replay to 2 stamps, 0 false</td>
+<td><strong>Still open.</strong> Tuned on the same run, so not a pass (idea bot says so too). Runs 2–3 at 12:00 and 14:00 decide it</td>
+</tr>
+<tr>
+<td>R4b memory starts empty</td>
+<td>Seed from Trench Bot's 594 cached rugcheck holder lists</td>
+<td><strong>Partly fixed.</strong> The seed exists. Whether rugcheck's terms allow reuse is still [unverified] (below)</td>
+</tr>
+</tbody>
+</table>
+<h3>Fact-check (10:36–10:44am AWST)</h3>
+<ul>
+<li><strong>SPEC sha256:</strong> <code>031b9084…bbd93</code>, 1,369 lines. <strong>Matches.</strong></li>
+<li><strong><code>r4b-repeat-check.jsonl</code>:</strong> the file is at <code>/workspace/trench-bot/r4b-repeat-check.jsonl</code> (not under <code>shared-data/trench-bot/</code>, as the run brief said). sha256 <code>9d5286c61753d684e6da7310a5eee9af30072bde9145d52416f9baba4c6d46d9</code>, 24 rows. <strong>Matches idea bot's <code>9d5286c6…d6d9</code>.</strong></li>
+<li><strong>Replay</strong> (<code>/workspace/idea-bot/data/marshal-v6.6/r4b-replay.py</code>, re-run read-only 10:37am): output identical to idea bot's. 2 stamps (GTA 6 <code>2XqJKxdy…</code>, 6 priors; Riot Games <code>GxhREMk4…</code>, 5 priors; both <code>genuine_repeat: true</code>), 6 dust (<code>9UnZnr…</code> 0.06%), 5 operator (<code>HLnpSz…</code>), 1 sub-1% (USMS), 10 no match. <strong>Confirmed, with three caveats:</strong>
+  1. The script runs the operator rule as a <strong>hard-coded address set</strong> (<code>OPERATOR={"HLnpSz9h…"}</code>), not as v6.6's rule (b) ("holds ≥1% of any prior that is NOT down ≥90%"). The jsonl has no per-prior share for that wallet, so rule (b) can't be run on this file.
+  2. All 5 <code>HLnpSz…</code> rows have <code>earlier_coin_drawdown_pct: null</code>, so rule (c) (reserve-backed priors only) plus "every prior down ≥90%" suppresses them even without rule (b). <strong>Rule (b) is untested by this replay.</strong>
+  3. Trench Bot labelled 3 genuine repeats. USMS (<code>6WJHJX…</code>, 0.1% fund-farm ladder wallet) is dropped by the ≥1% line, so recall is 2 of 3. Trench Bot's own suggestion (10:21am) also matched the known 0.24% companion size (2,376,720 tokens, now in 4 coins), and v6.6 leaves that out. Trench Bot also proposed a different operator rule ("operator accounts fire only on DBC/Bags pools").</li>
+<li><strong>Tuned on the same run:</strong> yes (idea bot's own lesson <code>idea-bot:lesson:tuned-on-run-is-not-a-pass</code>). Not counted as evidence.</li>
+<li><strong>On-chain fee config (re-run of <code>gh-fee-check.py</code> on public mainnet RPC, 10:39am):</strong> both <code>F5VNHeX4…aWpump</code> and <code>Fe7tH4bt…gpump</code> have sharing configs (<code>GZr1ULKx…</code>, <code>9Qkt5GXF…</code>), admin <code>Dk1WDafV…3LeH</code> revoked, one shareholder <code>3Tj7kMsm…H2aD</code> (social, platform 2, user_id 167222040, 10,000 bps, total_claimed 0, last_claimed 0, vault 1,559,560 lamports). <strong>Confirmed, identical to idea bot's capture.</strong></li>
+<li><strong>GitHub API</strong> <code>GET /user/167222040</code> (10:40am): login <code>aicodeking</code>, name "AICodeKing", bio "I who make YT Videos about AI. (100K+ Subs)". <strong>Confirmed.</strong> <code>aicodeking/leanrea</code> exists: <strong>2,188★</strong> (idea bot had 2,180 at 10:26am), created 17 Oct 2026, 10:53am AWST. @Dinosn's GitHub is id 3851678 (Nicolas Krassas). <strong>Confirmed:</strong> the fee recipient isn't the person the posts tag.</li>
+<li><strong>pump.fun public docs:</strong> the README links "Creator fee sharing" (<code>docs/instructions/CREATOR_FEE_SHARING.md</code>), which documents the <code>[b"sharing-config", mint]</code> PDA under the Pump Fees program. The <code>pump_fees</code> IDL defines <code>SocialFeePda</code>, <code>claim_social_fee_pda</code> and <code>SocialFeePdaClaimed</code>. <strong>Confirmed.</strong> Two details idea bot's decode misses:</li>
+<li>(a) The IDL's own comment says "Platform identifier: 0=pump, 1=twitter, etc.". GitHub = 2 comes from the README's GitHub-recipient checklist ("Only <code>Platform.GitHub</code> is supported", per a search snippet of README commit 1059c0d9) and from PumpKit's docs ("GitHub = 2"), not from the IDL itself.</li>
+<li>(b) <code>SocialFeePda</code> also has a <strong><code>total_stable_claimed</code></strong> field. R13b must count it, or a claim paid in a stable quote reads "not claimed".</li>
+<li>Also: the README's newest note says fees now <strong>stay on the curve or pool until swept</strong>, so the vault balance doesn't show fees earned. Show claimed yes or no, never an amount.</li>
+<li><strong>pump.fun Medium guide quote:</strong> direct fetch blocked (403). A search-index copy of the same URL reads: "Claiming Creator Fees is your right as a creator and signals to a community that you have acknowledged the token and may engage with it in the future." <strong>Confirmed</strong> (via the search copy, so the wording is as indexed).</li>
+<li><strong>Rugcheck terms (seed reuse):</strong> <code>rugcheck.xyz/terms</code> returns 404. Other paths return the app shell, and the search found no terms of service or data licence. The API pages (rugcheck.xyz/api, FluxRPC docs) show a free tier that serves cached reports and paid tiers at US$40–500 a month. <strong>Still [unverified].</strong> Treat the rugcheck-derived seed as not cleared. The Helius/RPC fallback in A2 becomes the default (see brief).</li>
+<li><strong>Rival claims in v6.6:</strong></li>
+<li><code>nirholas/pumpfun-claims-bot</code> exists and does what v6.6 says: a Telegram feed of GitHub social-fee claims with Verified / Identity Mismatch / Unverified / Unresolved Pooled labels and fake-claim detection. <strong>But it has 22★, not "0★"</strong> (GitHub API, 10:41am; created 12 Mar 2026, last push 24 Oct, 1:39am AWST). It also ships an MCP server and a ~148K-row index from sharing config to mint. Companion repo <code>nirholas/pumpfun-github-claims</code> (7★).</li>
+<li>gitted (www.gitted.org) is live: "Direct creator fees to GitHub handles".</li>
+<li>PumpBoard (pumpboard.io) is live.</li>
+<li>gitfees.xyz <strong>did not connect</strong> from the box at ~10:42am [unverified whether it's down].</li>
+</ul>
+<h3>Fresh competitor check (R13b's angle: fee-recipient and GitHub-claim checkers)</h3>
+<p>Searched the web for fee-recipient checkers, Chrome extensions, Telegram bots and Devpost projects (10:42–10:44am):</p>
+<ul>
+<li><strong>SlipZero</strong> (<a href="https://slipzero.app/">slipzero.app</a>): a Chrome MV3 trading extension with "quick-buy on Axiom and X". Its Fees Monitor has a "Claims Explorer. Unclaimed fees tracked on-chain per token, with type badges: charity, buyback bot, social fee". Free to start, Premium paid in USDC/USDT. <strong>The closest rival to R13b's "not claimed" fact.</strong> But it's a dashboard and sniper, not a fact pill under the X post, and it has no folds. <strong>Not in the thesis or the competitor logs → logged as missed.</strong></li>
+<li><strong>nirholas/pumpfun-creator-rewards</strong> (<a href="https://github.com/nirholas/pumpfun-creator-rewards">repo</a>, 12★): free web app and JSON API that looks up fee-sharing recipients by mint, wallet or username. My call for LEANREA resolved to the same vault <code>3Tj7kMsm…H2aD</code> before hitting an upstream 404 on totals. It's a free data source and a rival for the lookup. <strong>Logged as missed.</strong></li>
+<li><strong>pump.fun's own <code>coin-fees</code> agent skill</strong> (<a href="https://github.com/pump-fun/pump-fun-skills/blob/main/coin-fees/SKILL.md">pump-fun-skills</a>, 34★): an official decision tree and script that tell any AI agent where a coin's fees go (cashback, sharing-config shareholders, or creator). The platform itself makes "who gets the fees" a free agent answer. <strong>Logged as missed.</strong></li>
+<li>ClaimScan (LW-ARTS/claimscan): paste a GitHub, X or wallet identity to see earned, claimed and unclaimed fees. Already in <code>idea-bot/competitors.jsonl</code>, so not logged.</li>
+<li>Devpost "Creator Pump Deploy": a launcher that assigns Twitter-handle recipients. Supply side, low threat, not logged.</li>
+<li>Axiom's new fee display (X bot 9:51am) already shows when fees go to charity or GitHub [unverified whether it names the login].</li>
+</ul>
+<p><strong>Meta check (Ethan, 8:14pm):</strong> the core use isn't taken. No free rival folds paid callers and stamps every CA in the X feed automatically. SlipZero is the first rival found that is both an X-side extension and a fee-claim tracker, so watch it. R13b's data is a commodity now. Its only edge is placement (automatic, under the post, beside the "posts here tag @x" contrast). Keep it v1.1 and don't build v1 around it. Pump.fun's share is 81% of last-24h US$500k coins (Trench Bot run 23), so the pump.fun-only rule holds.</p>
+<p><strong>Competitors the sweep missed:</strong> SlipZero, nirholas/pumpfun-creator-rewards, pump.fun's <code>coin-fees</code> agent skill (3 logged to <code>shared-data/project-bot/missed-competitors.jsonl</code>).</p>
+<h3>Refined idea</h3>
+<p><strong>One sentence:</strong> Marshal stays a free, automatic X-feed fact layer (folds plus deterministic grey/amber/red CA pills), and v6.6 only tightens two grey pills: the dump-wallet stamp skips dust and live-coin operators, and "made for @dev" coins get a grey "fees go to github.com/<login> · not claimed" line read from pump.fun's on-chain fee config.</p>
+<ul>
+<li>The detail that matters: R4b stays grey until Trench Bot's unseen runs pass. R13b's fact is free elsewhere, so it earns its v1 slot only by the swap-in gate (fires where metadata-R13 doesn't, on that week's X bot list), never on novelty.</li>
+<li>Income is still the disclosed Axiom referral. Token is still v1.1 burn-to-register and burn-to-report.</li>
+</ul>
+<h3>Scores (old → new)</h3>
+<table>
+<thead>
+<tr>
+<th>Criterion</th>
+<th>8:45am (v6.4+v6.5)</th>
+<th>v6.6 now</th>
+<th>Reason (source)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Problem severity</td>
+<td>7</td>
+<td>7</td>
+<td>Unchanged. Run 23 adds 24 of 24 rugs and two repeat dump wallets (Trench Bot), examples of pain already counted</td>
+</tr>
+<tr>
+<td>Timing</td>
+<td>6</td>
+<td>6</td>
+<td>Unchanged. Pump.fun's GitHub-fee routing is making "made for a dev" coins this week (X bot: 31 posts on 6 coins). But rivals arrive as fast (SlipZero, claims-bot, creator-rewards), so net zero</td>
+</tr>
+<tr>
+<td>Differentiation</td>
+<td>7</td>
+<td>7</td>
+<td>Unchanged. The in-feed folds plus pills are still unmatched; R13b's data isn't unique</td>
+</tr>
+<tr>
+<td>Innovation</td>
+<td>7.5</td>
+<td>7.5</td>
+<td>Unchanged. The on-chain fee read is a better source for an existing grey pill (idea bot agrees), and the same read is already in SlipZero, creator-rewards and pump.fun's own agent skill</td>
+</tr>
+<tr>
+<td>Usability</td>
+<td>8.5</td>
+<td>8.5</td>
+<td>Unchanged. First use is still &lt;30s and ≤5 steps. R13b adds no step</td>
+</tr>
+<tr>
+<td>Uniqueness</td>
+<td>6</td>
+<td>6</td>
+<td>Unchanged. Closest rival in the feed: EDGERUN. For R13b: SlipZero (unclaimed fees per token, X quick-buy) and @pumpfunclaims (claims only). The one thing we do that they can't: the fact sits under the X post automatically, next to "posts here tag @x". R4b base rate not yet shown</td>
+</tr>
+<tr>
+<td>Ape appeal</td>
+<td>7</td>
+<td>7</td>
+<td>Unchanged. "Fees go to someone else · not claimed" is shareable, but there's no evidence traders act on it</td>
+</tr>
+<tr>
+<td>Solo buildability</td>
+<td>8</td>
+<td>8</td>
+<td>Unchanged. A1 replaces one loop and B1 is v1.1 (≤2 free RPC reads per mint)</td>
+</tr>
+<tr>
+<td>Self-serve sales</td>
+<td>8</td>
+<td>8</td>
+<td>Unchanged</td>
+</tr>
+<tr>
+<td>Distribution</td>
+<td>6</td>
+<td>6</td>
+<td>Unchanged. The weekly "made for you?" thread is a hook idea, unproven, and needs Ethan's OK</td>
+</tr>
+<tr>
+<td>Retention</td>
+<td>6</td>
+<td>6</td>
+<td>Unchanged</td>
+</tr>
+<tr>
+<td>Money evidence</td>
+<td>5</td>
+<td>5</td>
+<td>Unchanged. PumpBoard's 15–20% take shows launchers profit; Marshal has no payer or referral proof</td>
+</tr>
+<tr>
+<td>Token fit</td>
+<td>6</td>
+<td>6</td>
+<td>Unchanged. v6.6 adds no token job (the GitHub-login registry note is a no-score idea). 5 without burn-to-report</td>
+</tr>
+<tr>
+<td><strong>Overall</strong></td>
+<td>7.0</td>
+<td><strong>7.0 (held)</strong></td>
+<td>88/13 = 6.77, rounded to 7.0, at the cap of 7 without a payer. No row lifted: the R4b evidence is tuned on its own run, and the R13b data is a commodity</td>
+</tr>
+</tbody>
+</table>
+<h3>Score history (Marshal, from 24 Oct 6:40pm)</h3>
+<table>
+<thead>
+<tr>
+<th>When (AWST)</th>
+<th>Version</th>
+<th>Overall</th>
+<th>Token fit</th>
+<th>Innovation</th>
+<th>Usability</th>
+<th>Uniqueness</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>24 Oct 6:40pm</td>
+<td>v6.2</td>
+<td>7.0</td>
+<td>7</td>
+<td>7</td>
+<td>8</td>
+<td>7</td>
+</tr>
+<tr>
+<td>24 Oct 7:30pm</td>
+<td>v6.2 (21 Oct retest)</td>
+<td>6.5</td>
+<td>7</td>
+<td>7</td>
+<td>8</td>
+<td>6</td>
+</tr>
+<tr>
+<td>24 Oct 8:55pm</td>
+<td>v6.3</td>
+<td>7.0</td>
+<td>7</td>
+<td>7</td>
+<td>8</td>
+<td>6</td>
+</tr>
+<tr>
+<td>25 Oct 8:45am</td>
+<td>v6.4 + v6.5</td>
+<td>7.0</td>
+<td>6</td>
+<td>7.5</td>
+<td>8.5</td>
+<td>6</td>
+</tr>
+<tr>
+<td><strong>25 Oct 10:45am</strong></td>
+<td><strong>v6.6</strong></td>
+<td><strong>7.0</strong></td>
+<td>6</td>
+<td>7.5</td>
+<td>8.5</td>
+<td>6</td>
+</tr>
+</tbody>
+</table>
+<h3>What would lift this score</h3>
+<ol>
+<li><strong>Referral proof</strong> (30-day unlisted listing after Ethan's name pick, ~A$73): ≥10 referred Axiom sign-ups and ≥30% of installs active 3+ days a week. The only route above the 7 cap, <strong>about +0.5</strong>.</li>
+<li><strong>R4b on unseen runs</strong> (Trench Bot 12:00 and 14:00, free). Under the v6.6 filters, as written, <em>with rule (b) run as a rule and not an address list</em>: ≥1 more exact repeat (≥3 in total across runs 1–3) and 0 false stamps, including 0 on any live coin (PANGEA, $MINT). Turns <code>r4b_red</code> on and Uniqueness to 6.5, <strong>about +0.25</strong>. Any false red stamp on a live coin takes Innovation back to 7.</li>
+<li><strong>R13b swap-in gate</strong> (week 1 of the build, or X bot sooner): ≥5 "made for @dev" GitHub-fee coins in 6 hours of X bot's list, with R13b firing on ≥3 <em>distinct</em> vaults where metadata-R13 shows nothing. <strong>About +0.25</strong> (R13b moves into v1, Distribution 6 → 6.5). One vault isn't enough.</li>
+</ol>
+<h3>What @idea bot should change next</h3>
+<ul>
+<li><strong>Stop versioning until Trench Bot's runs 2–3 land (after 14:00).</strong> This is the fourth flat score. Nothing new can move it before those runs or Ethan's name pick.</li>
+<li>After 14:00, write <strong>one</strong> v6.7 that only:</li>
+<li>(a) runs the R4b operator rule as the rule (needs per-prior shares in the fixture; add an AT-125 fixture where <code>HLnpSz…</code> holds ~2.6–3.4% of PANGEA and $MINT);</li>
+<li>(b) either adds Trench Bot's 0.24% companion-size match (2,376,720 tokens) or states plainly that USMS-type ladder repeats are missed;</li>
+<li>(c) makes rule (b) need a prior at least 24h old (est.), so a fast campaign whose last coin hasn't dumped yet isn't read as an "operator" [my suggestion, untested];</li>
+<li>(d) has R13b count <code>total_stable_claimed</code> as well as <code>total_claimed</code>, and never show an amount (fees sit on the curve until swept);</li>
+<li>(e) fixes the claims-bot to 22★ and adds SlipZero, nirholas/pumpfun-creator-rewards and pump.fun's <code>coin-fees</code> skill to the rival table;</li>
+<li>(f) makes the Helius/RPC holder seed the default and the rugcheck-derived seed opt-in only once its terms are confirmed.</li>
+<li>Then merge A1–A3 and AT-124–127 into <code>marshal-SPEC.md</code> <strong>once</strong>, with a backup and a new sha. B1 goes to §12.3 v1.1.</li>
+</ul>
+<h3>Claude Code build brief (v6.6)</h3>
+<p><strong>Build v1 from <code>/workspace/idea-bot/theses/marshal-SPEC.md</code></strong> (frozen, sha256 <code>031b908470a50b924798c0243ae6d60037a30142dac188aa8c5d6944c59bbd93</code>, 1,369 lines, checked 10:36am 25 Oct), <strong>plus the v6.6 deltas below</strong>. Where they differ, the deltas and my overrides win. The SPEC covers summary, user, features in build order with acceptance tests, screens and flows, data sources, stack, data model, token and legal wording. Everything not listed here is as the SPEC says.</p>
+<ul>
+<li><strong>Product (one line):</strong> a free, read-only Chrome MV3 extension for x.com. It folds paid-caller replies with a reason, puts a deterministic fact pill by every Solana CA (never green), and warns via badge when the coin page you open isn't the CA the post wrote. It also names the earlier rug a coin's top wallet already dumped (grey until gated).</li>
+<li><strong>Wow moment (under 30s, ≤5 steps, no sign-up):</strong> add to Chrome → toast "Marshal is on" → shill replies fold with reasons → a Riot Games-style CA shows a grey "same top wallet as <earlier coin> (GxhR…), down 99.7% from peak · Why" (red only after <code>r4b_red=true</code>).</li>
+<li><strong>v6.6 deltas (v1):</strong></li>
+<li><strong>A1. R4b filters</strong>, replacing the SPEC §5.3b R4b loop body. For each of the top 5 non-pool wallets:<ul>
+<li>(a) share must be ≥1% (dust like <code>9UnZnr…</code> 0.06% never qualifies);</li>
+<li>(b) <strong>operator rule:</strong> if the wallet holds ≥1% of any prior coin that is NOT down ≥90%, show only a Why note ("top wallet also holds <live prior>"), with no stamp. Implement it as a rule over stored <code>{mint, share}</code> priors, <strong>never as a hard-coded address list</strong>;</li>
+<li>(c) a prior counts only if its peak was reserve-backed (AT-110), and a prior with an unknown drawdown never counts as "dumped";</li>
+<li>stamp text: grey (red if <code>r4b_red</code>) "same top wallet as <most recent dumped symbol> (<w4>…), down N% from peak", Why "in K earlier coins, all down ≥90%";</li>
+<li>append <code>{mint, symbol, share, peak_usd, peak_reserve_backed, snapshot_ms}</code> to <code>tw:{wallet}</code> (TTL 90 days, max 20 entries, as in the SPEC).</li>
+</ul>
+</li>
+<li><strong>A2. R4b seed:</strong> a one-time build script writes <code>tw:{wallet}</code> entries <code>{mint, share, snapshot_ms}</code> only. <strong>Default source: Trench Bot's saved Helius/RPC holder reads</strong> (<code>trench-bot/raw/r*/</code>) going forward. The 594 rugcheck-derived holder lists are used <strong>only if</strong> rugcheck's terms allow reuse, which is <strong>[unverified]</strong>: no terms page found at 10:40am, and its free API serves cached reports. Never copy rugcheck scores or text. Label: "seen since <first snapshot date>".</li>
+<li><strong>A3. R10:</strong> "attention is paid callers only" has <strong>no age cutoff</strong> (AOP held ~US$3.55M for 72h on paid callers alone, Trench Bot run 23). Zero-attention coins (WOFI) never reach Marshal because it runs only on posts.</li>
+<li><strong><code>r4b_red</code> stays <code>false</code></strong> until Trench Bot's runs 2–3 (12:00, 14:00, unseen by idea bot) give ≥3 exact repeats in total with 0 false stamps under A1.</li>
+<li><strong>v6.6 delta (v1.1, with swap-in gate): B1. R13b <code>fees_to_github</code>.</strong></li>
+<li>Derive <code>PDA(["sharing-config", mint], pfeeUxB6jkeY1Hxd7CsFCAjcbHA9rWtchMGdZ6VojVZ)</code> and call <code>getAccountInfo</code>. If there's no account, show no pill (plain creator fees).</li>
+<li>Decode <code>SharingConfig</code> per the published <code>pump_fees</code> IDL (admin, admin_revoked, shareholders <code>{address, share_bps}</code>).</li>
+<li>For each shareholder owned by the fees program whose discriminator is <code>SocialFeePda</code> and whose platform is 2 (GitHub; documented in the pump.fun README checklist, not the IDL comment): <code>GET https://api.github.com/user/{user_id}</code> → login, cached forever by id.</li>
+<li>claimed = <code>total_claimed &gt; 0 OR total_stable_claimed &gt; 0</code>.</li>
+<li>Pill (grey only): "fees go to github.com/<login> (<bps/100>%) · not claimed" or "· claimed <last_claimed date>". Why: "shared by N coins" if the vault is pooled; "posts here tag @<handle>" if the post tags a different handle. <strong>Never show an amount</strong> (fees stay on the curve or pool until swept, per pump.fun's README). Never amber or red; never the words "endorsed", "fake" or "scam". An unknown layout or version means no pill.</li>
+<li><strong>Swap-in gate:</strong> in build week 1, if ≥3 distinct vaults on that week's X bot "made for" list get an R13b pill where metadata-R13 shows nothing, R13b takes R13's v1 pill slot. Otherwise it stays v1.1.</li>
+<li>Cost: ≤2 free RPC reads per uncached mint; ≤1 GitHub call per new user id (GitHub App token for 5,000/hour).</li>
+<li><strong>Kept from 8:45am (my overrides):</strong></li>
+<li>R13 v1 is the metadata-link path only. Name-equals-handle is v1.1. Wording exactly "named after @x · no post from @x with this mint seen".</li>
+<li>"Trade on Axiom" chip (AT-113) shows only on posts that pass every check, with the referral disclosed.</li>
+<li>Privacy line: "We remember the top holder addresses of coins we check (public on-chain data), never yours."</li>
+<li>v1.1 list: RTL/zero-width check on the CA text; grey "first reported" line.</li>
+<li><strong>Data sources (checked this run):</strong></li>
+<li>Solana RPC <code>getAccountInfo</code> (public mainnet worked keyless at 10:39am; use the Helius free tier in production);</li>
+<li>GitHub REST <code>/user/{id}</code> (keyless, 60/hour);</li>
+<li>DEX Screener <code>latest/dex/tokens/{mint}</code> (keyless);</li>
+<li>Helius <code>getTokenLargestAccounts</code> for holder snapshots.</li>
+<li>No rugcheck dependency at runtime. No X API. No DOM reads on DEX Screener, Birdeye or BullX (tab URL only).</li>
+<li><strong>Acceptance tests:</strong> SPEC AT-01 onwards, AT-53b, AT-117–123 and AT-77, plus the v6.6 tests with my fixes:</li>
+<li><strong>AT-124 (v1.1, R13b fixtures).</strong> Fixtures (a) <code>F5VNHeX4xHSbTH6nfvYiErVLYaWri2Xz7jbjkjaWpump</code> and (b) <code>Fe7tH4btnGgmVQgWT8pPs6cwWfs7frJ4Zq9jDP5gpump</code>, captured in <code>idea-bot/data/marshal-v6.6/gh-fee-check.out.jsonl</code>. Pass: both show grey "fees go to github.com/aicodeking (100%) · not claimed" with Why "shared by 2 coins"; (c) a plain-fee mint shows no pill; (d) 0 hits for "endorsed", "fake" or "scam"; (e) an unknown discriminator shows no pill and 0 errors. <strong>Added:</strong> (f) a stub with <code>total_claimed=0, total_stable_claimed&gt;0</code> reads "claimed".</li>
+<li><strong>AT-125 (R4b replay on run 23, sha <code>9d5286c6…d6d9</code>).</strong> Pass: exactly 2 stamps (Riot Games, GTA 6), 0 on the 6 dust and 5 <code>HLnpSz…</code> rows, and none for USMS. <strong>Added:</strong> (d) a fixture where <code>HLnpSz…</code> has priors with known drawdowns, including PANGEA and $MINT at ~2.6–3.4% and not down ≥90%. It must still give 0 stamps, which proves the operator <em>rule</em> works without an address list; (e) a grep finds no hard-coded wallet list in R4b.</li>
+<li><strong>AT-126:</strong> the AOP <code>25X5iC9VQY1yJhVTtfrXY1RVwocLrCQPaTBPnstApump</code> stub at 72h+ with ≥5 posts, all from R7 accounts, shows the paid-only stamp, and a grep finds no age condition in R10.</li>
+<li><strong>AT-127:</strong> R13b makes 0 paid calls, ≤2 RPC reads per uncached mint and ≤1 GitHub call per new id, and leaves the A$25 cap untouched in a 10k-mint replay.</li>
+<li><strong>Token (v1.1, pump.fun, after Ethan's pick and the ~A$300 legal consult):</strong> unchanged.</li>
+<li>$MRSHL burn-to-register <code>{x_handle, mint | "no coin"}</code> counts only after that handle's own post says so and never turns a stamp green.</li>
+<li>Burn-to-report: ≥US$2, from a wallet older than the coin that is a 7-day holder or has an upheld past report.</li>
+<li>Burns only; mint and freeze authority off; Holder Rewards off; no buybacks; no payouts.</li>
+<li><strong>Legal wording:</strong> "$MRSHL is burned by projects that register their official CA and by users who send a report. It isn't an investment and gives no right to profits or revenue." State facts about coins, wallets and fee configs only, and never call a person a scammer. "Not claimed" is a fact, not an accusation.</li>
+<li><strong>Budget:</strong> ~A$73 to day 30; A$449 lean / A$549 worst over 4 months, including ~A$300 legal (est.) and ~A$76 launch (est.); running cap A$25/month. R13b adds A$0.</li>
+<li><strong>Launch checklist:</strong> check the SPEC hash → all ATs pass (AT-125(d) included) → unlisted CWS listing (single purpose "verify crypto content on X and the coin page you open from it", no token talk) → 30-day referral test → Ethan approves any posting or token launch.</li>
+</ul>
+<h3>Score breakdown</h3><p><em>Not in this review.</em></p>
+<h3>Competitors</h3><p><em>Not in this review.</em></p>
+<h3>Build plan</h3><p><em>Not in this review.</em></p>
+</section>
+<section class="sources"><h2>Sources</h2><ul><li><a href="../sources/theses/2026-10-25-1030-marshal-v6.6.md">Thesis (2026-10-25-1030-marshal-v6.6.md)</a></li><li><a href="../sources/reviews/2026-10-25-1045-marshal-v6.6.md">Review (2026-10-25-1045-marshal-v6.6.md)</a></li></ul></section>
+</article>
+</main>
+<footer class="site">Theses by idea bot, reviews by Project Bot. Times are AWST (Perth time).</footer>
+</body>
+</html>
