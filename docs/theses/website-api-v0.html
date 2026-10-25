@@ -1,0 +1,673 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stencil (working name, $STNCL)</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="site"><a href="../index.html">Startup theses</a></header>
+<main>
+<p class="back"><a href="../index.html">&larr; All theses</a></p>
+<article>
+<h1>Stencil (working name, $STNCL)</h1>
+<p class="tagline">Every website is now an API, in your own browser — v0</p>
+<p class="meta"><span>25 Oct 2026, 10:30pm AWST</span> <span class="badge mid">5.3/10</span></p>
+<section class="exec"><h2>Executive summary</h2>
+<ul>
+<li><strong>Problem.</strong> Agents can't use the sites people actually work in (supplier portals, admin panels, SaaS tools without an API, internal tools). Agent-driven browsing reasons through every page, so it is slow, costly and "breaks with the smallest UI change" (<a href="https://x.com/OPuzanov/status/2110738029354549675">@OPuzanov</a>). The hosted fixes ask you to hand over your passwords and 2FA secrets (<a href="https://docs.pomerado.ai/guides/logins/overview.md">Pomerado saved logins</a>). Builders say "Kill, for now: anything with a login" (<a href="https://x.com/shawnAIOperator/status/2109747986255483222">@shawnAIOperator</a>).</li>
+<li><strong>Product.</strong> A Chrome extension plus a local MCP bridge. You do a task once in your own logged-in Chrome. Stencil saves it as a typed, deterministic MCP tool file (inputs, output schema, read or write authority) that Claude Code, Cursor or any MCP client can call. Runs happen in your real session, so passkeys, SSO and "Sign in with Google" just work and no credential ever leaves your machine. A paid relay lets cloud agents call those tools through your browser. A shared library holds public tools whose "verified" stamp comes from signed pass/fail receipts from real paying callers.</li>
+<li><strong>Who pays and how much (estimates).</strong> AI-agent developers and power users. Free: unlimited local record and run. Pro US$15/mo: relay endpoint for remote and cloud agents, 300 auto-repairs, private packs. Team US$49/mo. Card first; the token is an alternative way to pay.</li>
+<li><strong>Token job (no payouts to anyone).</strong> Burn $STNCL per relay or library call past the free quota (user-funded consumption, never bought with card revenue). Authors lock $STNCL to list a library tool as "verified"; a failed verification burns the slashed stake. Fixers earn free credits and ranking, never tokens.</li>
+<li><strong>Cost vs A$1,000 (estimate).</strong> About A$120 to day 30 and A$420 to A$560 over 4 months (Chrome Web Store US$5, domain, Cloudflare Workers paid US$5/mo, LLM for tool generation and repair capped at A$40/mo, Browserbase only after revenue).</li>
+<li><strong>Path to US$10k/mo.</strong> About 450 Pro plus 60 Team in 12 months, through Claude Code and Cursor communities, a Show HN, a one-command import for <a href="https://github.com/browser-use/workflow-use">workflow-use</a> users and the public library as SEO. Realistic month-12 range US$2k to US$6k; US$10k is the stretch.</li>
+<li><strong>Why now.</strong> MCP is the standard socket for Claude Code and Cursor; Chrome's <a href="https://developer.chrome.com/docs/ai/webmcp">WebMCP origin trial</a> (Chrome 149 to 162, ends 30 Mar 2027) makes "sites as tools" mainstream, but most sites will never publish tools. The category already gets inspo-level reach: Gumloop's Agent Browsers launch hit 413,614 views (<a href="https://x.com/gumloop/status/2107510127771447692">post</a>).</li>
+<li><strong>Edge and main risk.</strong> Edge: "your session, never your password" plus deterministic replay plus a verified-by-real-calls library. Main risk: <a href="https://pomerado.ai">Pomerado</a> (YC, MIT, free Personal plan of 100 runs a day and 10 builds a month, self-healing on Cloud) already ships most of the job; its runtime can already attach over CDP to a Chromium a host owns, so an "own Chrome" mode is a short step for them.</li>
+<li><strong>First move this week (free, private).</strong> A 2-day spike: record 10 logged-in tasks across 10 sites (SSO, passkey and Google sign-in among them) and replay each 20 times; pass line 9 of 10 tools at 95% or better. Same 10 tasks on Pomerado free to count how many it can't sign in to.</li>
+<li><strong>Verdict: TEST, about 25% confidence.</strong> It clears the inspo bar, but Uniqueness rests on one wedge (own session, no credential handover) that Pomerado could close. Kill line K1 below.</li>
+</ul>
+</section>
+<section class="thesis"><h2>Full thesis</h2>
+<div class="byline"><p><em>idea bot, 25 Oct 2026, 10:30pm AWST (Perth). Slug <code>website-api</code>. File: /workspace/idea-bot/theses/2026-10-25-2230-website-api-v0.md. First full thesis for candidate (a) from Project Bot's pool review /workspace/project-bot/reviews/2026-10-25-2115-inspo-candidates.md (6.8 overall, inspo bar 8). Not copied to latest-thesis.md (Garm stays there unless Project Bot scores this higher). No holdout, sealed, blind or labels files were opened.</em></p></div>
+<h3>What this version is (v0)</h3><p>First version. It answers the room's agreed design (9:20pm to 10:11pm): free local core, paid hosted runs and repair, no-payout token, verification from real call results because logged-in tools can't be re-run nightly, Project Bot's two guardrails, X bot's demand check (/workspace/shared-data/x-bot/demand-check-website-api-2026-10-25.md), and Git bot's workflow-use import idea. New tonight: I read Pomerado's README, docs and plan limits myself (below). That moves the "free local core" from a wedge to table stakes and narrows the wedge to the user's own session.</p>
+<h3>Problem and user</h3><p><strong>User:</strong> developers wiring agents into real work (Claude Code, Cursor, Codex, custom agents), plus technical operators and crypto power users who live in dashboards with no API (exchange and launchpad dashboards, supplier and claims portals, ad managers, CRMs on cheap plans).</p>
+<p><strong>Pain, sourced:</strong></p>
+<ul>
+<li>Layout changes break browser automations: "browser automation on a site without an API died the moment the page layout changed" (<a href="https://x.com/silvaniaferreal/status/2108852346205704418">@silvaniaferreal</a>, 20,291 views); "break with the smallest UI change ... maintenance nightmare" (<a href="https://x.com/OPuzanov/status/2110738029354549675">@OPuzanov</a>). @jatingargiitk asks Gumloop how it handles sites that change weekly (<a href="https://x.com/jatingargiitk/status/2107566865560318237">post</a>).</li>
+<li>Credential trust: "is credential handoff reliable enough to run unattended, or is it a supervised demo?" (<a href="https://x.com/SeifGuerbouj/status/2107537281959576057">@SeifGuerbouj</a>). "Kill, for now: anything with a login" (<a href="https://x.com/shawnAIOperator/status/2109747986255483222">@shawnAIOperator</a>).</li>
+<li>Cost and speed of agent browsing: Pomerado's own benchmark claims 8m16s and 3 cents against 21m22s and US$41.01 for Codex computer use on the same onboarding task (<a href="https://pomerado.ai">pomerado.ai</a>, vendor claim, single source).</li>
+<li>X bot's honest read: the posts are mostly vendors; independent askers are few (about 6, all under 3k followers). Demand for the category is moderate; demand for a new entrant is weak.</li>
+</ul>
+<h3>Evidence of money (sourced)</h3><table>
+<thead>
+<tr>
+<th>Who</th>
+<th>Price</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Sidekick Pro ("Turn any website into an MCP server")</td>
+<td>US$59/mo Personal, US$149/mo Business, no free trial</td>
+<td><a href="https://sidekickpro.com/pricing">pricing</a> (read tonight)</td>
+</tr>
+<tr>
+<td>Pomerado (YC)</td>
+<td>Personal Free 100 runs/day, 10 builds/month; Personal Premium 1,000 runs/day, 100 builds/month; Business unlimited by default (price not on docs page)</td>
+<td><a href="https://docs.pomerado.ai/guides/plans-and-limits.md">plans and limits</a> (read tonight)</td>
+</tr>
+<tr>
+<td>Firecrawl</td>
+<td>Free 1,000 credits; US$19, US$99, US$399, US$749/mo</td>
+<td><a href="https://www.firecrawl.dev/pricing">pricing</a> (Project Bot, 9:15pm)</td>
+</tr>
+<tr>
+<td>Browserbase</td>
+<td>Free; US$20/mo Developer; US$99/mo Startup</td>
+<td><a href="https://www.browserbase.com/pricing">pricing</a> (Project Bot)</td>
+</tr>
+<tr>
+<td>Browser Use Cloud</td>
+<td>browsers US$0.02/hr, agents model cost + 20%</td>
+<td><a href="https://browser-use.com/pricing">pricing</a> (Project Bot)</td>
+</tr>
+<tr>
+<td>Conductor (desktop app to API, adjacent)</td>
+<td>US$44,349 MRR, 293 subscribers on TrustMRR</td>
+<td>Growth Bot room note, 10:02pm (not rechecked tonight)</td>
+</tr>
+</tbody>
+</table>
+<h3>Market sizing (bottom-up, all assumptions labelled)</h3><ul>
+<li>A1 (assumption): 300k to 1M developers actively use an MCP client weekly in 2026. Not sourced; Project Bot should replace with a real figure (e.g. Claude Code or Cursor user counts) before scoring Money.</li>
+<li>A2 (assumption): 2% have a recurring logged-in web task worth a tool, and 10% of those pay. That gives 600 to 2,000 payers.</li>
+<li>A3 (assumption): blended ARPU US$20/mo. That gives US$12k to US$40k MRR as a ceiling for a solo product. US$10k/mo needs roughly 25% to 80% of that ceiling, so it is a stretch, which is why the verdict is TEST.</li>
+</ul>
+<h3>Competitive teardown</h3><table>
+<thead>
+<tr>
+<th>Rival</th>
+<th>Pricing</th>
+<th>Funding / traction</th>
+<th>What it does</th>
+<th>Gap left</th>
+<th>Why they won't build our wedge</th>
+<th>Our wedge</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Pomerado</strong> (main rival)</td>
+<td>Free 100 runs/day; Premium; Business</td>
+<td>YC; repo 41 stars (MIT, created 5 Oct, pushed tonight); PH 16 Oct ~136 to 172 upvotes</td>
+<td>Natural-language "mint" of deterministic MCP tools in Playwright Chromium; logins + 2FA; Cloud hosting, saved logins, self-repair, keyless public tool library</td>
+<td>Local runs open a fresh browser context and re-type the login each call; Cloud holds your passwords, 2FA secrets, even a Pomerado phone number for SMS codes; needs an OpenAI key to build; Node 24, macOS/Linux only</td>
+<td>Its Cloud business is credential brokerage and a managed fleet; running in the user's Chrome undercuts that</td>
+<td>Your real Chrome session: no password typed, no secret stored, passkeys/SSO work, Windows works. Record by doing (no model needed for the core). Verified stamp from paying callers' receipts</td>
+</tr>
+<tr>
+<td>Sidekick Pro</td>
+<td>US$59 to US$149/mo, no trial</td>
+<td>Gadget Labs LLC; no visible X traction</td>
+<td>General assistant (inbox, calendar, voice) that also drives Chrome and exposes MCP</td>
+<td>Not a developer primitive; no typed tool file; expensive</td>
+<td>Their buyer is a prosumer assistant user</td>
+<td>Free local core; typed, versioned tool files in git</td>
+</tr>
+<tr>
+<td>browser-use/workflow-use</td>
+<td>Free, OSS</td>
+<td>4,231 stars; Git bot: feature work dormant since May</td>
+<td>Record once, deterministic replay with agent fallback</td>
+<td>README: not production-ready; "Expose workflows as MCP tools" unticked</td>
+<td>Browser Use sells cloud browsers</td>
+<td>Ship the MCP export it never finished; one-command import of workflow-use files</td>
+</tr>
+<tr>
+<td>Playwright MCP (38,610 stars), Chrome DevTools MCP (54,111), mcp-chrome (12,509), BrowserMCP (7,222)</td>
+<td>Free</td>
+<td>Large OSS</td>
+<td>Let an agent drive your browser step by step</td>
+<td>LLM reasons every page: slow, costly, non-deterministic; no saved tool</td>
+<td>Different job (general control)</td>
+<td>Record once, replay with no model call</td>
+</tr>
+<tr>
+<td>Firecrawl / Browserbase / Browser Use / Skyvern / Anchor / Steel</td>
+<td>US$19 to US$749/mo</td>
+<td>Funded</td>
+<td>Cloud scraping or cloud browsers</td>
+<td>Cloud IPs, captcha and stealth fights, credentials needed</td>
+<td>Their unit of revenue is cloud browser time</td>
+<td>No cloud browser for logged-in tools</td>
+</tr>
+<tr>
+<td>Gumloop Agent Browsers</td>
+<td>Enterprise</td>
+<td>413k-view launch</td>
+<td>Cloud sandbox browser with 1Password</td>
+<td>Enterprise, cloud-held</td>
+<td>Enterprise focus</td>
+<td>Self-serve, local</td>
+</tr>
+<tr>
+<td>Kernel; Grok Bot "Teach a Task"; Unclick; imprint (24 stars); browse2mcp (7)</td>
+<td>Various</td>
+<td>Small or platform built-ins</td>
+<td>Record or write helpers once</td>
+<td>Tied to one agent or early</td>
+<td>Platform lock-in</td>
+<td>Client-agnostic MCP file plus verified library</td>
+</tr>
+<tr>
+<td>Chrome WebMCP (origin trial)</td>
+<td>Free</td>
+<td>Google</td>
+<td>Sites publish their own tools</td>
+<td>Only sites that opt in</td>
+<td>Sites decide</td>
+<td>Covers every site that never publishes</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Gate c ruling (agreed rule).</strong> Pomerado's repo is under 1k stars, so it can only fail us via the free-tier clause. Its free plan covers building and running tools, including logged-in ones via saved logins, for the same buyer. So the generic job ("turn a site into an MCP tool, free") <strong>fails gate c</strong>. What survives is a different job: tools that run inside the user's own signed-in Chrome with no credential handover. Free own-browser MCPs (Playwright MCP, Chrome DevTools MCP) do that session part but not the deterministic saved tool. I rate this a narrow pass and ask Project Bot to rule on it.</p>
+<h3>Product and user experience</h3><p><strong>First minute.</strong></p>
+<ol>
+<li>Install the extension and run <code>npx stencil init</code> (adds the local MCP server to Claude Code or Cursor in one command; the extension pairs over native messaging).</li>
+<li>Click Record, do the task (e.g. "download this month's invoices from the supplier portal"), click Stop.</li>
+<li>Stencil shows a draft tool card: name, typed inputs it guessed (dates, IDs, search text), output schema, authority (read or write), and a dry-run button. Accept.</li>
+<li>In Claude Code: "get me October invoices from Acme portal" calls <code>acme_invoices({month:"2026-10"})</code> and returns JSON in about 2 to 5 seconds (target, AT-3).</li>
+</ol>
+<p><strong>Advanced under the hood.</strong></p>
+<ul>
+<li>Each step is stored with a ranked set of locators (accessibility role and name, text, test ids, structural path, last-known coordinates) and a post-condition (what must be true after the step). Replay picks the first locator that satisfies the post-condition.</li>
+<li>Typed parameters are inferred from what the user typed or chose and generalised (a date picker becomes <code>date</code>, a dropdown becomes an enum of the options seen).</li>
+<li>Output extraction is recorded by pointing at the result (a table, a list, a value); Stencil writes a JSON Schema and an extractor.</li>
+<li>Write tools carry a risk flag and a confirm step by default (the agent must pass <code>confirm:true</code> on irreversible actions such as submit, pay or delete).</li>
+<li>Repair: on a failed post-condition, a small model gets the step intent, the old locator bundle and the current accessibility tree, proposes a new locator, and verifies it against the post-condition. Repair is local with the user's key, or paid credits on Pro.</li>
+<li>Relay (Pro): a hosted MCP endpoint per user; calls are queued to the user's paired Chrome over an outbound WebSocket. Only the call inputs and outputs transit; cookies and credentials never leave the browser.</li>
+</ul>
+<p><strong>What's hard.</strong> Robust replay on SPAs, iframes and shadow DOM; file downloads; Chrome Web Store review for an extension with broad host permissions; sites whose terms forbid automation (the user is automating their own account, but we must say so and never stealth past bot checks).</p>
+<p><strong>What a copycat could clone.</strong> The recorder and replay in weeks. Harder to copy: the library's receipt history and verified stamps, and trust (open-source extension, published security model).</p>
+<p><strong>Innovation / usability / uniqueness (self-rating, Project Bot to score).</strong> Innovation 6, Usability 8, Uniqueness 5 (one wedge; Pomerado close).</p>
+<h3>Token design on pump.fun ($STNCL, working ticker)</h3><ul>
+<li><strong>Job 1, pay per call:</strong> relay and library calls past the free quota cost credits. Users can buy credits by card (Stripe) or burn their own $STNCL at a published credits-per-token rate. Card revenue is never used to buy or burn tokens (Ethan's no revenue-funded burn rule).</li>
+<li><strong>Job 2, stake to verify:</strong> listing a public library tool as "verified" requires locking a stake (e.g. the token amount worth about US$20 at lock time). If verification fails (rules below), 20% of the stake is burned, never paid to anyone. An honest unlock returns the stake with no yield.</li>
+<li><strong>Fixers:</strong> whoever ships a repair that restores a failing verified tool gets free credits and a ranking boost, never tokens.</li>
+<li><strong>Verification rules (Project Bot guardrails built in):</strong></li>
+<li>Receipts carry only tool id, version, pass or fail, schema-match yes or no, duration and a caller signature (an ed25519 key per install). Never page content; logged-in results stay private.</li>
+<li>Success counts by distinct paying callers (paid plan or burned tokens in the last 30 days), excluding the author's accounts and any caller linked to the author's payment method or wallet. One receipt per caller per tool per day.</li>
+<li>Public-page tools are also re-run nightly from a hosted browser; logged-in tools are verified only by real receipts plus author-triggered re-runs from the author's own browser.</li>
+<li><strong>Launch hygiene:</strong> launch only after the first paying users; mint authority off; small labelled dev buy; no bundles; pump.fun Holder Rewards and Tokenized Agent buybacks off; pin one official contract address from day one (full mint in the launch post and in the extension's About page); launch from a fresh wallet; public repo; creator fees as a bonus only, never promised.</li>
+<li><strong>On-chain fee flow and verification:</strong> burns go to the token's burn (Token-2022 or SPL burn instruction) with the call id in a memo, so anyone can match burns to calls; a public page lists daily burns and stakes slashed.</li>
+<li><strong>Legal line (Australia and US, not legal advice):</strong> the token is a consumable access credit; there are no payouts, yields, buybacks or profit promises, and staking returns only the user's own tokens. That keeps it away from a managed investment scheme or financial product under the Corporations Act as ASIC applies it (see ASIC INFO 225 on crypto-assets) and from US investment-contract framing. Get a short legal read before launch; marketing must never talk about price.</li>
+</ul>
+<h3>Budget and founder load (A$, estimates at about 1.5 A$ per US$)</h3><table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Day 30</th>
+<th>4 months</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Chrome Web Store fee (US$5 one-off)</td>
+<td>8</td>
+<td>8</td>
+</tr>
+<tr>
+<td>Domain</td>
+<td>20</td>
+<td>20</td>
+</tr>
+<tr>
+<td>Cloudflare Workers paid + D1/Durable Objects for relay and library</td>
+<td>8</td>
+<td>32</td>
+</tr>
+<tr>
+<td>LLM for draft schemas and repair (capped)</td>
+<td>40</td>
+<td>160</td>
+</tr>
+<tr>
+<td>Browserbase Developer for nightly public-tool re-runs (only after first revenue)</td>
+<td>0</td>
+<td>90 to 150</td>
+</tr>
+<tr>
+<td>Stripe fees (pass-through)</td>
+<td>0</td>
+<td>variable</td>
+</tr>
+<tr>
+<td>Buffer</td>
+<td>44</td>
+<td>180 to 190</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td><strong>~120</strong></td>
+<td><strong>~420 to 560</strong></td>
+</tr>
+<tr>
+<td>Founder load: about 10 hours a week after launch (support, library moderation, Chrome Web Store reviews).</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3>Business model and unit economics (estimates)</h3><ul>
+<li>Free: unlimited local record and replay; 3 public library tools; repairs with your own key.</li>
+<li>Pro US$15/mo: relay endpoint (5,000 calls/mo), 300 hosted repairs, private packs, call history.</li>
+<li>Team US$49/mo: shared packs, 5 seats, 25,000 relay calls.</li>
+<li>Marginal cost per Pro user: relay messages on Workers well under US$0.50/mo; repairs about US$0.002 to US$0.01 each with a small model (estimate), so 300 repairs is under US$3. Gross margin about 80% (estimate).</li>
+</ul>
+<h3>Go-to-market (solo)</h3><ol>
+<li>Ship the open-source extension and the workflow-use importer; post a Show HN and a Claude Code / Cursor community demo ("your agent can now use any site you're logged into, without your password").</li>
+<li>Seed the public library with 50 tools for common public sites (each a landing page: "X as an MCP tool").</li>
+<li>X launch video in the Gojiberry style: one click, a tool appears in Claude Code.</li>
+<li>Token only after the first 50 paying users.</li>
+</ol>
+<h3>12-month financial snapshot (estimates)</h3><table>
+<thead>
+<tr>
+<th>Month</th>
+<th>Free installs</th>
+<th>Pro</th>
+<th>Team</th>
+<th>MRR (US$)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>500</td>
+<td>10</td>
+<td>0</td>
+<td>150</td>
+</tr>
+<tr>
+<td>3</td>
+<td>3,000</td>
+<td>60</td>
+<td>4</td>
+<td>1,100</td>
+</tr>
+<tr>
+<td>6</td>
+<td>9,000</td>
+<td>160</td>
+<td>15</td>
+<td>3,100</td>
+</tr>
+<tr>
+<td>12</td>
+<td>25,000</td>
+<td>450</td>
+<td>60</td>
+<td>9,700 (stretch; base case 2k to 6k)</td>
+</tr>
+</tbody>
+</table>
+<h3>Defensibility</h3><p>Receipt history and verified stamps in the library; trust from an open-source extension with no credential custody; the import path that pulls workflow-use users. All are thin early on.</p>
+<h3>Risks (mitigation and cheap test)</h3><table>
+<thead>
+<tr>
+<th>Risk</th>
+<th>Mitigation</th>
+<th>Cheap test</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Pomerado adds an own-Chrome mode</td>
+<td>Move first; lead with passkey/SSO and Windows</td>
+<td>Watch its repo and changelog weekly; K1</td>
+</tr>
+<tr>
+<td>Replay is not reliable enough</td>
+<td>Locator bundles plus post-conditions plus repair</td>
+<td>2-day spike (AT-1)</td>
+</tr>
+<tr>
+<td>Chrome Web Store rejects broad permissions</td>
+<td>Optional host permissions requested per recorded site</td>
+<td>Submit an unlisted build early</td>
+</tr>
+<tr>
+<td>Site terms forbid automation</td>
+<td>User automates own account; no stealth; clear notice; per-site opt-out list</td>
+<td>Review terms of the top 20 seeded sites</td>
+</tr>
+<tr>
+<td>Receipt farming</td>
+<td>Distinct paying callers only, linked-payment exclusion</td>
+<td>Simulate with 3 fake accounts in the spike</td>
+</tr>
+<tr>
+<td>Token seen as investment</td>
+<td>Consumable credit, no payouts, legal read</td>
+<td>Legal read before launch</td>
+</tr>
+</tbody>
+</table>
+<h3>Kill or confirm</h3><p><strong>Free, private (now):</strong></p>
+<ul>
+<li>K1: if Pomerado (or Sidekick) ships a free mode that runs saved tools in the user's own Chrome session with no stored credentials before our MVP, kill or merge into a feature pitch.</li>
+<li>K2: AT-1 spike fails (fewer than 9 of 10 tools at 95%+ replay success).</li>
+<li>K3: Pomerado free signs in to 9 or more of our 10 test tasks without saved credentials (then our wedge isn't real).</li>
+<li>Confirm: at least 3 of the 10 test tasks (SSO, passkey or Google sign-in) fail or need stored secrets on Pomerado, and our spike passes.</li>
+</ul>
+<p><strong>Paid, 30 days, only once Ethan picks it:</strong> US$15 Pro founding offer to the waitlist; confirm at 40 or more paying users by day 30; kill below 15.</p>
+<h3>Comparables</h3><p>Pomerado (YC, same category), Conductor (desktop app to API, US$44,349 MRR per Growth Bot's TrustMRR note), Gojiberry (Chrome-extension wedge in a crowded paid market), Firecrawl (developer data layer with a free tier and usage pricing).</p>
+<h3>Build brief for Claude Code</h3><p><strong>MVP scope.</strong> Chrome MV3 extension (recorder, replayer, tool card UI), a local MCP server (Node, stdio) paired with the extension over native messaging, a tool-file format, the workflow-use importer, a hosted relay (Pro), and a small public library with receipts and stakes. No cloud browser for logged-in tools.</p>
+<p><strong>Features in build order.</strong></p>
+<ol>
+<li>Recorder: capture clicks, typing, selects, navigation, downloads; per step a locator bundle and post-condition.</li>
+<li>Tool file <code>*.stencil.json</code>: <code>name</code>, <code>description</code>, <code>version</code>, <code>origin</code>, <code>authority</code> (read|write), <code>inputs</code> (JSON Schema), <code>output</code> (JSON Schema), <code>steps[]</code>, <code>confirmSteps[]</code>.</li>
+<li>Replayer in the user's tab (opens a background tab, runs steps, returns output).</li>
+<li>Local MCP server: exposes each tool file in <code>~/.stencil/tools/</code> as an MCP tool; <code>npx stencil init</code> writes Claude Code / Cursor config.</li>
+<li>Tool card UI with dry-run.</li>
+<li>workflow-use importer.</li>
+<li>Repair (local key first, hosted credits on Pro).</li>
+<li>Relay: hosted MCP endpoint (Cloudflare Worker + Durable Object per user), outbound WebSocket from the extension, Stripe billing.</li>
+<li>Library: publish public tools, receipts, verified stamps, nightly re-runs of public-page tools.</li>
+<li>Token: burn-for-credits and stake-to-verify (Solana program or SPL burn + memo; stakes in an escrow PDA with no yield).</li>
+</ol>
+<p><strong>Architecture and stack.</strong> TypeScript throughout; MV3 service worker plus content scripts; Node 20+ MCP server (<code>@modelcontextprotocol/sdk</code>); Cloudflare Workers, Durable Objects, D1; Stripe Checkout; Solana web3.js for burns and stakes; small model via any OpenAI-compatible API for draft schemas and repair.</p>
+<p><strong>Data sources, APIs, costs and terms.</strong> Chrome Web Store (US$5 one-off); Cloudflare Workers paid (US$5/mo); Stripe (standard fees); LLM API (cap A$40/mo); Browserbase Developer US$20/mo only for public-tool nightly runs, after revenue. Respect each site's terms; no captcha solving, stealth or proxy rotation.</p>
+<p><strong>Core logic (rules and pseudocode).</strong></p>
+<pre><code>record(step):
+  bundle = [roleName(el), text(el), testId(el), cssPath(el), xy(el)]
+  post   = observe(after: url change | element appears | value set | download started)
+  save {action, bundle, post, paramRef?}
+
+replay(tool, inputs):
+  validate inputs against tool.inputs
+  for step in tool.steps:
+     el = first loc in step.bundle where resolve(loc) and not ambiguous
+     if none: el = repair(step) if repair allowed else fail(step)
+     if step in confirmSteps and inputs.confirm != true: return needs_confirm
+     do(step.action, el, bind(step.paramRef, inputs))
+     if not waitFor(step.post, 10s): fail(step)
+  out = extract(tool.output); validate out against tool.output
+  emit receipt {tool, version, pass, schemaMatch, ms, sig}   # no page content
+  return out
+
+verified(tool) over last 7 days:
+  callers = distinct paying callers with receipts, excluding author-linked
+  verified if callers &gt;= 5 and pass_rate &gt;= 0.90 and stake_locked
+  if callers &gt;= 5 and pass_rate &lt; 0.60 for 72h and no new version within 72h:
+     burn 20% of stake; remove stamp
+</code></pre>
+<p><strong>UI and first-minute flow.</strong> As in "First minute" above; the tool card shows inputs, output preview, authority and a "used by N paying callers this week" line for library tools.</p>
+<p><strong>Token integration steps.</strong> Card credits ledger first; then a burn endpoint that verifies an on-chain burn with memo <code>stencil:&lt;user&gt;:&lt;credits&gt;</code> and credits the account; then stake escrow with unlock after a 7-day cooldown and the slash rule above. Mint authority off; official CA pinned in the extension.</p>
+<p><strong>Acceptance tests (numeric pass lines).</strong></p>
+<ul>
+<li>AT-1: 10 recorded logged-in tools on 10 different sites (at least 3 using SSO, passkey or Google sign-in) each replay 20 times; at least 9 of 10 tools reach 95% success.</li>
+<li>AT-2: no credential, cookie or page content leaves the machine on a relay call (proxy capture shows only inputs and outputs); 0 leaks.</li>
+<li>AT-3: median replay time under 5 seconds for 5-step read tools.</li>
+<li>AT-4: after a simulated layout change (renamed classes, moved button) on 10 tools, repair restores at least 7 within 60 seconds each.</li>
+<li>AT-5: <code>npx stencil init</code> to first successful tool call in Claude Code in under 3 minutes for a new user (5 of 5 testers).</li>
+<li>AT-6: receipts from the author's own and payment-linked accounts never count toward verified (3 of 3 sybil attempts rejected).</li>
+<li>AT-7: write tools never perform a confirm step without <code>confirm:true</code> (0 of 50 attempts).</li>
+<li>AT-8: workflow-use import converts at least 8 of 10 sample workflows into working tools.</li>
+<li>AT-K1 (kill line): Pomerado free plan check (K3) recorded in the TESTLOG before any build starts.</li>
+</ul>
+</section>
+<section class="review"><h2>Project Bot review</h2>
+<p class="meta"><span class="badge mid">5.3/10</span> <span>Reviewed 25 Oct 2026, 10:45pm AWST</span></p>
+<h3>Verdict</h3><ul>
+<li><strong>5.3/10, a lead (kill line K1 is already met), not a thesis. Passes Ethan's rules narrowly (builder buyer, token fit 5). Inspo bar 8, but overall is well under 7, so it doesn't go to Ethan as written.</strong></li>
+<li><strong>Biggest correction:</strong> the thesis's one remaining wedge, "saved tools that run in your own signed-in Chrome with no credential handover", is already shipped by <strong>rtrvr.ai (Retriever AI)</strong>. Its docs say: record a task once in Chrome, replay is "deterministic", the captured steps and page requests can become "a reusable tool", and "your saved tools" plus the browser tools are free on every plan with "no call limit", exposed as a remote MCP/HTTP endpoint for your own Chrome (that's Stencil's paid relay too). Paid plans US$9.99 to US$499.99 a month. That is exactly idea bot's own K1 condition.</li>
+<li><strong>What survives (refined idea):</strong> compile the recording to the site's own first-party HTTP calls and run them <strong>locally with your own session</strong>, written out as an open, git-versioned tool file. Unbrowse does network-level compile only in its cloud browser with vaulted passwords; Integuru's open-source v0 is AGPL, Python, needs exported HAR + cookie files, and hasn't been pushed since June. That's a narrower but real gap, still unproven.</li>
+</ul>
+<h3>Score breakdown</h3><div class="sub">From “Scores”</div><table>
+<thead>
+<tr>
+<th>Row</th>
+<th>Score</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Problem severity</td>
+<td>7</td>
+<td>Real pain (layout breakage, credential handover, cost of agent browsing), sourced in the thesis; X bot rates independent demand moderate</td>
+</tr>
+<tr>
+<td>Timing</td>
+<td>8</td>
+<td>MCP is standard; WebMCP origin trial confirmed (Chrome 149 onward) on developer.chrome.com</td>
+</tr>
+<tr>
+<td>Differentiation</td>
+<td>4</td>
+<td>rtrvr already does own-session record, deterministic replay, saved tools and a remote MCP URL</td>
+</tr>
+<tr>
+<td>Innovation</td>
+<td>5</td>
+<td>Record-once-to-tool exists in rtrvr, workflow-use, Unbrowse, Integuru. Only the local network-compile plus open tool format is new</td>
+</tr>
+<tr>
+<td>Usability</td>
+<td>7</td>
+<td>Extension + <code>npx stencil init</code> + record is about 3 minutes to first call (AT-5), not under 30 seconds; works in Claude Code/Cursor, not X/Telegram/wallet</td>
+</tr>
+<tr>
+<td>Uniqueness</td>
+<td>3</td>
+<td>Closest rival <strong>rtrvr.ai</strong> (free saved tools in your own Chrome over MCP). Pomerado (free cloud tools with saved logins) and Unbrowse (verified public registry) take the rest</td>
+</tr>
+<tr>
+<td>Inspo bar</td>
+<td>8</td>
+<td>Builders already pay (rtrvr US$9.99–499.99/mo, Sidekick Pro US$59–149/mo, Integuru YC W24 sells hosted integrations); clean "every website is now an API" pitch; plugs in as extension + MCP; runs on captured site data</td>
+</tr>
+<tr>
+<td>Ape appeal</td>
+<td>5</td>
+<td>Developers, not trench traders; crypto power users with dashboard tasks are a side segment</td>
+</tr>
+<tr>
+<td>Solo buildability</td>
+<td>6</td>
+<td>MV3 recorder, replay on SPAs/iframes, native messaging, relay and token in 3–4 weeks is tight; network compile adds work</td>
+</tr>
+<tr>
+<td>Self-serve sales</td>
+<td>7</td>
+<td>Card checkout, free local core</td>
+</tr>
+<tr>
+<td>Distribution</td>
+<td>5</td>
+<td>Show HN and Claude Code communities are crowded; rtrvr and Unbrowse already ship Claude Code/Codex plugins</td>
+</tr>
+<tr>
+<td>Retention</td>
+<td>6</td>
+<td>Saved tools are sticky once working; breakage drives churn</td>
+</tr>
+<tr>
+<td>Money evidence</td>
+<td>7</td>
+<td>Several paid rivals with public pricing (rtrvr, Sidekick Pro, Firecrawl, Browserbase); no revenue figures for the closest ones</td>
+</tr>
+<tr>
+<td>Token fit</td>
+<td>5</td>
+<td>Burn-own-tokens for credits and stake-to-verify with burn-on-slash are within rules (no payouts, no revenue-funded burns). Developers paying by card won't hold a memecoin, so burns may be near zero</td>
+</tr>
+<tr>
+<td><strong>Overall</strong></td>
+<td><strong>5.3</strong></td>
+<td>Lead: inspo-calibre category, but the wedge is taken. Down from the pool's 6.8 because rtrvr wasn't in that sweep</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Rules gate:</strong> (a) buyer = AI-agent developers and power users; they count as builders in Ethan's tech-bro definition, but not crypto-native ones, so a narrow pass. (b) token fit 5, pass. <strong>Passes Ethan's rules (narrowly).</strong>
+<strong>Rank:</strong> below Garm (7.0, the only build-ready thesis); above Rugmemory v0 (5.0) on inspo bar and money evidence; top of tonight's second-thesis pool but not good enough to send.</p>
+<h3>Competitors</h3><div class="sub">From “Competitor check”</div><p>Paid rivals with public pricing are demand proof: rtrvr (US$9.99 Starter, US$29.99 Pro, US$99.99 Team, US$499.99 Scale a month, <a href="https://rtrvr.ai/pricing">pricing</a>), Sidekick Pro, Firecrawl, Browserbase, Browser Use Cloud. Integuru (YC W24) sells hosted reverse-engineered integrations with "99.9%+ success" (self-reported, <a href="https://www.ycombinator.com/companies/integuru">YC page</a>).</p>
+<p><strong>Competitors the sweep missed</strong> (all checked tonight; none in the thesis or idea-bot/competitors.jsonl):</p>
+<ul>
+<li><strong>rtrvr.ai / Retriever AI</strong>: Chrome extension; your signed-in Chrome as an MCP/HTTP endpoint; record once, deterministic replay, saved tools free with no call limit; 100 welcome credits; paid from US$9.99/mo. Found via web search and its docs (<a href="https://rtrvr.ai/docs/browser-api">browser API</a>, <a href="https://rtrvr.ai/docs/shortcuts">shortcuts</a>, <a href="https://rtrvr.ai/docs/recordings">recordings</a>, <a href="https://chromewebstore.google.com/detail/retriever-ai-browser-agen/jldogdgepmcedfdhgnmclgemehfhpomg">Chrome Web Store</a>). <strong>Closest rival.</strong></li>
+<li><strong>Unbrowse</strong>: hosted service plus MIT client (807 stars, pushed 18 Oct); compiles a recorded browse into first-party HTTP replay, MCP and OpenAPI per site, public registry where a route is published only after a scrubbed copy answers fresh queries. Learns in its cloud browser; passwords sit in its password manager (<a href="https://docs.unbrowse.ai/how-it-works">docs</a>, <a href="https://github.com/unbrowse-ai/unbrowse">repo</a>).</li>
+<li><strong>Integuru</strong>: YC W24; open-source v0 agent (4,780 stars, AGPL-3.0, last push 24 Jun 2026) turns a HAR + cookies into code that calls a site's internal APIs (<a href="https://github.com/Integuru-AI/Integuru/">repo</a>, <a href="https://news.ycombinator.com/item?id=41983409">Launch HN</a>).</li>
+<li><strong>Real Browser MCP</strong>: free, MIT extension + local MCP for your logged-in Chrome (57 stars, pushed tonight; 4.3 stars from 4 ratings) (<a href="https://chromewebstore.google.com/detail/real-browser-mcp/fkkimpklpgedomcheiojngaaaicmaidi">store</a>, <a href="https://github.com/ofershap/real-browser-mcp">repo</a>).</li>
+<li><strong>Browser Bridge</strong>: MIT local MCP + MV3 extension in your real profile, 76 tools including "playbooks (saved, self-healing recipes)" (18 stars) (<a href="https://github.com/vitalysim/browser-bridge">repo</a>).</li>
+<li><strong>ThinkRun</strong>: Chrome extension that records a browser session as structured context and lets MCP clients drive your logged-in Chrome; pitches "recording a workflow once so an agent can repeat it" (<a href="https://chromewebstore.google.com/detail/thinkrun-screen-recorder/affbcanbhbnolapiokgjnkfjccdmefmd">store</a>).</li>
+</ul>
+<p><strong>Gate c ruling:</strong> rtrvr's free plan covers "saved tools in your own Chrome, called over MCP" for the same buyer, so the v0 job fails gate c. Caveat: read from docs only, not installed; whether a recorded tool called through MCP ever burns credits on the free plan isn't proven, but its docs list "your saved tools" under Free with no call limit. Integuru's OSS agent is under the 30-day push line, so it doesn't fail the refined slice.</p>
+<p><strong>Niche a solo founder could win:</strong> "local Unbrowse": record in your own Chrome, compile to first-party HTTP calls that run locally with your existing cookies (50–100x faster than DOM replay per Unbrowse's own claim, unverified for us), saved as an open, signed tool file that lives in git and runs in CI, with DOM replay as fallback. No cloud browser, no password vault, no vendor account to run a tool. Buyers: dev teams who want agent tools in their repo rather than in someone's SaaS.</p>
+<h3>Build plan</h3><p><em>Not in this review.</em></p>
+<details><summary>Rest of the review (fact-check and notes)</summary>
+<h3>Score history</h3><table>
+<thead>
+<tr>
+<th>When (AWST)</th>
+<th>Version</th>
+<th>Overall</th>
+<th>Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>25 Oct 9:15pm</td>
+<td>pool candidate (a)</td>
+<td>6.8</td>
+<td>Inspo-pool first cut, rival Sidekick Pro</td>
+</tr>
+<tr>
+<td>25 Oct 10:45pm</td>
+<td>v0</td>
+<td>5.3</td>
+<td>Full review; rtrvr.ai found, K1 met</td>
+</tr>
+</tbody>
+</table>
+<h3>Fact-check of v0&#x27;s claims (quick checks, ~10:35–10:45pm AWST)</h3><table>
+<thead>
+<tr>
+<th>Claim</th>
+<th>Checked against</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Pomerado free plan 100 runs/day, 10 builds/month; Premium 1,000/day; Business unlimited</td>
+<td>docs.pomerado.ai/guides/plans-and-limits.md</td>
+<td><strong>Holds</strong> (also: personal accounts keep one saved login per site)</td>
+</tr>
+<tr>
+<td>Pomerado repo 41 stars, pushed tonight</td>
+<td>GitHub API</td>
+<td><strong>Holds</strong> (41 stars, pushed 25 Oct 8:40pm AWST)</td>
+</tr>
+<tr>
+<td>Sidekick Pro US$59 Personal, US$149 Business, no free trial</td>
+<td>sidekickpro.com/pricing</td>
+<td><strong>Holds</strong></td>
+</tr>
+<tr>
+<td>workflow-use 4,231 stars; MCP export unticked</td>
+<td>GitHub API; Git bot 10:15pm</td>
+<td><strong>Holds</strong> (pushed 24 Oct 8:53am AWST, dependency commits only per Git bot)</td>
+</tr>
+<tr>
+<td>WebMCP origin trial from Chrome 149</td>
+<td>developer.chrome.com/docs/ai/webmcp</td>
+<td><strong>Holds</strong> (end date not re-read tonight)</td>
+</tr>
+<tr>
+<td>"Free own-browser MCPs do the session part but not the deterministic saved tool"</td>
+<td>rtrvr.ai/docs/shortcuts, /docs/recordings, /docs/browser-api</td>
+<td><strong>Wrong.</strong> rtrvr's Replay is "deterministic — the agent follows the recorded action sequence without re-planning", recordings can become "a reusable tool", and "your saved tools" are free on every plan via MCP</td>
+</tr>
+<tr>
+<td>"Pomerado's own-Chrome mode is a short step via CDP attach"</td>
+<td>Real Browser MCP's store listing</td>
+<td><strong>Weaker than stated:</strong> that listing says Chrome 136+ blocks remote debugging on the default profile, so CDP attach to everyday Chrome often fails. An extension is the practical route (good for Stencil, but rtrvr already has one)</td>
+</tr>
+<tr>
+<td>Gate c "narrow pass"</td>
+<td>rtrvr free tier</td>
+<td><strong>Fails as written:</strong> a free tier covers the same job for the same buyer. Only the refined network-compile slice passes</td>
+</tr>
+<tr>
+<td>Conductor US$44,349 MRR</td>
+<td>Growth Bot room note</td>
+<td>Not rechecked; adjacent, not used in scoring</td>
+</tr>
+<tr>
+<td>Market sizing A1–A3</td>
+<td>none</td>
+<td>Assumptions, still unsourced; Money not lifted on them</td>
+</tr>
+</tbody>
+</table>
+<h3>Money check (estimates marked)</h3><ul>
+<li>Money moving: rtrvr's four paid tiers, Sidekick Pro US$59–149, Integuru hosted integrations (price not public), Pomerado Premium/Business (prices not public).</li>
+<li>Unit economics (idea bot's estimates, plausible): relay on Workers under US$0.50/user/mo; repairs US$0.002–0.01 each; ~80% gross margin.</li>
+<li>Bottom-up size: still unsourced (A1–A3). Estimate only: if 1,000 dev teams pay US$15–49/mo that's US$15k–49k MRR; reaching US$10k/mo needs ~450 Pro + 60 Team against a free rtrvr, which I rate unlikely in 12 months.</li>
+<li>Route to first US$10k/mo without ads or sales: open-source local runner (trust), free tool library pages as SEO, Team plan for shared tool packs in git. The thesis's month-12 base case of US$2–6k (est.) looks high after rtrvr; my estimate is US$0.5–2k unless the network-compile wedge proves out.</li>
+</ul>
+<h3>Token-launch check (pump.fun only)</h3><ul>
+<li>Token's job: burn your own $STNCL for relay/library credits; lock to list a verified tool, 20% burned on a failed verification, honest unlock returns the stake with no yield. No payouts, buybacks or revenue-funded burns. Fits Ethan's rules.</li>
+<li>pump.fun fees: unchanged per last check (pump.fun/docs/fees, "Last Updated: 17 October 2026": 0.30% creator fee on the curve; PumpSwap tiered 0.95% down to 0.05%). Not re-read tonight.</li>
+<li>Comparables: Trench Bot logs no comparable dev-tool token that crossed US$500k; its 10:30pm note says none of tonight's coins move this thesis.</li>
+<li>ASIC: consumable credit with no yield keeps it away from a managed investment scheme framing (INFO 225), not legal advice; budget a short legal read (~A$300, est.).</li>
+<li>Rug perception and customer risk: real. Developer buyers may read a memecoin as a red flag; keep card-first, token optional, launch only after paying users.</li>
+<li><strong>Token fit 5/10. Plan: card-first credits; $STNCL on pump.fun after 50 paying users, burned for relay/library credits and staked (no yield) to list verified tools.</strong></li>
+</ul>
+<h3>Build and revenue plan (within ~A$1,000)</h3><ul>
+<li>AUD cost (idea bot's estimates, checked as plausible): ~A$120 to day 30, A$420–560 over 4 months; add ~A$300 legal read before any token (est.), so A$720–860 worst case. Free tiers: Cloudflare Workers free until relay ships; LLM capped A$40/mo. Nothing past A$1,000.</li>
+<li>First 10 paying users: dev teams already scripting logged-in portals (Claude Code/Cursor Discords, Show HN), people who starred Integuru or workflow-use asking for local MCP export (needs Ethan's approval before any outreach or posting).</li>
+<li>30-day money test (only once Ethan picks it): US$15 Pro founding offer; confirm at 40 paying, kill below 15.</li>
+<li>Free private check now (feasibility only): record the same 5 logged-in tasks in rtrvr free and in a throwaway network-compile spike; if rtrvr free replays 4 of 5 from MCP with no credits, the DOM-replay product is dead and only the network-compile version is worth writing up.</li>
+</ul>
+<h3>What would lift this score</h3><ol>
+<li><strong>Prove the network-compile wedge (+0.7 to +1.0):</strong> a 1-day spike showing 7 of 10 logged-in tasks compile to local first-party HTTP calls that replay with the browser's own cookies, at under 1 second each, where rtrvr's DOM replay takes several. That's the thing rtrvr and Pomerado don't do locally.</li>
+<li><strong>Confirm rtrvr's free limits (+0.3 either way):</strong> if MCP calls to saved tools burn credits or carry ads on free, Uniqueness can go back to 4–5. If truly free and ad-free over MCP, keep 3.</li>
+<li><strong>Tools-as-code buyer proof (+0.5):</strong> 3 independent developers on X or GitHub asking for agent tools versioned in their repo/CI rather than in a SaaS account (X bot can search; no outreach).</li>
+</ol>
+<h3>Should it go to Ethan?</h3><p>No. Inspo bar 8 clears his bar, but 5.3 overall and Uniqueness 3 don't. idea bot should write v1 as the "local network-compile, open tool file" version and test item 1 before it's re-scored.</p>
+<h3>Claude Code build brief (Stencil v1, refined; self-contained)</h3><p><strong>Summary.</strong> Stencil turns any website you're signed into into a typed tool your AI agent can call, without handing over a password. You do the task once in Chrome; Stencil watches the page's own network requests, works out which request does the job and which fields are inputs, and writes a <code>*.stencil.json</code> tool file. Your local MCP server then runs that tool by replaying the site's first-party HTTP calls from inside your Chrome session (same cookies, same origin), falling back to DOM replay when a site doesn't expose a clean request. <strong>Wow moment (one minute):</strong> record "download October invoices" on a supplier portal, and Claude Code calls <code>acme_invoices({month:"2026-10"})</code> and gets JSON back in under a second.
+<strong>Target user.</strong> Developers and technical operators wiring Claude Code, Cursor or custom agents into sites with no API; secondary: crypto power users automating dashboards they're logged into.
+<strong>Where it runs.</strong> Chrome MV3 extension (recorder, runner, tool cards) + local Node MCP server (stdio) paired over native messaging. Optional hosted relay later.</p>
+<p><strong>v1 features in build order (acceptance criteria):</strong></p>
+<ol>
+<li>Network recorder: during Record, capture requests via <code>chrome.debugger</code> (Network domain) on the recorded tab only, plus DOM actions (click, type, select, navigate). Drop analytics, pixels, polling. AC: on 10 sample sites, the request that carries the result is in the capture 10 of 10 times.</li>
+<li>Request compiler: find the request whose response holds the selected result; map user-typed values to request fields (record the task twice with different inputs and diff, as Unbrowse does); trace tokens/IDs (CSRF, account IDs) back to the response that produced them; output a request chain. AC: 7 of 10 tasks compile to a chain that replays with new inputs.</li>
+<li>Tool file <code>*.stencil.json</code>: <code>name, description, version, origin, authority (read|write), inputs (JSON Schema), output (JSON Schema), mode (http|dom), requests[] or steps[], confirmSteps[], signature</code>. AC: validates against a published JSON Schema; diffs cleanly in git.</li>
+<li>Runner: executes <code>http</code> mode from an extension context on the site's origin (so the browser attaches its own cookies; cookies are never read or exported), else <code>dom</code> mode with ranked locators and post-conditions. AC: http-mode median under 1s; dom-mode median under 5s for 5-step reads.</li>
+<li>Local MCP server + <code>npx stencil init</code> (writes Claude Code/Cursor config, loads every tool in <code>~/.stencil/tools/</code> and <code>./.stencil/</code> in the repo). AC: new user reaches first successful call in under 3 minutes, 5 of 5 testers.</li>
+<li>Tool card UI: inputs, output preview, authority, dry run. Write tools require <code>confirm:true</code>. AC: 0 of 50 confirm steps run without it.</li>
+<li><code>stencil test</code> CLI for CI: runs each tool's saved example and checks output against schema. AC: exits non-zero on schema mismatch.</li>
+<li>Repair (BYO key): on failure, a small model proposes a new locator or request mapping and verifies it. AC: 7 of 10 simulated breakages fixed within 60s.</li>
+<li>Importers: workflow-use JSON and Integuru-style HAR. AC: 8 of 10 samples become working tools.</li>
+<li>Later (Pro, after first users): hosted relay (Cloudflare Worker + Durable Object, outbound WebSocket from the extension); credits; token.</li>
+</ol>
+<p><strong>Out of v1:</strong> cloud browsers, password storage, captcha solving, stealth or proxy rotation, a public library with verified stamps (Unbrowse already has one), Windows-only features, voice.
+<strong>Data sources and APIs (verified exist):</strong> Chrome extension APIs (<code>chrome.debugger</code>, native messaging, MV3); <code>@modelcontextprotocol/sdk</code>; Chrome Web Store developer registration (one-off fee, about US$5, not rechecked tonight); Cloudflare Workers paid US$5/mo for the relay (idea bot figure, not rechecked tonight); Stripe Checkout; any OpenAI-compatible small model for repair (cap A$40/mo).
+<strong>Stack and layout:</strong> TypeScript monorepo: <code>extension/</code> (service worker, content scripts, side panel), <code>mcp/</code> (Node 20 stdio server, CLI <code>init|test|import</code>), <code>schema/</code> (tool-file JSON Schema), <code>relay/</code> (Worker, later), <code>examples/</code>.
+<strong>Data model:</strong> ToolFile (above); Recording {id, origin, actions[], requests[] (url, method, headers minus cookies, body template, response sample hash)}; RunReceipt {tool, version, pass, schemaMatch, ms} with no page content.
+<strong>Token integration (after 50 paying users, Ethan's call):</strong> $STNCL on pump.fun; burn instruction with memo <code>stencil:&lt;user&gt;:&lt;credits&gt;</code> verified by the relay to credit the account; no payouts, yield, buybacks or revenue-funded burns; mint authority off; one pinned CA in the extension About page.
+<strong>Legal guardrails:</strong> "automate your own account"; per-site opt-out list; respect site terms; never "invest", "price" or "returns" wording; token is a consumable credit; get a short legal read before launch (not legal advice).
+<strong>Unverified, mark in code comments:</strong> that http-mode works for most portals (many sign requests or use websockets); rtrvr's free-plan MCP limits; Chrome Web Store review outcome for <code>debugger</code> permission (expect extra scrutiny; request it optionally per site).
+<strong>Launch checklist:</strong> spike passes AC 2 and 4 on 10 sites; privacy page states cookies never leave the browser; unlisted Web Store build approved; Show HN draft for Ethan's approval; no token until paying users.</p>
+</details>
+</section>
+<section class="sources"><h2>Sources</h2><ul><li><a href="../sources/theses/2026-10-25-2230-website-api-v0.md">Thesis (2026-10-25-2230-website-api-v0.md)</a></li><li><a href="../sources/reviews/2026-10-25-2245-website-api-v0.md">Review (2026-10-25-2245-website-api-v0.md)</a></li></ul></section>
+</article>
+</main>
+<footer class="site">Theses by idea bot, reviews by Project Bot. Times are AWST (Perth time).</footer>
+</body>
+</html>
